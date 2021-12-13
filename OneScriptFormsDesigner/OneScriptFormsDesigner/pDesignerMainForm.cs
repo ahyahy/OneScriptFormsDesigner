@@ -894,33 +894,33 @@ namespace osfDesigner
 
         private void _saveForm_Click(object sender, EventArgs e)
         {
-            //////System.Windows.Forms.SaveFileDialog saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
-            //////saveFileDialog1.RestoreDirectory = true;
-            //////saveFileDialog1.OverwritePrompt = true;
+            System.Windows.Forms.SaveFileDialog saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+            saveFileDialog1.RestoreDirectory = true;
+            saveFileDialog1.OverwritePrompt = true;
 
-            //////saveFileDialog1.Filter = "OSD files(*.osd)|*.osd|All files(*.*)|*.*";
-            //////if (saveFileDialog1.ShowDialog() == System.Windows.Forms.DialogResult.Cancel)
-            //////{
-            //////    return;
-            //////}
-            //////System.IO.File.WriteAllText(saveFileDialog1.FileName, SaveScript.GetSaveFormText());
+            saveFileDialog1.Filter = "OSD files(*.osd)|*.osd|All files(*.*)|*.*";
+            if (saveFileDialog1.ShowDialog() == System.Windows.Forms.DialogResult.Cancel)
+            {
+                return;
+            }
+            System.IO.File.WriteAllText(saveFileDialog1.FileName, SaveForm.GetScriptText(), Encoding.UTF8);
 
-            System.IO.File.WriteAllText("C:\\444\\Форма1сохран.osd", SaveForm.GetScriptText(), Encoding.UTF8);
+            //System.IO.File.WriteAllText("C:\\444\\Форма1сохран.osd", SaveForm.GetScriptText(), Encoding.UTF8);
         }
 
         private void _loadForm_Click(object sender, EventArgs e)
         {
             ////////////////////OneScriptFormsDesigner.loadForm = true;
 
-            //System.Windows.Forms.OpenFileDialog OpenFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            //OpenFileDialog1.RestoreDirectory = true;
-            //OpenFileDialog1.Filter = "OSD files(*.osd)|*.osd|All files(*.*)|*.*";
-            //if (OpenFileDialog1.ShowDialog() == System.Windows.Forms.DialogResult.Cancel)
-            //{
-            //    return;
-            //}
-            //string strOSD = File.ReadAllText(OpenFileDialog1.FileName);
-            string strOSD = File.ReadAllText("C:\\444\\Форма1сохран.osd");
+            System.Windows.Forms.OpenFileDialog OpenFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            OpenFileDialog1.RestoreDirectory = true;
+            OpenFileDialog1.Filter = "OSD files(*.osd)|*.osd|All files(*.*)|*.*";
+            if (OpenFileDialog1.ShowDialog() == System.Windows.Forms.DialogResult.Cancel)
+            {
+                return;
+            }
+            string strOSD = File.ReadAllText(OpenFileDialog1.FileName);
+            //////string strOSD = File.ReadAllText("C:\\444\\Форма1сохран.osd");
             strOSD = strOSD.Replace(" ", "");
 
             string[] result = null;
