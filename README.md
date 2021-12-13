@@ -7,11 +7,11 @@
 
 Как основная ставилась цель полной русификации всех свойств компонентов и она достигнута. Исходными данными послужила справка из моего репозитория для OneScriptForms. Всё на русском и при запуске в среде не русифицированной Windows (только русская раскладка консоли естественно должна быть). Редакторы коллекций дизайнера не поддающиеся модификации были написаны с нуля.
 
-![Пример с кнопкой](https://github.com/ahyahy/OneScriptForms/blob/main/docs/Button1.jpg)
+![Дизайнер](https://github.com/ahyahy/OneScriptFormsDesigner/blob/main/docs/OneScriptFormsDesigner.png)
 
 Огромную помощь в работе оказала разработка примера работы с дизайнером **picoFormDesigner** (coded by Paolo Foti <https://www.codeproject.com/Articles/60175/The-DesignSurface-Extended-Class-is-Back-Together?fid=1561636&df=90&mpp=25&sort=Position&spc=Relaxed&prof=True&view=Normal&fr=26#xx0xx> под лицензией (CPOL) <https://www.codeproject.com/info/cpol10.aspx>).
 
-Дизайнер реализован в виде библиотеки. Запустить его можно так:
+Дизайнер реализован в виде библиотеки. Её найдете в каталоге /docs . Запустить его можно так:
 ```c#
      ПодключитьВнешнююКомпоненту("C:\444\111\OneScriptFormsDesigner\OneScriptFormsDesigner\bin\Debug\OneScriptFormsDesigner.dll");
      ДФ = Новый ДизайнерФормДляОдноСкрипта();
