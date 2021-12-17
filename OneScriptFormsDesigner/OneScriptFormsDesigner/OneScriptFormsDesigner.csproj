@@ -133,6 +133,7 @@
     <Compile Include="HScrollBar.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="IDesignerMainForm.cs" />
     <Compile Include="IDesignSurfaceExt.cs" />
     <Compile Include="IDesignSurfaceExt2.cs" />
     <Compile Include="ImageEntry.cs">
@@ -247,6 +248,9 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="pDesignerMainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="pDesignerMainFormPFL.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="PictureBox.cs">

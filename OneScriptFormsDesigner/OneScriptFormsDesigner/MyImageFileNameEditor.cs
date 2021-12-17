@@ -16,7 +16,7 @@ namespace osfDesigner
 
             if (wfes != null)
             {
-                frmImageFileName _frmImageFileName = new frmImageFileName(value, osfDesigner.Program.pDesignerMainForm1);
+                frmImageFileName _frmImageFileName = new frmImageFileName(value, osfDesigner.Program.pDesignerMainForm1.GetmainForm());
                 _frmImageFileName._wfes = wfes;
 
                 if (value == null)

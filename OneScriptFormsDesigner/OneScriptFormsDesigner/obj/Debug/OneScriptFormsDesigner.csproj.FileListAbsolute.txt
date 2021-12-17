@@ -1,0 +1,13 @@
+C:\Users\perfo\Документы\GitHub\OneScriptFormsDesigner\OneScriptFormsDesigner\OneScriptFormsDesigner\obj\Debug\OneScriptFormsDesigner.csprojAssemblyReference.cache
+C:\Users\perfo\Документы\GitHub\OneScriptFormsDesigner\OneScriptFormsDesigner\OneScriptFormsDesigner\obj\Debug\osfDesigner.pDesigner.resources
+C:\Users\perfo\Документы\GitHub\OneScriptFormsDesigner\OneScriptFormsDesigner\OneScriptFormsDesigner\obj\Debug\osfDesigner.Properties.Resources.resources
+C:\Users\perfo\Документы\GitHub\OneScriptFormsDesigner\OneScriptFormsDesigner\OneScriptFormsDesigner\obj\Debug\osfDesigner.PropertyGridHost.resources
+C:\Users\perfo\Документы\GitHub\OneScriptFormsDesigner\OneScriptFormsDesigner\OneScriptFormsDesigner\obj\Debug\OneScriptFormsDesigner.csproj.GenerateResource.cache
+C:\Users\perfo\Документы\GitHub\OneScriptFormsDesigner\OneScriptFormsDesigner\OneScriptFormsDesigner\obj\Debug\OneScriptFormsDesigner.csproj.CoreCompileInputs.cache
+C:\Users\perfo\Документы\GitHub\OneScriptFormsDesigner\OneScriptFormsDesigner\OneScriptFormsDesigner\bin\Debug\OneScriptFormsDesigner.dll.config
+C:\Users\perfo\Документы\GitHub\OneScriptFormsDesigner\OneScriptFormsDesigner\OneScriptFormsDesigner\bin\Debug\OneScriptFormsDesigner.dll
+C:\Users\perfo\Документы\GitHub\OneScriptFormsDesigner\OneScriptFormsDesigner\OneScriptFormsDesigner\bin\Debug\OneScriptFormsDesigner.pdb
+C:\Users\perfo\Документы\GitHub\OneScriptFormsDesigner\OneScriptFormsDesigner\OneScriptFormsDesigner\bin\Debug\OneScript.Language.dll
+C:\Users\perfo\Документы\GitHub\OneScriptFormsDesigner\OneScriptFormsDesigner\OneScriptFormsDesigner\obj\Debug\OneScriptFormsDesigner.csproj.CopyComplete
+C:\Users\perfo\Документы\GitHub\OneScriptFormsDesigner\OneScriptFormsDesigner\OneScriptFormsDesigner\obj\Debug\OneScriptFormsDesigner.dll
+C:\Users\perfo\Документы\GitHub\OneScriptFormsDesigner\OneScriptFormsDesigner\OneScriptFormsDesigner\obj\Debug\OneScriptFormsDesigner.pdb

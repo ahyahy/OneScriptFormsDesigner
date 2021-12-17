@@ -63,7 +63,7 @@ namespace osfDesigner
             this.ActiveDesignSurfaceChanged += (object sender, ActiveDesignSurfaceChangedEventArgs e) =>
             {
                 //меняем изображение на менюшке Порядок обхода
-                pDesignerMainForm.ChangeImage(pDesigner.DSME.ActiveDesignSurface.TabOrder._tabOrder != null);
+                Program.pDesignerMainForm1.ChangeImage(pDesigner.DSME.ActiveDesignSurface.TabOrder._tabOrder != null);
 
                 DesignSurfaceExt2 surface = e.NewSurface as DesignSurfaceExt2;
                 if (null == surface)

@@ -13,7 +13,7 @@ using System.IO;
 
 namespace osfDesigner
 {
-    public class pDesignerMainForm : System.Windows.Forms.Form, IDesignerMainForm
+    public class pDesignerMainFormPFL : System.Windows.Forms.Form, IDesignerMainForm
     {
         private string _version = string.Empty;
         public pDesigner pDesignerCore = new pDesigner();
@@ -118,9 +118,9 @@ namespace osfDesigner
             }
         }
 
-        public pDesignerMainForm()
+        public pDesignerMainFormPFL()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(pDesignerMainForm));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(pDesignerMainFormPFL));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this._file = new System.Windows.Forms.ToolStripMenuItem();
             this._addForm = new System.Windows.Forms.ToolStripMenuItem();
@@ -152,7 +152,7 @@ namespace osfDesigner
 
             this._tools = new System.Windows.Forms.ToolStripMenuItem();
             this._tabOrder = new System.Windows.Forms.ToolStripMenuItem();
-            osfDesigner.pDesignerMainForm._tabOrder1 = this._tabOrder;
+            osfDesigner.pDesignerMainFormPFL._tabOrder1 = this._tabOrder;
 
             this._stripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this._run = new System.Windows.Forms.ToolStripMenuItem();
@@ -502,7 +502,7 @@ namespace osfDesigner
             this.pnl4splitter.TabIndex = 4;
             this.pnl4splitter.TabStop = false;
             // 
-            // pDesignerMainForm
+            // pDesignerMainFormPFL
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -522,7 +522,7 @@ namespace osfDesigner
             this.Icon = new System.Drawing.Icon((System.IO.Stream)new System.IO.MemoryStream(Convert.FromBase64String(str_Icon)));
             this.MainMenuStrip = this.menuStrip1;
             this.Margin = new System.Windows.Forms.Padding(4);
-            this.Name = "pDesignerMainForm";
+            this.Name = "pDesignerMainFormPFL";
             this.Text = "Дизайнер форм для OneScriptForms";
             this.Load += pDesignerMainForm_Load;
             this.menuStrip1.ResumeLayout(false);
@@ -1509,51 +1509,13 @@ namespace osfDesigner
         {
             this.SuspendLayout();
             // 
-            // pDesignerMainForm
+            // pDesignerMainFormPFL
             // 
             this.ClientSize = new System.Drawing.Size(284, 261);
-            this.Name = "pDesignerMainForm";
+            this.Name = "pDesignerMainFormPFL";
             this.ResumeLayout(false);
 
         }
-
     }
 
-    public class PropertyGridMessageFilter : IMessageFilter
-    {
-        public Control Control;// Элемент управления для мониторинга
-
-        public MouseEventHandler MouseUp;
-
-        public PropertyGridMessageFilter(Control c, MouseEventHandler meh)
-        {
-            this.Control = c;
-            MouseUp = meh;
-        }
-
-        public bool PreFilterMessage(ref Message m)
-        {
-            if (!this.Control.IsDisposed && m.HWnd == this.Control.Handle && MouseUp != null)
-            {
-                System.Windows.Forms.MouseButtons mb = System.Windows.Forms.MouseButtons.None;
-
-                switch (m.Msg)
-                {
-                    case 0x0202:/*WM_LBUTTONUP, see winuser.h*/
-                        mb = System.Windows.Forms.MouseButtons.Left;
-                        break;
-                    case 0x0205:/*WM_RBUTTONUP*/
-                        mb = System.Windows.Forms.MouseButtons.Right;
-                        break;
-                }
-
-                if (mb != System.Windows.Forms.MouseButtons.None)
-                {
-                    MouseEventArgs e = new MouseEventArgs(mb, 1, m.LParam.ToInt32() & 0xFFff, m.LParam.ToInt32() >> 16, 0);
-                    MouseUp(Control, e);
-                }
-            }
-            return false;
-        }
-    }
 }
