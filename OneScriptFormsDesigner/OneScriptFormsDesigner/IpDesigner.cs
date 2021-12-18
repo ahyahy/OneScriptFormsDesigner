@@ -49,5 +49,10 @@ namespace osfDesigner
         void PasteOnDesignSurface();
         void DeleteOnDesignSurface();
         void SwitchTabOrder();
+
+        //* 17.12.2021 perfolenta
+        bool Dirty { get; }
+        //***
+
     }
 }

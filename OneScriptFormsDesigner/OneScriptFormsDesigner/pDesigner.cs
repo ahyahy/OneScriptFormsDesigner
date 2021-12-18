@@ -147,6 +147,7 @@ namespace osfDesigner
             get { return DesignSurfaceManager.ActiveDesignSurface as DesignSurfaceExt2; }
         }
 
+
         // Создайте область дизайнера (DesignSurface) и корневой компонент (rootComponent) (элемент управления .NET)
         // используя IDesignSurfaceExt.CreateRootComponent() 
         // Если режим выравнивания (alignmentMode) не использует сетку (GRID), то параметр gridSize игнорируется
@@ -397,6 +398,10 @@ namespace osfDesigner
             // Получим начальные значения свойств формы, они нужны для создания скрипта
             GetDefaultValues(rootComponent);
 
+            //* 18.12.2021 perfolenta 
+            surface.Dirty = false;
+            //***
+
             // Наконец, возвратим созданную область дизайнера, чтобы она снова изменялась пользователем
             return surface;
         }
@@ -621,5 +626,19 @@ namespace osfDesigner
             }
             return true;
         }
+
+        //* 17.12.2021 perfolenta
+        public bool Dirty {
+            get {
+                //надо перебрать все дизайнеры форм и если хоть один модифицирован, то возвращаем Истина
+                foreach (var dds in DSME.GetDesignSurfaces())
+                {
+                    if (dds.Dirty) return true;
+                }
+                return false;
+            }
+        }
+        //***
+
     }
 }

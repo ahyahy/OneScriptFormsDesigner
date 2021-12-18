@@ -22,13 +22,6 @@ namespace osfDesigner
         private System.Windows.Forms.MenuStrip menuStrip1;
 
         private System.Windows.Forms.ToolStripMenuItem _file;
-        private System.Windows.Forms.ToolStripMenuItem _addForm;
-        private System.Windows.Forms.ToolStripMenuItem _useSnapLines;
-        private System.Windows.Forms.ToolStripMenuItem _useGrid;
-        private System.Windows.Forms.ToolStripMenuItem _useGridWithoutSnapping;
-        private System.Windows.Forms.ToolStripMenuItem _useNoGuides;
-        private System.Windows.Forms.ToolStripMenuItem _deleteForm;
-        private System.Windows.Forms.ToolStripSeparator _stripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem _generateScript;
 
         private System.Windows.Forms.ToolStripSeparator _stripSeparator2;
@@ -123,13 +116,6 @@ namespace osfDesigner
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(pDesignerMainFormPFL));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this._file = new System.Windows.Forms.ToolStripMenuItem();
-            this._addForm = new System.Windows.Forms.ToolStripMenuItem();
-            this._useSnapLines = new System.Windows.Forms.ToolStripMenuItem();
-            this._useGrid = new System.Windows.Forms.ToolStripMenuItem();
-            this._useGridWithoutSnapping = new System.Windows.Forms.ToolStripMenuItem();
-            this._useNoGuides = new System.Windows.Forms.ToolStripMenuItem();
-            this._deleteForm = new System.Windows.Forms.ToolStripMenuItem();
-            this._stripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this._generateScript = new System.Windows.Forms.ToolStripMenuItem();
             this._stripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this._loadForm = new System.Windows.Forms.ToolStripMenuItem();
@@ -187,9 +173,6 @@ namespace osfDesigner
             // _file
             // 
             this._file.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this._addForm,
-            this._deleteForm,
-            this._stripSeparator1,
             this._generateScript,
             this._stripSeparator2,
             this._loadForm,
@@ -199,58 +182,6 @@ namespace osfDesigner
             this._file.Name = "_file";
             this._file.Size = new System.Drawing.Size(54, 24);
             this._file.Text = "Файл";
-            // 
-            // _addForm
-            // 
-            this._addForm.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this._useSnapLines,
-            this._useGrid,
-            this._useGridWithoutSnapping,
-            this._useNoGuides});
-            string str_addForm = "iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAABR0lEQVR42u3avQ/BQBgGcBcEia2LSESE1WK3+p/tdoNuxcBgsxJKPTc0/ZBe2lzPfXjf5Fxocvf8KqmrK2s4Ukx3AIIIIJHuMDIG/tJBu+tOI1ldDkl/Exx0052qZPU4IH7DIQHaTHcqyQo45InW0p1EskIOCdGaupNI1osghhVBTKsviG1Llvg3kCCmFEHqTHDOf4bJR1ZBouJbhgOrtu4zFnJCgDFBSkBk7x4z4xKEIIrqHyBXBPCMgUTq/lp6s+xKXR0EI6/RrRRBePkIOf8FZI9uqhCyQcilC5AtQi5cgBxZMr5SyAXdQCEkfYlWftXy0Q0LDrfR+gXHHmg7wdAeAk6yU1WDlL2cljoRNi1RhCCbIELYPyxRCEIQgggwrPr8+iH1nY8Ekt56sxUS5nd1bcJkcju1Pe3MAwNxWf8IhxNFENPqA2/lwIZlxdeeAAAAAElFTkSuQmCC";
-            this._addForm.Image = osfDesigner.OneScriptFormsDesigner.Base64ToImage(str_addForm);
-            this._addForm.Name = "_addForm";
-            this._addForm.Size = new System.Drawing.Size(221, 26);
-            this._addForm.Text = "Добавить Форму";
-            // 
-            // _useSnapLines
-            // 
-            string str_useSnapLines = "iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAAd0lEQVR42u3YSw7AIAgFwHr/Q7er7uuvoM7bC0xiSLRcm6RED5ARckfOCgKyIKS3dlU9EBAQkO7GowMCsjokNCCVea9dS79PZ0FAQEBAQEBAQEDSQKbnCMjsp+vIWUFAMkD+XgzDvkxBQEAOhUQHBCQbZKlsA3kAIttEM9KSwFkAAAAASUVORK5CYII=";
-            this._useSnapLines.Image = osfDesigner.OneScriptFormsDesigner.Base64ToImage(str_useSnapLines);
-            this._useSnapLines.Text = "Использовать линии привязки";
-            this._useSnapLines.Click += _useSnapLines_Click;
-            // 
-            // _useGrid
-            // 
-            string str_useGrid = "iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAAf0lEQVR42u3UsRGAMBDEQNwX5dMXkDvgM3Q30oyzC7zJr6Ok9fcHhHxA7iEUt0uFXO87GyDbrhYSmxBaQmjVQnBndboTQtvVQmITQksIrVoI7qxOd0Jou1pIbEJoCaFVC8Gd1elOCG1XC4lNCC0htGohuLM63Qmh7WohsQmh9QCKkWUzuKisgQAAAABJRU5ErkJggg==";
-            this._useGrid.Image = osfDesigner.OneScriptFormsDesigner.Base64ToImage(str_useGrid);
-            this._useGrid.Text = "Использовать сетку";
-            this._useGrid.Click += _useGrid_Click;
-            // 
-            // _useGridWithoutSnapping
-            // 
-            this._useGridWithoutSnapping.Text = "Использовать сетку без привязки";
-            this._useGridWithoutSnapping.Click += _useGridWithoutSnapping_Click;
-            // 
-            // _useNoGuides
-            // 
-            this._useNoGuides.Name = "_useNoGuides";
-            this._useNoGuides.Size = new System.Drawing.Size(316, 26);
-            this._useNoGuides.Text = "Не использовать ориентиры";
-            this._useNoGuides.Click += _useNoGuides_Click;
-            // 
-            // _deleteForm
-            // 
-            string str_deleteForm = "iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAABLklEQVR42u2asQrCMBCGDSoquLmIi4iuLu6uvrO7u4PdKg4uPoKi1XoHVlultTVc7xrvg2soheT/KCVpU1NzBMMdQEUyRELuMDYOeGhBnbjTWNJGkfidQKEjd6qcdFAgOkERH2rCncoSH0UuUA3uJJYEKBJA1bmTWHJVEWGoiDQ+RKq2ZInmQBWRgopIQ0Wk8b8i3G+P33KpSJHBKPnfZ0QqtCIh3TN1M8mVOp0I9LyEZkEkgngQclqGyBaaMaHICkLOXRBZQ8iZCyI78+qfVOQATZ9QZA8hh+Qij949aAYpl5tQ3ZRrZ6hNRtc9CDhKDlVMxJmZPe+8ULYM6aKxTBldokhDRaShItJIiMS33qoqErzv6lZJJpHbqe1pZ34YiOD+dvUrz184nEBFpHEHIdCPhqDjZfIAAAAASUVORK5CYII=";
-            this._deleteForm.Image = osfDesigner.OneScriptFormsDesigner.Base64ToImage(str_deleteForm);
-            this._deleteForm.Name = "_deleteForm";
-            this._deleteForm.Size = new System.Drawing.Size(221, 26);
-            this._deleteForm.Text = "Удалить Форму";
-            this._deleteForm.Click += _deleteForm_Click;
-            // 
-            // _stripSeparator1
-            // 
-            this._stripSeparator1.Name = "_stripSeparator1";
             // 
             // _generateScript
             // 
@@ -525,6 +456,9 @@ namespace osfDesigner
             this.Name = "pDesignerMainFormPFL";
             this.Text = "Дизайнер форм для OneScriptForms";
             this.Load += pDesignerMainForm_Load;
+            //* 18.12.2021 perfolenta
+            this.FormClosing += pDesignerMainForm_Closing;
+            //***
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.pnl4Toolbox.ResumeLayout(false);
@@ -889,7 +823,10 @@ namespace osfDesigner
 
         private void _exit_Click(object sender, EventArgs e)
         {
+            //* 18.12.2021 perfolenta
+            this.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.Close();
+            //***
         }
 
         private void _saveForm_Click(object sender, EventArgs e)
@@ -1322,8 +1259,6 @@ namespace osfDesigner
         {
             osfDesigner.pDesigner.SplitterpDesigner.Visible = true;
             osfDesigner.pDesigner.CodePanel.Visible = false;
-            this._addForm.Enabled = true;//"Добавить Форму"
-            this._deleteForm.Enabled = true;//"Удалить Форму"
             this._edit.Enabled = true;//"Правка"
             this._tools.Enabled = true;//"Инструменты"
             osfDesigner.pDesigner.SplitterpDesigner.Panel2Collapsed = false;
@@ -1339,8 +1274,6 @@ namespace osfDesigner
             SaveScript.comps.Clear();
             osfDesigner.pDesigner.SplitterpDesigner.Visible = false;
             osfDesigner.pDesigner.CodePanel.Visible = true;
-            this._addForm.Enabled = false;//"Добавить Форму"
-            this._deleteForm.Enabled = false;//"Удалить Форму"
             this._edit.Enabled = false;//"Правка"
             this._tools.Enabled = false;//"Инструменты"
             osfDesigner.pDesigner.SplitterpDesigner.Panel2Collapsed = true;
@@ -1399,24 +1332,6 @@ namespace osfDesigner
             this.timerLoad = new System.Windows.Forms.Timer();
             this.timerLoad.Enabled = true;
             this.timerLoad.Tick += new System.EventHandler(this.timerLoad_Tick);
-        }
-
-        private void _deleteForm_Click(object sender, EventArgs e)
-        {
-            if (pDesigner.TabControl.TabPages.Count <= 1)
-            {
-                System.Windows.Forms.MessageBox.Show(
-                    "Удалить единственную форму не допускается.",
-                    "",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Exclamation,
-                    MessageBoxDefaultButton.Button1
-                    );
-            }
-            else
-            {
-                IpDesignerCore.RemoveDesignSurface(IpDesignerCore.ActiveDesignSurface);
-            }
         }
 
         private void _generateScript_Click(object sender, EventArgs e)
@@ -1485,37 +1400,45 @@ namespace osfDesigner
             MessageBox.Show(str1, "Дизайнер форм для OneScriptForms", MessageBoxButtons.OK, MessageBoxIcon.Question);
         }
 
-        private void _useSnapLines_Click(object sender, EventArgs e)
+
+        //* 17.12.2021 perfolenta
+
+        private bool ГотовоКЗакрытию()
         {
-            IpDesignerCore.AddDesignSurface<Form>(640, 480, AlignmentModeEnum.SnapLines, new Size(1, 1));
+            if (pDesignerCore.Dirty)
+            {
+                string str1 = "Редактируемая форма изменена! Изменения будут потеряны!\n\nВыйти из конструктора форм?";
+                if (MessageBox.Show(str1, "Дизайнер форм для OneScriptForms", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != System.Windows.Forms.DialogResult.Yes)
+                    return false;
+            }
+            return true;
         }
 
-        private void _useGrid_Click(object sender, EventArgs e)
-        {
-            IpDesignerCore.AddDesignSurface<Form>(640, 480, AlignmentModeEnum.Grid, new Size(16, 16));
-        }
 
-        private void _useGridWithoutSnapping_Click(object sender, EventArgs e)
+        private void pDesignerMainForm_Closing(object sender, CancelEventArgs e)
         {
-            IpDesignerCore.AddDesignSurface<Form>(640, 480, AlignmentModeEnum.GridWithoutSnapping, new Size(16, 16));
-        }
+            if (!ГотовоКЗакрытию())
+            {
+                e.Cancel = true;
+                return;
+            }
 
-        private void _useNoGuides_Click(object sender, EventArgs e)
-        {
-            IpDesignerCore.AddDesignSurface<Form>(640, 480, AlignmentModeEnum.NoGuides, new Size(1, 1));
-        }
-
-        private void InitializeComponent()
-        {
-            this.SuspendLayout();
-            // 
-            // pDesignerMainFormPFL
-            // 
-            this.ClientSize = new System.Drawing.Size(284, 261);
-            this.Name = "pDesignerMainFormPFL";
-            this.ResumeLayout(false);
+            if (DestroyDesignSurfaces())
+                e.Cancel = false;
+            else
+                e.Cancel = true;
 
         }
+
+        private bool DestroyDesignSurfaces()
+        {
+            //????????????? тут надо уничтожить все DesignSurfaces и вернуть успешность этой операции
+
+            return true;
+        }
+
+        //***
+
     }
 
 }

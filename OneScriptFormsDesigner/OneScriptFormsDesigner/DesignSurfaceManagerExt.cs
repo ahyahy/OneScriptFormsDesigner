@@ -240,5 +240,13 @@ namespace osfDesigner
             get { return base.ActiveDesignSurface as DesignSurfaceExt2; }
             set { base.ActiveDesignSurface = value; }
         }
+
+        //* 18.12.2021 perfolenta
+        public IEnumerable<DesignSurfaceExt2> GetDesignSurfaces()
+        {
+            return DesignSurfaceExt2Collection;
+        }
+        //***
+
     }
 }
