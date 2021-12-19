@@ -365,7 +365,7 @@ namespace osfDesigner
         private static string ReSort(string Template1)
         {
             string[] stringSeparators = new string[] { Environment.NewLine };
-            System.IO.File.WriteAllText("C:\\444\\ПримерТест.os", Template1);
+            // System.IO.File.WriteAllText("C:\\444\\ПримерТест.os", Template1);
 
             string str1 = Template1;
 
