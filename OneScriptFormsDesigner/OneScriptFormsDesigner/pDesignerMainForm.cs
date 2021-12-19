@@ -525,6 +525,9 @@ namespace osfDesigner
             this.Name = "pDesignerMainForm";
             this.Text = "Дизайнер форм для OneScriptForms";
             this.Load += pDesignerMainForm_Load;
+            //* 18.12.2021 perfolenta
+            this.FormClosing += pDesignerMainForm_Closing;
+            //***
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.pnl4Toolbox.ResumeLayout(false);
@@ -889,7 +892,10 @@ namespace osfDesigner
 
         private void _exit_Click(object sender, EventArgs e)
         {
+            //* 18.12.2021 perfolenta
+            this.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.Close();
+            //***
         }
 
         private void _saveForm_Click(object sender, EventArgs e)
@@ -1505,18 +1511,43 @@ namespace osfDesigner
             IpDesignerCore.AddDesignSurface<Form>(640, 480, AlignmentModeEnum.NoGuides, new Size(1, 1));
         }
 
-        private void InitializeComponent()
+        //* 17.12.2021 perfolenta
+
+        private bool ГотовоКЗакрытию()
         {
-            this.SuspendLayout();
-            // 
-            // pDesignerMainForm
-            // 
-            this.ClientSize = new System.Drawing.Size(284, 261);
-            this.Name = "pDesignerMainForm";
-            this.ResumeLayout(false);
+            if (pDesignerCore.Dirty)
+            {
+                string str1 = "Одна из редактируемых форм изменена! Изменения будут потеряны!\n\nВыйти из конструктора форм?";
+                if (MessageBox.Show(str1, "Дизайнер форм для OneScriptForms", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != System.Windows.Forms.DialogResult.Yes)
+                    return false;
+            }
+            return true;
+        }
+
+
+        private void pDesignerMainForm_Closing(object sender, CancelEventArgs e)
+        {
+            if (!ГотовоКЗакрытию())
+            {
+                e.Cancel = true;
+                return;
+            }
+
+            if (DestroyDesignSurfaces())
+                e.Cancel = false;
+            else
+                e.Cancel = true;
 
         }
 
+        private bool DestroyDesignSurfaces()
+        {
+            //????????????? тут надо уничтожить все DesignSurfaces и вернуть успешность этой операции
+
+            return true;
+        }
+
+        //***
     }
 
     public class PropertyGridMessageFilter : IMessageFilter

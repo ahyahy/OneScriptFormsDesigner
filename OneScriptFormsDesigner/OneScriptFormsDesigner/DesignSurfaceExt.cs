@@ -33,6 +33,10 @@ namespace osfDesigner
         private DesignerSerializationServiceImpl _designerSerializationService = null;
         private CodeDomComponentSerializationService _codeDomComponentSerializationService = null;
 
+        //* 18.12.2021 perfolenta 
+        private bool _dirty = false;
+        //***
+
         public DesignSurfaceExt() : base()
         {
             InitServices();
@@ -142,6 +146,9 @@ namespace osfDesigner
                     {
                         throw new Exception(_signature_ + " - Exception: the BeginLoad(loader) failed!");
                     }
+
+
+
                 }
                 else
                 {
@@ -381,7 +388,36 @@ namespace osfDesigner
             }
             // 5. IMenuCommandService
             this.ServiceContainer.AddService(typeof(IMenuCommandService), new MenuCommandService(this));
+
+            //* 18.12.2021 perfolenta
+            // 6.
+            IComponentChangeService cs = this.ServiceContainer.GetService(typeof(IComponentChangeService)) as IComponentChangeService;
+
+                if(!( cs == null)){
+                cs.ComponentChanged += new ComponentChangedEventHandler(OnComponentChanged);
+                cs.ComponentAdded += new ComponentEventHandler(OnComponentAdded);
+                cs.ComponentRemoved += new ComponentEventHandler(OnComponentRemoved);
+            };
+
+            //***
+
         }
+
+        //* 18.12.2021 perfolenta
+        private void OnComponentChanged(object sender, ComponentChangedEventArgs e)
+        {
+            _dirty = true;
+        }
+        private void OnComponentAdded(object sender, ComponentEventArgs e)
+        {
+            _dirty = true;
+        }
+        private void OnComponentRemoved(object sender, ComponentEventArgs e)
+        {
+            _dirty = true;
+        }
+        //***
+
 
         // выполните некоторые команды Edit menu с помощью MenuCommandServiceImp
         public void DoAction(string command)
@@ -420,5 +456,21 @@ namespace osfDesigner
             }
             catch { }
         }
+
+        //* 17.12.2021 perfolenta
+        public bool Dirty
+        {
+            get
+            {
+                return _dirty;
+            }
+            set
+            {
+                _dirty = value;
+            }
+        }
+        //***
+
+
     }
 }

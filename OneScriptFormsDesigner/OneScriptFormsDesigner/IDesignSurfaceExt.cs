@@ -38,5 +38,9 @@ namespace osfDesigner
         // Получить элемент управления HostControl
         Control GetView();
 
+        //* 17.12.2021 perfolenta
+        bool Dirty { get; }
+        //***
+
     }
 }
