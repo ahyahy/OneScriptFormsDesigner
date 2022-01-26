@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel;
-using System.Drawing.Design;
-
+using System.Drawing.Design; 
 
 namespace osfDesigner
 {
@@ -103,11 +102,7 @@ namespace osfDesigner
         [Description("Возвращает или задает тип отслеживаемых изменений.")]
         [Category("Прочее")]
         [Browsable(true)]
-
-
         [Editor(typeof(MyNotifyFiltersEditor), typeof(UITypeEditor))]
-
-        
         public new NotifyFilters NotifyFilter
         {
             get { return (NotifyFilters)base.NotifyFilter; }

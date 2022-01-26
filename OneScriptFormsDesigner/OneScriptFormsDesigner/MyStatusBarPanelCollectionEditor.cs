@@ -217,12 +217,13 @@ namespace osfDesigner
             }
 
             PropertiesLabel1.Text = "Свойства:";
+            collectionForm.Refresh();
         }
 
         private void ButtonAdd1_Click(object sender, EventArgs e)
         {
             osfDesigner.StatusBarPanel SimilarObj = (osfDesigner.StatusBarPanel)PropertyGrid1.SelectedObject;
-            SimilarObj.Text = OneScriptFormsDesigner.RevertStatusBarPanelName(SimilarObj, SimilarObj.Text);
+            SimilarObj.Text = OneScriptFormsDesigner.RevertStatusBarPanelName(StatusBar1);
             SimilarObj.Name = SimilarObj.Text;
             ListBox1.Refresh();
             PropertyGrid1.SelectedObject = SimilarObj;

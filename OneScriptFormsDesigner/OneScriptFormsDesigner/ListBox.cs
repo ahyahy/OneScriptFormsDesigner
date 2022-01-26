@@ -30,6 +30,7 @@ namespace osfDesigner
         private string _LostFocus_osf;
         private string _Leave_osf;
         private string _SizeChanged_osf;
+        private osfDesigner.DockStyle _Dock;
         private string _TextChanged_osf;
         private string _ControlAdded_osf;
         private string _ControlRemoved_osf;
@@ -132,7 +133,7 @@ namespace osfDesigner
         }
 
         [DisplayName("ДвойноеНажатие")]
-        [Description("Возвращает или задает код для выполнения, когда элемент управления дважды щелкнут.")]
+        [Description("Возвращает или задает код, когда элемент управления дважды щелкнут.")]
         [Category("Прочее")]
         [Browsable(true)]
         public  string DoubleClick_osf
@@ -496,11 +497,19 @@ namespace osfDesigner
         [Category("Макет")]
         [Browsable(true)]
         [Editor(typeof(MyDockEditor), typeof(UITypeEditor))]
-        public new DockStyle Dock
+        public DockStyle Dock_osf
         {
-            get { return (DockStyle)base.Dock; }
-            set { base.Dock = (System.Windows.Forms.DockStyle)value; }
+            get { return _Dock; }
+            set
+            {
+                base.Dock = (System.Windows.Forms.DockStyle)value;
+                _Dock = value;
+            }
         }
+				
+        //скроем свойство полученное при наследовании, для того чтобы оно не мешало нашему замещающему свойству использовать свой эдитор и конвертер.
+        [Browsable(false)]
+        public new System.Windows.Forms.DockStyle Dock { get; set; }
 
         [DisplayName("ТабФокус")]
         [Description("Возвращает или задает значение, указывающее, может ли пользователь перевести фокус на данный элемент управления при помощи клавиши TAB.")]

@@ -7,7 +7,6 @@ using System.ComponentModel;
 
 namespace osfDesigner
 {
-    //!!!!!!!!!!!!!!!!!!!
     public class MyTreeNodeCollectionEditor : UITypeEditor
     {
         public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
@@ -504,10 +503,7 @@ namespace osfDesigner
                 ButtonAddChild.Enabled = false;
             }
 
-
             UpdateTreeViewOriginal();
-
-
         }
 
         private void ButtonCancel_Click(object sender, EventArgs e)

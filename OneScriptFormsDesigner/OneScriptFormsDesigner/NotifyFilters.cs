@@ -1,7 +1,6 @@
 ﻿namespace osfDesigner
 {
     [System.Flags]
-
     public enum NotifyFilters
     {
         Атрибуты = 4,

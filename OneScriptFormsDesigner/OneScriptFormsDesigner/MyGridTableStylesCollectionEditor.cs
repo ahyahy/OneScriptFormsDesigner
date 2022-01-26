@@ -203,12 +203,13 @@ namespace osfDesigner
             {
                 ListBox1.SetSelected(ListBox1.Items.Count - 1, false);
             }
+            collectionForm.Refresh();
         }
 
         private void ButtonAdd1_Click(object sender, EventArgs e)
         {
             osfDesigner.DataGridTableStyle SimilarObj = (osfDesigner.DataGridTableStyle)PropertyGrid1.SelectedObject;
-            SimilarObj.NameStyle = OneScriptFormsDesigner.RevertDataGridTableStyleName(SimilarObj, SimilarObj.NameStyle);
+            SimilarObj.NameStyle = OneScriptFormsDesigner.RevertDataGridTableStyleName(DataGrid1);
             ListBox1.Refresh();
             PropertyGrid1.SelectedObject = SimilarObj;
 	
@@ -233,8 +234,7 @@ namespace osfDesigner
                         SimilarObj = new osfDesigner.DataGridTableStyle();
                         ((osfDesigner.DataGridTableStyle)SimilarObj).OriginalObj = OriginalObj;
                         OneScriptFormsDesigner.AddToHashtable(OriginalObj, SimilarObj);
-                        // присвоим дублёру значения всех свойств исходного объекта
-                        OneScriptFormsDesigner.PassProperties(OriginalObj, SimilarObj);//без этой строки компонент глючит
+                        OneScriptFormsDesigner.PassProperties(OriginalObj, SimilarObj);//передадим свойства
                         PropertyGrid1.SelectedObject = SimilarObj;
                         PropertiesLabel1.Text = "Свойства:";
                     }

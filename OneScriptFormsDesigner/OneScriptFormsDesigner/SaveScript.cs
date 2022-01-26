@@ -10,7 +10,6 @@ using System.Data;
 
 namespace osfDesigner
 {
-    //!!!!!!!!!!!!!!!
     public class SaveScript
     {
         public static System.Windows.Forms.TreeView TreeView1 = pDesigner.DSME.PropertyGridHost.TreeView;
@@ -35,27 +34,20 @@ namespace osfDesigner
 
 // ...
 
-Пока Ф.Продолжать Цикл
-    Выполнить(Ф.ПолучитьСобытие());
-КонецЦикла;
+Ф.ЗапуститьОбработкуСобытий();
 ";
+        private static string path = null;
 
-        public static string GetScriptText()
+        public static string GetScriptText(string fileName = null)
         {
-            // ПРАВИЛА ФОРМИРОВАНИЯ СКРИПТА
             // 1. Получить перечень текущих свойств формы и всех компонентов
-            // 2. Заполнить обязательные свойства согласно RequiredValues.
+            // 2. Выгрузить обязательные свойства согласно RequiredValues.
             // 3. Сравнить текущие свойства с DefaultValues и измененные заполнить.
-            // 4. В процедуре ПодготовкаКомпонентов() выдерживается следующая последовательность.
-            ////    Подключается библиотека форм.
-            ////    Создаётся объект интерфейса ФормыДляОдноСкрипта.
-            ////    Создается форма, задаются свойства и вызываются методы, обеспечивающие её отображение, показ и активацию.
-            ////    Создаются остальные объекты. 
-            ////    Устанавливаются свойства объектов.
-            ////    Устанавливаются свойства формы.
-            // 5. Не важно в каком порядке перечислены переменные в разделе объявления переменных
-            // 6. Не важно в каком порядке созданы объекты в разделе конструкторов (кроме формы, она создается первой)
-            // 7. !!!ВАЖНО в каком порядке установлены свойства и вызваны методы объектов
+
+            if (fileName != null)
+            {
+                path = fileName.Substring(0, fileName.LastIndexOf('\\') + 1);
+            }
 
             comps.Clear();
             Template1 = TemplateOriginal;
@@ -76,7 +68,7 @@ namespace osfDesigner
                 }
 
                 string strForm = "";
-                // Запишем в скрипт создание компонентов, порядок не важен
+                // Запишем в скрипт создание компонентов
                 foreach (Component comp in ctrlsExisting)
                 {
                     compName = comp.Site.Name;
@@ -108,44 +100,13 @@ namespace osfDesigner
                     {
                         Template1 = Template1.Replace("// блок КонецКонструкторы", "" + compName + " = Ф.Индикатор(Ложь);" + Environment.NewLine + "    // блок КонецКонструкторы");
                     }
-                    else if (compName.Contains("ЗначокУведомления"))
-                    {
-                        string num = compName.Replace("ЗначокУведомления", "");
-                        string strMenuName = "МенюЗначкаУведомления" + num;
-                        string strMenu = strMenuName + " = Ф.МенюЗначкаУведомления();";
-                        Template1 = Template1.Replace("// блок КонецКонструкторы", strMenu + Environment.NewLine + "    // блок КонецКонструкторы");
-                        Template1 = Template1.Replace("// конец Перем", "Перем " + "МенюЗначкаУведомления" + num + ";" + Environment.NewLine + "// конец Перем");
-                        Template1 = Template1.Replace("// блок КонецКонструкторы", "" + compName + " = Ф." + trimName + "(" + strMenuName + ");" + Environment.NewLine + "    // блок КонецКонструкторы");
-                        Template1 = Template1.Replace("// конец Перем", "Перем " + compName + ";" + Environment.NewLine + "// конец Перем");
-
-                        string strProc = @"Процедура " + strMenuName + @"_ПриПоявлении()
-	Если " + strMenuName + @".ПервыйПоказ Тогда
-		// Делаем невидимым первое появление меню значка уведомления. Задаем всем пунктам меню значение свойства <Отображать> равным <Ложь>.
-		// Тоесть вызов меню происходит не по щелчку правой кнопкой мыши на значке уведомления.
-		" + strMenuName + @".ПервыйПоказ = Ложь;
-		Для А = 0 По " + strMenuName + @".ЭлементыМеню.Количество - 1 Цикл
-			" + strMenuName + @".ЭлементМеню(А).Отображать = Ложь;
-		КонецЦикла;
-	Иначе
-		// Это второе и последующие появления меню значка уведомления, происходящие уже при щелчке правой кнопкой мыши на значке уведомления.
-		// Здесь можно управлять составом видимого меню для значка уведомления.
-		// Задаем пунктам меню нужное нам значение свойства <Отображать>.
-		Для А = 0 По " + strMenuName + @".ЭлементыМеню.Количество - 1 Цикл
-			" + strMenuName + @".ЭлементМеню(А).Отображать = Истина; // здесь возможны варианты, отобразите нужные пункты по своему усмотрению
-		КонецЦикла;
-	КонецЕсли;
-КонецПроцедуры
-";
-                        Template1 = Template1.Replace("Процедура ПодготовкаКомпонентов()", strProc + Environment.NewLine + "Процедура ПодготовкаКомпонентов()");
-                    }
                     else
                     {
                         Template1 = Template1.Replace("// блок КонецКонструкторы", strForm + Environment.NewLine + "    // блок КонецКонструкторы");
                         Template1 = Template1.Replace("// конец Перем", "Перем " + compName + ";" + Environment.NewLine + "// конец Перем");
                     }
                 }
-                // Запишем в скрипте свойства компонентов, важен порядок.
-                // Объекты должны следовать в порядке обратном порядку добавление компонентов в дизайнере. Потомки должны следовать за родителями. 
+                // Запишем в скрипте свойства компонентов.
                 // Пследовательность возмем из древовидной структуры TreeView при сортировке "В порядке создания".
                 bool stateSort = ButtonSort1.Pushed;
                 ButtonSort1.Pushed = false;
@@ -158,92 +119,6 @@ namespace osfDesigner
 
                 System.Collections.ArrayList objArrayList2 = new System.Collections.ArrayList();// содержит имена компонентов
                 GetNodes1(TreeView1, ref objArrayList2);
-
-                objArrayList2.Reverse();// компоненты должны в скрипте быть записаны в порядке, противоположном порядку добавления их в дизайнере
-
-                // здесь нужно разделители поставить перед их панелями
-                // objArrayList2 - массив в котором будем делать перестановки
-                System.Collections.ArrayList objArrayList1 = new System.Collections.ArrayList();// массив для перебора
-                for (int i = 0; i < objArrayList2.Count; i++)
-                {
-                    objArrayList1.Add(objArrayList2[i]);
-                }
-
-                for (int i = 0; i < objArrayList1.Count; i++)
-                {
-                    Component comp = OneScriptFormsDesigner.GetComponentByName((string)objArrayList1[i]);
-                    if (comp.GetType().ToString() != "osfDesigner.Splitter")
-                    {
-                        continue;
-                    }
-                    Splitter split = (Splitter)comp;
-                    string splitName = OneScriptFormsDesigner.GetNameByComponent(split);
-                    osfDesigner.DockStyle dock = split.Dock;
-                    //
-                    // Для корректного сохранения скрипта договоримся об ограничениях для контролов имеющих разделитель:
-                    // 1. Не должно быть второго контрола на форме с таким же положением и размерами, иначе не разобрать куда пристыкован разделитель
-                    //
-                    // найдем все компоненты с такой же стыковкой
-                    for (int i1 = 0; i1 < objArrayList1.Count; i1++)
-                    {
-                        // учитываем только тип Control
-                        Component Component1 = OneScriptFormsDesigner.GetComponentByName((string)objArrayList1[i1]);
-                        if (Component1 is Control)
-                        {
-                            Control comp1 = (Control)Component1;
-                            if ((int)comp1.Dock == (int)split.Dock)
-                            {
-                                // далее возможны четыре варианта стыковки
-                                if ((int)split.Dock == 1)// Верх
-                                {
-                                    // разделитель.ширина = контрол.ширина
-                                    // разделитель.верх = контрол.верх + контрол.высота
-                                    if (split.Width == comp1.Width &&
-                                        split.Top == (comp1.Top + comp1.Height))
-                                    {
-                                        objArrayList2.RemoveAt(objArrayList2.IndexOf(splitName));
-                                        objArrayList2.Insert(objArrayList2.IndexOf(objArrayList1[i1]), splitName);
-                                    }
-                                }
-                                if ((int)split.Dock == 2)// Низ
-                                {
-                                    // разделитель.ширина = контрол.ширина
-                                    // разделитель.верх + разделитель.высота = контрол.верх
-                                    if (split.Width == comp1.Width &&
-                                        (split.Top + split.Height) == comp1.Top)
-                                    {
-                                        objArrayList2.RemoveAt(objArrayList2.IndexOf(splitName));
-                                        objArrayList2.Insert(objArrayList2.IndexOf(objArrayList1[i1]), splitName);
-                                    }
-                                }
-                                if ((int)split.Dock == 3)// Лево
-                                {
-                                    // разделитель.высота = контрол.высота
-                                    // разделитель.лево = контрол.лево + контрол.ширина
-                                    if (split.Height == comp1.Height &&
-                                        split.Left == (comp1.Left + comp1.Width))
-                                    {
-                                        objArrayList2.RemoveAt(objArrayList2.IndexOf(splitName));
-                                        objArrayList2.Insert(objArrayList2.IndexOf(objArrayList1[i1]), splitName);
-                                    }
-                                }
-                                if ((int)split.Dock == 4)// Право
-                                {
-                                    // разделитель.высота = контрол.высота
-                                    // разделитель.лево + разделитель.ширина = контрол.лево
-                                    if (split.Height == comp1.Height &&
-                                        (split.Left + split.Width) == comp1.Left)
-                                    {
-                                        objArrayList2.RemoveAt(objArrayList2.IndexOf(splitName));
-                                        objArrayList2.Insert(objArrayList2.IndexOf(objArrayList1[i1]), splitName);
-                                    }
-                                }
-                            }
-
-
-                        }
-                    }
-                }
 
                 for (int i = 0; i < objArrayList2.Count; i++)
                 {
@@ -309,11 +184,6 @@ namespace osfDesigner
 
                     if (compName.Contains("ЗначокУведомления"))
                     {
-                        string num = compName.Replace("ЗначокУведомления", "");
-                        string strMenuName = "МенюЗначкаУведомления" + num;
-                        string strEvent = strMenuName + ".ПриПоявлении = \u0022" + strMenuName + "_ПриПоявлении()\u0022; // обязательно назначить процедуру";
-                        AddToScript(strEvent);
-
                         if (comp.GetType().GetProperty("Icon").GetValue(comp) == null)
                         {
                             string strIcon = compName + ".Значок = Ф.Значок(\u0022" + "AAABAAEAEBAQAAEABAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAwAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAACAAACAAAAAgIAAgAAAAIAAgACAgAAAgICAAMDAwAAAAP8AAP8AAAD//wD/AAAA/wD/AP//AAD///8AZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmYAAP//AAD//wAA//8AAP//AAD//wAA//8AAP//AAD//wAA//8AAP//AAD//wAA//8AAP//AAD//wAA//8AAP//" + "\u0022" + "); // обязательно назначить значок";
@@ -342,6 +212,8 @@ namespace osfDesigner
                     // Обработаем подсказку, если создана хоть одна подсказка.
                     if (toolTipPresent)
                     {
+                        //System.Windows.Forms.MessageBox.Show("toolTipPresent");
+
                         System.Collections.Hashtable Hashtable1 = null;
                         try
                         {
@@ -350,14 +222,25 @@ namespace osfDesigner
                         catch { }
                         if (Hashtable1 != null)
                         {
+                            //System.Windows.Forms.MessageBox.Show("Hashtable1 != null");
+
                             foreach (System.Collections.DictionaryEntry de in Hashtable1)
                             {
                                 string nameToolTip = (string)de.Key;
                                 string compValue = (string)de.Value;
                                 compValue = compValue.Replace(Environment.NewLine, "\u0022 + Ф.Окружение().НоваяСтрока + \u0022");
                                 AddToScript(nameToolTip + ".УстановитьПодсказку(" + compName + ", \u0022" + compValue + "\u0022);");
+
+                                //System.Windows.Forms.MessageBox.Show(nameToolTip + ".УстановитьПодсказку(" + compName + ", \u0022" + compValue + "\u0022);");
+
                             }
                         }
+                    }
+                    if (compName.Contains("ПанельИнструментов") ||
+                        compName.Contains("Разделитель") ||
+                        compName.Contains("СтрокаСостояния"))
+                    {
+                        AddToScript(compName + ".НаПереднийПлан();");
                     }
                 }
                 ButtonSort1.Pushed = stateSort;
@@ -371,11 +254,10 @@ namespace osfDesigner
             return ReSort(Template1);
         }
 
-        // переформируем скрипт согласно правилам формирования скрипта
+        // переформируем скрипт
         private static string ReSort(string Template1)
         {
             string[] stringSeparators = new string[] { Environment.NewLine };
-            //System.IO.File.WriteAllText("C:\\444\\ПримерТест.os", Template1);
 
             string str1 = Template1;
 
@@ -432,73 +314,6 @@ namespace osfDesigner
             }
             str1 = str1.Replace(strPerem, newPerem);
 
-            // для удобочитаемости сделаем сортировку в разделе конструкторов
-            // и соберем имена всех объектов в objArrayList
-            //System.Collections.ArrayList objArrayList = new System.Collections.ArrayList();
-            string strConstr = (string)OneScriptFormsDesigner.StrFindBetween(str1, @"// блок конецФорма", @"// блок КонецКонструкторы")[0];
-            string[] ConstrArray = strConstr.Split(stringSeparators, StringSplitOptions.RemoveEmptyEntries);
-            System.Collections.Generic.SortedList<string, string> slConstr = new System.Collections.Generic.SortedList<string, string>();
-            for (int i = 0; i < ConstrArray.Length; i++)
-            {
-                if (ConstrArray[i].Trim() != "")
-                {
-                    string strnum = OneScriptFormsDesigner.ParseBetween(ConstrArray[i], null, @"=").Trim();
-                    string trimName = strnum;
-                    for (int i1 = 0; i1 < 10; i1++)
-                    {
-                        trimName = trimName.Replace(i1.ToString(), "");
-                    }
-                    strnum = strnum.Replace(trimName, "");
-                    int capacity = 10;// разрядность для сортировки
-                    for (int i1 = 0; i1 < capacity - strnum.Length; i1++)
-                    {
-                        strnum = "0" + strnum;
-                    }
-                    slConstr.Add(trimName + strnum, ConstrArray[i]);
-                }
-            }
-
-            System.Collections.Generic.List<string> ConstrList = new System.Collections.Generic.List<string>();
-            IList<string> listKeyConstr = slConstr.Keys;
-            for (int i = 0; i < listKeyConstr.Count; i++)
-            {
-                ConstrList.Add(slConstr[listKeyConstr[i]]);
-            }
-
-            // создание объекта МенюЗначкаУведомления должно идти до создания объекта ЗначокУведомления
-            System.Collections.Generic.List<string> ConstrList2 = new System.Collections.Generic.List<string>();
-            for (int i = 0; i < ConstrList.Count; i++)
-            {
-                ConstrList2.Add(ConstrList[i]);
-            }
-            for (int i = 0; i < ConstrList.Count; i++)
-            {
-                string str = OneScriptFormsDesigner.ParseBetween(ConstrList[i], null, @"=").Trim();
-                if (str.Contains("ЗначокУведомления"))
-                {
-                    string strnum = str;
-                    string trimName = strnum;
-                    for (int i1 = 0; i1 < 10; i1++)
-                    {
-                        trimName = trimName.Replace(i1.ToString(), "");
-                    }
-                    strnum = strnum.Replace(trimName, "");
-
-                    int indexNotifyIcon = ConstrList2.IndexOf(ConstrList[i]);
-                    int indexMenuNotifyIcon = ConstrList2.IndexOf("    МенюЗначкаУведомления" + strnum + @" = Ф.МенюЗначкаУведомления();");
-                    ConstrList2.RemoveAt(indexMenuNotifyIcon);
-                    ConstrList2.Insert(indexNotifyIcon, "    МенюЗначкаУведомления" + strnum + @" = Ф.МенюЗначкаУведомления();");
-                }
-            }
-
-            string newConstr = "";
-            for (int i = 0; i < ConstrList2.Count; i++)
-            {
-                newConstr = newConstr + Environment.NewLine + ConstrList2[i];
-            }
-            newConstr = newConstr + Environment.NewLine;
-            str1 = str1.Replace(strConstr, newConstr);
-
             // подправим код для подсказок
             string strDuplicate = str1;
             string[] result2 = strDuplicate.Split(stringSeparators, StringSplitOptions.RemoveEmptyEntries);
@@ -509,7 +324,7 @@ namespace osfDesigner
                 {
                     string nameToolTip = OneScriptFormsDesigner.ParseBetween(strCurrent, null, ".УстановитьПодсказку(").Trim();
                     str1 = str1.Replace(strCurrent + Environment.NewLine, "");
-                    str1 = str1.Replace(@"// блок " + nameToolTip + ".", @"// блок" + Environment.NewLine + strCurrent);
+                    str1 = str1.Replace(@"// блок " + nameToolTip + ".", @"// блок " + nameToolTip + "." + Environment.NewLine + strCurrent);
                 }
             }
 
@@ -518,9 +333,7 @@ namespace osfDesigner
             for (int i = 0; i < ArrayList2.Count; i++)
             {
                 string fragment1 = (string)ArrayList2[i];
-
-                //System.Windows.Forms.MessageBox.Show("fragment1=" + fragment1);
-                //System.IO.File.WriteAllText("C:\\444\\ПримерТест.os", fragment1);
+                string namecomp = OneScriptFormsDesigner.ParseBetween(fragment1, @"[<", @"]");
 
                 string fragment2 = "";
                 // создадим SortedList1
@@ -534,23 +347,23 @@ namespace osfDesigner
                     {
                         SortedList1.Add(i1, strResult);
                     }
-                    else if (strResult.Contains("Родитель ="))
+                    else if (strResult.Contains(namecomp + "." + "Родитель ="))
                     {
                         SortedList1.Add(1, strResult);
                     }
-                    else if (strResult.Contains("Стыковка ="))
+                    else if (strResult.Contains(namecomp + "." + "Стыковка ="))
                     {
                         SortedList1.Add(2, strResult);
                     }
-                    else if (strResult.Contains("Размер ="))
+                    else if (strResult.Contains(namecomp + "." + "Размер ="))
                     {
                         SortedList1.Add(3, strResult);
                     }
-                    else if (strResult.Contains("ПорядокОбхода ="))
+                    else if (strResult.Contains(namecomp + "." + "ПорядокОбхода ="))
                     {
                         SortedList1.Add(4, strResult);
                     }
-                    else if (strResult.Contains("Флажки ="))
+                    else if (strResult.Contains(namecomp + "." + "Флажки ="))
                     {
                         SortedList1.Add(5, strResult);
                     }
@@ -632,6 +445,31 @@ namespace osfDesigner
                 return;
             }
             if (val.GetType() == typeof(osfDesigner.MyTreeNode) && (valueName == "ПолныйПуть"))
+            {
+                return;
+            }
+            if (val.GetType() == typeof(osfDesigner.DataGridTableStyle) && (valueName == "ИмяСтиля"))
+            {
+                return;
+            }
+            if (val.GetType() == typeof(osfDesigner.DataGridTextBoxColumn) && (valueName == "ИмяСтиля"))
+            {
+                return;
+            }
+            if (val.GetType() == typeof(osfDesigner.DataGridComboBoxColumnStyle) && (valueName == "ИмяСтиля"))
+            {
+                return;
+            }
+            if (val.GetType() == typeof(osfDesigner.DataGridBoolColumn) && (valueName == "ИмяСтиля"))
+            {
+                return;
+            }
+	
+            if (val.GetType() == typeof(osfDesigner.Form) && (valueName == "Стыковка"))
+            {
+                return;
+            }
+            if (val.GetType() == typeof(osfDesigner.Form) && (valueName == "Якорь"))
             {
                 return;
             }
@@ -1088,7 +926,18 @@ namespace osfDesigner
                     {
                         for (int i1 = 0; i1 < MyList1.Count; i1++)
                         {
-                            str1 = str1 + "    " + compName + ".Изображения.Добавить(Ф.Картинка(\u0022" + MyList1[i1].Path + "\u0022));";
+                            string newPath = MyList1[i1].Path;
+                            if (path != null)
+                            {
+                                string newFileName = MyList1[i1].Path.Substring(MyList1[i1].Path.LastIndexOf('\\') + 1);
+                                newPath = path + newFileName;
+                                if (!System.IO.File.Exists(newPath))
+                                {
+                                    System.IO.File.Copy(MyList1[i1].Path, newPath);
+                                }
+                            }
+
+                            str1 = str1 + "    " + compName + ".Изображения.Добавить(Ф.Картинка(\u0022" + newPath + "\u0022));";
                             if (i1 == 0)
                             {
                                 str1 = str1.TrimStart(' ');
@@ -1270,19 +1119,25 @@ namespace osfDesigner
                 valueName == "ЭлементПомечен" ||
                 valueName == "ЭлементУдален")
             {
-                string strNameProc = compValue.Replace("(", "").Replace(")", "") + "()";
-                string strProc = @"Процедура " + strNameProc + @"
-    Сообщить(" + "\u0022" + strNameProc + "\u0022" + @");
+                string strNameProc = compValue.Replace("(", "").Replace(")", "");
+                string strProc = @"Процедура " + strNameProc + @"() Экспорт
+    Сообщить(" + "\u0022" + strNameProc + "()\u0022" + @");
 КонецПроцедуры
 ";
-                Template1 = Template1.Replace("Процедура ПодготовкаКомпонентов()", strProc + Environment.NewLine + "Процедура ПодготовкаКомпонентов()");
-                AddToScript(compName + "." + valueName + " = \u0022" + strNameProc + "\u0022;");
+	
+                if (OneScriptFormsDesigner.ParseBetween(Template1, null, strProc) == null)
+                {
+                    Template1 = Template1.Replace("Процедура ПодготовкаКомпонентов()", strProc + Environment.NewLine + "Процедура ПодготовкаКомпонентов()");
+                }
+	
+                //Ф.Действие(ЭтотОбъект, "Форма1_ДвойноеНажатие");
+                strNameProc = "Ф.Действие(ЭтотОбъект, \u0022" + strNameProc + "\u0022);";
+                AddToScript(compName + "." + valueName + " = " + strNameProc);
                 return;
             }
             //если compValue это строка
             if (valueName == "ВыбранныйПуть" ||
                 valueName == "Заголовок" ||
-                valueName == "ИмяОтображаемого" ||
                 valueName == "ИмяСтиля" ||
                 valueName == "ИмяФайла" ||
                 valueName == "НачальныйКаталог" ||
@@ -1344,7 +1199,7 @@ namespace osfDesigner
                 valueName == "ШиринаЗаголовковСтрок" ||
                 valueName == "ШиринаКолонки")
             {
-                AddToScript(compName + "." + valueName + " = " + compValue + ";");
+                AddToScript(compName + "." + valueName + " = " + compValue.Replace(",", ".") + ";");
                 return;
             }
             //если compValue это Размер
@@ -1592,6 +1447,7 @@ namespace osfDesigner
             if (valueName == "Стыковка")
             {
                 AddToScript(compName + "." + valueName + " = " + "Ф.СтильСтыковки." + compValue + ";");
+                AddToScript(compName + ".НаПереднийПлан();");
                 return;
             }
             if (valueName == "Значок")
@@ -1621,11 +1477,6 @@ namespace osfDesigner
             {
                 Template1 = Template1.Replace("// блок КонецСвойства", str + Environment.NewLine + "    // блок КонецСвойства");
             }
-
-            //////if (!Template1.Contains(str))
-            //////{
-            //////    Template1 = Template1.Replace("// блок КонецСвойства", str + Environment.NewLine + "    // блок КонецСвойства");
-            //////}
         }
 
         private static void GetNodes(osfDesigner.MyTreeNode treeNode)
@@ -1642,7 +1493,6 @@ namespace osfDesigner
                 }
             }
         }
-
 
         private static void GetNodes1(System.Windows.Forms.TreeView TreeView, ref System.Collections.ArrayList objArrayList2)
         {

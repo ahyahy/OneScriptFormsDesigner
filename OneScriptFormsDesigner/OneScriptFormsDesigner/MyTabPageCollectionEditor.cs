@@ -175,6 +175,7 @@ namespace osfDesigner
                 ListBox1.SetSelected(ListBox1.Items.Count - 1, false);
             }
             TabControl1.SelectedIndex = index;
+            collectionForm.Refresh();
         }
 
         private void ListBox1_SelectedIndexChanged(object sender, EventArgs e)

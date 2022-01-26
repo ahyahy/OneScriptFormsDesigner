@@ -14,7 +14,6 @@ namespace osfDesigner
         [Description("Возвращает или задает горизонтальное выравнивание текста, отображаемого в Колонка (ColumnHeader).")]
         [Category("Прочее")]
         [Browsable(true)]
-        [Editor(typeof(MyContentAlignmentEditor), typeof(UITypeEditor))]
         public new HorizontalAlignment TextAlign
         {
             get { return (HorizontalAlignment)base.TextAlign; }

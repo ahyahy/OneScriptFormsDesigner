@@ -49,7 +49,7 @@ namespace osfDesigner
         }
 
         [DisplayName("ДвойноеНажатие")]
-        [Description("Возвращает или задает код для выполнения, когда элемент управления дважды щелкнут.")]
+        [Description("Возвращает или задает код, когда элемент управления дважды щелкнут.")]
         [Category("Прочее")]
         [Browsable(true)]
         public  string DoubleClick_osf
@@ -80,7 +80,7 @@ namespace osfDesigner
         }
 
         [DisplayName("ЗначениеИзменено")]
-        [Description("Возвращает или задает код для выполнения, при изменения свойства Значение (Value), либо вследствии события ПриПрокручивании (Scroll), либо программными средствами.")]
+        [Description("Возвращает или задает код при изменении свойства Значение (Value), либо вследствии события ПриПрокручивании (Scroll), либо программными средствами.")]
         [Category("Прочее")]
         [Browsable(true)]
         public  string ValueChanged_osf

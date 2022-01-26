@@ -1,7 +1,6 @@
 ﻿namespace osfDesigner
 {
     [System.Flags]
-
     public enum AnchorStyles
     {
         Верх = 1,

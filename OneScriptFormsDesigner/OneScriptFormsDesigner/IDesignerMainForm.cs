@@ -7,6 +7,7 @@ using System.ComponentModel.Design.Serialization;
 
 namespace osfDesigner
 {
+    //!!!!!!!!!!!!!!!!!!!
     public interface IDesignerMainForm
     {
         void ChangeImage(bool change);

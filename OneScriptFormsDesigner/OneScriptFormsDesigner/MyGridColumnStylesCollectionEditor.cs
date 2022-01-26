@@ -121,6 +121,7 @@ namespace osfDesigner
                     if (i == 0)
                     {
                         ButtonAdd1 = (System.Windows.Forms.Button)AddRemoveTableLayoutPanel1.Controls[0];
+                        ButtonAdd1.Click += ButtonAdd1_Click;
                         ButtonAdd1.Text = "Добавить";
 
                         PropertyInfo PropertyInfo3 = ButtonAdd1.GetType().GetProperty("ShowSplit", BindingFlags.Public | BindingFlags.Instance);
@@ -130,14 +131,17 @@ namespace osfDesigner
                             if (item.Text == "DataGridBoolColumn")
                             {
                                 item.Text = "СтильКолонкиБулево";
+                                item.Click += Item_BoolColumn_Click;
                             }
                             else if (item.Text == "DataGridTextBoxColumn")
                             {
                                 item.Text = "СтильКолонкиПолеВвода";
+                                item.Click += Item_BoolColumn_Click;
                             }
                             else if (item.Text == "DataGridComboBoxColumnStyle")
                             {
                                 item.Text = "СтильКолонкиПолеВыбора";
+                                item.Click += Item_ComboBoxColumn_Click;
                             }
                         }
                     }
@@ -167,6 +171,42 @@ namespace osfDesigner
             }
 
             return collectionForm;
+        }
+
+        private void Item_ComboBoxColumn_Click(object sender, EventArgs e)
+        {
+            dynamic ColumnStyle1 = PropertyGrid1.SelectedObject;
+            ColumnStyle1.NameStyle = OneScriptFormsDesigner.RevertDataGridColumnStyleName(DataGridTableStyle1, ColumnStyle1);
+            ListBox1.Refresh();
+            PropertyGrid1.SelectedObject = ColumnStyle1;
+            GetDefaultValues();
+        }
+
+        private void Item_TextBoxColumn_Click(object sender, EventArgs e)
+        {
+            dynamic ColumnStyle1 = PropertyGrid1.SelectedObject;
+            ColumnStyle1.NameStyle = OneScriptFormsDesigner.RevertDataGridColumnStyleName(DataGridTableStyle1, ColumnStyle1);
+            ListBox1.Refresh();
+            PropertyGrid1.SelectedObject = ColumnStyle1;
+            GetDefaultValues();
+        }
+
+        private void Item_BoolColumn_Click(object sender, EventArgs e)
+        {
+            dynamic ColumnStyle1 = PropertyGrid1.SelectedObject;
+            ColumnStyle1.NameStyle = OneScriptFormsDesigner.RevertDataGridColumnStyleName(DataGridTableStyle1, ColumnStyle1);
+            ListBox1.Refresh();
+            PropertyGrid1.SelectedObject = ColumnStyle1;
+            GetDefaultValues();
+        }
+
+        private void ButtonAdd1_Click(object sender, EventArgs e)
+        {
+            dynamic ColumnStyle1 = PropertyGrid1.SelectedObject;
+            ColumnStyle1.NameStyle = OneScriptFormsDesigner.RevertDataGridColumnStyleName(DataGridTableStyle1, ColumnStyle1);
+            ListBox1.Refresh();
+            PropertyGrid1.SelectedObject = ColumnStyle1;
+            GetDefaultValues();
         }
 
         private void GetDefaultValues()
@@ -242,6 +282,7 @@ namespace osfDesigner
             {
                 ListBox1.SetSelected(ListBox1.Items.Count - 1, false);
             }
+            collectionForm.Refresh();
         }
 
         private void PropertyGrid1_SelectedGridItemChanged(object sender, SelectedGridItemChangedEventArgs e)
@@ -251,15 +292,7 @@ namespace osfDesigner
 
         private void PropertyGrid1_SelectedObjectsChanged(object sender, EventArgs e)
         {
-            if (PropertyGrid1.SelectedObject == null)
-            {
-                return;
-            }
-            dynamic ColumnStyle1 = PropertyGrid1.SelectedObject;
-            ColumnStyle1.NameStyle = OneScriptFormsDesigner.RevertDataGridColumnStyleName(ColumnStyle1, ColumnStyle1.NameStyle);
-            ListBox1.Refresh();
-            PropertyGrid1.SelectedObject = ColumnStyle1;
-            GetDefaultValues();
+
         }
 
         private void ButtonRemove1_Click(object sender, EventArgs e)

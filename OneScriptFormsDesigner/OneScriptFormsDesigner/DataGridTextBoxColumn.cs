@@ -5,6 +5,8 @@ namespace osfDesigner
     public class DataGridTextBoxColumn : System.Windows.Forms.DataGridTextBoxColumn
     {
 
+        private string _DoubleClick_osf;
+
         public DataGridTextBoxColumn()
         {
         }
@@ -67,6 +69,16 @@ namespace osfDesigner
         [Browsable(false)]
         [ReadOnly(true)]
         public new string Format { get; set; }
+		
+        [DisplayName("ДвойноеНажатие")]
+        [Description("Возвращает или задает код для выполнения, когда ячейка колонки дважды щелкнута.")]
+        [Category("Прочее")]
+        [Browsable(true)]
+        public  string DoubleClick_osf
+        {
+            get { return _DoubleClick_osf; }
+            set { _DoubleClick_osf = value; }
+        }
 		
         [DisplayName("ИмяСтиля")]
         [Category("Прочее")]

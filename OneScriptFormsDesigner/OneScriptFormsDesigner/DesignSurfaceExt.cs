@@ -8,6 +8,7 @@ using System.Diagnostics;
 
 namespace osfDesigner
 {
+    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     // этот класс добавляет к экземпляру .NET DesignSurface следующие возможности:
     //     * TabOrder
     //     * UndoEngine

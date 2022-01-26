@@ -218,7 +218,7 @@ namespace osfDesigner
                     if (OriginalObj.Tag == null)
                     {
                         osfDesigner.ToolBarButton SimilarObj = new osfDesigner.ToolBarButton();
-                        OneScriptFormsDesigner.PassProperties(OriginalObj, SimilarObj);//без этой строки компонент глючит
+                        OneScriptFormsDesigner.PassProperties(OriginalObj, SimilarObj);//передадим свойства
                         SimilarObj.OriginalObj = OriginalObj;
                         SimilarObj.Parent = OriginalObj.Parent;
                         SimilarObj.Style = (osfDesigner.ToolBarButtonStyle)OriginalObj.Style;
@@ -236,12 +236,14 @@ namespace osfDesigner
 
         private void ButtonRemove1_Click(object sender, EventArgs e)
         {
+            int index = ListBox1.SelectedIndex;
             ToolBar1.Buttons.Clear();
             MethodInfo MethodInfo3 = collectionForm.GetType().GetMethod("AddItems", BindingFlags.NonPublic | BindingFlags.Instance);
             MethodInfo3.Invoke(collectionForm, new object[] { ToolBar1.Buttons });
             object SelectedItem1 = ListBox1.SelectedItem;
             ListBox1.SelectedItem = null;
-            ListBox1.SelectedItem = SelectedItem1;
+            ListBox1.SelectedIndex = index;
+            collectionForm.Refresh();
         }
 
         private void ButtonDown1_Click(object sender, System.EventArgs e)
@@ -256,6 +258,7 @@ namespace osfDesigner
                 ListBox1.SetSelected(ListBox1.Items.Count - 1, false);
             }
             PropertiesLabel1.Text = "Свойства:";
+            collectionForm.Refresh();
         }
 
         private void ButtonUp1_Click(object sender, System.EventArgs e)
@@ -269,12 +272,13 @@ namespace osfDesigner
             {
                 ListBox1.SetSelected(ListBox1.Items.Count - 1, false);
             }
+            collectionForm.Refresh();
         }
 
         private void ButtonAdd1_Click(object sender, EventArgs e)
         {
             osfDesigner.ToolBarButton SimilarObj = (osfDesigner.ToolBarButton)PropertyGrid1.SelectedObject;
-            SimilarObj.Name = OneScriptFormsDesigner.RevertToolBarButtonName(SimilarObj, SimilarObj.Text);
+            SimilarObj.Name = OneScriptFormsDesigner.RevertToolBarButtonName(ToolBar1);
             SimilarObj.Text = SimilarObj.Name;
             ListBox1.Refresh();
 
@@ -284,6 +288,8 @@ namespace osfDesigner
 
             PropertyGrid1.SelectedObject = SimilarObj;
             GetDefaultValues();
+
+            collectionForm.Refresh();
         }
 
         private void ListBox1_SelectedIndexChanged(object sender, EventArgs e)

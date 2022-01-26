@@ -13,32 +13,20 @@ using System.Windows.Forms;
 
 namespace osfDesigner
 {
-    //!!!!!!!!!!!!!!!!!!!!!!!!!!!
     [ContextClass("ДизайнерФормДляОдноСкрипта", "OneScriptFormsDesigner")]
     public class OneScriptFormsDesigner : AutoContext<OneScriptFormsDesigner>
     {
         public static System.Collections.Hashtable hashtable = new Hashtable();// хранит связь исходного объекта с его дублером
         public static System.Collections.Hashtable hashtableDesignerTabName = new Hashtable();// хранит имя вкладок дизайнера
         public static System.Collections.Hashtable hashtableDesignerTabRootComponent = new Hashtable();// хранит связь rootComponent и создаваемой для него вкладки дризайнера
-        public static System.Collections.Hashtable hashtableNodeName = new Hashtable();// хранит имя последнего созданного узла дерева для дерева
-        public static System.Collections.Hashtable hashtableDataGridTableStyleName = new Hashtable();// хранит имя последнего созданного СтильТаблицыСеткиДанных для СеткиДанных
-        public static System.Collections.Hashtable hashtableDataGridColumnStyleName = new Hashtable();// хранит имя последнего созданного СтильКолонкиСеткиДанных для СтильТаблицыСеткиДанных
-        public static System.Collections.Hashtable hashtableListViewItemName = new Hashtable();// хранит имя последнего созданного ЭлементСпискаЭлементов для СписокЭлементов
-        public static System.Collections.Hashtable hashtableListViewSubItemName = new Hashtable();// хранит имя последнего созданного ПодэлементСпискаЭлементов для ЭлементСпискаЭлементов
-        public static System.Collections.Hashtable hashtableToolBarButtonName = new Hashtable();// хранит имя последней созданной КнопкаПанелиИнструментов для ПанельИнструментов
-        public static System.Collections.Hashtable hashtableColumnHeaderName = new Hashtable();// хранит имя последней созданной Колонка для СписокЭлементов
-        public static System.Collections.Hashtable hashtableStatusBarPanelName = new Hashtable();// хранит имя последней созданной ПанельСтрокиСостояния для СтрокаСостояния
-        public static System.Collections.Hashtable hashtableMenuName = new Hashtable();// хранит имя последнего созданного ЭлементМеню для ГлавноеМеню или ЭлементМеню
-        public static System.Collections.Hashtable hashtableSeparatorName = new Hashtable();// хранит имя последнего созданного разделителя для меню
         public static string str1 = "";
         public static int tic1 = 0;// счетчик для правильной работы TabControl, пропуск двух шагов по созданию дизайнером двух вкладок по умолчанию
         public static bool block1 = false;// тригер для блокировки выделения объекта на форме
 
-
-        //!!!!!!!!!!!!!!!!!!!!!!!!!!
-        //////public static System.Collections.ArrayList ArrayListComponentsAddingOrder = new System.Collections.ArrayList();// хранит порядок добавления компонентов
-        //////public static bool loadForm = false;
-
+        [DllImport("kernel32.dll")]
+        static extern IntPtr GetConsoleWindow();
+        [DllImport("User32")]
+        private static extern int ShowWindow(IntPtr hwnd, int nCmdShow);
 
         [ScriptConstructor]
         public static IRuntimeContextInstance Constructor()
@@ -116,151 +104,478 @@ namespace osfDesigner
                 }
             }
         }
-	
-        public static dynamic RevertNodeName(dynamic p1)//p1 - дерево, для каждого дерева своя нумерация
+
+        private static void GetNodes1(System.Windows.Forms.TreeView TreeView, ref System.Collections.ArrayList ArrayList, ref int max)
         {
-            string p2 = null;
-            if (!OneScriptFormsDesigner.hashtableNodeName.ContainsKey(p1))
+            int num = 0;
+            for (int i = 0; i < TreeView.Nodes.Count; i++)
             {
-                p2 = "Узел0";
-                OneScriptFormsDesigner.hashtableNodeName.Add(p1, p2);
-                return p2;
-            }
-            else
-            {
-                foreach (System.Collections.DictionaryEntry de in OneScriptFormsDesigner.hashtableNodeName)
+                System.Windows.Forms.TreeNode TreeNode1 = TreeView.Nodes[i];
+                ArrayList.Add(TreeNode1.Name);
+
+                num = Int32.Parse(TreeNode1.Name.Replace("Узел", ""));
+                if ((num + 1) > max)
                 {
-                    if (de.Key.Equals(p1))
-                    {
-                        p2 = (string)de.Value;
-                        int value = Int32.Parse(p2.Substring(4));
-                        if (value < Int32.MaxValue)
-                        {
-                            p2 = "Узел" + (value + 1).ToString();
-                        }
-                        break;
-                    }
+                    max = num + 1;
                 }
-                OneScriptFormsDesigner.hashtableNodeName[p1] = p2;
-                return p2;
+
+                if (TreeNode1.Nodes.Count > 0)
+                {
+                    GetNodes2(TreeNode1, ref ArrayList, ref max);
+                }
             }
         }
 
-        public static dynamic RevertDesignerTabName(string p1)//p1 - имя открываемой во вкладке формы, p2 - имя для вкладки дизайнера
+        private static void GetNodes2(System.Windows.Forms.TreeNode treeNode, ref System.Collections.ArrayList ArrayList, ref int max)
+        {
+            int num = 0;
+            for (int i = 0; i < treeNode.Nodes.Count; i++)
+            {
+                System.Windows.Forms.TreeNode TreeNode1 = treeNode.Nodes[i];
+                ArrayList.Add(TreeNode1.Name);
+
+                num = Int32.Parse(TreeNode1.Name.Replace("Узел", ""));
+                if ((num + 1) > max)
+                {
+                    max = num + 1;
+                }
+
+                if (TreeNode1.Nodes.Count > 0)
+                {
+                    GetNodes2(TreeNode1, ref ArrayList, ref max);
+                }
+            }
+        }
+
+        public static string RevertNodeName(System.Windows.Forms.TreeView p1)//p1 - дерево, для каждого дерева своя нумерация
+        {
+            string name = "Узел";
+            int max = 0;
+            string newName = name + Convert.ToString(max);
+            ArrayList ArrayList1 = new ArrayList();
+            GetNodes1(p1, ref ArrayList1, ref max);
+
+            for (int i = -1; i < max; i++)
+            {
+                newName = name + Convert.ToString(i + 1);
+                if (!ArrayList1.Contains(newName))
+                {
+                    return newName;
+                }
+            }
+            return newName;
+        }
+
+        public static string RevertDesignerTabName(string p1)//p1 - имя открываемой во вкладке формы, p2 - имя для вкладки дизайнера
         {
             string p2 = "Вкладка" + (OneScriptFormsDesigner.hashtableDesignerTabName.Count).ToString() + "(" + p1 + ")";
             OneScriptFormsDesigner.hashtableDesignerTabName.Add(p2, p1);
             return p2;
         }
 	
-        public static dynamic RevertStatusBarPanelName(dynamic p1, string p2)//p1 - ПанельСтрокиСостояния, p2 - имя для osfDesigner.StatusBarPanel
+        public static string RevertStatusBarPanelName(StatusBar p1)//p1 - Панель строки состояния
         {
-            if (p2 == "")
+            string name = "ПанельСтрокиСостояния";
+            int max = 0;
+            int num = 0;
+            string newName = name + Convert.ToString(max);
+            ArrayList ArrayList1 = new ArrayList();
+            for (int i = 0; i < p1.Panels.Count; i++)
             {
-                p2 = "ПанельСтрокиСостояния" + (OneScriptFormsDesigner.hashtableStatusBarPanelName.Count).ToString();
-                OneScriptFormsDesigner.hashtableStatusBarPanelName.Add(p1, p2);
-                return p2;
+                string NameItem = p1.Panels[i].Name;
+                if (NameItem != null)
+                {
+                    if (NameItem != "")
+                    {
+                        ArrayList1.Add(NameItem);
+                        num = Int32.Parse(NameItem.Replace("ПанельСтрокиСостояния", ""));
+                        if ((num + 1) > max)
+                        {
+                            max = num + 1;
+                        }
+                    }
+                }
             }
-            return p2;
-        }
-	
-        public static dynamic RevertColumnHeaderName(dynamic p1, string p2)//p1 - Колонка, p2 - имя для osfDesigner.ColumnHeader
-        {
-            if (p2 == "ColumnHeader")
+
+            for (int i = -1; i < max; i++)
             {
-                p2 = "Колонка" + (OneScriptFormsDesigner.hashtableColumnHeaderName.Count).ToString();
-                OneScriptFormsDesigner.hashtableColumnHeaderName.Add(p1, p2);
-                return p2;
+                newName = name + Convert.ToString(i + 1);
+                if (!ArrayList1.Contains(newName))
+                {
+                    return newName;
+                }
             }
-            return p2;
-        }
-	
-        public static dynamic RevertListViewItemName(dynamic p1, string p2)//p1 - ЭлементСпискаЭлементов, p2 - имя для osfDesigner.ListViewItem
-        {
-            if (p2.Length == 0)
-            {
-                p2 = "Элемент" + (OneScriptFormsDesigner.hashtableListViewItemName.Count).ToString();
-                OneScriptFormsDesigner.hashtableListViewItemName.Add(p1, p2);
-                return p2;
-            }
-            return p2;
+            return newName;
         }
 
-        public static dynamic RevertListViewSubItemName(dynamic p1, string p2)//p1 - ПодэлементСпискаЭлементов, p2 - имя для osfDesigner.ListViewSubItem
+        public static string RevertColumnHeaderName(ListView p1)//p1 - список элементов
         {
-            if (p2.Length == 0)
+            string name = "Колонка";
+            int max = 0;
+            int num = 0;
+            string newName = name + Convert.ToString(max);
+            ArrayList ArrayList1 = new ArrayList();
+            for (int i = 0; i < p1.Columns.Count; i++)
             {
-                p2 = "Подэлемент" + (OneScriptFormsDesigner.hashtableListViewSubItemName.Count).ToString();
-                OneScriptFormsDesigner.hashtableListViewSubItemName.Add(p1, p2);
-                return p2;
+                string NameItem = p1.Columns[i].Name;
+                if (NameItem != null)
+                {
+                    if (NameItem != "")
+                    {
+                        ArrayList1.Add(NameItem);
+                        num = Int32.Parse(NameItem.Replace("Колонка", ""));
+                        if ((num + 1) > max)
+                        {
+                            max = num + 1;
+                        }
+                    }
+                }
             }
-            return p2;
-        }
-	
-        public static dynamic RevertMenuName(dynamic p1, string p2)//p1 - Меню, p2 - имя для osfDesigner.MenuItemEntry
-        {
-            if (p2.Length == 0)
+
+            for (int i = -1; i < max; i++)
             {
-                p2 = "Меню" + (OneScriptFormsDesigner.hashtableMenuName.Count).ToString();
-                OneScriptFormsDesigner.hashtableMenuName.Add(p1, p2);
-                return p2;
+                newName = name + Convert.ToString(i + 1);
+                if (!ArrayList1.Contains(newName))
+                {
+                    return newName;
+                }
             }
-            return p2;
-        }
-	
-        public static dynamic RevertSeparatorName(dynamic p1, string p2)//p1 - Меню, p2 - имя для osfDesigner.MenuItemEntry
-        {
-            OneScriptFormsDesigner.hashtableSeparatorName.Add(p1, p2);
-            string p3 = "Сепаратор" + (OneScriptFormsDesigner.hashtableSeparatorName.Count - 1).ToString();
-            return p3;
+            return newName;
         }
 
-        public static dynamic RevertToolBarButtonName(dynamic p1, string p2)//p1 - КнопкаПанелиИнструментов, p2 - имя для osfDesigner.ToolBar
+        public static string RevertListViewItemName(osfDesigner.ListView p1)//p1 - список элементов
         {
-            if (p2.Length == 0)
+            string name = "Элемент";
+            int max = 0;
+            int num = 0;
+            string newName = name + Convert.ToString(max);
+            ArrayList ArrayList1 = new ArrayList();
+            for (int i = 0; i < p1.Items.Count; i++)
             {
-                p2 = "Кн" + (OneScriptFormsDesigner.hashtableToolBarButtonName.Count).ToString();
-                OneScriptFormsDesigner.hashtableToolBarButtonName.Add(p1, p2);
-                return p2;
+                string NameItem = p1.Items[i].Name;
+                if (NameItem != null)
+                {
+                    if (NameItem != "")
+                    {
+                        ArrayList1.Add(NameItem);
+                        num = Int32.Parse(NameItem.Replace("Элемент", ""));
+                        if ((num + 1) > max)
+                        {
+                            max = num + 1;
+                        }
+                    }
+                }
             }
-            return p2;
+
+            for (int i = -1; i < max; i++)
+            {
+                newName = name + Convert.ToString(i + 1);
+                if (!ArrayList1.Contains(newName))
+                {
+                    return newName;
+                }
+            }
+            return newName;
         }
-	
-        public static dynamic RevertDataGridTableStyleName(dynamic p1, string p2)//p1 - СтильТаблицыСеткиДанных, p2 - имя для osfDesigner.DataGridTableStyle
+
+        public static string RevertListViewSubItemName(osfDesigner.ListViewItem p1)//p1 - элемент списка элементов
         {
-            if (p2 == null)
+            string name = "Подэлемент";
+            int max = 0;
+            int num = 0;
+            string newName = name + Convert.ToString(max);
+            ArrayList ArrayList1 = new ArrayList();
+            for (int i = 0; i < p1.SubItems.Count; i++)
             {
-                p2 = "Стиль" + (OneScriptFormsDesigner.hashtableDataGridTableStyleName.Count).ToString();
-                OneScriptFormsDesigner.hashtableDataGridTableStyleName.Add(p1, p2);
-                return p2;
+                string NameItem = p1.SubItems[i].Name;
+                if (NameItem != null)
+                {
+                    if (NameItem != "" && !NameItem.Contains("Элемент"))
+                    {
+                        ArrayList1.Add(NameItem);
+                        num = Int32.Parse(NameItem.Replace("Подэлемент", ""));
+                        if ((num + 1) > max)
+                        {
+                            max = num + 1;
+                        }
+                    }
+                }
             }
-            return p2;
+
+            for (int i = -1; i < max; i++)
+            {
+                newName = name + Convert.ToString(i + 1);
+                if (!ArrayList1.Contains(newName))
+                {
+                    return newName;
+                }
+            }
+            return newName;
         }
-	
-        public static dynamic RevertDataGridColumnStyleName(dynamic p1, string p2)//p1 - СтильТаблицыСеткиДанных, p2 - имя для osfDesigner.DataGridTableStyle
+
+        public static void BypassMainMenu2(Menu Menu1, ref ArrayList ArrayList, ref int max)
         {
-            if (p2 == null)
+            for (int i = 0; i < Menu1.MenuItems.Count; i++)
             {
-                if (p1.GetType() == typeof(osfDesigner.DataGridBoolColumn))
+                int num = 0;
+                Menu CurrentMenuItem1 = (Menu)Menu1.MenuItems[i];
+                string Name = CurrentMenuItem1.Name;
+
+                if (Name != "" && !Name.Contains("Меню"))
                 {
-                    p2 = "СтильКолонкиБулево" + (OneScriptFormsDesigner.hashtableDataGridColumnStyleName.Count).ToString();
-                    OneScriptFormsDesigner.hashtableDataGridColumnStyleName.Add(p1, p2);
-                    return p2;
+                    ArrayList.Add(CurrentMenuItem1.Name);
+                    num = Int32.Parse(CurrentMenuItem1.Name.Replace("Сепаратор", ""));
+                    if ((num + 1) > max)
+                    {
+                        max = num + 1;
+                    }
                 }
-                else if (p1.GetType() == typeof(osfDesigner.DataGridTextBoxColumn))
+
+                if (CurrentMenuItem1.MenuItems.Count > 0)
                 {
-                    p2 = "СтильКолонкиПолеВвода" + (OneScriptFormsDesigner.hashtableDataGridColumnStyleName.Count).ToString();
-                    OneScriptFormsDesigner.hashtableDataGridColumnStyleName.Add(p1, p2);
-                    return p2;
-                }
-                else if (p1.GetType() == typeof(osfDesigner.DataGridComboBoxColumnStyle))
-                {
-                    p2 = "СтильКолонкиПолеВыбора" + (OneScriptFormsDesigner.hashtableDataGridColumnStyleName.Count).ToString();
-                    OneScriptFormsDesigner.hashtableDataGridColumnStyleName.Add(p1, p2);
-                    return p2;
+                    BypassMainMenu2(CurrentMenuItem1, ref ArrayList, ref max);
                 }
             }
-            return p2;
+        }
+
+        public static void BypassMainMenu(Menu Menu1, ref ArrayList ArrayList, ref int max)
+        {
+            for (int i = 0; i < Menu1.MenuItems.Count; i++)
+            {
+                int num = 0;
+                Menu CurrentMenuItem1 = (Menu)Menu1.MenuItems[i];
+                string Name = CurrentMenuItem1.Name;
+
+                if (Name != "" && !Name.Contains("Сепаратор"))
+                {
+                    ArrayList.Add(CurrentMenuItem1.Name);
+                    num = Int32.Parse(CurrentMenuItem1.Name.Replace("Меню", ""));
+                    if ((num + 1) > max)
+                    {
+                        max = num + 1;
+                    }
+                }
+
+                if (CurrentMenuItem1.MenuItems.Count > 0)
+                {
+                    BypassMainMenu(CurrentMenuItem1, ref ArrayList, ref max);
+                }
+            }
+        }
+
+        public static string RevertMenuName(MainMenu p1)//p1 - Главное меню
+        {
+            string name = "Меню";
+            int max = 0;
+            string newName = name + Convert.ToString(max);
+            ArrayList ArrayList1 = new ArrayList();
+            BypassMainMenu(p1, ref ArrayList1, ref max);
+
+            for (int i = -1; i < max; i++)
+            {
+                newName = name + Convert.ToString(i + 1);
+                if (!ArrayList1.Contains(newName))
+                {
+                    return newName;
+                }
+            }
+            return newName;
+        }
+
+        public static string RevertSeparatorName(MainMenu p1)//p1 - Главное меню
+        {
+            string name = "Сепаратор";
+            int max = 0;
+            string newName = name + Convert.ToString(max);
+            ArrayList ArrayList1 = new ArrayList();
+            BypassMainMenu2(p1, ref ArrayList1, ref max);
+
+            for (int i = -1; i < max; i++)
+            {
+                newName = name + Convert.ToString(i + 1);
+                if (!ArrayList1.Contains(newName))
+                {
+                    return newName;
+                }
+            }
+            return newName;
+        }
+
+        public static string RevertToolBarButtonName(ToolBar p1)//p1 - Панель инструментов
+        {
+            string name = "Кн";
+            int max = 0;
+            int num = 0;
+            string newName = name + Convert.ToString(max);
+            ArrayList ArrayList1 = new ArrayList();
+            for (int i = 0; i < p1.Buttons.Count; i++)
+            {
+                string Name = p1.Buttons[i].Name;
+                if (Name != null)
+                {
+                    if (Name != "")
+                    {
+                        ArrayList1.Add(Name);
+                        num = Int32.Parse(Name.Replace("Кн", ""));
+                        if ((num + 1) > max)
+                        {
+                            max = num + 1;
+                        }
+                    }
+                }
+            }
+
+            for (int i = -1; i < max; i++)
+            {
+                newName = name + Convert.ToString(i + 1);
+                if (!ArrayList1.Contains(newName))
+                {
+                    return newName;
+                }
+            }
+            return newName;
+        }
+
+        public static string RevertDataGridTableStyleName(DataGrid p1)//p1 - Сетка данных
+        {
+            string name = "Стиль";
+            int max = 0;
+            int num = 0;
+            string newName = name + Convert.ToString(max);
+            ArrayList ArrayList1 = new ArrayList();
+            for (int i = 0; i < p1.TableStyles.Count; i++)
+            {
+                string NameStyle = OneScriptFormsDesigner.RevertSimilarObj(p1.TableStyles[i]).NameStyle;
+                if (NameStyle != null)
+                {
+                    ArrayList1.Add(NameStyle);
+                    num = Int32.Parse(NameStyle.Replace("Стиль", ""));
+                    if ((num + 1) > max)
+                    {
+                        max = num + 1;
+                    }
+                }
+            }
+
+            for (int i = -1; i < max; i++)
+            {
+                newName = name + Convert.ToString(i + 1);
+                if (!ArrayList1.Contains(newName))
+                {
+                    return newName;
+                }
+            }
+            return newName;
+        }
+
+        public static string RevertDataGridColumnStyleName(dynamic p1, dynamic p2)//p1 - СтильТаблицыСеткиДанных, p2 - стиль колонки сетки данных
+        {
+            if (p2.GetType() == typeof(osfDesigner.DataGridBoolColumn))
+            {
+                string name = "СтильКолонкиБулево";
+                int max = 0;
+                int num = 0;
+                string newName = name + Convert.ToString(max);
+                ArrayList ArrayList1 = new ArrayList();
+                osfDesigner.DataGridTableStyle DataGridTableStyle1 = OneScriptFormsDesigner.RevertSimilarObj(p1);
+                for (int i = 0; i < DataGridTableStyle1.GridColumnStyles.Count; i++)
+                {
+                    string NameStyle = ((dynamic)DataGridTableStyle1.GridColumnStyles[i]).NameStyle;
+                    if (NameStyle != null)
+                    {
+                        if (NameStyle.Contains("СтильКолонкиБулево"))
+                        {
+                            ArrayList1.Add(NameStyle);
+                            num = Int32.Parse(NameStyle.Replace("СтильКолонкиБулево", ""));
+                            if ((num + 1) > max)
+                            {
+                                max = num + 1;
+                            }
+                        }
+                    }
+                }
+
+                for (int i = -1; i < max; i++)
+                {
+                    newName = name + Convert.ToString(i + 1);
+                    if (!ArrayList1.Contains(newName))
+                    {
+                        return newName;
+                    }
+                }
+                return newName;
+            }
+            else if (p2.GetType() == typeof(osfDesigner.DataGridTextBoxColumn))
+            {
+                string name = "СтильКолонкиПолеВвода";
+                int max = 0;
+                int num = 0;
+                string newName = name + Convert.ToString(max);
+                ArrayList ArrayList1 = new ArrayList();
+                osfDesigner.DataGridTableStyle DataGridTableStyle1 = OneScriptFormsDesigner.RevertSimilarObj(p1);
+                for (int i = 0; i < DataGridTableStyle1.GridColumnStyles.Count; i++)
+                {
+                    string NameStyle = ((dynamic)DataGridTableStyle1.GridColumnStyles[i]).NameStyle;
+                    if (NameStyle != null)
+                    {
+                        if (NameStyle.Contains("СтильКолонкиПолеВвода"))
+                        {
+                            ArrayList1.Add(NameStyle);
+                            num = Int32.Parse(NameStyle.Replace("СтильКолонкиПолеВвода", ""));
+                            if ((num + 1) > max)
+                            {
+                                max = num + 1;
+                            }
+                        }
+                    }
+                }
+
+                for (int i = -1; i < max; i++)
+                {
+                    newName = name + Convert.ToString(i + 1);
+                    if (!ArrayList1.Contains(newName))
+                    {
+                        return newName;
+                    }
+                }
+                return newName;
+            }
+            else if (p2.GetType() == typeof(osfDesigner.DataGridComboBoxColumnStyle))
+            {
+                string name = "СтильКолонкиПолеВыбора";
+                int max = 0;
+                int num = 0;
+                string newName = name + Convert.ToString(max);
+                ArrayList ArrayList1 = new ArrayList();
+                osfDesigner.DataGridTableStyle DataGridTableStyle1 = OneScriptFormsDesigner.RevertSimilarObj(p1);
+                for (int i = 0; i < DataGridTableStyle1.GridColumnStyles.Count; i++)
+                {
+                    string NameStyle = ((dynamic)DataGridTableStyle1.GridColumnStyles[i]).NameStyle;
+                    if (NameStyle != null)
+                    {
+                        if (NameStyle.Contains("СтильКолонкиПолеВыбора"))
+                        {
+                            ArrayList1.Add(NameStyle);
+                            num = Int32.Parse(NameStyle.Replace("СтильКолонкиПолеВыбора", ""));
+                            if ((num + 1) > max)
+                            {
+                                max = num + 1;
+                            }
+                        }
+                    }
+                }
+
+                for (int i = -1; i < max; i++)
+                {
+                    newName = name + Convert.ToString(i + 1);
+                    if (!ArrayList1.Contains(newName))
+                    {
+                        return newName;
+                    }
+                }
+                return newName;
+            }
+            return null;
         }
 
         public static void AddToHashtable(dynamic p1, dynamic p2)//p1 - исходный объект (OriginalObj), p2 - дублёр исходного объекта (SimilarObj), для отображения свойств в сетке свойств
@@ -397,9 +712,6 @@ namespace osfDesigner
 
             return "";
         }
-	
-        [DllImport("kernel32.dll")] static extern IntPtr GetConsoleWindow();
-        [DllImport("User32")] private static extern int ShowWindow(IntPtr hwnd, int nCmdShow);
 
         public void HideConsole()
         {
@@ -1086,7 +1398,6 @@ namespace osfDesigner
                         catch
                         {
                             break;
-
                         }
                     }
                     str1 = str1.Substring(Position1 + 1);
@@ -1213,7 +1524,5 @@ namespace osfDesigner
         {
             return (Form)pDesigner.DSME.ActiveDesignSurface.GetIDesignerHost().Container.Components[0];
         }
-
-
     }
 }

@@ -121,7 +121,9 @@ namespace osfDesigner
         {
             get
             {
-                return @"";
+                return @"
+Текст ==
+";
             }
         }
     }

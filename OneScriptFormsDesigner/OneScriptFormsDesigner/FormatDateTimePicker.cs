@@ -1,7 +1,6 @@
 ﻿namespace osfDesigner
 {
     [System.Flags]
-
     public enum FormatDateTimePicker
     {
         Время = 4,

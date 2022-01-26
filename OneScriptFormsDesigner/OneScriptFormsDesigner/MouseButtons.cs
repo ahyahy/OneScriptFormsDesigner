@@ -1,7 +1,6 @@
 ﻿namespace osfDesigner
 {
     [System.Flags]
-
     public enum MouseButtons
     {
         Левая = 1048576,

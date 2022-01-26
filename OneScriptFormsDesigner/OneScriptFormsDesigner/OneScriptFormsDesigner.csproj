@@ -194,6 +194,7 @@
     <Compile Include="MyDateCollectionEditor.cs" />
     <Compile Include="MyDockEditor.cs" />
     <Compile Include="MyFontConverter.cs" />
+    <Compile Include="MyFormMenuConverter.cs" />
     <Compile Include="MyGridColumnStylesCollectionEditor.cs" />
     <Compile Include="MyGridTableStylesCollectionEditor.cs" />
     <Compile Include="MyIcon.cs" />

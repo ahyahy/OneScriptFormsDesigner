@@ -217,12 +217,13 @@ namespace osfDesigner
             }
 
             PropertiesLabel1.Text = "Свойства:";
+            collectionForm.Refresh();
         }
 
         private void ButtonAdd1_Click(object sender, EventArgs e)
         {
             osfDesigner.ColumnHeader SimilarObj = (osfDesigner.ColumnHeader)PropertyGrid1.SelectedObject;
-            SimilarObj.Text = OneScriptFormsDesigner.RevertColumnHeaderName(SimilarObj, SimilarObj.Text);
+            SimilarObj.Text = OneScriptFormsDesigner.RevertColumnHeaderName(ListView1);
             SimilarObj.Name = SimilarObj.Text;
             ListBox1.Refresh();
             PropertyGrid1.SelectedObject = SimilarObj;

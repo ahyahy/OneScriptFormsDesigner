@@ -5,6 +5,7 @@ using System.Collections;
 
 namespace osfDesigner
 {
+    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     // этот класс управляет коллекцией экземпляров DesignSurfaceExt2
     // этот класс добавляет к экземплярам DesignSurfaceExt2 следующие объекты:
     // PropertyGridHost 

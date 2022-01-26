@@ -9,7 +9,6 @@ using System.Reflection;
 
 namespace osfDesigner
 {
-    //!!!!!!!!!!!!!!!!!!!!!!!
     public class PropertyGridHost : System.Windows.Forms.UserControl
     {
         private System.ComponentModel.IContainer components = null;
@@ -90,7 +89,6 @@ namespace osfDesigner
             this.buttonSort.Name = "buttonSort";
             this.buttonSort.Pushed = true;
 
-
             // 
             // pgrdToolBar
             // 
@@ -102,9 +100,6 @@ namespace osfDesigner
             this.pgrdToolBar.Buttons.Add(buttonSort);
             this.pgrdToolBar.ImageList = ImageList1;
             this.pgrdToolBar.ButtonClick += PgrdToolBar_ButtonClick;
-
-
-
 
             // 
             // PropertyGridHost
@@ -152,16 +147,14 @@ namespace osfDesigner
                         SimilarObj = new osfDesigner.ImageList();
                         ((osfDesigner.ImageList)SimilarObj).OriginalObj = OriginalObj;
                         OneScriptFormsDesigner.AddToHashtable(OriginalObj, SimilarObj);
-                        // присвоим дублёру значения всех свойств исходного объекта
-                        OneScriptFormsDesigner.PassProperties(OriginalObj, SimilarObj);//без этой строки компонент глючит
+                        OneScriptFormsDesigner.PassProperties(OriginalObj, SimilarObj);//передадим свойства
                         propertyGrid.SelectedObject = SimilarObj;
                     }
                     else if (OriginalObj.GetType().ToString() == "System.Windows.Forms.MainMenu")
                     {
                         SimilarObj = new osfDesigner.MainMenu();
                         OneScriptFormsDesigner.AddToHashtable(OriginalObj, SimilarObj);
-                        // присвоим дублёру значения всех свойств исходного объекта
-                        OneScriptFormsDesigner.PassProperties(OriginalObj, SimilarObj);//без этой строки компонент глючит
+                        OneScriptFormsDesigner.PassProperties(OriginalObj, SimilarObj);//передадим свойства
                         propertyGrid.SelectedObject = SimilarObj;
                     }
                 }
@@ -528,7 +521,6 @@ namespace osfDesigner
             ////////////IDesignerHost host = des.ActiveDesigner;
             ////////////ComponentCollection ctrlsExisting = host.Container.Components;
 
-
             System.ComponentModel.ComponentCollection ctrls = des.ActiveDesigner.Container.Components;
             System.Collections.ArrayList ctrlsArray = new System.Collections.ArrayList();
             System.Collections.ArrayList ctrlsExisting = new System.Collections.ArrayList();
@@ -547,8 +539,6 @@ namespace osfDesigner
                     ctrlsExisting1.Add(comp4);
                 }
             }
-
-
 
             if (!buttonSort.Pushed)
             {

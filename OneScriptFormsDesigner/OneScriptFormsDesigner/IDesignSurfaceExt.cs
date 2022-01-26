@@ -7,6 +7,7 @@ using System.ComponentModel.Design.Serialization;
 
 namespace osfDesigner
 {
+    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     public interface IDesignSurfaceExt
     {
         // выполнение Cut/Copy/Paste/Delete команд

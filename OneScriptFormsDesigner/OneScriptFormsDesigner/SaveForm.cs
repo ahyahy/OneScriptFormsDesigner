@@ -10,7 +10,6 @@ using System.Data;
 
 namespace osfDesigner
 {
-    //!!!!!!!!!!!!!!!
     public class SaveForm
     {
         public static System.Windows.Forms.TreeView TreeView1 = pDesigner.DSME.PropertyGridHost.TreeView;
@@ -23,51 +22,17 @@ namespace osfDesigner
 [Конструкторы>]
 [<Свойства]
 [Свойства>]
-[<Иерархия]
-[Иерархия>]
 ";
+        private static string path;
 
-        public static string GetScriptText()
+        public static string GetScriptText(string fileName)
         {
-            // ПРАВИЛА ФОРМИРОВАНИЯ ВЫГРУЗКИ ФОРМЫ
             // 1. Получить перечень текущих свойств формы и всех компонентов
             // 2. Выгрузить обязательные свойства согласно RequiredValues.
             // 3. Сравнить текущие свойства с DefaultValues и измененные выгрузить.
-            // 4. Файл сохраненной формы разделен на разделы. Например раздел конструкторов заключен в 
-            // 4. ограничители [<Конструкторы] и [Конструкторы>]
-            // 6. !!!ВАЖНО в каком порядке созданы объекты в разделе конструкторов (причем форма создается первой). 
-            // 5. Не важно в каком порядке перечислены переменные в разделе объявления переменных
-            //////Нужно выдержать определенный порядок добавления объектов на форму.
-            //////Они выгружены в порядке добавления их в дизайнере. Порядок хранится в коллекции System.ComponentModel.ComponentCollection.
-            //////Неоднозначно ведет себя дизайнер при добавлении контролов программно, а не мышкой.
-            //////Это переиначивает форму, если мы используем много пристыкованных объектов, разделителей.
-            //////При запуске скрипта пристыкованный влево объект действительно пристыковывается именно к левому краю своего родителя, 
-            //////вытесняя ранее слева пристыкованные контролы. В режиме дизайнера вытеснения не происходит, контрол пристыковывается к 
-            //////ранее влево пристыкованному объекту. Что ещё интереснее, при программном добавлении контролов это действует только на уровне формы.
-            //////Если мы помещаем и пристыковываем объекты внутри контрола, уже размещенного на форме, то есть второго уровня, программное 
-            //////добавление пристыковывает контрол с вытеснением. Так происходит и на всех других уровнях вложенности.
-            //////Для решения этой проблемы будем использовать свой System.Collections.ArrayList вместо дизайнерской System.ComponentModel.ComponentCollection.
-            // 4. Меню для формы не удалось установить задав значение свойству Меню
-            // 4. Всё равно дизайнер устанавливает в качестве меню последний по счету созданный компонент ГлавноеМеню.
-            // 4. Поэтому в разделе конструкторов ставим на последнее место главное меню формы.
-            // 4.
-            // 4.
-            // 4.
-            // 4.
-            // 4.
-            // 4.
-            // 4.
-            // 4.
-            // 4.
-            // 4.
-            // 4.
-            // 4.
-            // 4.
-            // 4.
-            // 4.
-            // 4.
-            // 4.
-            // 4.
+            // 4. Файл сохраненной формы разделен на разделы. Например раздел конструкторов заключен в ограничители [<Конструкторы] и [Конструкторы>]
+
+            path = fileName.Substring(0, fileName.LastIndexOf('\\') + 1);
 
             comps.Clear();
             Template1 = TemplateOriginal;
@@ -104,7 +69,8 @@ namespace osfDesigner
                 }
 
                 string strComp = "";
-                // Запишем в выгрузку имена компонентов, важен порядок.
+                // Запишем в выгрузку имена компонентов в раздел [<Конструкторы].
+                // раздел конструкторов будет определять очередность создания компонентов
                 for (int i = 0; i < ctrlsExisting.Count; i++)
                 {
                     Component comp = (Component)ctrlsExisting[i];
@@ -121,20 +87,13 @@ namespace osfDesigner
                         strComp = compName + " = Ф.Форма();";
                         Template1 = Template1.Replace(@"[<Конструкторы]", @"[<Конструкторы]" + Environment.NewLine + strComp);
                     }
-                    else if (compName.Contains("ЗначокУведомления"))
-                    {
-                        string num = compName.Replace("ЗначокУведомления", "");
-                        string strMenuName = "МенюЗначкаУведомления" + num;
-                        Template1 = Template1.Replace(@"[Конструкторы>]", strMenuName + " = Ф.МенюЗначкаУведомления();" + Environment.NewLine + @"[Конструкторы>]");
-                        Template1 = Template1.Replace(@"[Конструкторы>]", compName + " = Ф." + trimName + "(" + strMenuName + ");" + Environment.NewLine + @"[Конструкторы>]");
-                    }
                     else
                     {
                         strComp = "" + compName + " = Ф." + trimName + "();";
                         Template1 = Template1.Replace(@"[Конструкторы>]", strComp + Environment.NewLine + @"[Конструкторы>]");
                     }
                 }
-                // Запишем в скрипте свойства компонентов, порядок не важен.
+                // Запишем в выгрузку свойства компонентов.
                 // Последовательность возмем из древовидной структуры TreeView при сортировке "В порядке создания".
                 bool stateSort = ButtonSort1.Pushed;
                 ButtonSort1.Pushed = false;
@@ -147,91 +106,6 @@ namespace osfDesigner
 
                 ArrayList objArrayList2 = new ArrayList();// содержит имена компонентов в иерархии дерева компонентов
                 GetNodes1(TreeView1, ref objArrayList2);
-
-                ////////////////////////////objArrayList2.Reverse();// компоненты должны в скрипте быть записаны в порядке, противоположном порядку добавления их в дизайнере
-
-                // здесь нужно разделители поставить перед их панелями
-                // objArrayList2 - массив в котором будем делать перестановки
-                ArrayList objArrayList1 = new ArrayList();// массив для перебора
-                for (int i = 0; i < objArrayList2.Count; i++)
-                {
-                    objArrayList1.Add(objArrayList2[i]);
-                }
-
-                for (int i = 0; i < objArrayList1.Count; i++)
-                {
-                    Component comp = OneScriptFormsDesigner.GetComponentByName((string)objArrayList1[i]);
-                    if (comp.GetType().ToString() != "osfDesigner.Splitter")
-                    {
-                        continue;
-                    }
-                    Splitter split = (Splitter)comp;
-                    string splitName = OneScriptFormsDesigner.GetNameByComponent(split);
-                    osfDesigner.DockStyle dock = split.Dock;
-                    //
-                    // Для корректного сохранения скрипта договоримся об ограничениях для контролов имеющих разделитель:
-                    // 1. Не должно быть второго контрола на форме с таким же положением и размерами, иначе не разобрать куда пристыкован разделитель
-                    //
-                    // найдем все компоненты с такой же стыковкой
-                    for (int i1 = 0; i1 < objArrayList1.Count; i1++)
-                    {
-                        // учитываем только тип Control
-                        Component Component1 = OneScriptFormsDesigner.GetComponentByName((string)objArrayList1[i1]);
-                        if (Component1 is Control)
-                        {
-                            Control comp1 = (Control)Component1;
-                            if ((int)comp1.Dock == (int)split.Dock)
-                            {
-                                // далее возможны четыре варианта стыковки
-                                if ((int)split.Dock == 1)// Верх
-                                {
-                                    // разделитель.ширина = контрол.ширина
-                                    // разделитель.верх = контрол.верх + контрол.высота
-                                    if (split.Width == comp1.Width &&
-                                        split.Top == (comp1.Top + comp1.Height))
-                                    {
-                                        objArrayList2.RemoveAt(objArrayList2.IndexOf(splitName));
-                                        objArrayList2.Insert(objArrayList2.IndexOf(objArrayList1[i1]), splitName);
-                                    }
-                                }
-                                if ((int)split.Dock == 2)// Низ
-                                {
-                                    // разделитель.ширина = контрол.ширина
-                                    // разделитель.верх + разделитель.высота = контрол.верх
-                                    if (split.Width == comp1.Width &&
-                                        (split.Top + split.Height) == comp1.Top)
-                                    {
-                                        objArrayList2.RemoveAt(objArrayList2.IndexOf(splitName));
-                                        objArrayList2.Insert(objArrayList2.IndexOf(objArrayList1[i1]), splitName);
-                                    }
-                                }
-                                if ((int)split.Dock == 3)// Лево
-                                {
-                                    // разделитель.высота = контрол.высота
-                                    // разделитель.лево = контрол.лево + контрол.ширина
-                                    if (split.Height == comp1.Height &&
-                                        split.Left == (comp1.Left + comp1.Width))
-                                    {
-                                        objArrayList2.RemoveAt(objArrayList2.IndexOf(splitName));
-                                        objArrayList2.Insert(objArrayList2.IndexOf(objArrayList1[i1]), splitName);
-                                    }
-                                }
-                                if ((int)split.Dock == 4)// Право
-                                {
-                                    // разделитель.высота = контрол.высота
-                                    // разделитель.лево + разделитель.ширина = контрол.лево
-                                    if (split.Height == comp1.Height &&
-                                        (split.Left + split.Width) == comp1.Left)
-                                    {
-                                        objArrayList2.RemoveAt(objArrayList2.IndexOf(splitName));
-                                        objArrayList2.Insert(objArrayList2.IndexOf(objArrayList1[i1]), splitName);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-
                 for (int i = 0; i < objArrayList2.Count; i++)
                 {
                     Component comp = comps[(string)objArrayList2[i]];
@@ -296,11 +170,6 @@ namespace osfDesigner
 
                     if (compName.Contains("ЗначокУведомления"))
                     {
-                        string num = compName.Replace("ЗначокУведомления", "");
-                        string strMenuName = "МенюЗначкаУведомления" + num;
-                        string strEvent = strMenuName + ".ПриПоявлении = \u0022" + strMenuName + "_ПриПоявлении()\u0022; // обязательно назначить процедуру";
-                        AddToScript(strEvent);
-
                         if (comp.GetType().GetProperty("Icon").GetValue(comp) == null)
                         {
                             string strIcon = compName + ".Значок = Ф.Значок(\u0022" + "AAABAAEAEBAQAAEABAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAwAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAACAAACAAAAAgIAAgAAAAIAAgACAgAAAgICAAMDAwAAAAP8AAP8AAAD//wD/AAAA/wD/AP//AAD///8AZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmYAAP//AAD//wAA//8AAP//AAD//wAA//8AAP//AAD//wAA//8AAP//AAD//wAA//8AAP//AAD//wAA//8AAP//" + "\u0022" + "); // обязательно назначить значок";
@@ -358,224 +227,85 @@ namespace osfDesigner
                 }
             }
             return ReSort(Template1);
-            //return Template1;
         }
 
         // переформируем выгруженную форму
         private static string ReSort(string Template1)
         {
             string[] stringSeparators = new string[] { Environment.NewLine };
-            // System.IO.File.WriteAllText("C:\\444\\ПримерТест.os", Template1);
 
             string str1 = Template1;
 
-            // раздел конструкторов будет определять очередность создания компонентов
-            // сделаем сортировку в разделе конструкторов
-
-            //[<Конструкторы]
-            //Форма_0 = Ф.Форма();
-            //ГлавноеМеню1 = Ф.ГлавноеМеню();
-            //ГлавноеМеню2 = Ф.ГлавноеМеню();
-            //ГлавноеМеню3 = Ф.ГлавноеМеню();
-            //Кнопка1 = Ф.Кнопка();
-            //Кнопка2 = Ф.Кнопка();
-            //Таймер1 = Ф.Таймер();
-            //[Конструкторы>]
-            // поправим главное меню для формы. В разделе конструкторов меню для формы поместим в конец порядка.
-            Form Form1 = (Form)pDesigner.DSME.ActiveDesignSurface.GetIDesignerHost().Container.Components[0];
-            System.Windows.Forms.MainMenu MainMenu1 = Form1.Menu;
-            if (MainMenu1 != null)
+            // зададим порядок свойств во фрагментах
+            string strProps = OneScriptFormsDesigner.ParseBetween(str1, @"[<Свойства]", @"[Свойства>]");
+            ArrayList ArrayList2 = OneScriptFormsDesigner.StrFindBetween(strProps, @"[<", @">]", false);
+            for (int i = 0; i < ArrayList2.Count; i++)
             {
-                string ConstrBlok = OneScriptFormsDesigner.ParseBetween(str1, @"[<Конструкторы]", @"[Конструкторы>]");
-                if (ConstrBlok != null)
+                string fragment1 = (string)ArrayList2[i];
+                string namecomp = OneScriptFormsDesigner.ParseBetween(fragment1, @"[<", @"]");
+
+                string fragment2 = "";
+                // создадим SortedList1
+                SortedList SortedList1 = new SortedList();
+                SortedList1.Capacity = 1000;
+                string[] result = fragment1.Split(stringSeparators, StringSplitOptions.RemoveEmptyEntries);
+                for (int i1 = 0; i1 < result.Length; i1++)
                 {
-                    string[] result = ConstrBlok.Split(stringSeparators, StringSplitOptions.RemoveEmptyEntries);
-                    for (int i1 = 0; i1 < result.Length; i1++)
+                    string strResult = result[i1];
+                    if (i1 == 0)
                     {
-
-
-
-
-
+                        SortedList1.Add(i1, strResult);
+                    }
+                    else if (strResult.Contains(namecomp + "." + "Родитель ="))
+                    {
+                        SortedList1.Add(1, strResult);
+                    }
+                    else if (strResult.Contains(namecomp + "." + "Стыковка ="))
+                    {
+                        SortedList1.Add(2, strResult);
+                    }
+                    else if (strResult.Contains(namecomp + "." + "Размер ="))
+                    {
+                        SortedList1.Add(3, strResult);
+                    }
+                    else if (strResult.Contains(namecomp + "." + "ПорядокОбхода ="))
+                    {
+                        SortedList1.Add(4, strResult);
+                    }
+                    else if (strResult.Contains(namecomp + "." + "Флажки ="))
+                    {
+                        SortedList1.Add(5, strResult);
+                    }
+                    else
+                    {
+                        SortedList1.Add(i1 + 500, strResult);
                     }
                 }
+                ArrayList ArrayList3 = new ArrayList();
+                for (int i1 = 0; i1 < SortedList1.Capacity; i1++)
+                {
+                    if (SortedList1[i1] != null)
+                    {
+                        ArrayList3.Add(SortedList1[i1]);
+                    }
+                }
+                for (int i4 = 0; i4 < ArrayList3.Count; i4++)
+                {
+                    string strArrayList = ((string)ArrayList3[i4]).Replace(Environment.NewLine, "").Trim();
+                    if (i4 == 0)
+                    {
+                        fragment2 = fragment2 + strArrayList;
+                    }
+                    else
+                    {
+                        fragment2 = fragment2 + Environment.NewLine + strArrayList;
+                    }
+
+                }
+                str1 = str1.Replace(fragment1, fragment2);
             }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            //////// и соберем имена всех объектов в objArrayList
-            ////////ArrayList objArrayList = new ArrayList();
-            //////string strConstr = (string)OneScriptFormsDesigner.StrFindBetween(str1, @"// блок конецФорма", @"// блок КонецКонструкторы")[0];
-            //////string[] ConstrArray = strConstr.Split(stringSeparators, StringSplitOptions.RemoveEmptyEntries);
-            //////SortedList<string, string> slConstr = new SortedList<string, string>();
-            //////for (int i = 0; i < ConstrArray.Length; i++)
-            //////{
-            //////    if (ConstrArray[i].Trim() != "")
-            //////    {
-            //////        string strnum = OneScriptFormsDesigner.ParseBetween(ConstrArray[i], null, @"=").Trim();
-            //////        string trimName = strnum;
-            //////        for (int i1 = 0; i1 < 10; i1++)
-            //////        {
-            //////            trimName = trimName.Replace(i1.ToString(), "");
-            //////        }
-            //////        strnum = strnum.Replace(trimName, "");
-            //////        int capacity = 10;// разрядность для сортировки
-            //////        for (int i1 = 0; i1 < capacity - strnum.Length; i1++)
-            //////        {
-            //////            strnum = "0" + strnum;
-            //////        }
-            //////        slConstr.Add(trimName + strnum, ConstrArray[i]);
-            //////    }
-            //////}
-
-            //////List<string> ConstrList = new List<string>();
-            //////IList<string> listKeyConstr = slConstr.Keys;
-            //////for (int i = 0; i < listKeyConstr.Count; i++)
-            //////{
-            //////    ConstrList.Add(slConstr[listKeyConstr[i]]);
-            //////}
-
-            //////// создание объекта МенюЗначкаУведомления должно идти до создания объекта ЗначокУведомления
-            //////List<string> ConstrList2 = new List<string>();
-            //////for (int i = 0; i < ConstrList.Count; i++)
-            //////{
-            //////    ConstrList2.Add(ConstrList[i]);
-            //////}
-            //////for (int i = 0; i < ConstrList.Count; i++)
-            //////{
-            //////    string str = OneScriptFormsDesigner.ParseBetween(ConstrList[i], null, @"=").Trim();
-            //////    if (str.Contains("ЗначокУведомления"))
-            //////    {
-            //////        string strnum = str;
-            //////        string trimName = strnum;
-            //////        for (int i1 = 0; i1 < 10; i1++)
-            //////        {
-            //////            trimName = trimName.Replace(i1.ToString(), "");
-            //////        }
-            //////        strnum = strnum.Replace(trimName, "");
-
-            //////        int indexNotifyIcon = ConstrList2.IndexOf(ConstrList[i]);
-            //////        int indexMenuNotifyIcon = ConstrList2.IndexOf("    МенюЗначкаУведомления" + strnum + @" = Ф.МенюЗначкаУведомления();");
-            //////        ConstrList2.RemoveAt(indexMenuNotifyIcon);
-            //////        ConstrList2.Insert(indexNotifyIcon, "    МенюЗначкаУведомления" + strnum + @" = Ф.МенюЗначкаУведомления();");
-            //////    }
-            //////}
-
-            //////string newConstr = "";
-            //////for (int i = 0; i < ConstrList2.Count; i++)
-            //////{
-            //////    newConstr = newConstr + Environment.NewLine + ConstrList2[i];
-            //////}
-            //////newConstr = newConstr + Environment.NewLine;
-            //////str1 = str1.Replace(strConstr, newConstr);
-
-
-
-
-            // раздел иерархии будет определять вид дерева компонентов
-            // создадим раздел иерархии исходя из дерева компонентов
-            bool stateSort = ButtonSort1.Pushed;
-            ButtonSort1.Pushed = false;
-            pDesigner.DSME.PropertyGridHost.ReloadTreeView();
-            ArrayList objArrayList2 = new ArrayList();// содержит имена компонентов в иерархии дерева компонентов
-            GetNodes1(TreeView1, ref objArrayList2);
-            for (int i = 0; i < objArrayList2.Count; i++)
-            {
-                str1 = str1.Replace(@"[Иерархия>]", objArrayList2[i] + Environment.NewLine + @"[Иерархия>]");
-            }
-            ButtonSort1.Pushed = stateSort;
-            Component comp3 = OneScriptFormsDesigner.HighlightedComponent();
-            pDesigner.DSME.PropertyGridHost.ReloadTreeView();
-            if (comp3 != null)
-            {
-                pDesigner.DSME.PropertyGridHost.ChangeSelectNode(comp3);
-            }
-
-
-
-            //// зададим порядок свойств во фрагментах
-            //ArrayList ArrayList2 = OneScriptFormsDesigner.StrFindBetween(str1, @"// блок", @"    // блок", false);
-            //for (int i = 0; i < ArrayList2.Count; i++)
-            //{
-            //    string fragment1 = (string)ArrayList2[i];
-
-            //    //System.Windows.Forms.MessageBox.Show("fragment1=" + fragment1);
-            //    //System.IO.File.WriteAllText("C:\\444\\ПримерТест.os", fragment1);
-
-            //    string fragment2 = "";
-            //    // создадим SortedList1
-            //    SortedList SortedList1 = new SortedList();
-            //    SortedList1.Capacity = 1000;
-            //    string[] result = fragment1.Split(stringSeparators, StringSplitOptions.RemoveEmptyEntries);
-            //    for (int i1 = 0; i1 < result.Length; i1++)
-            //    {
-            //        string strResult = result[i1];
-            //        if (i1 == 0)
-            //        {
-            //            SortedList1.Add(i1, strResult);
-            //        }
-            //        else if (strResult.Contains("Родитель ="))
-            //        {
-            //            SortedList1.Add(1, strResult);
-            //        }
-            //        else if (strResult.Contains("Стыковка ="))
-            //        {
-            //            SortedList1.Add(2, strResult);
-            //        }
-            //        else if (strResult.Contains("Размер ="))
-            //        {
-            //            SortedList1.Add(3, strResult);
-            //        }
-            //        else if (strResult.Contains("ПорядокОбхода ="))
-            //        {
-            //            SortedList1.Add(4, strResult);
-            //        }
-            //        else if (strResult.Contains("Флажки ="))
-            //        {
-            //            SortedList1.Add(5, strResult);
-            //        }
-            //        else
-            //        {
-            //            SortedList1.Add(i1 + 500, strResult);
-            //        }
-            //    }
-            //    ArrayList ArrayList3 = new ArrayList();
-            //    for (int i1 = 0; i1 < SortedList1.Capacity; i1++)
-            //    {
-            //        if (SortedList1[i1] != null)
-            //        {
-            //            ArrayList3.Add(SortedList1[i1]);
-            //        }
-            //    }
-            //    for (int i4 = 0; i4 < ArrayList3.Count; i4++)
-            //    {
-            //        string strArrayList = ((string)ArrayList3[i4]).Replace(Environment.NewLine, "").Trim();
-            //        if (i4 == 0)
-            //        {
-            //            fragment2 = fragment2 + strArrayList;
-            //        }
-            //        else
-            //        {
-            //            fragment2 = fragment2 + Environment.NewLine + strArrayList;
-            //        }
-
-            //    }
-            //    str1 = str1.Replace(fragment1, fragment2);
-            //}
-
-            //comps.Clear();
+            comps.Clear();
             return str1;
         }
 
@@ -624,6 +354,31 @@ namespace osfDesigner
                 return;
             }
             if (val.GetType() == typeof(osfDesigner.MyTreeNode) && (valueName == "ПолныйПуть"))
+            {
+                return;
+            }
+            if (val.GetType() == typeof(osfDesigner.DataGridTableStyle) && (valueName == "ИмяСтиля"))
+            {
+                return;
+            }
+            if (val.GetType() == typeof(osfDesigner.DataGridTextBoxColumn) && (valueName == "ИмяСтиля"))
+            {
+                return;
+            }
+            if (val.GetType() == typeof(osfDesigner.DataGridComboBoxColumnStyle) && (valueName == "ИмяСтиля"))
+            {
+                return;
+            }
+            if (val.GetType() == typeof(osfDesigner.DataGridBoolColumn) && (valueName == "ИмяСтиля"))
+            {
+                return;
+            }
+	
+            if (val.GetType() == typeof(osfDesigner.Form) && (valueName == "Стыковка"))
+            {
+                return;
+            }
+            if (val.GetType() == typeof(osfDesigner.Form) && (valueName == "Якорь"))
             {
                 return;
             }
@@ -1080,7 +835,14 @@ namespace osfDesigner
                     {
                         for (int i1 = 0; i1 < MyList1.Count; i1++)
                         {
-                            str1 = str1 + compName + ".Изображения.Добавить(Ф.Картинка(\u0022" + MyList1[i1].Path + "\u0022));";
+                            string newFileName = MyList1[i1].Path.Substring(MyList1[i1].Path.LastIndexOf('\\') + 1);
+                            string newPath = path + newFileName;
+                            if (!System.IO.File.Exists(newPath))
+                            {
+                                System.IO.File.Copy(MyList1[i1].Path, newPath);
+                            }
+
+                            str1 = str1 + compName + ".Изображения.Добавить(Ф.Картинка(\u0022" + newPath + "\u0022));";
                             if (i1 == 0)
                             {
                                 str1 = str1.TrimStart(' ');
@@ -1129,10 +891,14 @@ namespace osfDesigner
             {
                 if (compValue != "System.Drawing.Bitmap ()")
                 {
-                    compValue = compValue.Replace(" ", "");
-                    compValue = compValue.Replace("System.Drawing.Bitmap(", "Ф.Картинка(\u0022");
-                    compValue = compValue.Replace(")", "\u0022);");
-                    AddToScript(compName + "." + valueName + " = " + compValue);
+                    string FileName = OneScriptFormsDesigner.ParseBetween(compValue, "(", ")");
+                    string newFileName = FileName.Substring(FileName.LastIndexOf('\\') + 1);
+                    string newPath = path + newFileName;
+                    if (!System.IO.File.Exists(newPath))
+                    {
+                        System.IO.File.Copy(FileName, newPath);
+                    }
+                    AddToScript(compName + "." + valueName + " = Ф.Картинка(\u0022" + newPath + "\u0022);");
                 }
                 return;
             }
@@ -1262,19 +1028,13 @@ namespace osfDesigner
                 valueName == "ЭлементПомечен" ||
                 valueName == "ЭлементУдален")
             {
-                string strNameProc = compValue.Replace("(", "").Replace(")", "") + "()";
-                string strProc = @"Процедура " + strNameProc + @"
-    Сообщить(" + "\u0022" + strNameProc + "\u0022" + @");
-КонецПроцедуры
-";
-                Template1 = Template1.Replace("Процедура ПодготовкаКомпонентов()", strProc + Environment.NewLine + "Процедура ПодготовкаКомпонентов()");
+                string strNameProc = compValue.Replace("(", "").Replace(")", "");
                 AddToScript(compName + "." + valueName + " = \u0022" + strNameProc + "\u0022;");
                 return;
             }
             //если compValue это строка
             if (valueName == "ВыбранныйПуть" ||
                 valueName == "Заголовок" ||
-                valueName == "ИмяОтображаемого" ||
                 valueName == "ИмяСтиля" ||
                 valueName == "ИмяФайла" ||
                 valueName == "НачальныйКаталог" ||
@@ -1336,7 +1096,7 @@ namespace osfDesigner
                 valueName == "ШиринаЗаголовковСтрок" ||
                 valueName == "ШиринаКолонки")
             {
-                AddToScript(compName + "." + valueName + " = " + compValue + ";");
+                AddToScript(compName + "." + valueName + " = " + compValue.Replace(",", ".") + ";");
                 return;
             }
             //если compValue это Размер
@@ -1613,11 +1373,6 @@ namespace osfDesigner
             {
                 Template1 = Template1.Replace(@"[Свойства>]", str + Environment.NewLine + @"[Свойства>]");
             }
-
-            //////if (!Template1.Contains(str))
-            //////{
-            //////    Template1 = Template1.Replace("// блок КонецСвойства", str + Environment.NewLine + "    // блок КонецСвойства");
-            //////}
         }
 
         private static void GetNodes(osfDesigner.MyTreeNode treeNode)
@@ -1635,11 +1390,9 @@ namespace osfDesigner
             }
         }
 
-
         private static void GetNodes1(System.Windows.Forms.TreeView TreeView, ref System.Collections.ArrayList objArrayList2)
         {
             for (int i = 0; i < TreeView.Nodes.Count; i++)
-            //for (int i = TreeView.Nodes.Count - 1; i >= 0; i--)
             {
                 System.Windows.Forms.TreeNode TreeNode1 = TreeView.Nodes[i];
                 objArrayList2.Add(TreeNode1.Name);
@@ -1653,7 +1406,6 @@ namespace osfDesigner
         private static void GetNodes2(System.Windows.Forms.TreeNode treeNode, ref System.Collections.ArrayList objArrayList2)
         {
             for (int i = 0; i < treeNode.Nodes.Count; i++)
-            //for (int i = treeNode.Nodes.Count - 1; i >= 0 ; i--)
             {
                 System.Windows.Forms.TreeNode TreeNode1 = treeNode.Nodes[i];
                 objArrayList2.Add(TreeNode1.Name);

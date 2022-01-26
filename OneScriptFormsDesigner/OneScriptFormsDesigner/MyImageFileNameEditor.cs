@@ -6,6 +6,7 @@ using System.ComponentModel;
 
 namespace osfDesigner
 {
+    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     public class MyImageFileNameEditor : FileNameEditor
     {
         private System.Windows.Forms.OpenFileDialog _openFileDialog;

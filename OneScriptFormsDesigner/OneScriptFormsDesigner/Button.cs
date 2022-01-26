@@ -59,7 +59,7 @@ namespace osfDesigner
         }
 
         [DisplayName("ДвойноеНажатие")]
-        [Description("Возвращает или задает код для выполнения, когда элемент управления дважды щелкнут.")]
+        [Description("Возвращает или задает код, когда элемент управления дважды щелкнут.")]
         [Category("Прочее")]
         [Browsable(true)]
         public  string DoubleClick_osf

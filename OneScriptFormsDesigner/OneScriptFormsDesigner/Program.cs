@@ -6,6 +6,7 @@ using System.ComponentModel;
 
 namespace osfDesigner
 {
+    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     public class Program
     {
         const string _Name_ = "DemoConsole";

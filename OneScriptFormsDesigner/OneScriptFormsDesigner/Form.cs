@@ -1,16 +1,15 @@
 ﻿using System.ComponentModel;
+using System.Collections;
 using System.Drawing.Design;
 using System.Drawing;
 using System.Windows.Forms;
 using System;
-using System.Collections;
 
 namespace osfDesigner
 {
-    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     public class Form : System.Windows.Forms.Form
     {
-
+        private ArrayList _ArrayListComponentsAddingOrder = new ArrayList();
         private string _DoubleClick_osf;
         private string _Closed_osf;
         private MyIcon _icon;
@@ -39,22 +38,18 @@ namespace osfDesigner
         private string _ControlAdded_osf;
         private string _ControlRemoved_osf;
 
-        //!!!!!!!!!!!!!!!!!
-        private ArrayList _ArrayListComponentsAddingOrder = new ArrayList();
-
-        public Form()
-        {
-            Enabled_osf = base.Enabled;
-            Visible_osf = base.Visible;
-            _ArrayListComponentsAddingOrder.Add(this);
-        }
-
-        //!!!!!!!!!!!!!!!!!!!!!!!!!!
         [Browsable(false)]
         public ArrayList ArrayListComponentsAddingOrder
         {
             get { return _ArrayListComponentsAddingOrder; }
             set { _ArrayListComponentsAddingOrder = value; }
+        }
+        
+        public Form()
+        {
+            _ArrayListComponentsAddingOrder.Add(this);
+            Enabled_osf = base.Enabled;
+            Visible_osf = base.Visible;
         }
 
         [DisplayName("АвтоПрокрутка")]
@@ -69,7 +64,7 @@ namespace osfDesigner
         }
 
         [DisplayName("ДвойноеНажатие")]
-        [Description("Возвращает или задает код для выполнения, когда элемент управления дважды щелкнут.")]
+        [Description("Возвращает или задает код, когда элемент управления дважды щелкнут.")]
         [Category("Прочее")]
         [Browsable(true)]
         public  string DoubleClick_osf
@@ -239,7 +234,8 @@ namespace osfDesigner
         [Description("Возвращает или задает объект ГлавноеМеню (MainMenu), представляющий собой главное меню формы.")]
         [Category("Стиль окна")]
         [Browsable(true)]
-        public new System.Windows.Forms.MainMenu Menu
+        [TypeConverter(typeof(MyFormMenuConverter))]
+        public System.Windows.Forms.MainMenu Menu_osf
         {
             get { return base.Menu; }
             set { base.Menu = value; }

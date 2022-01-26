@@ -215,6 +215,7 @@ namespace osfDesigner
             {
                 ListBox1.SetSelected(ListBox1.Items.Count - 1, false);
             }
+            collectionForm.Refresh();
         }
 
         private void PropertyGrid1_SelectedGridItemChanged(object sender, SelectedGridItemChangedEventArgs e)
@@ -225,7 +226,7 @@ namespace osfDesigner
         private void ButtonAdd1_Click(object sender, EventArgs e)
         {
             osfDesigner.ListViewItem SimilarObj = (osfDesigner.ListViewItem)PropertyGrid1.SelectedObject;
-            SimilarObj.Text = OneScriptFormsDesigner.RevertListViewItemName(SimilarObj, SimilarObj.Text);
+            SimilarObj.Text = OneScriptFormsDesigner.RevertListViewItemName(ListView1);
             SimilarObj.Name = SimilarObj.Text;
             ListBox1.Refresh();
             PropertyGrid1.SelectedObject = SimilarObj;

@@ -6,7 +6,7 @@ using System.ComponentModel.Design;
 
 namespace osfDesigner
 {
-    //!!!!!!!!!!!!!!!!!
+    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     public class pDesigner : System.Windows.Forms.UserControl, IpDesigner
     {
         private System.ComponentModel.IContainer components = null;
@@ -147,7 +147,6 @@ namespace osfDesigner
             get { return DesignSurfaceManager.ActiveDesignSurface as DesignSurfaceExt2; }
         }
 
-
         // Создайте область дизайнера (DesignSurface) и корневой компонент (rootComponent) (элемент управления .NET)
         // используя IDesignSurfaceExt.CreateRootComponent() 
         // Если режим выравнивания (alignmentMode) не использует сетку (GRID), то параметр gridSize игнорируется
@@ -251,13 +250,6 @@ namespace osfDesigner
                 rootComponent.Site.Name = this.DesignSurfaceManager.GetValidFormName();
             }
 
-
-
-
-
-
-
-
             // разрешение перетаскивания (Drag&Drop) для RootComponent
             ((DesignSurfaceExt2)surface).EnableDragandDrop();
             // IComponentChangeService помечена как незаменяемая служба
@@ -275,7 +267,7 @@ namespace osfDesigner
                         if (SimilarObj == null)
                         {
                             SimilarObj = new osfDesigner.TabPage();
-                            OneScriptFormsDesigner.PassProperties(OriginalObj, SimilarObj);//без этой строки компонент глючит
+                            OneScriptFormsDesigner.PassProperties(OriginalObj, SimilarObj);//передадим свойства
                             SimilarObj.OriginalObj = OriginalObj;
                             OriginalObj.Tag = SimilarObj;
                             OneScriptFormsDesigner.AddToHashtable(OriginalObj, SimilarObj);
@@ -296,7 +288,7 @@ namespace osfDesigner
                     if (OriginalObj.GetType().ToString() == "System.Windows.Forms.TabPage")
                     {
                         osfDesigner.TabPage SimilarObj = new osfDesigner.TabPage();
-                        OneScriptFormsDesigner.PassProperties(OriginalObj, SimilarObj);//без этой строки компонент глючит
+                        OneScriptFormsDesigner.PassProperties(OriginalObj, SimilarObj);//передадим свойства
                         SimilarObj.OriginalObj = OriginalObj;
                         OriginalObj.Tag = SimilarObj;
                         OneScriptFormsDesigner.AddToHashtable(OriginalObj, SimilarObj);
@@ -337,10 +329,6 @@ namespace osfDesigner
                     // Получим начальные значения свойств для компонента, они нужны для создания скрипта
                     if (OriginalObj.GetType().ToString() == "System.Windows.Forms.TabPage")
                     {
-
-                        //////System.Windows.Forms.MessageBox.Show("OriginalObj=" + OriginalObj.GetType());
-                        //////System.Windows.Forms.MessageBox.Show("SimilarObj=" + osfDesigner.OneScriptFormsDesigner.RevertSimilarObj(OriginalObj).GetType());
-
                         GetDefaultValues(osfDesigner.OneScriptFormsDesigner.RevertSimilarObj(OriginalObj));
                     }
                     else
@@ -348,7 +336,6 @@ namespace osfDesigner
                         GetDefaultValues(OriginalObj);
                     }
 
-                    //!!!!!!!!!!!!!!!!!!!!!!!!!!
                     ((Form)rootComponent).ArrayListComponentsAddingOrder.Add(OriginalObj);
 
                     PropertyGridHost.ReloadTreeView();
@@ -406,14 +393,6 @@ namespace osfDesigner
             return surface;
         }
 
-
-
-
-
-
-
-
-
         private void ButtonOK_Click(object sender, EventArgs e)
         {
             form.DialogResult = System.Windows.Forms.DialogResult.OK;
@@ -429,11 +408,14 @@ namespace osfDesigner
 
             ((System.Windows.Forms.PropertyGrid)pg).SelectedObject = comp;
 
-            //System.Windows.Forms.MessageBox.Show("((System.Windows.Forms.PropertyGrid)pg).SelectedObject=" + ((System.Windows.Forms.PropertyGrid)pg).SelectedObject);
-
+            //System.Windows.Forms.MessageBox.Show("((System.Windows.Forms.PropertyGrid)pg).SelectedObject=" + ((System.Windows.Forms.PropertyGrid)pg).SelectedObject.GetType());
 
             object view1 = pg.GetType().GetField("gridView", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).GetValue(pg);
             GridItemCollection GridItemCollection1 = (GridItemCollection)view1.GetType().InvokeMember("GetAllGridEntries", System.Reflection.BindingFlags.InvokeMethod | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance, null, view1, null);
+            if (GridItemCollection1 == null)
+            {
+                return;
+            }
             foreach (GridItem GridItem in GridItemCollection1)
             {
                 if (GridItem.PropertyDescriptor == null)// исключим из обхода категории
@@ -628,8 +610,10 @@ namespace osfDesigner
         }
 
         //* 17.12.2021 perfolenta
-        public bool Dirty {
-            get {
+        public bool Dirty
+        {
+            get
+            {
                 //надо перебрать все дизайнеры форм и если хоть один модифицирован, то возвращаем Истина
                 foreach (var dds in DSME.GetDesignSurfaces())
                 {

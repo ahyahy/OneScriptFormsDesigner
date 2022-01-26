@@ -13,6 +13,7 @@ using System.IO;
 
 namespace osfDesigner
 {
+    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     public class pDesignerMainFormPFL : System.Windows.Forms.Form, IDesignerMainForm
     {
         private string _version = string.Empty;
@@ -840,7 +841,7 @@ namespace osfDesigner
             {
                 return;
             }
-            System.IO.File.WriteAllText(saveFileDialog1.FileName, SaveForm.GetScriptText(), Encoding.UTF8);
+            System.IO.File.WriteAllText(saveFileDialog1.FileName, SaveForm.GetScriptText(saveFileDialog1.FileName), Encoding.UTF8);
 
             //System.IO.File.WriteAllText("C:\\444\\Форма1сохран.osd", SaveForm.GetScriptText(), Encoding.UTF8);
         }
@@ -963,8 +964,7 @@ namespace osfDesigner
                     //osfDesigner.TabPage SimilarObj = OneScriptFormsDesigner.RevertSimilarObj(comp1);
                     //SimilarObj.OriginalObj = (System.Windows.Forms.TabPage)comp1;
                     ////////////////////////OneScriptFormsDesigner.AddToHashtable(comp1, SimilarObj);
-                    //// присвоим дублёру значения всех свойств исходного объекта
-                    //OneScriptFormsDesigner.PassProperties(comp1, SimilarObj);//без этой строки компонент глючит
+                    //OneScriptFormsDesigner.PassProperties(comp1, SimilarObj);//передадим свойства
                     //dictComponents[componentName] = comp1;
 
                 }

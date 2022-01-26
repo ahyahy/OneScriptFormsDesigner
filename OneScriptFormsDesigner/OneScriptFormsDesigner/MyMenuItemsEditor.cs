@@ -507,10 +507,6 @@ namespace osfDesigner
 
         private void FrmMenuItems_Load(object sender, EventArgs e)
         {
-            ////////////////////////////////System.Windows.Forms.MainMenu OriginalObj = OneScriptFormsDesigner.RevertOriginalObj(MainMenu1);
-            ////////////////////////////////System.Windows.Forms.MessageBox.Show("22OriginalObj=" + OriginalObj);
-            ////////////////////////////////System.Windows.Forms.MessageBox.Show("22Count=" + MainMenu1.MenuItems.Count);
-
             UpdateButtonsState();
         }
 
@@ -522,7 +518,7 @@ namespace osfDesigner
         private void ButtonAddRoot_Click(object sender, EventArgs e)
         {
             MenuItemEntry MenuItemEntry1 = new MenuItemEntry();
-            MenuItemEntry1.Text = OneScriptFormsDesigner.RevertMenuName(MenuItemEntry1, MenuItemEntry1.Text);
+            MenuItemEntry1.Text = OneScriptFormsDesigner.RevertMenuName(MainMenu1);
             MenuItemEntry1.Name = MenuItemEntry1.Text;
             MainMenu1.MenuItems.Add(MenuItemEntry1.M_MenuItem);
             OneScriptFormsDesigner.AddToHashtable(MenuItemEntry1.M_MenuItem, MenuItemEntry1);
@@ -545,7 +541,7 @@ namespace osfDesigner
         private void ButtonAddChild_Click(object sender, EventArgs e)
         {
             MenuItemEntry MenuItemEntry1 = new MenuItemEntry();
-            MenuItemEntry1.Text = OneScriptFormsDesigner.RevertMenuName(MenuItemEntry1, MenuItemEntry1.Text);
+            MenuItemEntry1.Text = OneScriptFormsDesigner.RevertMenuName(MainMenu1);
             MenuItemEntry1.Name = MenuItemEntry1.Text;
             MenuItemEntry MenuItemParent = (MenuItemEntry)TreeView1.SelectedNode.Tag;
             MenuItemParent.MenuItems.Add(MenuItemEntry1.M_MenuItem);
@@ -573,7 +569,7 @@ namespace osfDesigner
         private void ButtonAddSeparator_Click(object sender, EventArgs e)
         {
             MenuItemEntry MenuItemEntry1 = new MenuItemEntry();
-            MenuItemEntry1.Name = OneScriptFormsDesigner.RevertSeparatorName(MenuItemEntry1, MenuItemEntry1.Text);
+            MenuItemEntry1.Name = OneScriptFormsDesigner.RevertSeparatorName(MainMenu1);
 
             //имя в виде тире не присваивать, заменять на тире только во время формирования сценария
 

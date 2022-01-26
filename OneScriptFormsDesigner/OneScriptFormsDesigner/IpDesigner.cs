@@ -3,6 +3,7 @@ using System.Windows.Forms;
 
 namespace osfDesigner
 {
+    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     public enum AlignmentModeEnum : int { SnapLines = 0, Grid, GridWithoutSnapping, NoGuides };
 
     // Интерфейс, используется для

@@ -37,7 +37,7 @@ namespace osfDesigner
         }
 
         [DisplayName("ДвойноеНажатие")]
-        [Description("Возвращает или задает код для выполнения, когда элемент управления дважды щелкнут.")]
+        [Description("Возвращает или задает код, когда элемент управления дважды щелкнут.")]
         [Category("Прочее")]
         [Browsable(true)]
         public  string DoubleClick_osf
@@ -591,6 +591,16 @@ namespace osfDesigner
         private string _ControlAdded_osf;
         private string _ControlRemoved_osf;
 
+        protected override System.Windows.Forms.CreateParams CreateParams
+        {
+            get
+            {
+                System.Windows.Forms.CreateParams cp = base.CreateParams;
+                cp.Style |= 0x04;
+                return cp;
+            }
+        }
+			
         public VProgressBar()
         {
             Width = 23;
@@ -600,7 +610,7 @@ namespace osfDesigner
         }
 
         [DisplayName("ДвойноеНажатие")]
-        [Description("Возвращает или задает код для выполнения, когда элемент управления дважды щелкнут.")]
+        [Description("Возвращает или задает код, когда элемент управления дважды щелкнут.")]
         [Category("Прочее")]
         [Browsable(true)]
         public  string DoubleClick_osf

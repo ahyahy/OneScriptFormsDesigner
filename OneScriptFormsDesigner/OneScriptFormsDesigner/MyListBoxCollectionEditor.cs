@@ -236,6 +236,7 @@ namespace osfDesigner
             }
             MyListBox1.SelectedIndex = index;
             PropertiesLabel1.Text = "Свойства:";
+            collectionForm.Refresh();
         }
 
         private void ListBox1_DrawItem(object sender, DrawItemEventArgs e)

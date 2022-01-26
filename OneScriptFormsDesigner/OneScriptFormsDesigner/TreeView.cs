@@ -73,7 +73,7 @@ namespace osfDesigner
         }
 
         [DisplayName("ДвойноеНажатие")]
-        [Description("Возвращает или задает код для выполнения, когда элемент управления дважды щелкнут.")]
+        [Description("Возвращает или задает код, когда элемент управления дважды щелкнут.")]
         [Category("Прочее")]
         [Browsable(true)]
         public  string DoubleClick_osf
@@ -232,7 +232,7 @@ namespace osfDesigner
         }
 
         [DisplayName("ПередРазвертыванием")]
-        [Description("Происходит перед развертыванием узла дерева.")]
+        [Description("Возвращает или задает код для выполнения перед развертыванием узла дерева.")]
         [Category("Прочее")]
         [Browsable(true)]
         public  string BeforeExpand_osf
@@ -321,7 +321,7 @@ namespace osfDesigner
         }
 
         [DisplayName("ПослеРедактированияНадписи")]
-        [Description("Происходит после изменения текстовой надписи узла дерева.")]
+        [Description("Возвращает или задает код для выполнения после изменения текстовой надписи узла дерева.")]
         [Category("Прочее")]
         [Browsable(true)]
         public  string AfterLabelEdit_osf
