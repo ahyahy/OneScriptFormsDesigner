@@ -1,9 +1,10 @@
-﻿using System;
-using System.Drawing;
+﻿using System.ComponentModel.Design;
 using System.Drawing.Design;
-using System.Windows.Forms;
-using System.ComponentModel.Design;
+using System.Drawing;
+using System.Globalization;
 using System.Reflection;
+using System.Windows.Forms;
+using System;
 
 namespace osfDesigner
 {
@@ -26,14 +27,11 @@ namespace osfDesigner
         private System.Windows.Forms.Button ButtonDown1 = null;
         private ComboBox ComboBox1;
 
-        // Определите статическое событие, чтобы отобразить внутреннюю сетку свойств
-        public delegate void MyPropertyValueChangedEventHandler(object sender, PropertyValueChangedEventArgs e);
-
         public MyComboBoxCollectionEditor(Type type) : base(type)
         {
         }
 
-        //зададим нужный нам тип коллекции
+        // Зададим нужный нам тип коллекции.
         protected override Type[] CreateNewItemTypes()
         {
             return new Type[] { typeof(ListItemComboBox) };
@@ -42,7 +40,7 @@ namespace osfDesigner
         // Переопределите этот метод, чтобы получить доступ к форме редактора коллекции. 
         protected override CollectionForm CreateCollectionForm()
         {
-            // Получение макета редактора коллекции по умолчанию...
+            // Получение макета редактора коллекции по умолчанию.
             collectionForm = base.CreateCollectionForm();
             ComboBox1 = (ComboBox)this.Context.Instance;
             collectionForm.Text = "Редактор элементов ПолеВыбора";
@@ -88,9 +86,9 @@ namespace osfDesigner
                         PropertyGrid1.PropertyValueChanged += PropertyGrid1_PropertyValueChanged;
                         PropertyGrid1.SelectedObjectsChanged += PropertyGrid1_SelectedObjectsChanged;
 
-                        // также сделать доступным окно с подсказками по параметрам в нижней части 
+                        // Также сделайте доступным окно с подсказками по параметрам в нижней части.
                         PropertyGrid1.HelpVisible = true;
-                        PropertyGrid1.HelpBackColor = System.Drawing.SystemColors.Info;
+                        PropertyGrid1.HelpBackColor = SystemColors.Info;
                     }
                     if (i == 6)
                     {
@@ -189,7 +187,7 @@ namespace osfDesigner
 
         void PropertyGrid1_PropertyValueChanged(object sender, PropertyValueChangedEventArgs e)
         {
-            if ((string)e.ChangedItem.Value.ToString() == "Строка")
+            if (e.ChangedItem.Value.ToString() == "Строка")
             {
                 try
                 {
@@ -200,7 +198,7 @@ namespace osfDesigner
                     ((dynamic)ComboBox1.Items[ListBox1.SelectedIndex]).Value = "";
                 }
             }
-            else if ((string)e.ChangedItem.Value.ToString() == "Число")
+            else if (e.ChangedItem.Value.ToString() == "Число")
             {
                 try
                 {
@@ -211,7 +209,7 @@ namespace osfDesigner
                     ((dynamic)ComboBox1.Items[ListBox1.SelectedIndex]).Value = 0;
                 }
             }
-            else if ((string)e.ChangedItem.Value.ToString() == "Булево")
+            else if (e.ChangedItem.Value.ToString() == "Булево")
             {
                 try
                 {
@@ -222,7 +220,7 @@ namespace osfDesigner
                     ((dynamic)ComboBox1.Items[ListBox1.SelectedIndex]).Value = false;
                 }
             }
-            else if ((string)e.ChangedItem.Value.ToString() == "Дата")
+            else if (e.ChangedItem.Value.ToString() == "Дата")
             {
                 try
                 {
@@ -277,7 +275,7 @@ namespace osfDesigner
                 {
                     maxCount1 = Count1;
                 }
-                SizeF sizeW = Graphics1.MeasureString(maxCount1.ToString(System.Globalization.CultureInfo.CurrentCulture), ListBox1.Font);
+                SizeF sizeW = Graphics1.MeasureString(maxCount1.ToString(CultureInfo.CurrentCulture), ListBox1.Font);
 
                 int charactersInNumber = ((int)(Math.Log(maxCount1) / Math.Log(10)) + 1);
                 int w = 4 + charactersInNumber * (ListBox1.Font.Height / 2);
@@ -322,7 +320,7 @@ namespace osfDesigner
                         Rectangle2.Height - 1);
                     Rectangle2.Inflate(-1, -1);
 
-                    PaintValueEventArgs PaintValueEventArgs1 = new System.Drawing.Design.PaintValueEventArgs(this.Context, ListItem1.Value, Graphics1, Rectangle2);
+                    PaintValueEventArgs PaintValueEventArgs1 = new PaintValueEventArgs(this.Context, ListItem1.Value, Graphics1, Rectangle2);
                     this.PaintValue(PaintValueEventArgs1);
                     offset += 26 + 1;
                 }
@@ -331,7 +329,7 @@ namespace osfDesigner
                 try
                 {
                     StringFormat1.Alignment = StringAlignment.Center;
-                    Graphics1.DrawString(e.Index.ToString(System.Globalization.CultureInfo.CurrentCulture),
+                    Graphics1.DrawString(e.Index.ToString(CultureInfo.CurrentCulture),
                         ListBox1.Font,
                         SystemBrushes.ControlText,
                         new Rectangle(e.Bounds.X, e.Bounds.Y, w, e.Bounds.Height),
@@ -357,7 +355,7 @@ namespace osfDesigner
                     textBrush?.Dispose();
                 }
 
-                // Проверьте, нужно ли нам изменять горизонтальный экстент списка
+                // Проверьте, нужно ли нам изменять горизонтальный экстент списка.
                 int width = offset + (int)Graphics1.MeasureString(itemText, ListBox1.Font).Width;
                 if (width > e.Bounds.Width && ListBox1.HorizontalExtent < width)
                 {

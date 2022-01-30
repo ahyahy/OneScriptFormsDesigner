@@ -1,21 +1,21 @@
-﻿using System;
-using System.Linq;
-using System.Text;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Globalization;
+using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Text;
+using System;
 
 namespace osfDesigner
 {
     public class MyConverter : TypeConverter
     {
-        public override object ConvertTo(ITypeDescriptorContext context, CultureInfo cultureInfo, object value, System.Type destinationType)
+        public override object ConvertTo(ITypeDescriptorContext context, CultureInfo cultureInfo, object value, Type destinationType)
         {
             if (destinationType == typeof(string))
             {
-                if (value.GetType() == typeof(osfDesigner.ComboBox))
+                if (value.GetType() == typeof(ComboBox))
                 {
-                    return "ПолеВыбора, Элементов: " + ((osfDesigner.ComboBox)value).Items.Count;
+                    return "ПолеВыбора, Элементов: " + ((ComboBox)value).Items.Count;
                 }
                 return value.ToString();
             }
@@ -82,7 +82,7 @@ namespace osfDesigner
         public override object GetValue(object component)
         {
             object comp = _pd.GetValue(component);
-            System.Type compType = null;
+            Type compType = null;
             try
             {
                 compType = comp.GetType();
@@ -95,7 +95,7 @@ namespace osfDesigner
                     return "(Коллекция)";
                 }
             }
-            return osfDesigner.OneScriptFormsDesigner.ObjectConvertToString(comp);
+            return OneScriptFormsDesigner.ObjectConvertToString(comp);
         }
 
         public override bool IsReadOnly

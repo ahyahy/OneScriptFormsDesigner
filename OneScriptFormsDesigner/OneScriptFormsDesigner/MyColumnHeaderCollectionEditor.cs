@@ -1,9 +1,10 @@
-﻿using System;
-using System.Drawing;
+﻿using System.ComponentModel.Design;
 using System.Drawing.Design;
-using System.Windows.Forms;
-using System.ComponentModel.Design;
+using System.Drawing;
+using System.Globalization;
 using System.Reflection;
+using System.Windows.Forms;
+using System;
 
 namespace osfDesigner
 {
@@ -26,15 +27,12 @@ namespace osfDesigner
         private System.Windows.Forms.Button ButtonDown1 = null;
         private ListView ListView1;
 
-        // Определите статическое событие, чтобы отобразить внутреннюю сетку свойств
-        public delegate void MyPropertyValueChangedEventHandler(object sender, PropertyValueChangedEventArgs e);
-
-        // Унаследуйте конструктор по умолчанию из стандартного редактора коллекций...
+        // Унаследуйте конструктор по умолчанию из стандартного редактора коллекций.
         public MyColumnHeaderCollectionEditor(Type type) : base(type)
         {
         }
 
-        //зададим нужный нам тип коллекции
+        // зададим нужный нам тип коллекции.
         protected override Type[] CreateNewItemTypes()
         {
             return new Type[] { typeof(osfDesigner.ColumnHeader) };
@@ -43,7 +41,7 @@ namespace osfDesigner
         // Переопределите этот метод, чтобы получить доступ к форме редактора коллекции. 
         protected override CollectionForm CreateCollectionForm()
         {
-            // Получение макета редактора коллекции по умолчанию...
+            // Получение макета редактора коллекции по умолчанию.
             collectionForm = base.CreateCollectionForm();
             ListView1 = (ListView)this.Context.Instance;
             collectionForm.Text = "Редактор коллекции Колонки";
@@ -89,9 +87,9 @@ namespace osfDesigner
                         PropertyGrid1 = (System.Windows.Forms.PropertyGrid)TableLayoutPanel1.Controls[5];
                         PropertyGrid1.SelectedGridItemChanged += PropertyGrid1_SelectedGridItemChanged;
 
-                        // также сделать доступным окно с подсказками по параметрам в нижней части 
+                        // Также сделайте доступным окно с подсказками по параметрам в нижней части.
                         PropertyGrid1.HelpVisible = true;
-                        PropertyGrid1.HelpBackColor = System.Drawing.SystemColors.Info;
+                        PropertyGrid1.HelpBackColor = SystemColors.Info;
                     }
                     if (i == 6)
                     {
@@ -152,15 +150,15 @@ namespace osfDesigner
             }
             string DefaultValues1 = "";
             object pg = PropertyGrid1;
-            object view1 = typeof(System.Windows.Forms.PropertyGrid).GetField("gridView", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).GetValue(pg);
-            dynamic GridItemCollection1 = (dynamic)view1.GetType().InvokeMember("GetAllGridEntries", System.Reflection.BindingFlags.InvokeMethod | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance, null, view1, null);
+            object view1 = typeof(System.Windows.Forms.PropertyGrid).GetField("gridView", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(pg);
+            dynamic GridItemCollection1 = (dynamic)view1.GetType().InvokeMember("GetAllGridEntries", BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Instance, null, view1, null);
             foreach (GridItem GridItem in GridItemCollection1)
             {
-                if (GridItem.PropertyDescriptor == null)// исключим из обхода категории
+                if (GridItem.PropertyDescriptor == null)  // Исключим из обхода категории.
                 {
                     continue;
                 }
-                if (GridItem.Label == "Locked")// исключим из обхода ненужные свойства
+                if (GridItem.Label == "Locked")  // Исключим из обхода ненужные свойства.
                 {
                     continue;
                 }
@@ -168,7 +166,7 @@ namespace osfDesigner
                 {
                     string str7 = "";
                     string strTab = "            ";
-                    str7 = str7 + osfDesigner.OneScriptFormsDesigner.ObjectConvertToString(GridItem.Value);
+                    str7 = str7 + OneScriptFormsDesigner.ObjectConvertToString(GridItem.Value);
                     if (GridItem.GridItems.Count > 0)
                     {
                         strTab = strTab + "\t\t";
@@ -222,7 +220,7 @@ namespace osfDesigner
 
         private void ButtonAdd1_Click(object sender, EventArgs e)
         {
-            osfDesigner.ColumnHeader SimilarObj = (osfDesigner.ColumnHeader)PropertyGrid1.SelectedObject;
+            ColumnHeader SimilarObj = (ColumnHeader)PropertyGrid1.SelectedObject;
             SimilarObj.Text = OneScriptFormsDesigner.RevertColumnHeaderName(ListView1);
             SimilarObj.Name = SimilarObj.Text;
             ListBox1.Refresh();
@@ -241,12 +239,12 @@ namespace osfDesigner
             UpdateListBox1();
         }
 
-        private void ButtonDown1_Click(object sender, System.EventArgs e)
+        private void ButtonDown1_Click(object sender, EventArgs e)
         {
             UpdateListBox1();
         }
 
-        private void ButtonUp1_Click(object sender, System.EventArgs e)
+        private void ButtonUp1_Click(object sender, EventArgs e)
         {
             UpdateListBox1();
         }
@@ -276,7 +274,7 @@ namespace osfDesigner
                 {
                     maxCount1 = Count1;
                 }
-                SizeF sizeW = Graphics1.MeasureString(maxCount1.ToString(System.Globalization.CultureInfo.CurrentCulture), ListBox1.Font);
+                SizeF sizeW = Graphics1.MeasureString(maxCount1.ToString(CultureInfo.CurrentCulture), ListBox1.Font);
 
                 int charactersInNumber = ((int)(Math.Log(maxCount1) / Math.Log(10)) + 1);
                 int w = 4 + charactersInNumber * (ListBox1.Font.Height / 2);
@@ -318,7 +316,7 @@ namespace osfDesigner
                         Rectangle2.Height - 1);
                     Rectangle2.Inflate(-1, -1);
 
-                    PaintValueEventArgs PaintValueEventArgs1 = new System.Drawing.Design.PaintValueEventArgs(this.Context, ListItem1.Value, Graphics1, Rectangle2);
+                    PaintValueEventArgs PaintValueEventArgs1 = new PaintValueEventArgs(this.Context, ListItem1.Value, Graphics1, Rectangle2);
                     this.PaintValue(PaintValueEventArgs1);
                     offset += 26 + 1;
                 }
@@ -327,7 +325,7 @@ namespace osfDesigner
                 try
                 {
                     StringFormat1.Alignment = StringAlignment.Center;
-                    Graphics1.DrawString(e.Index.ToString(System.Globalization.CultureInfo.CurrentCulture),
+                    Graphics1.DrawString(e.Index.ToString(CultureInfo.CurrentCulture),
                         ListBox1.Font,
                         SystemBrushes.ControlText,
                         new Rectangle(e.Bounds.X, e.Bounds.Y, w, e.Bounds.Height),

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.Design;
 using System.ComponentModel;
-using System.Drawing.Design; 
+using System.Drawing.Design;
 using System.Drawing;
 using System.Windows.Forms.Design;
 using System.Windows.Forms;
@@ -10,7 +10,7 @@ namespace osfDesigner
 {
     public class TextBox : System.Windows.Forms.TextBox
     {
-        private int tic1 = 0; // счетчик для правильной работы смарт-тэгов
+        private int tic1 = 0; // Счетчик для правильной работы смарт-тэгов.
         private string _DoubleClick_osf;
         private string _KeyUp_osf;
         private string _KeyDown_osf;
@@ -56,7 +56,7 @@ namespace osfDesigner
         [TypeConverter(typeof(MyBooleanConverter))]
         public bool Enabled_osf { get; set; }
 				
-        //скроем унаследованное свойство, для того чтобы оно не мешало нашему замещающему свойству использовать свой эдитор и конвертер.
+        // Скроем унаследованное свойство, для того чтобы оно не мешало нашему замещающему свойству использовать свой эдитор и конвертер.
         [Browsable(false)]
         public new bool Enabled { get; set; }
 
@@ -183,7 +183,7 @@ namespace osfDesigner
         [TypeConverter(typeof(MyBooleanConverter))]
         public bool Visible_osf { get; set; }
 				
-        //скроем унаследованное свойство, для того чтобы оно не мешало нашему замещающему свойству использовать свой эдитор и конвертер.
+        // Скроем унаследованное свойство, для того чтобы оно не мешало нашему замещающему свойству использовать свой эдитор и конвертер.
         [Browsable(false)]
         public new bool Visible { get; set; }
 
@@ -210,7 +210,7 @@ namespace osfDesigner
             set { base.Location = value; }
         }
 				
-        //скроем унаследованное свойство, для того чтобы оно не мешало нашему замещающему свойству использовать свой эдитор и конвертер.
+        // Скроем унаследованное свойство, для того чтобы оно не мешало нашему замещающему свойству использовать свой эдитор и конвертер.
         [Browsable(false)]
         public new Point Location { get; set; }
 
@@ -680,7 +680,7 @@ namespace osfDesigner
                     {
                         if (tic1 < 1)
                         {
-                            designer.ActionLists.Clear();//если имеющийся список смарт-тэга не нужен
+                            designer.ActionLists.Clear(); // Если имеющийся список смарт-тэга не нужен.
                             designer.ActionLists.Add(new TextBoxActionList(designer));
                             tic1 = tic1 + 1;
                         }

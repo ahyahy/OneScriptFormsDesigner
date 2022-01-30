@@ -1,10 +1,11 @@
-﻿using System;
-using System.Drawing;
+﻿using System.ComponentModel.Design;
+using System.ComponentModel;
 using System.Drawing.Design;
-using System.Windows.Forms;
-using System.ComponentModel; 
-using System.ComponentModel.Design;
+using System.Drawing;
+using System.Globalization;
 using System.Reflection;
+using System.Windows.Forms;
+using System;
 
 namespace osfDesigner
 {
@@ -31,19 +32,16 @@ namespace osfDesigner
         private MonthCalendar MonthCalendar1;
         private DateTime[] DateTimeForCancel;
 
-        // Определите статическое событие, чтобы отобразить внутреннюю сетку свойств
-        public delegate void MyPropertyValueChangedEventHandler(object sender, PropertyValueChangedEventArgs e);
-
-        // Унаследуйте конструктор по умолчанию из стандартного редактора коллекций...
+        // Унаследуйте конструктор по умолчанию из стандартного редактора коллекций.
         public MyDateCollectionEditor(Type type) : base(type)
         {
             MyDateListType = type;
         }
 
-        // Переопределите этот метод, чтобы получить доступ к форме редактора коллекции. 
+        // Переопределите этот метод, чтобы получить доступ к форме редактора коллекции.
         protected override CollectionForm CreateCollectionForm()
         {
-            // Получение макета редактора коллекции по умолчанию...
+            // Получение макета редактора коллекции по умолчанию.
             collectionForm = base.CreateCollectionForm();
             MonthCalendar1 = (MonthCalendar)this.Context.Instance;
             if (MyDateListType.ToString() == "osfDesigner.MyBoldedDatesList")
@@ -157,9 +155,9 @@ namespace osfDesigner
                         PropertyGrid1.PropertyValueChanged += PropertyGrid1_PropertyValueChanged;
                         PropertyGrid1.SelectedObjectsChanged += PropertyGrid1_SelectedObjectsChanged;
 
-                        // также сделать доступным окно с подсказками по параметрам в нижней части 
+                        // Также сделайте доступным окно с подсказками по параметрам в нижней части.
                         PropertyGrid1.HelpVisible = true;
-                        PropertyGrid1.HelpBackColor = System.Drawing.SystemColors.Info;
+                        PropertyGrid1.HelpBackColor = SystemColors.Info;
                     }
                     if (i == 6)
                     {
@@ -270,7 +268,7 @@ namespace osfDesigner
             UpdateOriginalObj();
         }
 
-        private void ButtonDown1_Click(object sender, System.EventArgs e)
+        private void ButtonDown1_Click(object sender, EventArgs e)
         {
             object SelectedItem1 = ListBox1.SelectedItem;
             MyDateList.Clear();
@@ -284,7 +282,7 @@ namespace osfDesigner
             PropertiesLabel1.Text = "Свойства:";
         }
 
-        private void ButtonUp1_Click(object sender, System.EventArgs e)
+        private void ButtonUp1_Click(object sender, EventArgs e)
         {
             object SelectedItem1 = ListBox1.SelectedItem;
             MyDateList.Clear();
@@ -317,7 +315,7 @@ namespace osfDesigner
                 {
                     maxCount1 = Count1;
                 }
-                SizeF sizeW = Graphics1.MeasureString(maxCount1.ToString(System.Globalization.CultureInfo.CurrentCulture), ListBox1.Font);
+                SizeF sizeW = Graphics1.MeasureString(maxCount1.ToString(CultureInfo.CurrentCulture), ListBox1.Font);
 
                 int charactersInNumber = ((int)(Math.Log(maxCount1) / Math.Log(10)) + 1);
                 int w = 4 + charactersInNumber * (ListBox1.Font.Height / 2);
@@ -359,7 +357,7 @@ namespace osfDesigner
                         Rectangle2.Height - 1);
                     Rectangle2.Inflate(-1, -1);
 
-                    PaintValueEventArgs PaintValueEventArgs1 = new System.Drawing.Design.PaintValueEventArgs(this.Context, ListItem1.Value, Graphics1, Rectangle2);
+                    PaintValueEventArgs PaintValueEventArgs1 = new PaintValueEventArgs(this.Context, ListItem1.Value, Graphics1, Rectangle2);
                     this.PaintValue(PaintValueEventArgs1);
                     offset += 26 + 1;
                 }
@@ -368,7 +366,7 @@ namespace osfDesigner
                 try
                 {
                     StringFormat1.Alignment = StringAlignment.Center;
-                    Graphics1.DrawString(e.Index.ToString(System.Globalization.CultureInfo.CurrentCulture),
+                    Graphics1.DrawString(e.Index.ToString(CultureInfo.CurrentCulture),
                         ListBox1.Font,
                         SystemBrushes.ControlText,
                         new Rectangle(e.Bounds.X, e.Bounds.Y, w, e.Bounds.Height),

@@ -1,8 +1,8 @@
-﻿using System;
+﻿using System.ComponentModel.Design;
 using System.ComponentModel;
-using System.ComponentModel.Design;
 using System.Globalization;
 using System.Reflection;
+using System;
 
 namespace osfDesigner
 {

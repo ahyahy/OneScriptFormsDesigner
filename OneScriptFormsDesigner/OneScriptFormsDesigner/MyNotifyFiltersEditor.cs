@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Design;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
-using System.Windows.Forms;
+using System.Drawing.Design;
+using System.Drawing;
 using System.Windows.Forms.Design;
+using System.Windows.Forms;
+using System;
 
 namespace osfDesigner
 {
@@ -55,7 +55,7 @@ namespace osfDesigner
                 SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple;
                 _strvalue = strvalue;
                 oldValue = value;
-                System.Type enumType = Type.GetType("osfDesigner.NotifyFilters");
+                Type enumType = Type.GetType("osfDesigner.NotifyFilters");
                 var names = Enum.GetNames(enumType);
                 for (int i = 0; i < names.Length; i++)
                 {

@@ -1,15 +1,15 @@
-﻿using System;
+﻿using System.ComponentModel.Design.Serialization;
 using System.ComponentModel;
-using System.Globalization;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
-using System.ComponentModel.Design.Serialization;
+using System;
 
 namespace osfDesigner
 {
     public class MyImageConverter : ImageConverter
     {
-        Type IconType1 = typeof(System.Drawing.Icon);
+        Type IconType1 = typeof(Icon);
 
         public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
         {
@@ -43,9 +43,9 @@ namespace osfDesigner
 
         public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
         {
-            if (value is System.Drawing.Icon)
+            if (value is Icon)
             {
-                System.Drawing.Icon Icon1 = (System.Drawing.Icon)value;
+                Icon Icon1 = (Icon)value;
                 return Icon1.ToBitmap();
             }
 
@@ -54,7 +54,7 @@ namespace osfDesigner
             if (bytes != null)
             {
                 Stream Stream1 = new MemoryStream(bytes);
-                return System.Drawing.Image.FromStream(Stream1);
+                return Image.FromStream(Stream1);
             }
 
             return base.ConvertFrom(context, culture, value);
@@ -77,7 +77,7 @@ namespace osfDesigner
                     }
                     else 
                     {
-                        return "" + ((System.Drawing.Image)value).Tag;
+                        return "" + ((Image)value).Tag;
                     }
                 }
                 else
@@ -91,17 +91,17 @@ namespace osfDesigner
                 {
                     bool createdNewImage = false;
                     MemoryStream MemoryStream1 = null;
-                    System.Drawing.Image Image1 = null;
+                    Image Image1 = null;
                     try
                     {
                         MemoryStream1 = new MemoryStream();
-                        Image1 = (System.Drawing.Image)value;
+                        Image1 = (Image)value;
 
-                        //Создадим новое и допустимое растровое изображение из нашего значка с нужным размером.
+                        // Создадим новое и допустимое растровое изображение из нашего значка с нужным размером.
                         if (Image1.RawFormat.Equals(System.Drawing.Imaging.ImageFormat.Icon))
                         {
                             createdNewImage = true;
-                            Image1 = new System.Drawing.Bitmap(Image1, Image1.Width, Image1.Height);
+                            Image1 = new Bitmap(Image1, Image1.Width, Image1.Height);
                         }
 
                         Image1.Save(MemoryStream1, Image1.RawFormat);
@@ -138,7 +138,7 @@ namespace osfDesigner
 
         public override PropertyDescriptorCollection GetProperties(ITypeDescriptorContext context, object value, Attribute[] attributes)
         {
-            return TypeDescriptor.GetProperties(typeof(System.Drawing.Image), attributes);
+            return TypeDescriptor.GetProperties(typeof(Image), attributes);
         }
 
         public override bool GetPropertiesSupported(ITypeDescriptorContext context)

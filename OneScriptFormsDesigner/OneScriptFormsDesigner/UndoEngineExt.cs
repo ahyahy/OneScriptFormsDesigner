@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Diagnostics;
+using System;
 
 namespace osfDesigner
 {
@@ -11,7 +11,7 @@ namespace osfDesigner
         private Stack<UndoEngine.UndoUnit> undoStack = new Stack<UndoEngine.UndoUnit>();
         private Stack<UndoEngine.UndoUnit> redoStack = new Stack<UndoEngine.UndoUnit>();
 
-        public UndoEngineExt ( IServiceProvider provider ) : base ( provider )
+        public UndoEngineExt (IServiceProvider provider) : base (provider)
         {
         }
 
@@ -27,46 +27,43 @@ namespace osfDesigner
 
         public void Undo()
         {
-            if ( undoStack.Count > 0 )
+            if (undoStack.Count > 0)
             {
                 try
                 {
                     UndoEngine.UndoUnit unit = undoStack.Pop();
                     unit.Undo();
-                    redoStack.Push ( unit );
+                    redoStack.Push (unit);
                 }
-                catch ( Exception ex )
+                catch (Exception ex)
                 {
-                    Debug.WriteLine( _Name_ + ex.Message);
+                    Debug.WriteLine(_Name_ + ex.Message);
                 }
             }
-            else
-            {
-            }
+            else { }
         }
 
         public void Redo()
         {
-            if ( redoStack.Count > 0 ) {
+            if (redoStack.Count > 0)
+            {
                 try
                 {
                     UndoEngine.UndoUnit unit = redoStack.Pop();
                     unit.Undo();
-                    undoStack.Push ( unit );
+                    undoStack.Push (unit);
                 }
-                catch ( Exception ex )
+                catch (Exception ex)
                 {
-                    Debug.WriteLine( _Name_ + ex.Message);
+                    Debug.WriteLine(_Name_ + ex.Message);
                 }
             }
-            else
-            {
-            }
+            else { }
         }
 
-        protected override void AddUndoUnit ( UndoEngine.UndoUnit unit )
+        protected override void AddUndoUnit (UndoEngine.UndoUnit unit)
         {
-            // тут надо бы что нибудь понадежней придумать! и учесть языковые настройки
+            // Тут надо бы что нибудь понадежней придумать! и учесть языковые настройки.
             if (!unit.Name.Contains("Form"))
             {
                 undoStack.Push(unit);

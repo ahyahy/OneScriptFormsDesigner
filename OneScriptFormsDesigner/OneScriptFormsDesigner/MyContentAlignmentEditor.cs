@@ -1,14 +1,14 @@
-﻿using System;
+﻿using System.ComponentModel;
 using System.Drawing.Design;
-using System.Windows.Forms;
-using System.ComponentModel;
 using System.Reflection;
+using System.Windows.Forms;
+using System;
 
 namespace osfDesigner
 {
     public class MyContentAlignmentEditor : UITypeEditor
     {
-        System.Drawing.Design.ContentAlignmentEditor editor;
+        ContentAlignmentEditor editor;
         public MyContentAlignmentEditor()
         {
             editor = new ContentAlignmentEditor();

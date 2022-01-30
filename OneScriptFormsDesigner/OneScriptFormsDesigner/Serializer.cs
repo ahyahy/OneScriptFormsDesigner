@@ -1,7 +1,7 @@
-﻿using System;
+﻿using System.Reflection;
 using System.Text;
-using System.Reflection;
 using System.Xml;
+using System;
 
 namespace osfDesigner
 {
@@ -9,7 +9,7 @@ namespace osfDesigner
     {
         public static string DeserializeObjects(string fileName)
         {
-            System.IO.StreamReader sr = new System.IO.StreamReader(fileName);
+            StreamReader sr = new StreamReader(fileName);
             //dynamic obj1 = null;
 
             string line;
@@ -39,7 +39,7 @@ namespace osfDesigner
                         continue;
                     }
 
-                    //osfDesigner.OneScriptFormsDesigner.StrFindBetween(, , );
+                    //OneScriptFormsDesigner.StrFindBetween(, ,);
 
                     for (int i = 0; i < result.Length; i++)
                     {
@@ -71,7 +71,7 @@ namespace osfDesigner
 
             }
 
-            //System.Collections.ArrayList ArrayList1 = osfDesigner.OneScriptFormsDesigner.StrFindBetween(str1, "<", ">");
+            //System.Collections.ArrayList ArrayList1 = OneScriptFormsDesigner.StrFindBetween(str1, "<", ">");
             //System.Windows.Forms.MessageBox.Show("222");
             //for (int i = 0; i < ArrayList1.Count; i++)
             //{
@@ -108,7 +108,7 @@ namespace osfDesigner
                         // выгружаем только свойства перечисленные в свойстве RequiredValues объекта,
                         // и только свойства перечисленные в свойстве DefaultValues объекта и при этом 
                         // изменившиеся с момента создания объекта
-                        string strDisplayName = osfDesigner.OneScriptFormsDesigner.GetDisplayName(comp, pi.Name);
+                        string strDisplayName = OneScriptFormsDesigner.GetDisplayName(comp, pi.Name);
                         if (strDisplayName == "")
                         {
                             continue;
@@ -133,7 +133,7 @@ namespace osfDesigner
                         string str6 = Convert.ToString(pi.GetValue(comp, null));
                         try
                         {
-                            str6 = osfDesigner.OneScriptFormsDesigner.ObjectConvertToString(pi.GetValue(comp, null));
+                            str6 = OneScriptFormsDesigner.ObjectConvertToString(pi.GetValue(comp, null));
                         }
                         catch { }
 

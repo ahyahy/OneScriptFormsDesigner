@@ -113,6 +113,14 @@ namespace osfDesigner
         [ReadOnly(true)]
         public new object Tag { get; set; }
 
+        private System.Collections.Hashtable toolTip = new System.Collections.Hashtable();
+        [Browsable(false)]
+        public System.Collections.Hashtable ToolTip
+        {
+            get { return toolTip; }
+            set { toolTip = value; }
+        }
+
         [Browsable(false)]
         public string DefaultValues { get; set; }
 			

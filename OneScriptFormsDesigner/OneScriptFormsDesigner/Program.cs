@@ -1,20 +1,16 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Reflection;
-using System.ComponentModel;
-
+using System;
 
 namespace osfDesigner
 {
-    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     public class Program
     {
-        const string _Name_ = "DemoConsole";
         public static IDesignerMainForm pDesignerMainForm1 = null;
 
         public void Main()
         {
-            //предотвращение появления окна с текстом - Desktop applications are required to opt in to all earlier accessibility improvements to get the later improvements......
+            // Предотвращение появления окна с текстом - Desktop applications are required to opt in to all earlier accessibility improvements to get the later improvements......
             var type = Type.GetType("System.AppContext");
             if (type != null)
             {
@@ -22,8 +18,8 @@ namespace osfDesigner
                 setSwitch.Invoke(null, new object[] { "Switch.UseLegacyAccessibilityFeatures", false });
             }
 
-            // можно получить путь до oscript.exe и таким способом, но нам ещё понадобится путь до OneScriptForms.dll
-            // поэтому воспользуемся osfDesigner.Properties.Settings, а это закомментируем пока
+            // Можно получить путь до oscript.exe и таким способом, но нам ещё понадобится путь до OneScriptForms.dll,
+            // поэтому воспользуемся osfDesigner.Properties.Settings, а это закомментируем пока.
             ////osfDesigner.Properties.Settings.Default["osPath"] = System.Windows.Forms.Application.ExecutablePath;
 
             // Создадим Форму.
@@ -38,7 +34,7 @@ namespace osfDesigner
 
         public void MainPFL()
         {
-            //предотвращение появления окна с текстом - Desktop applications are required to opt in to all earlier accessibility improvements to get the later improvements......
+            // Предотвращение появления окна с текстом - Desktop applications are required to opt in to all earlier accessibility improvements to get the later improvements......
             var type = Type.GetType("System.AppContext");
             if (type != null)
             {
@@ -46,8 +42,8 @@ namespace osfDesigner
                 setSwitch.Invoke(null, new object[] { "Switch.UseLegacyAccessibilityFeatures", false });
             }
 
-            // можно получить путь до oscript.exe и таким способом, но нам ещё понадобится путь до OneScriptForms.dll
-            // поэтому воспользуемся osfDesigner.Properties.Settings, а это закомментируем пока
+            // Можно получить путь до oscript.exe и таким способом, но нам ещё понадобится путь до OneScriptForms.dll,
+            // поэтому воспользуемся osfDesigner.Properties.Settings, а это закомментируем пока.
             ////osfDesigner.Properties.Settings.Default["osPath"] = System.Windows.Forms.Application.ExecutablePath;
 
             // Создадим Форму.

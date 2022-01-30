@@ -75,7 +75,7 @@ namespace osfDesigner
         [TypeConverter(typeof(MyBooleanConverter))]
         public bool Enabled_osf { get; set; }
 				
-        //скроем унаследованное свойство, для того чтобы оно не мешало нашему замещающему свойству использовать свой эдитор и конвертер.
+        // Скроем унаследованное свойство, для того чтобы оно не мешало нашему замещающему свойству использовать свой эдитор и конвертер.
         [Browsable(false)]
         public new bool Enabled { get; set; }
 
@@ -88,7 +88,7 @@ namespace osfDesigner
         [DefaultValue(null)]
         public new Bitmap Image
         {
-            get { return (System.Drawing.Bitmap)base.Image; }
+            get { return (Bitmap)base.Image; }
             set { base.Image = value; }
         }
 
@@ -205,7 +205,7 @@ namespace osfDesigner
         [TypeConverter(typeof(MyBooleanConverter))]
         public bool Visible_osf { get; set; }
 				
-        //скроем унаследованное свойство, для того чтобы оно не мешало нашему замещающему свойству использовать свой эдитор и конвертер.
+        // Скроем унаследованное свойство, для того чтобы оно не мешало нашему замещающему свойству использовать свой эдитор и конвертер.
         [Browsable(false)]
         public new bool Visible { get; set; }
 
@@ -231,7 +231,7 @@ namespace osfDesigner
             set { base.Location = value; }
         }
 				
-        //скроем унаследованное свойство, для того чтобы оно не мешало нашему замещающему свойству использовать свой эдитор и конвертер.
+        // Скроем унаследованное свойство, для того чтобы оно не мешало нашему замещающему свойству использовать свой эдитор и конвертер.
         [Browsable(false)]
         public new Point Location { get; set; }
 
@@ -439,7 +439,7 @@ namespace osfDesigner
         [DefaultValue(null)]
         public new Bitmap BackgroundImage
         {
-            get { return (System.Drawing.Bitmap)base.BackgroundImage; }
+            get { return (Bitmap)base.BackgroundImage; }
             set { base.BackgroundImage = value; }
         }
 
@@ -555,11 +555,11 @@ namespace osfDesigner
 
         [Browsable(false)]
         [ReadOnly(true)]
-        public new System.Drawing.Size MaximumSize { get; set; }
+        public new Size MaximumSize { get; set; }
 
         [Browsable(false)]
         [ReadOnly(true)]
-        public new System.Drawing.Size MinimumSize { get; set; }
+        public new Size MinimumSize { get; set; }
 
         [Browsable(false)]
         [ReadOnly(true)]

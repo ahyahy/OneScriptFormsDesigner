@@ -1,7 +1,8 @@
-﻿using System;
+﻿using System.ComponentModel;
 using System.Drawing.Design;
+using System.Drawing;
 using System.Windows.Forms.Design;
-using System.ComponentModel;
+using System;
 
 namespace osfDesigner
 {
@@ -15,21 +16,20 @@ namespace osfDesigner
             {
                 frmWidthHeight _frmWidthHeight = new frmWidthHeight();
 
-                _frmWidthHeight.numericUpDown1.Value = (int)((System.Drawing.Size)value).Width;
-                _frmWidthHeight.numericUpDown2.Value = (int)((System.Drawing.Size)value).Height;
+                _frmWidthHeight.numericUpDown1.Value = ((Size)value).Width;
+                _frmWidthHeight.numericUpDown2.Value = ((Size)value).Height;
                 _frmWidthHeight._wfes = wfes;
 
                 wfes.DropDownControl(_frmWidthHeight);
                 int _Width = Convert.ToInt32(_frmWidthHeight.numericUpDown1.Value);
                 int _Height = Convert.ToInt32(_frmWidthHeight.numericUpDown2.Value);
-                value = new System.Drawing.Size(_Width, _Height);
+                value = new Size(_Width, _Height);
             }
             return value;
         }
 
         public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context)
         {
-            // Вызов модального диалогового окна, в котором запрашивается ввод пользователем данных.
             return UITypeEditorEditStyle.Modal;
         }
     }
@@ -40,13 +40,13 @@ namespace osfDesigner
         public System.Windows.Forms.NumericUpDown numericUpDown1;
         private System.Windows.Forms.Label label2;
         public System.Windows.Forms.NumericUpDown numericUpDown2;
-        private System.ComponentModel.Container components = null;
+        private Container components = null;
 
         public IWindowsFormsEditorService _wfes;
 
         public frmWidthHeight()
         {
-            this.ClientSize = new System.Drawing.Size(192, 70);
+            this.ClientSize = new Size(192, 70);
             this.ControlBox = false;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.MaximizeBox = false;
@@ -57,13 +57,13 @@ namespace osfDesigner
 
             label1 = new System.Windows.Forms.Label();
             label1.Parent = this;
-            label1.Location = new System.Drawing.Point(10, 10);
+            label1.Location = new Point(10, 10);
             label1.Text = "Ширина";
             label1.Width = 55;
 
             numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             numericUpDown1.Parent = this;
-            numericUpDown1.Location = new System.Drawing.Point(label1.Left + label1.Width + 5, label1.Top);
+            numericUpDown1.Location = new Point(label1.Left + label1.Width + 5, label1.Top);
             numericUpDown1.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             numericUpDown1.ThousandsSeparator = true;
             numericUpDown1.Minimum = 0;
@@ -71,13 +71,13 @@ namespace osfDesigner
 
             label2 = new System.Windows.Forms.Label();
             label2.Parent = this;
-            label2.Location = new System.Drawing.Point(label1.Left, label1.Bottom + 5);
+            label2.Location = new Point(label1.Left, label1.Bottom + 5);
             label2.Text = "Высота";
             label2.Width = 55;
 
             numericUpDown2 = new System.Windows.Forms.NumericUpDown();
             numericUpDown2.Parent = this;
-            numericUpDown2.Location = new System.Drawing.Point(label2.Left + label2.Width + 5, label2.Top);
+            numericUpDown2.Location = new Point(label2.Left + label2.Width + 5, label2.Top);
             numericUpDown2.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             numericUpDown2.ThousandsSeparator = true;
             numericUpDown2.Minimum = 0;

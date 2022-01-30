@@ -10,7 +10,6 @@ namespace osfDesigner
             if (grid == null)
                 yield break;
 
-            // get to root item
             GridItem start = grid.SelectedGridItem;
             while (start.Parent != null)
             {

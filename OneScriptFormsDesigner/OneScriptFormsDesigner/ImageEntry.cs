@@ -1,6 +1,7 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Drawing.Design;
+using System.Drawing;
+using System;
 
 namespace osfDesigner
 {
@@ -62,7 +63,7 @@ namespace osfDesigner
         [Browsable(true)]
         [TypeConverter(typeof(MySizeConverter))]
         [Editor(typeof(MySizeEditor), typeof(UITypeEditor))]
-        public System.Drawing.Size Size
+        public Size Size
         {
             get { return M_Bitmap.Size; }
         }

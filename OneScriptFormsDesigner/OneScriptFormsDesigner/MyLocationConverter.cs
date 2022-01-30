@@ -1,14 +1,14 @@
-﻿using System;
-using System.ComponentModel;
-using System.Globalization;
-using System.Runtime.CompilerServices; 
+﻿using System.ComponentModel;
 using System.Drawing;
+using System.Globalization;
+using System.Runtime.CompilerServices;
+using System;
 
 namespace osfDesigner
 {
     public class MyLocationConverter : TypeConverter
     {
-        public override object ConvertTo(ITypeDescriptorContext context, CultureInfo cultureInfo, object value, System.Type destinationType)
+        public override object ConvertTo(ITypeDescriptorContext context, CultureInfo cultureInfo, object value, Type destinationType)
         {
             if (destinationType == typeof(string))
             {
@@ -30,7 +30,7 @@ namespace osfDesigner
             return str1;
         }
 
-        public override bool CanConvertTo(ITypeDescriptorContext context, System.Type destinationType)
+        public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
         {
             if (destinationType.Equals(typeof(string)))
             {
@@ -58,7 +58,7 @@ namespace osfDesigner
             return Point1;
         }
 
-        public override bool CanConvertFrom(ITypeDescriptorContext context, System.Type sourceType)
+        public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
         {
             return true;
         }

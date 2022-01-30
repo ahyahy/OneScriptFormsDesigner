@@ -1,5 +1,5 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
+using System;
 
 namespace osfDesigner
 {
@@ -93,7 +93,6 @@ namespace osfDesigner
 
         public override void ResetValue(object component)
         {
-            // Не имеет значения.
         }
 
         public override void SetValue(object component, object value)

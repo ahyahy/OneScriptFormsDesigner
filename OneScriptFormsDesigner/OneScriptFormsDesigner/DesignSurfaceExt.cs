@@ -1,15 +1,14 @@
-﻿using System;
+﻿using System.ComponentModel.Design.Serialization;
 using System.ComponentModel.Design;
-using System.Drawing;
 using System.ComponentModel;
-using System.Windows.Forms;
-using System.ComponentModel.Design.Serialization;
 using System.Diagnostics;
+using System.Drawing;
+using System.Windows.Forms;
+using System;
 
 namespace osfDesigner
 {
-    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    // этот класс добавляет к экземпляру .NET DesignSurface следующие возможности:
+    // Этот класс добавляет к экземпляру .NET DesignSurface следующие возможности:
     //     * TabOrder
     //     * UndoEngine
     //     * Cut/Copy/Paste/Delete commands
@@ -26,7 +25,6 @@ namespace osfDesigner
     //
     public class DesignSurfaceExt : DesignSurface, IDesignSurfaceExt
     {
-        private const string _Name_ = "DesignSurfaceExt";
         private TabOrderHooker _tabOrder = null;
         public static bool _tabOrderMode = false;
         private UndoEngineExt _undoEngine = null;
@@ -124,32 +122,28 @@ namespace osfDesigner
 
         private IComponent CreateRootComponentCore(Type controlType, Size controlSize, DesignerLoader loader)
         {
-            const string _signature_ = _Name_ + @"::CreateRootComponentCore()";
             try
             {
-                // получим IDesignerHost. Если мы не сможем его получить, тогда откат (возврат null)
+                // Получим IDesignerHost. Если мы не сможем его получить, тогда откат (возврат null)
                 IDesignerHost host = GetIDesignerHost();
                 if (null == host)
                 {
                     return null;
                 }
-                // проверьте, установлен ли уже корневой компонент, если это так, то откат (возврат null)
+                // Проверьте, установлен ли уже корневой компонент.
                 if (null != host.RootComponent)
                 {
                     return null;
                 }
-                // создайте новый корневой компонент и инициализируйте его с помощью конструктора
-                // если компонент не имеет конструктора, откат (возврат null), иначе выполните инициализацию
+                // Создайте новый корневой компонент и инициализируйте его с помощью конструктора.
+                // Если компонент не имеет конструктора - откат, иначе выполните инициализацию
                 if (null != loader)
                 {
                     this.BeginLoad(loader);
                     if (this.LoadErrors.Count > 0)
                     {
-                        throw new Exception(_signature_ + " - Exception: the BeginLoad(loader) failed!");
+                        throw new Exception(@"DesignSurfaceExt::CreateRootComponentCore() - Исключение: сбой в BeginLoad(loader)!");
                     }
-
-
-
                 }
                 else
                 {
@@ -158,21 +152,21 @@ namespace osfDesigner
                         this.BeginLoad(controlType);
                         if (this.LoadErrors.Count > 0)
                         {
-                            throw new Exception(_signature_ + " - Exception: the BeginLoad(Type) failed! Some error during " + controlType.ToString() + " loading");
+                            throw new Exception(@"DesignSurfaceExt::CreateRootComponentCore() - Исключение: сбой в BeginLoad(Type)! Некоторая ошибка во время " + controlType.ToString() + " загрузки");
                         }
                     }
                 }
-                // попробуйте изменить размер только что созданного объекта
+                // Попробуйте изменить размер только что созданного объекта.
                 IDesignerHost ihost = GetIDesignerHost();
-                // Установите цвет фона и размер
+                // Установите цвет фона и размер.
                 Control ctrl = null;
                 if (host.RootComponent is Form)
                 {
                     ctrl = this.View as Control;
                     ctrl.BackColor = Color.LightGray;
-                    // установите размер
+                    // Установите размер.
                     PropertyDescriptorCollection pdc = TypeDescriptor.GetProperties(ctrl);
-                    // Задает свойство через PropertyDescriptor
+                    // Задайте свойство через PropertyDescriptor.
                     PropertyDescriptor pdS = pdc.Find("Size", false);
                     if (null != pdS)
                     {
@@ -182,10 +176,10 @@ namespace osfDesigner
                 else if (host.RootComponent is UserControl)
                 {
                     ctrl = this.View as Control;
-                    ctrl.BackColor = System.Drawing.SystemColors.ControlDarkDark;
-                    // установите размер
+                    ctrl.BackColor = SystemColors.ControlDarkDark;
+                    // Установите размер.
                     PropertyDescriptorCollection pdc = TypeDescriptor.GetProperties(ctrl);
-                    // Задает свойство через PropertyDescriptor
+                    // Задайте свойство через PropertyDescriptor.
                     PropertyDescriptor pdS = pdc.Find("Size", false);
                     if (null != pdS)
                     {
@@ -196,9 +190,9 @@ namespace osfDesigner
                 {
                     ctrl = this.View as Control;
                     ctrl.BackColor = Color.LightGray;
-                    // установите размер
+                    // Установите размер.
                     PropertyDescriptorCollection pdc = TypeDescriptor.GetProperties(ctrl);
-                    // Задает свойство через PropertyDescriptor
+                    // Задайте свойство через PropertyDescriptor.
                     PropertyDescriptor pdS = pdc.Find("Size", false);
                     if (null != pdS)
                     {
@@ -209,11 +203,11 @@ namespace osfDesigner
                 {
                     ctrl = this.View as Control;
                     ctrl.BackColor = Color.White;
-                    // не устанавливайте размер
+                    // Не устанавливайте размер.
                 }
                 else
                 {
-                    // Если тип Хоста не определен
+                    // Тип Хоста не определен
                     ctrl = this.View as Control;
                     ctrl.BackColor = Color.Red;
                 }
@@ -244,19 +238,19 @@ namespace osfDesigner
         {
             try
             {
-                // получим IDesignerHost. Если мы не сможем его получить, тогда откат (возврат null)
+                // Получим IDesignerHost. Если мы не сможем его получить, тогда откат (возврат null).
                 IDesignerHost host = GetIDesignerHost();
                 if (null == host)
                 {
                     return null;
                 }
-                // проверьте, установлен ли уже корневой компонент. Если это не так, то откат (возврат null)
+                // Проверьте, установлен ли уже корневой компонент. Если это не так - откат (возврат null).
                 if (null == host.RootComponent)
                 {
                     return null;
                 }
-                // создайте новый компонент и инициализируйте его с помощью конструктора
-                // если компонент не имеет конструктора, откат (возврат null), иначе выполните инициализацию
+                // Создайте новый компонент и инициализируйте его с помощью конструктора.
+                // Если компонент не имеет конструктора - откат (возврат null), иначе выполните инициализацию.
                 IComponent newComp = host.CreateComponent(controlType);
                 if (null == newComp)
                 {
@@ -271,9 +265,9 @@ namespace osfDesigner
                 {
                     ((IComponentInitializer)designer).InitializeNewComponent(null);
                 }
-                // попробуйте изменить размер/расположение только что созданного объекта
+                // Попробуйте изменить размер/расположение только что созданного объекта
                 PropertyDescriptorCollection pdc = TypeDescriptor.GetProperties(newComp);
-                // Задает свойство через PropertyDescriptor
+                // Задайте свойство через PropertyDescriptor.
                 PropertyDescriptor pdS = pdc.Find("Size", false);
                 if (null != pdS)
                 {
@@ -284,8 +278,8 @@ namespace osfDesigner
                 {
                     pdL.SetValue(newComp, controlLocation);
                 }
-                // зафиксируйте операцию создания/добавления элемента управления в корневой компонент DesignSurface
-                // и верните только что созданный элемент управления, чтобы позволить дальнейшим инициализациям
+                // Зафиксируйте операцию создания/добавления элемента управления в корневой компонент DesignSurface
+                // и верните только что созданный элемент управления, чтобы провести дальнейшие инициализации.
                 ((Control)newComp).Parent = host.RootComponent as Control;
                 return newComp as Control;
             }
@@ -348,15 +342,13 @@ namespace osfDesigner
 
         // Класс DesignSurface автоматически предоставляет несколько услуг во время проектирования.
         // Класс DesignSurface добавляет все свои службы в своем конструкторе.
-        // Большинство этих служб можно переопределить, заменив их в свойстве
-        // ServiceContainer. Чтобы заменить службу, переопределите конструктор,
-        // вызовите базовый и внесите любые изменения с помощью свойства ServiceContainer.
+        // Большинство этих служб можно переопределить, заменив их в свойстве ServiceContainer. 
+        // Чтобы заменить службу, переопределите конструктор, вызовите базовый и внесите любые изменения с помощью свойства ServiceContainer.
         private void InitServices()
         {
-            // каждая поверхность дизайна имеет свои собственные службы по умолчанию
-            // Мы можем оставить службы по умолчанию в их нынешнем состоянии,
-            // или мы можем удалить их и заменить своими собственными.
-            // Теперь добавьте наши собственные сервисы с помощью IServiceContainer
+            // Каждая поверхность дизайна имеет свои собственные службы по умолчанию.
+            // Мы можем оставить службы по умолчанию в их нынешнем состоянии, или мы можем удалить их и заменить своими собственными.
+            // Добавьте наши собственные сервисы с помощью IServiceContainer.
             // 1. NameCreationService
             _nameCreationService = new NameCreationServiceImp();
             if (_nameCreationService != null)
@@ -380,7 +372,7 @@ namespace osfDesigner
             }
             // 4. UndoEngine
             _undoEngine = new UndoEngineExt(this.ServiceContainer);
-            // отключим UndoEngine
+            // Отключим UndoEngine.
             _undoEngine.Enabled = false;
             if (_undoEngine != null)
             {
@@ -394,14 +386,13 @@ namespace osfDesigner
             // 6.
             IComponentChangeService cs = this.ServiceContainer.GetService(typeof(IComponentChangeService)) as IComponentChangeService;
 
-                if(!( cs == null)){
+                if (!(cs == null)){
                 cs.ComponentChanged += new ComponentChangedEventHandler(OnComponentChanged);
                 cs.ComponentAdded += new ComponentEventHandler(OnComponentAdded);
                 cs.ComponentRemoved += new ComponentEventHandler(OnComponentRemoved);
             };
 
             //***
-
         }
 
         //* 18.12.2021 perfolenta
@@ -419,8 +410,7 @@ namespace osfDesigner
         }
         //***
 
-
-        // выполните некоторые команды Edit menu с помощью MenuCommandServiceImp
+        // Выполните некоторые команды меню Edit с помощью MenuCommandServiceImp.
         public void DoAction(string command)
         {
             if (string.IsNullOrEmpty(command))
@@ -471,7 +461,5 @@ namespace osfDesigner
             }
         }
         //***
-
-
     }
 }

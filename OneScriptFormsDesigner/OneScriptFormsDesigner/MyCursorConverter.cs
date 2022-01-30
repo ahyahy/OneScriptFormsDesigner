@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Windows.Forms;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.Runtime.CompilerServices;
+using System.Windows.Forms;
+using System;
 
 namespace osfDesigner
 {
@@ -42,12 +42,12 @@ namespace osfDesigner
                 {"UpArrow", "СтрелкаВверх"}
             };
 
-        public override bool CanConvertFrom(ITypeDescriptorContext context, System.Type sourceType)
+        public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
         {
             return true;
         }
 
-        public override bool CanConvertTo(ITypeDescriptorContext context, System.Type destinationType)
+        public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
         {
             if (destinationType.Equals(typeof(string)))
             {
@@ -56,7 +56,7 @@ namespace osfDesigner
             return base.CanConvertTo(context, destinationType);
         }
 
-        public override object ConvertTo(ITypeDescriptorContext context, CultureInfo cultureInfo, object value, System.Type destinationType)
+        public override object ConvertTo(ITypeDescriptorContext context, CultureInfo cultureInfo, object value, Type destinationType)
         {
             if (destinationType == typeof(string))
             {

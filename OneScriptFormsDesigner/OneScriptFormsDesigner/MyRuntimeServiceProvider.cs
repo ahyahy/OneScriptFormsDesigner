@@ -1,7 +1,7 @@
-﻿using System;
-using System.ComponentModel;
-using System.Windows.Forms;
+﻿using System.ComponentModel;
 using System.Windows.Forms.Design;
+using System.Windows.Forms;
+using System;
 
 namespace osfDesigner
 {
@@ -60,16 +60,8 @@ namespace osfDesigner
 
             public System.Windows.Forms.DialogResult ShowDialog(System.Windows.Forms.Form dialog)
             {
-                ////////Вы можете получить DialogResult, добавив событие Click в okButton из CollectionEditor в WindowsFormsEditorService.ShowDialog
-                //////((System.Windows.Forms.Button)dialog.Controls.Find("okButton", true)[0]).Click += WindowsFormsEditorService_Click;
-
                 return dialog.ShowDialog();
             }
-
-            //////private void WindowsFormsEditorService_Click(object sender, EventArgs e)
-            //////{
-            //////    System.Windows.Forms.DialogResult dr = System.Windows.Forms.DialogResult.OK;
-            //////}
         }
     }
 }

@@ -1,9 +1,11 @@
-﻿using System;
-using System.Drawing;
+﻿using System.ComponentModel;
 using System.Drawing.Design;
-using System.Windows.Forms;
+using System.Drawing;
+using System.IO;
+using System.Reflection;
 using System.Windows.Forms.Design;
-using System.ComponentModel;
+using System.Windows.Forms;
+using System;
 
 namespace osfDesigner
 {
@@ -27,7 +29,6 @@ namespace osfDesigner
 
         public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context)
         {
-            // Вызов модального диалогового окна, в котором запрашивается ввод пользователем данных.
             return UITypeEditorEditStyle.Modal;
         }
     }
@@ -64,7 +65,7 @@ namespace osfDesigner
         private System.Windows.Forms.Panel Panel12;
         private System.Windows.Forms.Panel Panel13;
         private System.Windows.Forms.Panel Panel14;
-        private System.ComponentModel.Container components = null;
+        private Container components = null;
         private ITypeDescriptorContext _context;
         private object _value;
         public IWindowsFormsEditorService _wfes;
@@ -74,7 +75,7 @@ namespace osfDesigner
             _context = context;
             _value = value;
             MainMenu1 = (osfDesigner.MainMenu)_context.Instance;
-            this.Size = new System.Drawing.Size(864, 485);
+            this.Size = new Size(864, 485);
             this.Text = "Редактор коллекции ЭлементыМеню";
             this.ControlBox = true;
             this.HelpButton = true;
@@ -85,85 +86,85 @@ namespace osfDesigner
             this.MinimizeBox = false;
             this.Name = "frmMenuItems";
             this.ShowInTaskbar = false;
-            this.MinimumSize = new System.Drawing.Size(797, 485);
+            this.MinimumSize = new Size(797, 485);
             this.Closed += FrmMenuItems_Closed;
             this.Load += FrmMenuItems_Load;
             this.CenterToScreen();
 
-            // правая панель с сеткой свойств PropertyGrid1, надписью Label2 и кнопками ButtonOK и ButtonCancel
+            // Правая панель с сеткой свойств PropertyGrid1, надписью Label2 и кнопками ButtonOK и ButtonCancel.
             Panel2 = new System.Windows.Forms.Panel();
             Panel2.Parent = this;
             Panel2.Dock = System.Windows.Forms.DockStyle.Fill;
 
-            // левая панель с деревом TreeView1, надписью Label1 и кнопками ButtonAddRoot, ButtonAddChild, ButtonAddSeparator, ButtonCollapse, ButtonExpand, ButtonMoveUp, ButtonMoveDown и ButtonDelete
+            // Левая панель с деревом TreeView1, надписью Label1 и кнопками ButtonAddRoot, ButtonAddChild, ButtonAddSeparator, ButtonCollapse, ButtonExpand, ButtonMoveUp, ButtonMoveDown и ButtonDelete.
             Panel1 = new System.Windows.Forms.Panel();
             Panel1.Parent = this;
             Panel1.Dock = System.Windows.Forms.DockStyle.Left;
             Panel1.Width = 430;
 
-            // панель с ButtonCollapse, ButtonExpand, ButtonMoveUp, ButtonMoveDown и ButtonDelete
+            // Панель с ButtonCollapse, ButtonExpand, ButtonMoveUp, ButtonMoveDown и ButtonDelete.
             Panel3 = new System.Windows.Forms.Panel();
             Panel3.Parent = Panel1;
             Panel3.Dock = System.Windows.Forms.DockStyle.Fill;
 
-            // панель с Label1, TreeView1, ButtonAddRoot и ButtonAddChild, ButtonAddSeparator
+            // Панель с Label1, TreeView1, ButtonAddRoot и ButtonAddChild, ButtonAddSeparator.
             Panel4 = new System.Windows.Forms.Panel();
             Panel4.Parent = Panel1;
             Panel4.Dock = System.Windows.Forms.DockStyle.Left;
             Panel4.Width = 353;
 
-            // отступ слева от края формы
+            // Отступ слева от края формы.
             Panel5 = new System.Windows.Forms.Panel();
             Panel5.Parent = Panel1;
             Panel5.Dock = System.Windows.Forms.DockStyle.Left;
             Panel5.Width = 16;
 
-            // панель с TreeView1
+            // Панель с TreeView1.
             Panel6 = new System.Windows.Forms.Panel();
             Panel6.Parent = Panel4;
             Panel6.Dock = System.Windows.Forms.DockStyle.Fill;
 
-            // панель с Label1
+            // Панель с Label1.
             Panel7 = new System.Windows.Forms.Panel();
             Panel7.Parent = Panel4;
             Panel7.Dock = System.Windows.Forms.DockStyle.Top;
             Panel7.Height = 40;
 
-            // панель с ButtonAddRoot и ButtonAddChild, ButtonAddSeparator
+            // Панель с ButtonAddRoot и ButtonAddChild, ButtonAddSeparator.
             Panel8 = new System.Windows.Forms.Panel();
             Panel8.Parent = Panel4;
             Panel8.Dock = System.Windows.Forms.DockStyle.Bottom;
             Panel8.Height = 87;
 
-            // панель с ButtonOK и ButtonCancel PropertyGrid1 Label2
+            // Панель с ButtonOK и ButtonCancel PropertyGrid1 Label2.
             Panel9 = new System.Windows.Forms.Panel();
             Panel9.Parent = Panel2;
             Panel9.Dock = System.Windows.Forms.DockStyle.Fill;
 
-            // отступ справа от края формы
+            // Отступ справа от края формы.
             Panel10 = new System.Windows.Forms.Panel();
             Panel10.Parent = Panel2;
             Panel10.Dock = System.Windows.Forms.DockStyle.Right;
             Panel10.Width = 16;
 
-            // панель с PropertyGrid1
+            // Панель с PropertyGrid1.
             Panel12 = new System.Windows.Forms.Panel();
             Panel12.Parent = Panel9;
             Panel12.Dock = System.Windows.Forms.DockStyle.Fill;
 
-            // панель с Label2
+            // Панель с Label2.
             Panel11 = new System.Windows.Forms.Panel();
             Panel11.Parent = Panel9;
             Panel11.Dock = System.Windows.Forms.DockStyle.Top;
             Panel11.Height = 40;
 
-            // панель с ButtonOK и ButtonCancel
+            // Панель с ButtonOK и ButtonCancel.
             Panel13 = new System.Windows.Forms.Panel();
             Panel13.Parent = Panel9;
             Panel13.Dock = System.Windows.Forms.DockStyle.Bottom;
             Panel13.Height = 53;
 
-            // панель для выравнивания справа кнопок ButtonOK и ButtonCancel
+            // Панель для выравнивания справа кнопок ButtonOK и ButtonCancel.
             Panel14 = new System.Windows.Forms.Panel();
             Panel14.Parent = Panel13;
             Panel14.Dock = System.Windows.Forms.DockStyle.Right;
@@ -171,25 +172,25 @@ namespace osfDesigner
 
             ButtonAddRoot = new System.Windows.Forms.Button();
             ButtonAddRoot.Parent = Panel8;
-            ButtonAddRoot.Bounds = new System.Drawing.Rectangle(1, 8, 112, 37);
+            ButtonAddRoot.Bounds = new Rectangle(1, 8, 112, 37);
             ButtonAddRoot.Text = "Добавить меню";
             ButtonAddRoot.Click += ButtonAddRoot_Click;
 
             ButtonAddChild = new System.Windows.Forms.Button();
             ButtonAddChild.Parent = Panel8;
-            ButtonAddChild.Bounds = new System.Drawing.Rectangle(120, 8, 105, 37);
+            ButtonAddChild.Bounds = new Rectangle(120, 8, 105, 37);
             ButtonAddChild.Text = "Добавить подменю";
             ButtonAddChild.Click += ButtonAddChild_Click;
 
             ButtonAddSeparator = new System.Windows.Forms.Button();
             ButtonAddSeparator.Parent = Panel8;
-            ButtonAddSeparator.Bounds = new System.Drawing.Rectangle(233, 8, 120, 37);
+            ButtonAddSeparator.Bounds = new Rectangle(233, 8, 120, 37);
             ButtonAddSeparator.Text = "Добавить разделитель";
             ButtonAddSeparator.Click += ButtonAddSeparator_Click;
 
             Label1 = new System.Windows.Forms.Label();
             Label1.Parent = Panel7;
-            Label1.Bounds = new System.Drawing.Rectangle(1, 16, 276, 20);
+            Label1.Bounds = new Rectangle(1, 16, 276, 20);
             Label1.Text = "Выберите меню для правки:";
 
             TreeView1 = MainMenu1.TreeView;
@@ -200,9 +201,9 @@ namespace osfDesigner
 
             ButtonDelete = new System.Windows.Forms.Button();
             ButtonDelete.Parent = Panel3;
-            ButtonDelete.Bounds = new System.Drawing.Rectangle(10, 41, 35, 28);
+            ButtonDelete.Bounds = new Rectangle(10, 41, 35, 28);
             ButtonDelete.Text = "";
-            ButtonDelete.Image = new System.Drawing.Bitmap((System.IO.Stream)new System.IO.MemoryStream(Convert.FromBase64String("AAABAAEAEBAQAAEABAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAwAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAACAAACAAAAAgIAAgAAAAIAAgACAgAAAgICAAMDAwAAAAP8AAP8AAAD//wD/AAAA/wD/AP//AAD///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD//////////5/x//+P8f//g+P//+HD///wh///+A////w////4D///4IP//4HB//+H8P//n/j/////////////")));
+            ButtonDelete.Image = new Bitmap(new MemoryStream(Convert.FromBase64String("AAABAAEAEBAQAAEABAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAwAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAACAAACAAAAAgIAAgAAAAIAAgACAgAAAgICAAMDAwAAAAP8AAP8AAAD//wD/AAAA/wD/AP//AAD///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD//////////5/x//+P8f//g+P//+HD///wh///+A////w////4D///4IP//4HB//+H8P//n/j/////////////")));
             ButtonDelete.Enabled = false;
             ButtonDelete.Click += ButtonDelete_Click;
             System.Windows.Forms.ToolTip ToolTip1 = new System.Windows.Forms.ToolTip();
@@ -210,9 +211,9 @@ namespace osfDesigner
 
             ButtonMoveUp = new System.Windows.Forms.Button();
             ButtonMoveUp.Parent = Panel3;
-            ButtonMoveUp.Bounds = new System.Drawing.Rectangle(10, 76, 35, 28);
+            ButtonMoveUp.Bounds = new Rectangle(10, 76, 35, 28);
             ButtonMoveUp.Text = "";
-            ButtonMoveUp.Image = new System.Drawing.Bitmap((System.IO.Stream)new System.IO.MemoryStream(Convert.FromBase64String("AAABAAEAEBACAAEAAQCwAAAAFgAAACgAAAAQAAAAIAAAAAEAAQAAAAAAgAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAA////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD8P////D////w////8P////D////w////8P///AAD//wAA//+AAf//wAP//+AH///wD///+B////w////+f///")));
+            ButtonMoveUp.Image = new Bitmap(new MemoryStream(Convert.FromBase64String("AAABAAEAEBACAAEAAQCwAAAAFgAAACgAAAAQAAAAIAAAAAEAAQAAAAAAgAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAA////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD8P////D////w////8P////D////w////8P///AAD//wAA//+AAf//wAP//+AH///wD///+B////w////+f///")));
             ButtonMoveUp.Enabled = false;
             ButtonMoveUp.Click += ButtonMoveUp_Click;
             System.Windows.Forms.ToolTip ToolTip2 = new System.Windows.Forms.ToolTip();
@@ -220,9 +221,9 @@ namespace osfDesigner
 
             ButtonMoveDown = new System.Windows.Forms.Button();
             ButtonMoveDown.Parent = Panel3;
-            ButtonMoveDown.Bounds = new System.Drawing.Rectangle(10, 111, 35, 28);
+            ButtonMoveDown.Bounds = new Rectangle(10, 111, 35, 28);
             ButtonMoveDown.Text = "";
-            ButtonMoveDown.Image = new System.Drawing.Bitmap((System.IO.Stream)new System.IO.MemoryStream(Convert.FromBase64String("AAABAAEAEBACAAEAAQCwAAAAFgAAACgAAAAQAAAAIAAAAAEAAQAAAAAAgAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAA////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD+f////D////gf///wD///4Af//8AD//+AAf//AAD//wAA///8P////D////w////8P////D////w////8P///")));
+            ButtonMoveDown.Image = new Bitmap(new MemoryStream(Convert.FromBase64String("AAABAAEAEBACAAEAAQCwAAAAFgAAACgAAAAQAAAAIAAAAAEAAQAAAAAAgAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAA////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD+f////D////gf///wD///4Af//8AD//+AAf//AAD//wAA///8P////D////w////8P////D////w////8P///")));
             ButtonMoveDown.Enabled = false;
             ButtonMoveDown.Click += ButtonMoveDown_Click;
             System.Windows.Forms.ToolTip ToolTip3 = new System.Windows.Forms.ToolTip();
@@ -230,9 +231,9 @@ namespace osfDesigner
 
             ButtonExpand = new System.Windows.Forms.Button();
             ButtonExpand.Parent = Panel3;
-            ButtonExpand.Bounds = new System.Drawing.Rectangle(10, 146, 35, 28);
+            ButtonExpand.Bounds = new Rectangle(10, 146, 35, 28);
             ButtonExpand.Text = "";
-            ButtonExpand.Image = new System.Drawing.Bitmap((System.IO.Stream)new System.IO.MemoryStream(Convert.FromBase64String("iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAADAFBMVEUBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACnEzGyAAAAAXRSTlMAQObYZgAAADpJREFUeNpjZIAARob/MAac+o8kACH/w5lQZWARRiQ+WATBYUAxFEmAkaAAYTOwWovuMEynY3oOyfsAOL4KE5tREc4AAAAASUVORK5CYII=")));
+            ButtonExpand.Image = new Bitmap(new MemoryStream(Convert.FromBase64String("iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAADAFBMVEUBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACnEzGyAAAAAXRSTlMAQObYZgAAADpJREFUeNpjZIAARob/MAac+o8kACH/w5lQZWARRiQ+WATBYUAxFEmAkaAAYTOwWovuMEynY3oOyfsAOL4KE5tREc4AAAAASUVORK5CYII=")));
             ButtonExpand.Enabled = false;
             ButtonExpand.Click += ButtonExpand_Click;
             System.Windows.Forms.ToolTip ToolTip4 = new System.Windows.Forms.ToolTip();
@@ -240,9 +241,9 @@ namespace osfDesigner
 
             ButtonCollapse = new System.Windows.Forms.Button();
             ButtonCollapse.Parent = Panel3;
-            ButtonCollapse.Bounds = new System.Drawing.Rectangle(10, 181, 35, 28);
+            ButtonCollapse.Bounds = new Rectangle(10, 181, 35, 28);
             ButtonCollapse.Text = "";
-            ButtonCollapse.Image = new System.Drawing.Bitmap((System.IO.Stream)new System.IO.MemoryStream(Convert.FromBase64String("iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAADAFBMVEUBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACnEzGyAAAAAXRSTlMAQObYZgAAADlJREFUeNpjZGBgYGSAgf9QDiOCD2UzwvkwSUYYH66aEcpHMpABlwAjQQHCZuCwFt1h6E5H9xyK9wE4vgoTXfUx9wAAAABJRU5ErkJggg==")));
+            ButtonCollapse.Image = new Bitmap(new MemoryStream(Convert.FromBase64String("iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAADAFBMVEUBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACnEzGyAAAAAXRSTlMAQObYZgAAADlJREFUeNpjZGBgYGSAgf9QDiOCD2UzwvkwSUYYH66aEcpHMpABlwAjQQHCZuCwFt1h6E5H9xyK9wE4vgoTXfUx9wAAAABJRU5ErkJggg==")));
             ButtonCollapse.Enabled = false;
             ButtonCollapse.Click += ButtonCollapse_Click;
             System.Windows.Forms.ToolTip ToolTip5 = new System.Windows.Forms.ToolTip();
@@ -250,7 +251,7 @@ namespace osfDesigner
 
             ButtonOK = new System.Windows.Forms.Button();
             ButtonOK.Parent = Panel14;
-            ButtonOK.Bounds = new System.Drawing.Rectangle(132, 10, 100, 28);
+            ButtonOK.Bounds = new Rectangle(132, 10, 100, 28);
             ButtonOK.Text = "ОК";
             ButtonOK.Click += ButtonOK_Click;
 
@@ -261,7 +262,7 @@ namespace osfDesigner
 
             Label2 = new System.Windows.Forms.Label();
             Label2.Parent = Panel11;
-            Label2.Bounds = new System.Drawing.Rectangle(1, 16, 68, 20);
+            Label2.Bounds = new Rectangle(1, 16, 68, 20);
             Label2.Text = "&Свойства:";
 
             TopLevel = true;
@@ -273,15 +274,15 @@ namespace osfDesigner
             string DefaultValues1 = "";
             PropertyGrid1.SelectedObject = comp;
             PropertyGrid1.Refresh();
-            object view1 = PropertyGrid1.GetType().GetField("gridView", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).GetValue(PropertyGrid1);
-            GridItemCollection GridItemCollection1 = (GridItemCollection)view1.GetType().InvokeMember("GetAllGridEntries", System.Reflection.BindingFlags.InvokeMethod | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance, null, view1, null);
+            object view1 = PropertyGrid1.GetType().GetField("gridView", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(PropertyGrid1);
+            GridItemCollection GridItemCollection1 = (GridItemCollection)view1.GetType().InvokeMember("GetAllGridEntries", BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Instance, null, view1, null);
             foreach (GridItem GridItem in GridItemCollection1)
             {
-                if (GridItem.PropertyDescriptor == null)// исключим из обхода категории
+                if (GridItem.PropertyDescriptor == null) // Исключим из обхода категории.
                 {
                     continue;
                 }
-                if (GridItem.Label == "Locked")// исключим из обхода ненужные свойства
+                if (GridItem.Label == "Locked") // Исключим из обхода ненужные свойства.
                 {
                     continue;
                 }
@@ -289,7 +290,7 @@ namespace osfDesigner
                 {
                     string str7 = "";
                     string strTab = "            ";
-                    str7 = str7 + osfDesigner.OneScriptFormsDesigner.ObjectConvertToString(GridItem.Value);
+                    str7 = str7 + OneScriptFormsDesigner.ObjectConvertToString(GridItem.Value);
                     if (GridItem.GridItems.Count > 0)
                     {
                         strTab = strTab + "\t\t";
@@ -551,7 +552,7 @@ namespace osfDesigner
             TreeNode1.Text = MenuItemEntry1.Text;
             TreeView1.SelectedNode.Nodes.Add(TreeNode1);
 
-            // свойство Checked у родителя нужно установить в false
+            // Свойство Checked у родителя нужно установить в false.
             if (MenuItemEntry1.Parent.GetType() != typeof(osfDesigner.MainMenu))
             {
                 ((MenuItem)MenuItemEntry1.Parent).Checked = false;
@@ -571,7 +572,7 @@ namespace osfDesigner
             MenuItemEntry MenuItemEntry1 = new MenuItemEntry();
             MenuItemEntry1.Name = OneScriptFormsDesigner.RevertSeparatorName(MainMenu1);
 
-            //имя в виде тире не присваивать, заменять на тире только во время формирования сценария
+            // Имя в виде тире не присваивать, заменять на тире только во время формирования сценария.
 
             MenuItemEntry1.Text = MenuItemEntry1.Name;
             MenuItemEntry MenuItemParent = (MenuItemEntry)TreeView1.SelectedNode.Tag;
@@ -583,7 +584,7 @@ namespace osfDesigner
             TreeNode1.Text = MenuItemEntry1.Name;
             TreeView1.SelectedNode.Nodes.Add(TreeNode1);
 
-            // свойство Checked у родителя нужно установить в false
+            // Свойство Checked у родителя нужно установить в false.
             if (MenuItemEntry1.Parent.GetType() != typeof(osfDesigner.MainMenu))
             {
                 ((MenuItem)MenuItemEntry1.Parent).Checked = false;

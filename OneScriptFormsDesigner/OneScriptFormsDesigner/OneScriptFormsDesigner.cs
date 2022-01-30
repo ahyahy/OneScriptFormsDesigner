@@ -1,30 +1,32 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using ScriptEngine.Machine.Contexts;
+﻿using ScriptEngine.Machine.Contexts;
 using ScriptEngine.Machine;
+using System.Collections.Generic;
+using System.Collections;
+using System.ComponentModel.Design;
+using System.ComponentModel;
+using System.Drawing;
+using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading;
-using System.ComponentModel;
-using System.ComponentModel.Design;
-using System.Drawing;
 using System.Windows.Forms;
+using System;
 
 namespace osfDesigner
 {
     [ContextClass("ДизайнерФормДляОдноСкрипта", "OneScriptFormsDesigner")]
     public class OneScriptFormsDesigner : AutoContext<OneScriptFormsDesigner>
     {
-        public static System.Collections.Hashtable hashtable = new Hashtable();// хранит связь исходного объекта с его дублером
-        public static System.Collections.Hashtable hashtableDesignerTabName = new Hashtable();// хранит имя вкладок дизайнера
-        public static System.Collections.Hashtable hashtableDesignerTabRootComponent = new Hashtable();// хранит связь rootComponent и создаваемой для него вкладки дризайнера
+        public static Hashtable hashtable = new Hashtable(); // Хранит связь исходного объекта с его дублером.
+        public static Hashtable hashtableDesignerTabName = new Hashtable(); // Хранит имя вкладок дизайнера.
+        public static Hashtable hashtableDesignerTabRootComponent = new Hashtable(); // Хранит связь rootComponent и создаваемой для него вкладки дризайнера.
         public static string str1 = "";
-        public static int tic1 = 0;// счетчик для правильной работы TabControl, пропуск двух шагов по созданию дизайнером двух вкладок по умолчанию
-        public static bool block1 = false;// тригер для блокировки выделения объекта на форме
+        public static int tic1 = 0; // Счетчик для правильной работы TabControl, пропуск двух шагов по созданию дизайнером двух вкладок по умолчанию.
+        public static bool block1 = false; // Тригер для блокировки выделения объекта на форме.
 
         [DllImport("kernel32.dll")]
         static extern IntPtr GetConsoleWindow();
+
         [DllImport("User32")]
         private static extern int ShowWindow(IntPtr hwnd, int nCmdShow);
 
@@ -51,20 +53,22 @@ namespace osfDesigner
             }
             var thread = new Thread(() =>
             {
-                osfDesigner.Program Program1 = new Program();
+                Program Program1 = new Program();
                 Program1.Main();
             }
-            );
+           );
             thread.IsBackground = true;
             thread.SetApartmentState(ApartmentState.STA);
             thread.Start();
             thread.Join();
         }
 	
-        public static void PassProperties(dynamic p1, dynamic p2)//p1 - исходный объект (OriginalObj), p2 - дублёр исходного объекта (SimilarObj), для отображения свойств в сетке свойств
+        public static void PassProperties(dynamic p1, dynamic p2)
         {
+            // p1 - исходный объект (OriginalObj)
+            // p2 - дублёр исходного объекта (SimilarObj), для отображения свойств в сетке свойств.
             string str1 = "";
-            System.Reflection.PropertyInfo[] PropertyInfo = p2.GetType().GetProperties();
+            PropertyInfo[] PropertyInfo = p2.GetType().GetProperties();
             for (int i = 0; i < PropertyInfo.Length; i++)
             {
                 try
@@ -88,10 +92,12 @@ namespace osfDesigner
             }
         }
 
-        public static void ReturnProperties(dynamic p1, dynamic p2)//p1 - исходный объект (OriginalObj), p2 - дублёр исходного объекта (SimilarObj), для отображения свойств в сетке свойств
+        public static void ReturnProperties(dynamic p1, dynamic p2)
         {
+            // p1 - исходный объект (OriginalObj)
+            // p2 - дублёр исходного объекта (SimilarObj), для отображения свойств в сетке свойств.
             string str1 = "";
-            System.Reflection.PropertyInfo[] PropertyInfo = p1.GetType().GetProperties();
+            PropertyInfo[] PropertyInfo = p1.GetType().GetProperties();
             for (int i = 0; i < PropertyInfo.Length; i++)
             {
                 try
@@ -105,7 +111,7 @@ namespace osfDesigner
             }
         }
 
-        private static void GetNodes1(System.Windows.Forms.TreeView TreeView, ref System.Collections.ArrayList ArrayList, ref int max)
+        private static void GetNodes1(System.Windows.Forms.TreeView TreeView, ref ArrayList ArrayList, ref int max)
         {
             int num = 0;
             for (int i = 0; i < TreeView.Nodes.Count; i++)
@@ -126,7 +132,7 @@ namespace osfDesigner
             }
         }
 
-        private static void GetNodes2(System.Windows.Forms.TreeNode treeNode, ref System.Collections.ArrayList ArrayList, ref int max)
+        private static void GetNodes2(System.Windows.Forms.TreeNode treeNode, ref ArrayList ArrayList, ref int max)
         {
             int num = 0;
             for (int i = 0; i < treeNode.Nodes.Count; i++)
@@ -147,7 +153,7 @@ namespace osfDesigner
             }
         }
 
-        public static string RevertNodeName(System.Windows.Forms.TreeView p1)//p1 - дерево, для каждого дерева своя нумерация
+        public static string RevertNodeName(System.Windows.Forms.TreeView p1)
         {
             string name = "Узел";
             int max = 0;
@@ -166,14 +172,14 @@ namespace osfDesigner
             return newName;
         }
 
-        public static string RevertDesignerTabName(string p1)//p1 - имя открываемой во вкладке формы, p2 - имя для вкладки дизайнера
+        public static string RevertDesignerTabName(string p1)
         {
-            string p2 = "Вкладка" + (OneScriptFormsDesigner.hashtableDesignerTabName.Count).ToString() + "(" + p1 + ")";
-            OneScriptFormsDesigner.hashtableDesignerTabName.Add(p2, p1);
+            string p2 = "Вкладка" + (hashtableDesignerTabName.Count).ToString() + "(" + p1 + ")";
+            hashtableDesignerTabName.Add(p2, p1);
             return p2;
         }
 	
-        public static string RevertStatusBarPanelName(StatusBar p1)//p1 - Панель строки состояния
+        public static string RevertStatusBarPanelName(StatusBar p1)
         {
             string name = "ПанельСтрокиСостояния";
             int max = 0;
@@ -208,7 +214,7 @@ namespace osfDesigner
             return newName;
         }
 
-        public static string RevertColumnHeaderName(ListView p1)//p1 - список элементов
+        public static string RevertColumnHeaderName(ListView p1)
         {
             string name = "Колонка";
             int max = 0;
@@ -243,7 +249,7 @@ namespace osfDesigner
             return newName;
         }
 
-        public static string RevertListViewItemName(osfDesigner.ListView p1)//p1 - список элементов
+        public static string RevertListViewItemName(ListView p1)
         {
             string name = "Элемент";
             int max = 0;
@@ -278,7 +284,7 @@ namespace osfDesigner
             return newName;
         }
 
-        public static string RevertListViewSubItemName(osfDesigner.ListViewItem p1)//p1 - элемент списка элементов
+        public static string RevertListViewSubItemName(ListViewItem p1)
         {
             string name = "Подэлемент";
             int max = 0;
@@ -363,7 +369,7 @@ namespace osfDesigner
             }
         }
 
-        public static string RevertMenuName(MainMenu p1)//p1 - Главное меню
+        public static string RevertMenuName(MainMenu p1)
         {
             string name = "Меню";
             int max = 0;
@@ -382,7 +388,7 @@ namespace osfDesigner
             return newName;
         }
 
-        public static string RevertSeparatorName(MainMenu p1)//p1 - Главное меню
+        public static string RevertSeparatorName(MainMenu p1)
         {
             string name = "Сепаратор";
             int max = 0;
@@ -401,7 +407,7 @@ namespace osfDesigner
             return newName;
         }
 
-        public static string RevertToolBarButtonName(ToolBar p1)//p1 - Панель инструментов
+        public static string RevertToolBarButtonName(ToolBar p1)
         {
             string name = "Кн";
             int max = 0;
@@ -436,7 +442,7 @@ namespace osfDesigner
             return newName;
         }
 
-        public static string RevertDataGridTableStyleName(DataGrid p1)//p1 - Сетка данных
+        public static string RevertDataGridTableStyleName(DataGrid p1)
         {
             string name = "Стиль";
             int max = 0;
@@ -445,7 +451,7 @@ namespace osfDesigner
             ArrayList ArrayList1 = new ArrayList();
             for (int i = 0; i < p1.TableStyles.Count; i++)
             {
-                string NameStyle = OneScriptFormsDesigner.RevertSimilarObj(p1.TableStyles[i]).NameStyle;
+                string NameStyle = RevertSimilarObj(p1.TableStyles[i]).NameStyle;
                 if (NameStyle != null)
                 {
                     ArrayList1.Add(NameStyle);
@@ -468,8 +474,10 @@ namespace osfDesigner
             return newName;
         }
 
-        public static string RevertDataGridColumnStyleName(dynamic p1, dynamic p2)//p1 - СтильТаблицыСеткиДанных, p2 - стиль колонки сетки данных
+        public static string RevertDataGridColumnStyleName(dynamic p1, dynamic p2)
         {
+            // p1 - стиль таблицы сетки данных.
+            // p2 - стиль колонки сетки данных.
             if (p2.GetType() == typeof(osfDesigner.DataGridBoolColumn))
             {
                 string name = "СтильКолонкиБулево";
@@ -477,7 +485,7 @@ namespace osfDesigner
                 int num = 0;
                 string newName = name + Convert.ToString(max);
                 ArrayList ArrayList1 = new ArrayList();
-                osfDesigner.DataGridTableStyle DataGridTableStyle1 = OneScriptFormsDesigner.RevertSimilarObj(p1);
+                osfDesigner.DataGridTableStyle DataGridTableStyle1 = RevertSimilarObj(p1);
                 for (int i = 0; i < DataGridTableStyle1.GridColumnStyles.Count; i++)
                 {
                     string NameStyle = ((dynamic)DataGridTableStyle1.GridColumnStyles[i]).NameStyle;
@@ -512,7 +520,7 @@ namespace osfDesigner
                 int num = 0;
                 string newName = name + Convert.ToString(max);
                 ArrayList ArrayList1 = new ArrayList();
-                osfDesigner.DataGridTableStyle DataGridTableStyle1 = OneScriptFormsDesigner.RevertSimilarObj(p1);
+                osfDesigner.DataGridTableStyle DataGridTableStyle1 = RevertSimilarObj(p1);
                 for (int i = 0; i < DataGridTableStyle1.GridColumnStyles.Count; i++)
                 {
                     string NameStyle = ((dynamic)DataGridTableStyle1.GridColumnStyles[i]).NameStyle;
@@ -547,7 +555,7 @@ namespace osfDesigner
                 int num = 0;
                 string newName = name + Convert.ToString(max);
                 ArrayList ArrayList1 = new ArrayList();
-                osfDesigner.DataGridTableStyle DataGridTableStyle1 = OneScriptFormsDesigner.RevertSimilarObj(p1);
+                osfDesigner.DataGridTableStyle DataGridTableStyle1 = RevertSimilarObj(p1);
                 for (int i = 0; i < DataGridTableStyle1.GridColumnStyles.Count; i++)
                 {
                     string NameStyle = ((dynamic)DataGridTableStyle1.GridColumnStyles[i]).NameStyle;
@@ -578,25 +586,29 @@ namespace osfDesigner
             return null;
         }
 
-        public static void AddToHashtable(dynamic p1, dynamic p2)//p1 - исходный объект (OriginalObj), p2 - дублёр исходного объекта (SimilarObj), для отображения свойств в сетке свойств
+        public static void AddToHashtable(dynamic p1, dynamic p2)
         {
-            if (!OneScriptFormsDesigner.hashtable.ContainsKey(p1))
+            // p1 - исходный объект (OriginalObj).
+            // p2 - дублёр исходного объекта (SimilarObj), для отображения свойств в сетке свойств.
+            if (!hashtable.ContainsKey(p1))
             {
-                OneScriptFormsDesigner.hashtable.Add(p1, p2);
+                hashtable.Add(p1, p2);
             }
         }
 
-        public static void AddToHashtableDesignerTabRootComponent(dynamic p1, dynamic p2)//p1 - RootComponent, форма; p2 - DesignerTab, вкладка дизайнера для этой формы
+        public static void AddToHashtableDesignerTabRootComponent(dynamic p1, dynamic p2)
         {
-            if (!OneScriptFormsDesigner.hashtableDesignerTabRootComponent.ContainsKey(p1))
+            // p1 - RootComponent, форма.
+            // p2 - DesignerTab, вкладка дизайнера для этой формы.
+            if (!hashtableDesignerTabRootComponent.ContainsKey(p1))
             {
-                OneScriptFormsDesigner.hashtableDesignerTabRootComponent.Add(p1, p2);
+                hashtableDesignerTabRootComponent.Add(p1, p2);
             }
         }
 
-        public static dynamic RevertDesignerTab(dynamic rootComponent)// возвращает вкладку, на которой находится форма
+        public static dynamic RevertDesignerTab(dynamic rootComponent)
         {
-            foreach (System.Collections.DictionaryEntry de in OneScriptFormsDesigner.hashtableDesignerTabRootComponent)
+            foreach (DictionaryEntry de in hashtableDesignerTabRootComponent)
             {
                 if (de.Key.Equals(rootComponent))
                 {
@@ -608,7 +620,7 @@ namespace osfDesigner
 
         public static dynamic RevertSimilarObj(dynamic OriginalObj)
         {
-            foreach (System.Collections.DictionaryEntry de in OneScriptFormsDesigner.hashtable)
+            foreach (DictionaryEntry de in hashtable)
             {
                 if (de.Key.Equals(OriginalObj))
                 {
@@ -620,7 +632,7 @@ namespace osfDesigner
 
         public static dynamic RevertOriginalObj(dynamic SimilarObj)
         {
-            foreach (System.Collections.DictionaryEntry de in OneScriptFormsDesigner.hashtable)
+            foreach (DictionaryEntry de in hashtable)
             {
                 if (de.Value.Equals(SimilarObj))
                 {
@@ -635,8 +647,7 @@ namespace osfDesigner
             List<string> PropertiesToHide = list;
             foreach (var vObject in v)
             {
-                System.Reflection.PropertyInfo[] myPropertyInfo;
-                myPropertyInfo = vObject.GetType().GetProperties();
+                PropertyInfo[] myPropertyInfo = vObject.GetType().GetProperties();
                 var properties = myPropertyInfo;
                 foreach (var p in properties)
                 {
@@ -668,7 +679,7 @@ namespace osfDesigner
             object obj = p1;
             if (obj != null)
             {
-                System.Type objType = p1.GetType();
+                Type objType = p1.GetType();
                 TypeConverter Converter1 = System.ComponentModel.TypeDescriptor.GetConverter(objType);
                 if (objType == typeof(bool))
                 {
@@ -696,14 +707,12 @@ namespace osfDesigner
                 }
                 else if (objType == typeof(Bitmap))
                 {
-                    return Converter1.ConvertToString( (System.Drawing.Bitmap)obj ) + " (" + ( (System.Drawing.Bitmap)obj).Tag + ")";
+                    return Converter1.ConvertToString((Bitmap)obj) + " (" + ((Bitmap)obj).Tag + ")";
                 }
-	
                 else if (objType == typeof(osfDesigner.MyIcon))
                 {
                     return MyIconConverter.ConvertToString(obj);
                 }
-	
                 else
                 {
                     return Converter1.ConvertToString(obj);
@@ -733,16 +742,16 @@ namespace osfDesigner
             string DisplayName = "";
             try
             {
-                System.ComponentModel.PropertyDescriptor PropertyDescriptorCollection1 = System.ComponentModel.TypeDescriptor.GetProperties(value.GetType())[memberName];
-                System.ComponentModel.AttributeCollection attributes = System.ComponentModel.TypeDescriptor.GetProperties(value.GetType())[memberName].Attributes;
-                System.ComponentModel.DisplayNameAttribute myDisplayNameAttribute = (System.ComponentModel.DisplayNameAttribute)attributes[typeof(System.ComponentModel.DisplayNameAttribute)];
+                PropertyDescriptor PropertyDescriptorCollection1 = System.ComponentModel.TypeDescriptor.GetProperties(value.GetType())[memberName];
+                AttributeCollection attributes = System.ComponentModel.TypeDescriptor.GetProperties(value.GetType())[memberName].Attributes;
+                DisplayNameAttribute myDisplayNameAttribute = (DisplayNameAttribute)attributes[typeof(DisplayNameAttribute)];
                 DisplayName = myDisplayNameAttribute.DisplayName;
             }
             catch { }
             return DisplayName;
         }
 
-        public static string GetPropName(object value, string displayName)// по отображаемому имени свойства возвращает имя  свойства
+        public static string GetPropName(object value, string displayName)
         {
             PropertyInfo[] properties = value.GetType().GetProperties();
             foreach (PropertyInfo prop in properties)
@@ -750,7 +759,7 @@ namespace osfDesigner
                 object[] attrs = prop.GetCustomAttributes(true);
                 foreach (object attr in attrs)
                 {
-                    if (attr.GetType() == typeof(System.ComponentModel.DisplayNameAttribute))
+                    if (attr.GetType() == typeof(DisplayNameAttribute))
                     {
                         DisplayNameAttribute DisplayNameAttribute1 = (DisplayNameAttribute)attr;
                         if (DisplayNameAttribute1 != null)
@@ -1265,36 +1274,36 @@ namespace osfDesigner
                 {"ФорматПикселей", "PixelFormat"}
             };
 
-        public static Dictionary<string, System.Windows.Forms.Cursor> namesCursorRuEn = new Dictionary<string, System.Windows.Forms.Cursor>
+        public static Dictionary<string, Cursor> namesCursorRuEn = new Dictionary<string, Cursor>
             {
-                {"БезДвижения2D", System.Windows.Forms.Cursors.NoMove2D},
-                {"БезДвиженияВертикально", System.Windows.Forms.Cursors.NoMoveVert},
-                {"БезДвиженияГоризонтально", System.Windows.Forms.Cursors.NoMoveHoriz},
-                {"ВРазделитель", System.Windows.Forms.Cursors.VSplit},
-                {"ГРазделитель", System.Windows.Forms.Cursors.HSplit},
-                {"КурсорВ", System.Windows.Forms.Cursors.PanEast},
-                {"КурсорЗ", System.Windows.Forms.Cursors.PanWest},
-                {"КурсорОжидания", System.Windows.Forms.Cursors.WaitCursor},
-                {"КурсорС", System.Windows.Forms.Cursors.PanNorth},
-                {"КурсорСВ", System.Windows.Forms.Cursors.PanNE},
-                {"КурсорСЗ", System.Windows.Forms.Cursors.PanNW},
-                {"КурсорЮ", System.Windows.Forms.Cursors.PanSouth},
-                {"КурсорЮВ", System.Windows.Forms.Cursors.PanSE},
-                {"КурсорЮЗ", System.Windows.Forms.Cursors.PanSW},
-                {"Ладонь", System.Windows.Forms.Cursors.Hand},
-                {"Луч", System.Windows.Forms.Cursors.IBeam},
-                {"Нет", System.Windows.Forms.Cursors.No},
-                {"Перекрестие", System.Windows.Forms.Cursors.Cross},
-                {"ПоУмолчанию", System.Windows.Forms.Cursors.Default},
-                {"ПриСтарте", System.Windows.Forms.Cursors.AppStarting},
-                {"РазмерЗВ", System.Windows.Forms.Cursors.SizeWE},
-                {"РазмерСВЮЗ", System.Windows.Forms.Cursors.SizeNESW},
-                {"РазмерСЗЮВ", System.Windows.Forms.Cursors.SizeNWSE},
-                {"РазмерСЮ", System.Windows.Forms.Cursors.SizeNS},
-                {"РазмерЧетырехконечный", System.Windows.Forms.Cursors.SizeAll},
-                {"Справка", System.Windows.Forms.Cursors.Help},
-                {"Стрелка", System.Windows.Forms.Cursors.Arrow},
-                {"СтрелкаВверх", System.Windows.Forms.Cursors.UpArrow}
+                {"БезДвижения2D", Cursors.NoMove2D},
+                {"БезДвиженияВертикально", Cursors.NoMoveVert},
+                {"БезДвиженияГоризонтально", Cursors.NoMoveHoriz},
+                {"ВРазделитель", Cursors.VSplit},
+                {"ГРазделитель", Cursors.HSplit},
+                {"КурсорВ", Cursors.PanEast},
+                {"КурсорЗ", Cursors.PanWest},
+                {"КурсорОжидания", Cursors.WaitCursor},
+                {"КурсорС", Cursors.PanNorth},
+                {"КурсорСВ", Cursors.PanNE},
+                {"КурсорСЗ", Cursors.PanNW},
+                {"КурсорЮ", Cursors.PanSouth},
+                {"КурсорЮВ", Cursors.PanSE},
+                {"КурсорЮЗ", Cursors.PanSW},
+                {"Ладонь", Cursors.Hand},
+                {"Луч", Cursors.IBeam},
+                {"Нет", Cursors.No},
+                {"Перекрестие", Cursors.Cross},
+                {"ПоУмолчанию", Cursors.Default},
+                {"ПриСтарте", Cursors.AppStarting},
+                {"РазмерЗВ", Cursors.SizeWE},
+                {"РазмерСВЮЗ", Cursors.SizeNESW},
+                {"РазмерСЗЮВ", Cursors.SizeNWSE},
+                {"РазмерСЮ", Cursors.SizeNS},
+                {"РазмерЧетырехконечный", Cursors.SizeAll},
+                {"Справка", Cursors.Help},
+                {"Стрелка", Cursors.Arrow},
+                {"СтрелкаВверх", Cursors.UpArrow}
             };
 
         public static Dictionary<string, string> namesCursorEnRu = new Dictionary<string, string>
@@ -1331,12 +1340,12 @@ namespace osfDesigner
 
         public static ArrayList StrFindBetween(string p1, string p2 = null, string p3 = null, bool p4 = true, bool p5 = true)
         {
-            //p1 - исходная строка
-            //p2 - подстрока поиска от которой ведем поиск
-            //p3 - подстрока поиска до которой ведем поиск
-            //p4 - не включать p2 и p3 в результат
-            //p5 - в результат не будут включены участки, содержащие другие найденные участки, удовлетворяющие переданным параметрам
-            //функция возвращает массив строк
+            // p1 - исходная строка.
+            // p2 - подстрока поиска от которой ведем поиск.
+            // p3 - подстрока поиска до которой ведем поиск.
+            // p4 - не включать p2 и p3 в результат.
+            // p5 - в результат не будут включены участки, содержащие другие найденные участки, удовлетворяющие переданным параметрам.
+            // Возвращает массив строк.
             string str1 = p1;
             int Position1;
             ArrayList ArrayList1 = new ArrayList();
@@ -1407,24 +1416,22 @@ namespace osfDesigner
             return ArrayList1;
         }
 	
-        public static System.Drawing.Image Base64ToImage(string base64String)
+        public static Image Base64ToImage(string base64String)
         {
-            // Convert base 64 string to byte[]
             byte[] imageBytes = Convert.FromBase64String(base64String);
-            // Convert byte[] to Image
-            using (var ms = new System.IO.MemoryStream(imageBytes, 0, imageBytes.Length))
+            using (var ms = new MemoryStream(imageBytes, 0, imageBytes.Length))
             {
-                Image image = System.Drawing.Image.FromStream(ms, true);
+                Image image = Image.FromStream(ms, true);
                 return image;
             }
         }
 	
         public static string ParseBetween(string p1, string p2 = null, string p3 = null)
         {
-            //p1 - исходная строка
-            //p2 - подстрока поиска от которой ведем поиск
-            //p3 - подстрока поиска до которой ведем поиск
-            //возвращает строку, ограниченную p2 и p3
+            // p1 - исходная строка.
+            // p2 - подстрока поиска от которой ведем поиск.
+            // p3 - подстрока поиска до которой ведем поиск.
+            // Возвращает строку, ограниченную p2 и p3.
             string str1 = p1;
             int Position1;
             if (p2 != null && p3 == null)
@@ -1475,8 +1482,9 @@ namespace osfDesigner
             return null;
         }
 
-        public static Component HighlightedComponent()// возвращает выделенный в настоящее время компонент
+        public static Component HighlightedComponent()
         {
+            // Возвращает выделенный в настоящее время компонент.
             IDesignerHost host = pDesigner.DSME.ActiveDesignSurface.GetIDesignerHost();
             ISelectionService iSel = host.GetService(typeof(ISelectionService)) as ISelectionService;
             Component comp = null;
@@ -1487,8 +1495,9 @@ namespace osfDesigner
             return comp;
         }
 
-        public static Component GetComponentByName(string name)// возвращает компонент найденный по имени
+        public static Component GetComponentByName(string name)
         {
+            // Возвращает компонент найденный по имени.
             Component comp = null;
 
             IDesignerHost host = pDesigner.DSME.ActiveDesignSurface.GetIDesignerHost();
@@ -1507,15 +1516,16 @@ namespace osfDesigner
             return comp;
         }
 
-        public static string GetNameByComponent(Component comp)// возвращает имя для компонента
+        public static string GetNameByComponent(Component comp)
         {
+            // Возвращает имя для компонента.
             Component comp1 = comp;
 
             if (comp.GetType().ToString() == "System.Windows.Forms.TabPage" || 
                 comp.GetType().ToString() == "System.Windows.Forms.ImageList" || 
                 comp.GetType().ToString() == "System.Windows.Forms.MainMenu")
             {
-                comp1 = OneScriptFormsDesigner.RevertSimilarObj(comp);
+                comp1 = RevertSimilarObj(comp);
             }
             return comp1.Site.Name;
         }

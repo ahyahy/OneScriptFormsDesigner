@@ -1,10 +1,11 @@
-﻿using System;
-using System.Drawing;
-using System.Drawing.Design;
-using System.Windows.Forms;
+﻿using System.ComponentModel.Design;
 using System.ComponentModel;
-using System.ComponentModel.Design;
+using System.Drawing.Design;
+using System.Drawing;
+using System.Globalization;
 using System.Reflection;
+using System.Windows.Forms;
+using System;
 
 namespace osfDesigner
 {
@@ -26,11 +27,7 @@ namespace osfDesigner
         private System.Windows.Forms.Button ButtonUp1 = null;
         private System.Windows.Forms.Button ButtonDown1 = null;
 
-        // Определите статическое событие, чтобы отобразить внутреннюю сетку свойств
-        public delegate void MyPropertyValueChangedEventHandler(object sender, PropertyValueChangedEventArgs e);
-        public static event MyPropertyValueChangedEventHandler MyPropertyValueChanged;
-
-        // Унаследуйте конструктор по умолчанию из стандартного редактора коллекций...
+        // Унаследуйте конструктор по умолчанию из стандартного редактора коллекций.
         public MyCollectionEditor(Type type) : base(type)
         {
         }
@@ -38,7 +35,7 @@ namespace osfDesigner
         // Переопределите этот метод, чтобы получить доступ к форме редактора коллекции. 
         protected override CollectionForm CreateCollectionForm()
         {
-            // Получение макета редактора коллекции по умолчанию...
+            // Получение макета редактора коллекции по умолчанию.
             collectionForm = base.CreateCollectionForm();
             collectionForm.Text = "Редактор коллекции Изображения";
             collectionForm.Shown += CollectionForm_Shown;
@@ -82,9 +79,9 @@ namespace osfDesigner
                         PropertyGrid1.SelectedGridItemChanged += PropertyGrid1_SelectedGridItemChanged;
                         PropertyGrid1.PropertyValueChanged += PropertyGrid1_PropertyValueChanged;
 
-                        // также сделать доступным окно с подсказками по параметрам в нижней части 
+                        // Также сделайте доступным окно с подсказками по параметрам в нижней части.
                         PropertyGrid1.HelpVisible = true;
-                        PropertyGrid1.HelpBackColor = System.Drawing.SystemColors.Info;
+                        PropertyGrid1.HelpBackColor = SystemColors.Info;
                     }
                     if (i == 6)
                     {
@@ -159,7 +156,7 @@ namespace osfDesigner
             MethodInfo3.Invoke(collectionForm, new object[] { MyList1 });
         }
 
-        private void ButtonDown1_Click(object sender, System.EventArgs e)
+        private void ButtonDown1_Click(object sender, EventArgs e)
         {
             object SelectedItem1 = ListBox1.SelectedItem;
             ImageList ImageList1 = (ImageList)this.Context.Instance;
@@ -175,7 +172,7 @@ namespace osfDesigner
             PropertiesLabel1.Text = "Свойства:";
         }
 
-        private void ButtonUp1_Click(object sender, System.EventArgs e)
+        private void ButtonUp1_Click(object sender, EventArgs e)
         {
             object SelectedItem1 = ListBox1.SelectedItem;
             ImageList ImageList1 = (ImageList)this.Context.Instance;
@@ -192,11 +189,6 @@ namespace osfDesigner
 
         void PropertyGrid1_PropertyValueChanged(object sender, PropertyValueChangedEventArgs e)
         {
-            // Запустите событие нашей коллекции...
-            if (MyCollectionEditor.MyPropertyValueChanged != null)
-            {
-                MyCollectionEditor.MyPropertyValueChanged(this, e);
-            }
         }
 
         private void PropertyGrid_SelectedObjectsChanged(object sender, EventArgs e)
@@ -204,7 +196,7 @@ namespace osfDesigner
             PropertiesLabel1.Text = "Свойства:";
         }
 
-        private void ButtonAdd1_Click(object sender, System.EventArgs e)
+        private void ButtonAdd1_Click(object sender, EventArgs e)
         {
             MethodInfo MethodInfo1 = collectionForm.GetType().GetMethod("PerformRemove", BindingFlags.NonPublic | BindingFlags.Instance);
 
@@ -228,14 +220,14 @@ namespace osfDesigner
                 for (int i = 0; i < OpenFileDialog1.FileNames.Length; i++)
                 {
                     ImageEntry ImageEntry1 = new ImageEntry();
-                    ImageEntry1.Image = new System.Drawing.Bitmap("" + OpenFileDialog1.FileNames[i]);
+                    ImageEntry1.Image = new Bitmap("" + OpenFileDialog1.FileNames[i]);
                     ImageEntry1.Path = OpenFileDialog1.FileNames[i];
                     ImageEntry1.FileName = OpenFileDialog1.SafeFileNames[i];
                     MyList1.Add(ImageEntry1);
                     ImageCollection1.Add(ImageEntry1.Image);
                 }
                 MethodInfo MethodInfo2 = collectionForm.GetType().GetMethod("AddItems", BindingFlags.NonPublic | BindingFlags.Instance);
-                MethodInfo2.Invoke(collectionForm, new object[] { MyList1 } );
+                MethodInfo2.Invoke(collectionForm, new object[] { MyList1 });
             }
         }
 
@@ -264,7 +256,7 @@ namespace osfDesigner
                 {
                     maxCount1 = Count1;
                 }
-                SizeF sizeW = Graphics1.MeasureString(maxCount1.ToString(System.Globalization.CultureInfo.CurrentCulture), ListBox1.Font);
+                SizeF sizeW = Graphics1.MeasureString(maxCount1.ToString(CultureInfo.CurrentCulture), ListBox1.Font);
 
                 int charactersInNumber = ((int)(Math.Log(maxCount1) / Math.Log(10)) + 1);
                 int w = 4 + charactersInNumber * (ListBox1.Font.Height / 2);
@@ -309,7 +301,7 @@ namespace osfDesigner
                         Rectangle2.Height - 1);
                     Rectangle2.Inflate(-1, -1);
 
-                    PaintValueEventArgs PaintValueEventArgs1 = new System.Drawing.Design.PaintValueEventArgs(this.Context, ListItem1.Value, Graphics1, Rectangle2);
+                    PaintValueEventArgs PaintValueEventArgs1 = new PaintValueEventArgs(this.Context, ListItem1.Value, Graphics1, Rectangle2);
                     this.PaintValue(PaintValueEventArgs1);
                     offset += 26 + 1;
                 }
@@ -318,7 +310,7 @@ namespace osfDesigner
                 try
                 {
                     StringFormat1.Alignment = StringAlignment.Center;
-                    Graphics1.DrawString(e.Index.ToString(System.Globalization.CultureInfo.CurrentCulture), 
+                    Graphics1.DrawString(e.Index.ToString(CultureInfo.CurrentCulture), 
                         ListBox1.Font, 
                         SystemBrushes.ControlText, 
                         new Rectangle(e.Bounds.X, e.Bounds.Y, w, e.Bounds.Height),
@@ -344,7 +336,7 @@ namespace osfDesigner
                     textBrush?.Dispose();
                 }
 
-                // Проверьте, нужно ли нам изменять горизонтальный экстент списка
+                // Проверьте, нужно ли нам изменять горизонтальный экстент списка.
                 int width = offset + (int)Graphics1.MeasureString(itemText, ListBox1.Font).Width;
                 if (width > e.Bounds.Width && ListBox1.HorizontalExtent < width)
                 {

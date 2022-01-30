@@ -1,24 +1,23 @@
-﻿using System;
+﻿using System.ComponentModel.Design;
 using System.ComponentModel;
 using System.Drawing;
+using System.Reflection;
 using System.Windows.Forms;
-using System.ComponentModel.Design;
+using System;
 
 namespace osfDesigner
 {
-    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     public class pDesigner : System.Windows.Forms.UserControl, IpDesigner
     {
-        private System.ComponentModel.IContainer components = null;
-        private System.Windows.Forms.SplitContainer splitterpDesigner;
-        public static System.Windows.Forms.SplitContainer SplitterpDesigner;
-        private System.Windows.Forms.Panel codePanel;// панель с кодом скрипта
+        private IContainer components = null;
+        private SplitContainer splitterpDesigner;
+        public static SplitContainer SplitterpDesigner;
+        private System.Windows.Forms.Panel codePanel; // Панель с кодом скрипта.
         private System.Windows.Forms.RichTextBox richTextBox;
         public static System.Windows.Forms.Panel CodePanel = null;
         public static System.Windows.Forms.RichTextBox RichTextBox = null;
         private System.Windows.Forms.TabControl tbCtrlpDesigner;
         public static System.Windows.Forms.TabControl TabControl;
-        private const string _Name_ = "pDesigner";
         public static DesignSurfaceManagerExt DSME = null;
         private System.Windows.Forms.Form form;
 
@@ -36,7 +35,7 @@ namespace osfDesigner
             this.richTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.codePanel.Hide();
 
-            this.splitterpDesigner = new System.Windows.Forms.SplitContainer();
+            this.splitterpDesigner = new SplitContainer();
             this.tbCtrlpDesigner = new System.Windows.Forms.TabControl();
             this.splitterpDesigner.Panel1.SuspendLayout();
             this.splitterpDesigner.SuspendLayout();
@@ -45,36 +44,36 @@ namespace osfDesigner
             // splitterpDesigner
             //
             this.splitterpDesigner.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitterpDesigner.Location = new System.Drawing.Point(0, 0);
+            this.splitterpDesigner.Location = new Point(0, 0);
             this.splitterpDesigner.BackColor = Color.LightSteelBlue;
             this.splitterpDesigner.Name = "splitterpDesigner";
             //
             // splitterpDesigner.Panel1
             //
             this.splitterpDesigner.Panel1.Controls.Add(this.tbCtrlpDesigner);
-            this.splitterpDesigner.Size = new System.Drawing.Size(635, 305);
+            this.splitterpDesigner.Size = new Size(635, 305);
             this.splitterpDesigner.SplitterDistance = 439;
             this.splitterpDesigner.TabIndex = 0;
             //
             // tbCtrlpDesigner
             //
             this.tbCtrlpDesigner.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tbCtrlpDesigner.Location = new System.Drawing.Point(0, 0);
+            this.tbCtrlpDesigner.Location = new Point(0, 0);
             this.tbCtrlpDesigner.Name = "tbCtrlpDesigner";
             this.tbCtrlpDesigner.SelectedIndex = 0;
-            this.tbCtrlpDesigner.Size = new System.Drawing.Size(439, 305);
+            this.tbCtrlpDesigner.Size = new Size(439, 305);
             this.tbCtrlpDesigner.TabIndex = 0;
-            this.tbCtrlpDesigner.SelectedIndexChanged += new System.EventHandler(this.tbCtrlpDesigner_SelectedIndexChanged);
+            this.tbCtrlpDesigner.SelectedIndexChanged += new EventHandler(this.tbCtrlpDesigner_SelectedIndexChanged);
             //
             // pDesigner
             //
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Controls.Add(this.splitterpDesigner);
             this.Controls.Add(this.codePanel);
             this.Name = "pDesigner";
-            this.Size = new System.Drawing.Size(635, 305);
+            this.Size = new Size(635, 305);
             this.splitterpDesigner.Panel1.ResumeLayout(false);
             this.splitterpDesigner.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -101,14 +100,13 @@ namespace osfDesigner
             base.Dispose(disposing);
         }
 
-        // Экземпляр класса DesignSurfaceManagerExt должен наблюдать за событиями которые изменяют активную область дизайнера
-        // DesignSurfaceManager представлен как публичное геттер свойство в качестве средства тестирования
+        // Экземпляр класса DesignSurfaceManagerExt должен наблюдать за событиями которые изменяют активную область дизайнера.
         public DesignSurfaceManagerExt DesignSurfaceManager { get; private set; }
 
         public static implicit operator bool(pDesigner d)
         {
             bool isValid = true;
-            // Объект 'd' должен быть правильно инициализирован
+            // Объект 'd' должен быть правильно инициализирован.
             isValid &= ((null == d.Toolbox) ? false : true);
             return isValid;
         }
@@ -129,7 +127,7 @@ namespace osfDesigner
             }
         }
 
-        // Получение и установка реальной панели элементов (Toolbox), предоставляемой пользователю
+        // Получение и установка реальной панели элементов (Toolbox), предоставляемой пользователю.
         public System.Windows.Forms.ListBox Toolbox { get; set; }
 
         public System.Windows.Forms.TabControl TabControlHostingDesignSurfaces
@@ -147,30 +145,27 @@ namespace osfDesigner
             get { return DesignSurfaceManager.ActiveDesignSurface as DesignSurfaceExt2; }
         }
 
-        // Создайте область дизайнера (DesignSurface) и корневой компонент (rootComponent) (элемент управления .NET)
-        // используя IDesignSurfaceExt.CreateRootComponent() 
-        // Если режим выравнивания (alignmentMode) не использует сетку (GRID), то параметр gridSize игнорируется
+        // Создайте область дизайнера (DesignSurface) и корневой компонент (rootComponent) (элемент управления .NET) используя IDesignSurfaceExt.CreateRootComponent().
+        // Если режим выравнивания (alignmentMode) не использует сетку (GRID), то параметр gridSize игнорируется.
         // Примечание:
-        //     параметры используются для определения элемента управления, используемого в качестве корневого компонента (RootComponent)
-        //     TT запрашивается как производное от .NET класса элемента управления
+        //     Параметры используются для определения элемента управления, используемого в качестве корневого компонента (RootComponent).
+        //     TT запрашивается как производное от .NET класса элемента управления.
         public DesignSurfaceExt2 AddDesignSurface<TT>(
             int startingFormWidth, 
             int startingFormHeight,
             AlignmentModeEnum alignmentMode, 
             Size gridSize,
             string formName = null
-            ) where TT : Control
+           ) where TT : Control
         {
-            const string _signature_ = _Name_ + @"::AddDesignSurface<>()";
-
             if (!this)
             {
-                throw new Exception(_signature_ + " - Exception: " + _Name_ + " is not initialized! Please set the Property: IpDesigner::Toolbox before calling any methods!");
+                throw new Exception(@"pDesigner::AddDesignSurface<>() - Исключение: " + "pDesigner" + " не инициализирован! Пожалуйста, установите свойство: IpDesigner::Toolbox перед вызовом любых методов!");
             }
-            // создание области дизайнера (DesignSurface)
+            // Создание области дизайнера (DesignSurface).
             DesignSurfaceExt2 surface = DesignSurfaceManager.CreateDesignSurfaceExt2();
             this.DesignSurfaceManager.ActiveDesignSurface = surface;
-            // Выбор режима выравнивания...
+            // Выбор режима выравнивания.
             switch (alignmentMode)
             {
                 case AlignmentModeEnum.SnapLines:
@@ -189,24 +184,24 @@ namespace osfDesigner
                     surface.UseSnapLines();
                     break;
             }
-            // задействуем UndoEngine
+            // Задействуем UndoEngine.
             ((IDesignSurfaceExt)surface).GetUndoEngineExt().Enabled = true;
-            // Выбор службы IToolboxService и привязка её к ListBox
+            // Выбор службы IToolboxService и привязка её к ListBox.
             ToolboxServiceImp tbox = ((IDesignSurfaceExt2)surface).GetIToolboxService() as ToolboxServiceImp;
-            // Мы не проверяем, имеет ли Toolbox значение null, поскольку самая первая проверка: if(!this)...
+            // Мы не проверяем, имеет ли Toolbox значение null, поскольку самая первая проверка: if (!this)...
             if (null != tbox)
             {
                 tbox.Toolbox = this.Toolbox;
             }
-            // создание корневого (Root) компонента, в случае если это Форма (Form)
+            // Создание корневого (Root) компонента, в случае если это Форма (Form).
             Control rootComponent = null;
-            // приведение к .NET элементу управления, поскольку объект TT имеет ограничение: может быть только .NET "Control"
+            // Приведение к .NET элементу управления, поскольку объект TT имеет ограничение: может быть только .NET "Control".
             rootComponent = surface.CreateRootComponent(typeof(TT), new Size(startingFormWidth, startingFormHeight)) as Control;
-            // переименуем размещаемый компонент потому что пользователь может добавить более одной формы
-            // и каждая новая форма будет называться "Form1" если мы не зададим её имя (Name))
+            // Переименуем размещаемый компонент, потому что пользователь может добавить более одной формы
+            // и каждая новая форма будет называться "Form1", если мы не зададим её имя (Name).
             if (formName != null)
             {
-                // организуем вопрос об имени загружаемой формы
+                // Организуем вопрос об имени загружаемой формы.
                 form = new System.Windows.Forms.Form();
                 form.Size = new Size(390, 120);
                 form.Text = "Имя для загружаемой формы:";
@@ -250,14 +245,14 @@ namespace osfDesigner
                 rootComponent.Site.Name = this.DesignSurfaceManager.GetValidFormName();
             }
 
-            // разрешение перетаскивания (Drag&Drop) для RootComponent
+            // Разрешение перетаскивания (Drag&Drop) для RootComponent.
             ((DesignSurfaceExt2)surface).EnableDragandDrop();
-            // IComponentChangeService помечена как незаменяемая служба
+            // IComponentChangeService помечена как незаменяемая служба.
             IComponentChangeService componentChangeService = (IComponentChangeService)(surface.GetService(typeof(IComponentChangeService)));
             if (null != componentChangeService)
             {
                 // Тип "ComponentEventHandler Delegate" представляет метод который будет обрабатывать ComponentAdding, 
-                // ComponentAdded, ComponentRemoving, и ComponentRemoved события, возникшие как события уровня компонента
+                // ComponentAdded, ComponentRemoving, и ComponentRemoved события, возникшие как события уровня компонента.
                 componentChangeService.ComponentChanged += (Object sender, ComponentChangedEventArgs e) =>
                 {
                     dynamic OriginalObj = e.Component;
@@ -267,7 +262,7 @@ namespace osfDesigner
                         if (SimilarObj == null)
                         {
                             SimilarObj = new osfDesigner.TabPage();
-                            OneScriptFormsDesigner.PassProperties(OriginalObj, SimilarObj);//передадим свойства
+                            OneScriptFormsDesigner.PassProperties(OriginalObj, SimilarObj); // Передадим свойства.
                             SimilarObj.OriginalObj = OriginalObj;
                             OriginalObj.Tag = SimilarObj;
                             OneScriptFormsDesigner.AddToHashtable(OriginalObj, SimilarObj);
@@ -288,7 +283,7 @@ namespace osfDesigner
                     if (OriginalObj.GetType().ToString() == "System.Windows.Forms.TabPage")
                     {
                         osfDesigner.TabPage SimilarObj = new osfDesigner.TabPage();
-                        OneScriptFormsDesigner.PassProperties(OriginalObj, SimilarObj);//передадим свойства
+                        OneScriptFormsDesigner.PassProperties(OriginalObj, SimilarObj); // Передадим свойства.
                         SimilarObj.OriginalObj = OriginalObj;
                         OriginalObj.Tag = SimilarObj;
                         OneScriptFormsDesigner.AddToHashtable(OriginalObj, SimilarObj);
@@ -299,7 +294,7 @@ namespace osfDesigner
                     OriginalObj.GetType().ToString() == "osfDesigner.DataGrid" || 
                     OriginalObj.GetType().ToString() == "osfDesigner.RichTextBox")
                     {
-                        IDesignerHost designerHost = pDesigner.DSME.ActiveDesignSurface.GetIDesignerHost();
+                        IDesignerHost designerHost = DSME.ActiveDesignSurface.GetIDesignerHost();
                         if (designerHost != null)
                         {
                             dynamic designer = designerHost.GetDesigner(OriginalObj);
@@ -313,7 +308,7 @@ namespace osfDesigner
                     if (OriginalObj.GetType().ToString() == "osfDesigner.DataGrid" ||
                     OriginalObj.GetType().ToString() == "osfDesigner.TabControl")
                     {
-                        IDesignerHost designerHost = pDesigner.DSME.ActiveDesignSurface.GetIDesignerHost();
+                        IDesignerHost designerHost = DSME.ActiveDesignSurface.GetIDesignerHost();
                         if (designerHost != null)
                         {
                             dynamic designer = designerHost.GetDesigner(OriginalObj);
@@ -329,14 +324,12 @@ namespace osfDesigner
                     // Получим начальные значения свойств для компонента, они нужны для создания скрипта
                     if (OriginalObj.GetType().ToString() == "System.Windows.Forms.TabPage")
                     {
-                        GetDefaultValues(osfDesigner.OneScriptFormsDesigner.RevertSimilarObj(OriginalObj));
+                        GetDefaultValues(OneScriptFormsDesigner.RevertSimilarObj(OriginalObj));
                     }
                     else
                     {
                         GetDefaultValues(OriginalObj);
                     }
-
-                    ((Form)rootComponent).ArrayListComponentsAddingOrder.Add(OriginalObj);
 
                     PropertyGridHost.ReloadTreeView();
                     PropertyGridHost.ChangeSelectNode((Component)e.Component);
@@ -344,7 +337,6 @@ namespace osfDesigner
 
                 componentChangeService.ComponentRemoving += (Object sender, ComponentEventArgs e) =>
                 {
-                    ((Form)rootComponent).ArrayListComponentsAddingOrder.Remove(e.Component);
                 };
 
                 componentChangeService.ComponentRemoved += (Object sender, ComponentEventArgs e) =>
@@ -353,43 +345,43 @@ namespace osfDesigner
                     PropertyGridHost.ReloadTreeView();
                 };
             }
-            // Теперь установим свойство "Форма.Текст", (потому что это будет пустая строка если мы не установим его)
+            // Теперь установим свойство "Форма.Текст", потому что это будет пустая строка если мы не установим его.
             Control view = surface.GetView();
             if (null == view)
             {
                 return null;
             }
             PropertyDescriptorCollection pdc = TypeDescriptor.GetProperties(view);
-            // Установим свойство PropertyDescriptor для конкретного свойства
+            // Установим значение свойства через PropertyDescriptor для конкретного свойства.
             PropertyDescriptor pdS = pdc.Find("Text", false);
             if (null != pdS)
             {
                 pdS.SetValue(rootComponent, rootComponent.Site.Name);
             }
-            // отобразим область дизайнера (DesignSurface)
+            // Отобразим область дизайнера (DesignSurface).
             System.Windows.Forms.TabPage newPage = new System.Windows.Forms.TabPage();
             string sTabPageText = OneScriptFormsDesigner.RevertDesignerTabName(rootComponent.Site.Name);
-            // свяжем rootComponent и создаваемую для него вкладку дризайнера, чтобы потом при удалении формы корректно удалить и вкладку
+            // Свяжем rootComponent и создаваемую для него вкладку дризайнера, чтобы потом при удалении формы корректно удалить и вкладку.
             OneScriptFormsDesigner.AddToHashtableDesignerTabRootComponent(rootComponent, newPage);
             newPage.Text = sTabPageText;
             newPage.Name = sTabPageText;
             newPage.SuspendLayout();
             view.Dock = System.Windows.Forms.DockStyle.Fill;
-            view.Parent = newPage; // Отметьте это назначение
+            view.Parent = newPage;
             this.tbCtrlpDesigner.TabPages.Add(newPage);
             newPage.ResumeLayout();
-            // Выберите созданную вкладку (TabPage)
+            // Выберите созданную вкладку (TabPage).
             this.tbCtrlpDesigner.SelectedIndex = this.tbCtrlpDesigner.TabPages.Count - 1;
             this.PropertyGridHost.ReloadComboBox();
 
-            // Получим начальные значения свойств формы, они нужны для создания скрипта
+            // Получим начальные значения свойств формы, они нужны для создания скрипта.
             GetDefaultValues(rootComponent);
 
             //* 18.12.2021 perfolenta 
             surface.Dirty = false;
             //***
 
-            // Наконец, возвратим созданную область дизайнера, чтобы она снова изменялась пользователем
+            // Наконец, возвратим созданную область дизайнера, чтобы она снова изменялась пользователем.
             return surface;
         }
 
@@ -403,26 +395,20 @@ namespace osfDesigner
             // Заполним для компонента начальные свойства. Они нужны будут при создании скрипта.
             string DefaultValues1 = "";
             object pg = DesignSurfaceManager.PropertyGridHost.PropertyGrid;
-
-            //System.Windows.Forms.MessageBox.Show("pg=" + pg);
-
             ((System.Windows.Forms.PropertyGrid)pg).SelectedObject = comp;
-
-            //System.Windows.Forms.MessageBox.Show("((System.Windows.Forms.PropertyGrid)pg).SelectedObject=" + ((System.Windows.Forms.PropertyGrid)pg).SelectedObject.GetType());
-
-            object view1 = pg.GetType().GetField("gridView", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).GetValue(pg);
-            GridItemCollection GridItemCollection1 = (GridItemCollection)view1.GetType().InvokeMember("GetAllGridEntries", System.Reflection.BindingFlags.InvokeMethod | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance, null, view1, null);
+            object view1 = pg.GetType().GetField("gridView", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(pg);
+            GridItemCollection GridItemCollection1 = (GridItemCollection)view1.GetType().InvokeMember("GetAllGridEntries", BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Instance, null, view1, null);
             if (GridItemCollection1 == null)
             {
                 return;
             }
             foreach (GridItem GridItem in GridItemCollection1)
             {
-                if (GridItem.PropertyDescriptor == null)// исключим из обхода категории
+                if (GridItem.PropertyDescriptor == null)  // Исключим из обхода категории.
                 {
                     continue;
                 }
-                if (GridItem.Label == "Locked")// исключим из обхода ненужные свойства
+                if (GridItem.Label == "Locked")  // Исключим из обхода ненужные свойства.
                 {
                     continue;
                 }
@@ -430,7 +416,7 @@ namespace osfDesigner
                 {
                     string str7 = "";
                     string strTab = "            ";
-                    str7 = str7 + osfDesigner.OneScriptFormsDesigner.ObjectConvertToString(GridItem.Value);
+                    str7 = str7 + OneScriptFormsDesigner.ObjectConvertToString(GridItem.Value);
                     if (GridItem.GridItems.Count > 0)
                     {
                         strTab = strTab + "\t\t";
@@ -478,12 +464,11 @@ namespace osfDesigner
         {
             try
             {
-                // Удалить вкладку связанную через hashtableDesignerTabRootComponent с корневым компонентом (RootComponent), который удаляют
+                // Удалить вкладку связанную через hashtableDesignerTabRootComponent с удаляемым корневым компонентом (RootComponent).
                 // Примечание:
-                //     DesignSurfaceManager продолжает ссылаться на удаленную поверхность DesignSurface
-                //     потому что Designsurface продолжает существовать, но он больше не доступен (не достижим)
-                //     этот факт будет полезен при создании новых имен для Только что созданных поверхностей Designsurfaces
-                //     чтобы избегать столкновения имен
+                //     DesignSurfaceManager продолжает ссылаться на удаленную поверхность DesignSurface, потому что Designsurface продолжает
+                //     существовать, но он больше не доступен (не достижим). Этот факт будет полезен при создании новых имен для только
+                //     что созданных поверхностей Designsurfaces, чтобы избежать конфликта имен.
                 System.Windows.Forms.TabPage TabPage1 = OneScriptFormsDesigner.RevertDesignerTab(surfaceToErase.GetIDesignerHost().RootComponent);
                 System.Windows.Forms.TabPage tpToRemove = null;
                 foreach (System.Windows.Forms.TabPage tp in this.tbCtrlpDesigner.TabPages)
@@ -499,12 +484,11 @@ namespace osfDesigner
                     this.tbCtrlpDesigner.TabPages.Remove(tpToRemove);
                 }
 
-                // теперь удалите поверхность дизайнера
+                // Теперь удалите поверхность дизайнера.
                 this.DesignSurfaceManager.DeleteDesignSurfaceExt2(surfaceToErase);
 
-                // наконец, диспетчер DesignSurfaceManager удалит поверхность DesignSurface
-                // И установит в качестве активной поверхности дизайна последнюю
-                // поэтому мы устанавливаем в качестве активной последнюю страницу вкладки
+                // Наконец, диспетчер DesignSurfaceManager удалит поверхность DesignSurface и установит в качестве активной 
+                // поверхности дизайна последнюю, поэтому мы устанавливаем в качестве активной последнюю страницу вкладки.
                 this.tbCtrlpDesigner.SelectedIndex = this.tbCtrlpDesigner.TabPages.Count - 1;
             }
             catch { }
@@ -562,7 +546,7 @@ namespace osfDesigner
             {
                 try
                 {
-                    System.Windows.Forms.SplitContainer SplitContainer1 = (System.Windows.Forms.SplitContainer)this.ActiveControl;
+                    SplitContainer SplitContainer1 = (SplitContainer)this.ActiveControl;
                     osfDesigner.PropertyGridHost PropertyGridHost1 = (osfDesigner.PropertyGridHost)SplitContainer1.ActiveControl;
                     bool ToolbarVisible1 = PropertyGridHost1.PropertyGrid.ToolbarVisible;
                 }
@@ -574,7 +558,7 @@ namespace osfDesigner
                         MessageBoxButtons.YesNoCancel,
                         MessageBoxIcon.Exclamation,
                         MessageBoxDefaultButton.Button2
-                        );
+                       );
 
                     if (res1 == System.Windows.Forms.DialogResult.OK || res1 == System.Windows.Forms.DialogResult.Yes)
                     {
@@ -623,6 +607,5 @@ namespace osfDesigner
             }
         }
         //***
-
     }
 }

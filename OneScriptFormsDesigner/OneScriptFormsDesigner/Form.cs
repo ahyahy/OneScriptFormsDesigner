@@ -1,5 +1,5 @@
-﻿using System.ComponentModel;
-using System.Collections;
+﻿using System.Collections;
+using System.ComponentModel;
 using System.Drawing.Design;
 using System.Drawing;
 using System.Windows.Forms;
@@ -9,7 +9,7 @@ namespace osfDesigner
 {
     public class Form : System.Windows.Forms.Form
     {
-        private ArrayList _ArrayListComponentsAddingOrder = new ArrayList();
+
         private string _DoubleClick_osf;
         private string _Closed_osf;
         private MyIcon _icon;
@@ -38,16 +38,8 @@ namespace osfDesigner
         private string _ControlAdded_osf;
         private string _ControlRemoved_osf;
 
-        [Browsable(false)]
-        public ArrayList ArrayListComponentsAddingOrder
-        {
-            get { return _ArrayListComponentsAddingOrder; }
-            set { _ArrayListComponentsAddingOrder = value; }
-        }
-        
         public Form()
         {
-            _ArrayListComponentsAddingOrder.Add(this);
             Enabled_osf = base.Enabled;
             Visible_osf = base.Visible;
         }
@@ -80,7 +72,7 @@ namespace osfDesigner
         [TypeConverter(typeof(MyBooleanConverter))]
         public bool Enabled_osf { get; set; }
 				
-        //скроем унаследованное свойство, для того чтобы оно не мешало нашему замещающему свойству использовать свой эдитор и конвертер.
+        // Скроем унаследованное свойство, для того чтобы оно не мешало нашему замещающему свойству использовать свой эдитор и конвертер.
         [Browsable(false)]
         public new bool Enabled { get; set; }
 
@@ -323,7 +315,7 @@ namespace osfDesigner
         [TypeConverter(typeof(MyBooleanConverter))]
         public bool Visible_osf { get; set; }
 				
-        //скроем унаследованное свойство, для того чтобы оно не мешало нашему замещающему свойству использовать свой эдитор и конвертер.
+        // Скроем унаследованное свойство, для того чтобы оно не мешало нашему замещающему свойству использовать свой эдитор и конвертер.
         [Browsable(false)]
         public new bool Visible { get; set; }
 
@@ -361,7 +353,7 @@ namespace osfDesigner
             set { base.Location = value; }
         }
 				
-        //скроем унаследованное свойство, для того чтобы оно не мешало нашему замещающему свойству использовать свой эдитор и конвертер.
+        // Скроем унаследованное свойство, для того чтобы оно не мешало нашему замещающему свойству использовать свой эдитор и конвертер.
         [Browsable(false)]
         public new Point Location { get; set; }
 
@@ -601,7 +593,7 @@ namespace osfDesigner
         [DefaultValue(null)]
         public new Bitmap BackgroundImage
         {
-            get { return (System.Drawing.Bitmap)base.BackgroundImage; }
+            get { return (Bitmap)base.BackgroundImage; }
             set { base.BackgroundImage = value; }
         }
 
@@ -684,7 +676,7 @@ namespace osfDesigner
 
         [Browsable(false)]
         [ReadOnly(true)]
-        public new System.Drawing.Size AutoScrollMinSize { get; set; }
+        public new Size AutoScrollMinSize { get; set; }
 
         [Browsable(false)]
         [ReadOnly(true)]

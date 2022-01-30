@@ -1,12 +1,11 @@
-﻿using System;
-using System.Windows.Forms;
-using System.Reflection;
-using System.ComponentModel;
-using System.ComponentModel.Design;
-using osfDesigner.Properties;
+﻿using System.Collections.Generic;
 using System.Collections;
-using System.Collections.Generic;
-using System.Data;
+using System.ComponentModel.Design;
+using System.ComponentModel;
+using System.IO;
+using System.Reflection;
+using System.Windows.Forms;
+using System;
 
 namespace osfDesigner
 {
@@ -15,7 +14,7 @@ namespace osfDesigner
         public static System.Windows.Forms.TreeView TreeView1 = pDesigner.DSME.PropertyGridHost.TreeView;
         public static System.Windows.Forms.ToolBarButton ButtonSort1 = pDesigner.DSME.PropertyGridHost.ButtonSort;
 
-        public static System.Collections.Generic.Dictionary<string, Component> comps = new Dictionary<string, Component>();
+        public static Dictionary<string, Component> comps = new Dictionary<string, Component>();
         private static string Template1;
         private static readonly string TemplateOriginal =
 @"[<Конструкторы]
@@ -30,7 +29,7 @@ namespace osfDesigner
             // 1. Получить перечень текущих свойств формы и всех компонентов
             // 2. Выгрузить обязательные свойства согласно RequiredValues.
             // 3. Сравнить текущие свойства с DefaultValues и измененные выгрузить.
-            // 4. Файл сохраненной формы разделен на разделы. Например раздел конструкторов заключен в ограничители [<Конструкторы] и [Конструкторы>]
+            // 4. Файл сохраненной формы состоит из разделов. Например раздел конструкторов заключен в ограничители [<Конструкторы] и [Конструкторы>]
 
             path = fileName.Substring(0, fileName.LastIndexOf('\\') + 1);
 
@@ -46,21 +45,12 @@ namespace osfDesigner
                 ArrayList ctrlsExisting = new ArrayList();
                 for (int i = 0; i < ctrls.Count; i++)
                 {
-                    ctrlsArray.Add(ctrls[i]);
+                    ctrlsExisting.Add(ctrls[i]);
                 }
 
-                Form Form1 = (Form)pDesigner.DSME.ActiveDesignSurface.GetIDesignerHost().Container.Components[0];
-                for (int i = 0; i < Form1.ArrayListComponentsAddingOrder.Count; i++)
-                {
-                    Component comp4 = (Component)Form1.ArrayListComponentsAddingOrder[i];
-                    if (ctrlsArray.Contains(comp4))
-                    {
-                        ctrlsExisting.Add(comp4);
-                    }
-                }
-
+                // Проверим наличие подсказок.
                 bool toolTipPresent = false;
-                foreach (Component comp in ctrlsExisting)// Проверим наличие подсказок
+                foreach (Component comp in ctrlsExisting)
                 {
                     if (comp.Site.Name.Contains("Подсказка"))
                     {
@@ -70,12 +60,12 @@ namespace osfDesigner
 
                 string strComp = "";
                 // Запишем в выгрузку имена компонентов в раздел [<Конструкторы].
-                // раздел конструкторов будет определять очередность создания компонентов
+                // Раздел конструкторов будет определять очередность создания компонентов.
                 for (int i = 0; i < ctrlsExisting.Count; i++)
                 {
                     Component comp = (Component)ctrlsExisting[i];
                     compName = comp.Site.Name;
-                    comps.Add(compName, comp);// установим соответствие между именем компонента и компонентом
+                    comps.Add(compName, comp); // Установим соответствие между именем компонента и компонентом.
                     string trimName = compName;
                     for (int i1 = 0; i1 < 10; i1++)
                     {
@@ -104,7 +94,7 @@ namespace osfDesigner
                     pDesigner.DSME.PropertyGridHost.ChangeSelectNode(comp2);
                 }
 
-                ArrayList objArrayList2 = new ArrayList();// содержит имена компонентов в иерархии дерева компонентов
+                ArrayList objArrayList2 = new ArrayList(); // Содержит имена компонентов в иерархии дерева компонентов.
                 GetNodes1(TreeView1, ref objArrayList2);
                 for (int i = 0; i < objArrayList2.Count; i++)
                 {
@@ -149,7 +139,7 @@ namespace osfDesigner
                     compName = comp.Site.Name;
                     Template1 = Template1.Replace(@"[Свойства>]", @"[<" + compName + "]" + Environment.NewLine + @"[Свойства>]");
 
-                    // установим для элемента родителя
+                    // Установим для элемента родителя.
                     string strParent = "";
                     try
                     {
@@ -175,20 +165,20 @@ namespace osfDesigner
                             string strIcon = compName + ".Значок = Ф.Значок(\u0022" + "AAABAAEAEBAQAAEABAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAwAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAACAAACAAAAAgIAAgAAAAIAAgACAgAAAgICAAMDAwAAAAP8AAP8AAAD//wD/AAAA/wD/AP//AAD///8AZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmYAAP//AAD//wAA//8AAP//AAD//wAA//8AAP//AAD//wAA//8AAP//AAD//wAA//8AAP//AAD//wAA//8AAP//" + "\u0022" + "); // обязательно назначить значок";
                             AddToScript(strIcon);
                         }
-                        string strVisible = compName + ".Отображать = Истина; // обязательно отобразить значок после создания";
+                        string strVisible = compName + ".Отображать = Истина;";
                         AddToScript(strVisible);
                     }
 
                     PropertyInfo[] myPropertyInfo = comp.GetType().GetProperties();
                     for (int i1 = 0; i1 < myPropertyInfo.Length; i1++)
                     {
-                        string valueName = osfDesigner.OneScriptFormsDesigner.GetDisplayName(comp, myPropertyInfo[i1].Name);
+                        string valueName = OneScriptFormsDesigner.GetDisplayName(comp, myPropertyInfo[i1].Name);
                         if (valueName != "")
                         {
                             PropertyDescriptor pd = TypeDescriptor.GetProperties(comp)[myPropertyInfo[i1].Name];
                             try
                             {
-                                string compValue = osfDesigner.OneScriptFormsDesigner.ObjectConvertToString(pd.GetValue(comp));
+                                string compValue = OneScriptFormsDesigner.ObjectConvertToString(pd.GetValue(comp));
                                 RequiredDefaultValuesValues(comp, compName, valueName, compValue);
                             }
                             catch { }
@@ -216,7 +206,6 @@ namespace osfDesigner
                         }
                     }
                     Template1 = Template1.Replace(@"[Свойства>]", @"[" + compName + ">]" + Environment.NewLine + @"[Свойства>]");
-
                 }
                 ButtonSort1.Pushed = stateSort;
                 Component comp3 = OneScriptFormsDesigner.HighlightedComponent();
@@ -229,23 +218,56 @@ namespace osfDesigner
             return ReSort(Template1);
         }
 
-        // переформируем выгруженную форму
+        // Переформируем выгруженную форму.
         private static string ReSort(string Template1)
         {
             string[] stringSeparators = new string[] { Environment.NewLine };
-
             string str1 = Template1;
 
-            // зададим порядок свойств во фрагментах
+            // Удалим повторы строк.
             string strProps = OneScriptFormsDesigner.ParseBetween(str1, @"[<Свойства]", @"[Свойства>]");
             ArrayList ArrayList2 = OneScriptFormsDesigner.StrFindBetween(strProps, @"[<", @">]", false);
+            ArrayList repeats = new ArrayList(); // Массив строк без повторов.
+            string strBefore;
+            string strAfter;
+            for (int i = 0; i < ArrayList2.Count; i++)
+            {
+                strBefore = "";
+                strAfter = "";
+                repeats.Clear();
+                string fragment1 = (string)ArrayList2[i];
+                string[] result = fragment1.Split(stringSeparators, StringSplitOptions.RemoveEmptyEntries);
+                for (int i1 = 0; i1 < result.Length; i1++)
+                {
+                    string strCurrent = result[i1];
+                    if (!strCurrent.Contains(@"// блок"))
+                    {
+                        strBefore = strBefore + strCurrent + System.Environment.NewLine;
+                        if (!repeats.Contains(strCurrent))
+                        {
+                            repeats.Add(strCurrent);
+                        }
+                    }
+                }
+                for (int i2 = 0; i2 < repeats.Count; i2++)
+                {
+                    strAfter = strAfter + repeats[i2] + System.Environment.NewLine;
+                }
+                if (strBefore != strAfter && strBefore.Length != 0)
+                {
+                    str1 = str1.Replace(strBefore, strAfter);
+                }
+            }
+
+            // Зададим порядок свойств во фрагментах.
+            strProps = OneScriptFormsDesigner.ParseBetween(str1, @"[<Свойства]", @"[Свойства>]");
+            ArrayList2 = OneScriptFormsDesigner.StrFindBetween(strProps, @"[<", @">]", false);
             for (int i = 0; i < ArrayList2.Count; i++)
             {
                 string fragment1 = (string)ArrayList2[i];
                 string namecomp = OneScriptFormsDesigner.ParseBetween(fragment1, @"[<", @"]");
 
                 string fragment2 = "";
-                // создадим SortedList1
                 SortedList SortedList1 = new SortedList();
                 SortedList1.Capacity = 1000;
                 string[] result = fragment1.Split(stringSeparators, StringSplitOptions.RemoveEmptyEntries);
@@ -304,7 +326,6 @@ namespace osfDesigner
                 }
                 str1 = str1.Replace(fragment1, fragment2);
             }
-
             comps.Clear();
             return str1;
         }
@@ -340,7 +361,7 @@ namespace osfDesigner
 
         private static void TextToScript(string compName, string valueName, string compValue, dynamic val = null)
         {
-            // Пропустим некоторые свойства, они не дают правильно формировать расположение элементов
+            // Пропустим некоторые свойства.
             if (val.GetType() == typeof(osfDesigner.StatusBar) && (valueName == "Положение" || valueName == "Размер"))
             {
                 return;
@@ -382,14 +403,13 @@ namespace osfDesigner
             {
                 return;
             }
-            // закончили пропуск свойств
+            // Закончили пропуск свойств.
 
             if (compValue == "Ложь" || compValue == "Истина")
             {
                 AddToScript(compName + "." + valueName + " = " + compValue + ";");
                 return;
             }
-
             if (valueName == "ЭлементыМеню")
             {
                 if (val != null)
@@ -410,16 +430,14 @@ namespace osfDesigner
                             }
                         }
                     }
-                    return;
                 }
+                return;
             }
-
             if (valueName == "Меню")
             {
                 if (compValue != null)
                 {
                     AddToScript(compName + "." + valueName + " = " + compValue + ";");
-                    return;
                 }
                 return;
             }
@@ -428,8 +446,8 @@ namespace osfDesigner
                 if (val != null)
                 {
                     AddToScript(compName + "." + valueName + " = " + "Ф.ОбластьСсылки(" + compValue.Replace(";", ",") + ");");
-                    return;
                 }
+                return;
             }
             if (valueName == "Подэлементы")
             {
@@ -439,7 +457,7 @@ namespace osfDesigner
                     if (ListViewSubItemCollection1.Count > 0)
                     {
                         osfDesigner.ListViewSubItem ListViewSubItem1;
-                        for (int i = 1; i < ListViewSubItemCollection1.Count; i++)// первый индекс должен быть 1, а не 0
+                        for (int i = 1; i < ListViewSubItemCollection1.Count; i++) // Первый индекс должен быть 1, а не 0.
                         {
                             ListViewSubItem1 = (osfDesigner.ListViewSubItem)ListViewSubItemCollection1[i];
                             AddToScript(ListViewSubItem1.Name + " = Ф.ПодэлементСпискаЭлементов();");
@@ -837,9 +855,9 @@ namespace osfDesigner
                         {
                             string newFileName = MyList1[i1].Path.Substring(MyList1[i1].Path.LastIndexOf('\\') + 1);
                             string newPath = path + newFileName;
-                            if (!System.IO.File.Exists(newPath))
+                            if (!File.Exists(newPath))
                             {
-                                System.IO.File.Copy(MyList1[i1].Path, newPath);
+                                File.Copy(MyList1[i1].Path, newPath);
                             }
 
                             str1 = str1 + compName + ".Изображения.Добавить(Ф.Картинка(\u0022" + newPath + "\u0022));";
@@ -889,14 +907,14 @@ namespace osfDesigner
             }
             if (valueName == "Изображение" || valueName == "ФоновоеИзображение")
             {
-                if (compValue != "System.Drawing.Bitmap ()")
+                if (compValue != "Bitmap ()")
                 {
                     string FileName = OneScriptFormsDesigner.ParseBetween(compValue, "(", ")");
                     string newFileName = FileName.Substring(FileName.LastIndexOf('\\') + 1);
                     string newPath = path + newFileName;
-                    if (!System.IO.File.Exists(newPath))
+                    if (!File.Exists(newPath))
                     {
-                        System.IO.File.Copy(FileName, newPath);
+                        File.Copy(FileName, newPath);
                     }
                     AddToScript(compName + "." + valueName + " = Ф.Картинка(\u0022" + newPath + "\u0022);");
                 }
@@ -925,7 +943,7 @@ namespace osfDesigner
                 }
                 return;
             }
-            //если это цвет
+            // Если это цвет.
             if (valueName == "ОсновнойЦвет" ||
                 valueName == "ОсновнойЦветЗаголовков" ||
                 valueName == "ПрозрачныйЦвет" ||
@@ -959,7 +977,7 @@ namespace osfDesigner
                 AddToScript(str1);
                 return;
             }
-            //если compValue это контрол
+            // Если это контрол.
             if (valueName == "КнопкаОтмена" ||
                 valueName == "КнопкаПринять" ||
                 (valueName == "Значение" && val.GetType() == typeof(osfDesigner.UserControl)) ||
@@ -968,14 +986,14 @@ namespace osfDesigner
                 AddToScript(compName + "." + valueName + " = " + compValue + ";");
                 return;
             }
-            //если compValue это строка для ФорматированноеПолеВвода (RichTextBox)
+            // Если это строка для ФорматированноеПолеВвода (RichTextBox).
             if (valueName == "Текст" && val.GetType() == typeof(osfDesigner.RichTextBox))
             {
                 compValue = compValue.Replace("\n", "\u0022 + Ф.Окружение().НоваяСтрока + \u0022");
                 AddToScript(compName + "." + valueName + " = \u0022" + compValue + "\u0022;");
                 return;
             }
-            //если compValue это событие
+            // Если это событие.
             if (valueName == "ВыбранныйЭлементСеткиИзменен" ||
                 valueName == "ВыделениеИзменено" ||
                 valueName == "ДатаВыбрана" ||
@@ -1032,7 +1050,7 @@ namespace osfDesigner
                 AddToScript(compName + "." + valueName + " = \u0022" + strNameProc + "\u0022;");
                 return;
             }
-            //если compValue это строка
+            // Если это Строка.
             if (valueName == "ВыбранныйПуть" ||
                 valueName == "Заголовок" ||
                 valueName == "ИмяСтиля" ||
@@ -1054,7 +1072,7 @@ namespace osfDesigner
                 AddToScript(compName + "." + valueName + " = \u0022" + compValue + "\u0022;");
                 return;
             }
-            //если compValue это число
+            // Если это Число.
             if (valueName == "АвтоЗадержка" ||
                 valueName == "АвтоЗадержкаПоказа" ||
                 valueName == "БольшоеИзменение" ||
@@ -1099,7 +1117,7 @@ namespace osfDesigner
                 AddToScript(compName + "." + valueName + " = " + compValue.Replace(",", ".") + ";");
                 return;
             }
-            //если compValue это Размер
+            // Если это Размер.
             if (valueName == "МаксимальныйРазмер" ||
                 valueName == "МинимальныйРазмер" ||
                 valueName == "Размер" ||
@@ -1122,7 +1140,7 @@ namespace osfDesigner
                 AddToScript(compName + "." + valueName + " = " + str1);
                 return;
             }
-            //если compValue это Точка
+            // Если это Точка.
             if (valueName == "Положение")
             {
                 if (val.GetType() == typeof(Form))
@@ -1150,7 +1168,7 @@ namespace osfDesigner
                 }
                 return;
             }
-            //если это перечисление
+            // Если это Перечисление.
             if (valueName == "ТипСлияния")
             {
                 AddToScript(compName + "." + valueName + " = " + "Ф.СлияниеМеню." + compValue + ";");
@@ -1221,13 +1239,12 @@ namespace osfDesigner
                 if (val.GetType() == typeof(osfDesigner.StatusBarPanel))
                 {
                     AddToScript(compName + "." + valueName + " = " + "Ф.СтильГраницыПанелиСтрокиСостояния." + compValue + ";");
-                    return;
                 }
                 else
                 {
                     AddToScript(compName + "." + valueName + " = " + "Ф." + valueName + "." + compValue + ";");
-                    return;
                 }
+                return;
             }
             if (valueName == "Сортировка")
             {
@@ -1322,7 +1339,7 @@ namespace osfDesigner
             }
             if ((valueName == "ВыравниваниеИзображения" ||
                 valueName == "ВыравниваниеТекста"
-                ) && (
+               ) && (
                 val.GetType() == typeof(osfDesigner.Button) ||
                 val.GetType() == typeof(osfDesigner.RadioButton) ||
                 val.GetType() == typeof(osfDesigner.CheckBox) ||
@@ -1355,7 +1372,7 @@ namespace osfDesigner
                 valueName == "МинимальнаяДата" ||
                 valueName == "ТекущаяДата")
             {
-                DateTime DateTime1 = System.DateTime.Parse(compValue);
+                DateTime DateTime1 = DateTime.Parse(compValue);
                 AddToScript(compName + "." + valueName + " = " + "Дата(" +
                     DateTime1.ToString("yyyy") + ", " +
                     DateTime1.ToString("MM") + ", " +
@@ -1366,13 +1383,10 @@ namespace osfDesigner
                 return;
             }
         }
-
+        
         private static void AddToScript(string str)
         {
-            if (OneScriptFormsDesigner.ParseBetween(Template1, null, str) == null)
-            {
-                Template1 = Template1.Replace(@"[Свойства>]", str + Environment.NewLine + @"[Свойства>]");
-            }
+            Template1 = Template1.Replace(@"[Свойства>]", str + Environment.NewLine + @"[Свойства>]");
         }
 
         private static void GetNodes(osfDesigner.MyTreeNode treeNode)
@@ -1440,13 +1454,13 @@ namespace osfDesigner
             PropertyInfo[] myPropertyInfo = comp.GetType().GetProperties();
             for (int i = 0; i < myPropertyInfo.Length; i++)
             {
-                string valueName = osfDesigner.OneScriptFormsDesigner.GetDisplayName(comp, myPropertyInfo[i].Name);
+                string valueName = OneScriptFormsDesigner.GetDisplayName(comp, myPropertyInfo[i].Name);
                 if (valueName != "" && !((valueName == "(Name)") || (valueName == "Прямоугольник")))
                 {
                     PropertyDescriptor pd = TypeDescriptor.GetProperties(comp)[myPropertyInfo[i].Name];
                     try
                     {
-                        string compValue = osfDesigner.OneScriptFormsDesigner.ObjectConvertToString(pd.GetValue(comp));
+                        string compValue = OneScriptFormsDesigner.ObjectConvertToString(pd.GetValue(comp));
                         if (comp.GetType() == typeof(osfDesigner.DataGridTableStyle) ||
                             comp.GetType() == typeof(osfDesigner.DataGridBoolColumn) ||
                             comp.GetType() == typeof(osfDesigner.DataGridTextBoxColumn) ||

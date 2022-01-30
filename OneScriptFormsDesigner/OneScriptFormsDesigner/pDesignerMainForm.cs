@@ -1,68 +1,66 @@
-﻿using System;
-using System.Drawing;
-using System.Windows.Forms;
-using System.Drawing.Design;
-using System.Reflection;
-using System.ComponentModel;
-using System.ComponentModel.Design;
-using osfDesigner.Properties;
-using System.Collections;
+﻿using osfDesigner.Properties;
 using System.Collections.Generic;
-using System.Text;
+using System.ComponentModel.Design;
+using System.ComponentModel;
+using System.Drawing.Design;
+using System.Drawing;
 using System.IO;
+using System.Reflection;
+using System.Text;
+using System.Windows.Forms;
+using System;
 
 namespace osfDesigner
 {
-    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     public class pDesignerMainForm : System.Windows.Forms.Form, IDesignerMainForm
     {
         private string _version = string.Empty;
         public pDesigner pDesignerCore = new pDesigner();
         private IpDesigner IpDesignerCore = null;
-        private System.ComponentModel.IContainer components = null;
-        private System.Windows.Forms.MenuStrip menuStrip1;
+        private IContainer components = null;
+        private MenuStrip menuStrip1;
 
-        private System.Windows.Forms.ToolStripMenuItem _file;
-        private System.Windows.Forms.ToolStripMenuItem _addForm;
-        private System.Windows.Forms.ToolStripMenuItem _useSnapLines;
-        private System.Windows.Forms.ToolStripMenuItem _useGrid;
-        private System.Windows.Forms.ToolStripMenuItem _useGridWithoutSnapping;
-        private System.Windows.Forms.ToolStripMenuItem _useNoGuides;
-        private System.Windows.Forms.ToolStripMenuItem _deleteForm;
-        private System.Windows.Forms.ToolStripSeparator _stripSeparator1;
-        private System.Windows.Forms.ToolStripMenuItem _generateScript;
+        private ToolStripMenuItem _file;
+        private ToolStripMenuItem _addForm;
+        private ToolStripMenuItem _useSnapLines;
+        private ToolStripMenuItem _useGrid;
+        private ToolStripMenuItem _useGridWithoutSnapping;
+        private ToolStripMenuItem _useNoGuides;
+        private ToolStripMenuItem _deleteForm;
+        private ToolStripSeparator _stripSeparator1;
+        private ToolStripMenuItem _generateScript;
 
-        private System.Windows.Forms.ToolStripSeparator _stripSeparator2;
-        private System.Windows.Forms.ToolStripMenuItem _loadForm;
-        private System.Windows.Forms.ToolStripMenuItem _saveForm;
-        private System.Windows.Forms.ToolStripSeparator _stripSeparator4;
-        private System.Windows.Forms.ToolStripMenuItem _exit;
+        private ToolStripSeparator _stripSeparator2;
+        private ToolStripMenuItem _loadForm;
+        private ToolStripMenuItem _saveForm;
+        private ToolStripSeparator _stripSeparator4;
+        private ToolStripMenuItem _exit;
 
-        private System.Windows.Forms.ToolStripMenuItem _edit;
-        private System.Windows.Forms.ToolStripMenuItem _unDo;
-        private System.Windows.Forms.ToolStripMenuItem _reDo;
-        private System.Windows.Forms.ToolStripSeparator _stripSeparator3;
-        private System.Windows.Forms.ToolStripMenuItem _cut;
-        private System.Windows.Forms.ToolStripMenuItem _copy;
-        private System.Windows.Forms.ToolStripMenuItem _paste;
-        private System.Windows.Forms.ToolStripMenuItem _delete;
+        private ToolStripMenuItem _edit;
+        private ToolStripMenuItem _unDo;
+        private ToolStripMenuItem _reDo;
+        private ToolStripSeparator _stripSeparator3;
+        private ToolStripMenuItem _cut;
+        private ToolStripMenuItem _copy;
+        private ToolStripMenuItem _paste;
+        private ToolStripMenuItem _delete;
 
-        private System.Windows.Forms.ToolStripMenuItem _view;
-        private System.Windows.Forms.ToolStripMenuItem _form;
-        private System.Windows.Forms.ToolStripMenuItem _code;
+        private ToolStripMenuItem _view;
+        private ToolStripMenuItem _form;
+        private ToolStripMenuItem _code;
 
-        private System.Windows.Forms.ToolStripMenuItem _tools;
-        private System.Windows.Forms.ToolStripMenuItem _tabOrder;
-        private static System.Windows.Forms.ToolStripMenuItem _tabOrder1;
+        private ToolStripMenuItem _tools;
+        private ToolStripMenuItem _tabOrder;
+        private static ToolStripMenuItem _tabOrder1;
 
-        private System.Windows.Forms.ToolStripSeparator _stripSeparator5;
-        private System.Windows.Forms.ToolStripMenuItem _run;
+        private ToolStripSeparator _stripSeparator5;
+        private ToolStripMenuItem _run;
 
-        private System.Windows.Forms.ToolStripSeparator _stripSeparator6;
-        private System.Windows.Forms.ToolStripMenuItem _settings;
+        private ToolStripSeparator _stripSeparator6;
+        private ToolStripMenuItem _settings;
 
-        private System.Windows.Forms.ToolStripMenuItem _help;
-        private System.Windows.Forms.ToolStripMenuItem _about;
+        private ToolStripMenuItem _help;
+        private ToolStripMenuItem _about;
 
         private System.Windows.Forms.Panel pnl4Toolbox;
         private System.Windows.Forms.ListBox listBox1;
@@ -85,19 +83,15 @@ namespace osfDesigner
         private System.Windows.Forms.Button buttonOK;
         private System.Windows.Forms.Button buttonCancel;
 
-        private void timerLoad_Tick(object sender, System.EventArgs e)
+        private void timerLoad_Tick(object sender, EventArgs e)
         {
             timerLoad.Stop();
-            //DesignSurfaceManagerExt DesignSurfaceManagerExt = pDesigner.DSME;
-            //propertyGrid1 = DesignSurfaceManagerExt.PropertyGridHost.PropertyGrid;
             try
             {
-                // это не удается, если вызывается непосредственно при загрузке, так как элемент управления не завершил создание самого себя: 
+                // Через try, потому что, при загрузке, элемент управления не завершил создание самого себя: 
                 Application.AddMessageFilter(new PropertyGridMessageFilter(propertyGrid1.GetChildAtPoint(new Point(40, 40)), new MouseEventHandler(propGridView_MouseUp)));
             }
-            catch
-            {
-            }
+            catch { }
         }
 
         private void propGridView_MouseUp(object sender, MouseEventArgs e)
@@ -108,62 +102,60 @@ namespace osfDesigner
                 propertyGrid1.SelectedGridItem.Label == "СписокМаленькихИзображений" ||
                 propertyGrid1.SelectedGridItem.Label == "DoubleBuffered"))
             {
-                // пользователь щелкнул левой кнопкой мыши по свойству, чтобы увидеть контекстное меню:
+                // Пользователь щелкнул левой кнопкой мыши по свойству, чтобы увидеть контекстное меню.
                 try
                 {
                     propertyGrid1.SelectedGridItem.Expanded = false;
                 }
-                catch
-                {
-                }
+                catch { }
             }
         }
 
         public pDesignerMainForm()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(pDesignerMainForm));
+            ComponentResourceManager resources = new ComponentResourceManager(typeof(pDesignerMainForm));
             propertyGrid1 = pDesigner.DSME.PropertyGridHost.PropertyGrid;
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this._file = new System.Windows.Forms.ToolStripMenuItem();
-            this._addForm = new System.Windows.Forms.ToolStripMenuItem();
-            this._useSnapLines = new System.Windows.Forms.ToolStripMenuItem();
-            this._useGrid = new System.Windows.Forms.ToolStripMenuItem();
-            this._useGridWithoutSnapping = new System.Windows.Forms.ToolStripMenuItem();
-            this._useNoGuides = new System.Windows.Forms.ToolStripMenuItem();
-            this._deleteForm = new System.Windows.Forms.ToolStripMenuItem();
-            this._stripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this._generateScript = new System.Windows.Forms.ToolStripMenuItem();
-            this._stripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this._loadForm = new System.Windows.Forms.ToolStripMenuItem();
-            this._saveForm = new System.Windows.Forms.ToolStripMenuItem();
-            this._stripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
-            this._exit = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuStrip1 = new MenuStrip();
+            this._file = new ToolStripMenuItem();
+            this._addForm = new ToolStripMenuItem();
+            this._useSnapLines = new ToolStripMenuItem();
+            this._useGrid = new ToolStripMenuItem();
+            this._useGridWithoutSnapping = new ToolStripMenuItem();
+            this._useNoGuides = new ToolStripMenuItem();
+            this._deleteForm = new ToolStripMenuItem();
+            this._stripSeparator1 = new ToolStripSeparator();
+            this._generateScript = new ToolStripMenuItem();
+            this._stripSeparator2 = new ToolStripSeparator();
+            this._loadForm = new ToolStripMenuItem();
+            this._saveForm = new ToolStripMenuItem();
+            this._stripSeparator4 = new ToolStripSeparator();
+            this._exit = new ToolStripMenuItem();
 
-            this._edit = new System.Windows.Forms.ToolStripMenuItem();
-            this._unDo = new System.Windows.Forms.ToolStripMenuItem();
-            this._reDo = new System.Windows.Forms.ToolStripMenuItem();
-            this._stripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-            this._cut = new System.Windows.Forms.ToolStripMenuItem();
-            this._copy = new System.Windows.Forms.ToolStripMenuItem();
-            this._paste = new System.Windows.Forms.ToolStripMenuItem();
-            this._delete = new System.Windows.Forms.ToolStripMenuItem();
+            this._edit = new ToolStripMenuItem();
+            this._unDo = new ToolStripMenuItem();
+            this._reDo = new ToolStripMenuItem();
+            this._stripSeparator3 = new ToolStripSeparator();
+            this._cut = new ToolStripMenuItem();
+            this._copy = new ToolStripMenuItem();
+            this._paste = new ToolStripMenuItem();
+            this._delete = new ToolStripMenuItem();
 
-            this._view = new System.Windows.Forms.ToolStripMenuItem();
-            this._form = new System.Windows.Forms.ToolStripMenuItem();
-            this._code = new System.Windows.Forms.ToolStripMenuItem();
+            this._view = new ToolStripMenuItem();
+            this._form = new ToolStripMenuItem();
+            this._code = new ToolStripMenuItem();
 
-            this._tools = new System.Windows.Forms.ToolStripMenuItem();
-            this._tabOrder = new System.Windows.Forms.ToolStripMenuItem();
-            osfDesigner.pDesignerMainForm._tabOrder1 = this._tabOrder;
+            this._tools = new ToolStripMenuItem();
+            this._tabOrder = new ToolStripMenuItem();
+            _tabOrder1 = this._tabOrder;
 
-            this._stripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
-            this._run = new System.Windows.Forms.ToolStripMenuItem();
+            this._stripSeparator5 = new ToolStripSeparator();
+            this._run = new ToolStripMenuItem();
 
-            this._stripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
-            this._settings = new System.Windows.Forms.ToolStripMenuItem();
+            this._stripSeparator6 = new ToolStripSeparator();
+            this._settings = new ToolStripMenuItem();
 
-            this._help = new System.Windows.Forms.ToolStripMenuItem();
-            this._about = new System.Windows.Forms.ToolStripMenuItem();
+            this._help = new ToolStripMenuItem();
+            this._about = new ToolStripMenuItem();
             this.pnl4Toolbox = new System.Windows.Forms.Panel();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.pnl4pDesigner = new System.Windows.Forms.Panel();
@@ -174,21 +166,21 @@ namespace osfDesigner
             // 
             // menuStrip1
             // 
-            this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menuStrip1.ImageScalingSize = new Size(20, 20);
+            this.menuStrip1.Items.AddRange(new ToolStripItem[] {
             this._file,
             this._edit,
             this._view,
             this._tools,
             this._help});
-            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Location = new Point(0, 0);
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(8, 2, 0, 2);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
             // 
             // _file
             // 
-            this._file.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this._file.DropDownItems.AddRange(new ToolStripItem[] {
             this._addForm,
             this._deleteForm,
             this._stripSeparator1,
@@ -199,33 +191,33 @@ namespace osfDesigner
             this._stripSeparator4,
             this._exit});
             this._file.Name = "_file";
-            this._file.Size = new System.Drawing.Size(54, 24);
+            this._file.Size = new Size(54, 24);
             this._file.Text = "Файл";
             // 
             // _addForm
             // 
-            this._addForm.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this._addForm.DropDownItems.AddRange(new ToolStripItem[] {
             this._useSnapLines,
             this._useGrid,
             this._useGridWithoutSnapping,
             this._useNoGuides});
             string str_addForm = "iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAABR0lEQVR42u3avQ/BQBgGcBcEia2LSESE1WK3+p/tdoNuxcBgsxJKPTc0/ZBe2lzPfXjf5Fxocvf8KqmrK2s4Ukx3AIIIIJHuMDIG/tJBu+tOI1ldDkl/Exx0052qZPU4IH7DIQHaTHcqyQo45InW0p1EskIOCdGaupNI1osghhVBTKsviG1Llvg3kCCmFEHqTHDOf4bJR1ZBouJbhgOrtu4zFnJCgDFBSkBk7x4z4xKEIIrqHyBXBPCMgUTq/lp6s+xKXR0EI6/RrRRBePkIOf8FZI9uqhCyQcilC5AtQi5cgBxZMr5SyAXdQCEkfYlWftXy0Q0LDrfR+gXHHmg7wdAeAk6yU1WDlL2cljoRNi1RhCCbIELYPyxRCEIQgggwrPr8+iH1nY8Ekt56sxUS5nd1bcJkcju1Pe3MAwNxWf8IhxNFENPqA2/lwIZlxdeeAAAAAElFTkSuQmCC";
-            this._addForm.Image = osfDesigner.OneScriptFormsDesigner.Base64ToImage(str_addForm);
+            this._addForm.Image = OneScriptFormsDesigner.Base64ToImage(str_addForm);
             this._addForm.Name = "_addForm";
-            this._addForm.Size = new System.Drawing.Size(221, 26);
+            this._addForm.Size = new Size(221, 26);
             this._addForm.Text = "Добавить Форму";
             // 
             // _useSnapLines
             // 
             string str_useSnapLines = "iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAAd0lEQVR42u3YSw7AIAgFwHr/Q7er7uuvoM7bC0xiSLRcm6RED5ARckfOCgKyIKS3dlU9EBAQkO7GowMCsjokNCCVea9dS79PZ0FAQEBAQEBAQEDSQKbnCMjsp+vIWUFAMkD+XgzDvkxBQEAOhUQHBCQbZKlsA3kAIttEM9KSwFkAAAAASUVORK5CYII=";
-            this._useSnapLines.Image = osfDesigner.OneScriptFormsDesigner.Base64ToImage(str_useSnapLines);
+            this._useSnapLines.Image = OneScriptFormsDesigner.Base64ToImage(str_useSnapLines);
             this._useSnapLines.Text = "Использовать линии привязки";
             this._useSnapLines.Click += _useSnapLines_Click;
             // 
             // _useGrid
             // 
             string str_useGrid = "iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAAf0lEQVR42u3UsRGAMBDEQNwX5dMXkDvgM3Q30oyzC7zJr6Ok9fcHhHxA7iEUt0uFXO87GyDbrhYSmxBaQmjVQnBndboTQtvVQmITQksIrVoI7qxOd0Jou1pIbEJoCaFVC8Gd1elOCG1XC4lNCC0htGohuLM63Qmh7WohsQmh9QCKkWUzuKisgQAAAABJRU5ErkJggg==";
-            this._useGrid.Image = osfDesigner.OneScriptFormsDesigner.Base64ToImage(str_useGrid);
+            this._useGrid.Image = OneScriptFormsDesigner.Base64ToImage(str_useGrid);
             this._useGrid.Text = "Использовать сетку";
             this._useGrid.Click += _useGrid_Click;
             // 
@@ -237,16 +229,16 @@ namespace osfDesigner
             // _useNoGuides
             // 
             this._useNoGuides.Name = "_useNoGuides";
-            this._useNoGuides.Size = new System.Drawing.Size(316, 26);
+            this._useNoGuides.Size = new Size(316, 26);
             this._useNoGuides.Text = "Не использовать ориентиры";
             this._useNoGuides.Click += _useNoGuides_Click;
             // 
             // _deleteForm
             // 
             string str_deleteForm = "iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAABLklEQVR42u2asQrCMBCGDSoquLmIi4iuLu6uvrO7u4PdKg4uPoKi1XoHVlultTVc7xrvg2soheT/KCVpU1NzBMMdQEUyRELuMDYOeGhBnbjTWNJGkfidQKEjd6qcdFAgOkERH2rCncoSH0UuUA3uJJYEKBJA1bmTWHJVEWGoiDQ+RKq2ZInmQBWRgopIQ0Wk8b8i3G+P33KpSJHBKPnfZ0QqtCIh3TN1M8mVOp0I9LyEZkEkgngQclqGyBaaMaHICkLOXRBZQ8iZCyI78+qfVOQATZ9QZA8hh+Qij949aAYpl5tQ3ZRrZ6hNRtc9CDhKDlVMxJmZPe+8ULYM6aKxTBldokhDRaShItJIiMS33qoqErzv6lZJJpHbqe1pZ34YiOD+dvUrz184nEBFpHEHIdCPhqDjZfIAAAAASUVORK5CYII=";
-            this._deleteForm.Image = osfDesigner.OneScriptFormsDesigner.Base64ToImage(str_deleteForm);
+            this._deleteForm.Image = OneScriptFormsDesigner.Base64ToImage(str_deleteForm);
             this._deleteForm.Name = "_deleteForm";
-            this._deleteForm.Size = new System.Drawing.Size(221, 26);
+            this._deleteForm.Size = new Size(221, 26);
             this._deleteForm.Text = "Удалить Форму";
             this._deleteForm.Click += _deleteForm_Click;
             // 
@@ -257,9 +249,9 @@ namespace osfDesigner
             // _generateScript
             // 
             string str_generateScript = "iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAABzklEQVR42u2aMU7DMBSGn+NCGRjgDjAxInEIxMgtWBiYGEoAqQsgWLgFEyBAcAMkkBhYgDtQRJFomzTYQBzjkiZO4jiO/A+VWjkv/xf7vby4QRApALOE2IeB5hkE4s0f3fZQjmClaX2pyTwzAFPMixAWwAKoAjg+f6lUZVpbmfvjTxqg++mPBJ2ewvUBEE+gWoUvoeedBURiVAcgQ0CwAKoAqLnfMZA0hspV1FvNcB6VzAAPcHdxEju26c9CD79KxV9cXpUDkElimsD89ySALKIAbtQ9Q+i7EABaQvll1iFX5+n6Bt69NwtQOgAVOVHwcHYFHu7qA+DFm+PFVyWZJC4dII1qB1CpJSQDECax9hnIW4WMBaByq5ADFkA3gKwqlwNGA8TdedPK1b2EagEw33qMTWKx/68lwP3pJQSNDz0AVOPKaNIeUOWfB0SADrdfX4T+W35KyygFODhsgz8cst+8YEACp+NCnK/NjW09ALt7LQLgZzp+EjcsQG6A9v4W9H3PAmgFAHAIRF/6eOw4gJEzFkJ5MxdB/Eh2NiYwjq1G4bai0OIU/x9Z0feDUOGeqHKAvE2gpGoGUAREGQD0gUl81YDRGCg0UpYM0rf3L8g8IyNDfeOmAAAAAElFTkSuQmCC";
-            this._generateScript.Image = osfDesigner.OneScriptFormsDesigner.Base64ToImage(str_generateScript);
+            this._generateScript.Image = OneScriptFormsDesigner.Base64ToImage(str_generateScript);
             this._generateScript.Name = "_generateScript";
-            this._generateScript.Size = new System.Drawing.Size(221, 26);
+            this._generateScript.Size = new Size(221, 26);
             this._generateScript.Text = "Сформировать сценарий";
             this._generateScript.Click += _generateScript_Click;
             // 
@@ -270,7 +262,7 @@ namespace osfDesigner
             // _loadForm
             // 
             string str_loadForm = "iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAA/klEQVR42u3Z0QqDMAwFUDO2vez/f3UwN+iqOKE2qdUVe2NzoS/6kmMMVEvdSUK1CzBIAuI0P4ihkLtfr0IPoypkTyfgMBHEZRRFMf7h1xMGkoNIYI6otTwEADPMdl8EAoAJLv4FOaBix19WBNmCgYdMRRpEailixt0JC1GECDRtQdDmZzk3WRA0BIeJIBq6sQuCijAIWlaHnRTORzc1wIX38bthEMScAsLthsXfQagIBjLvRgxiEIPIn70ShFC/qhaQy69+FoLaDQYS/GNQsbdqE6IMYZDqkV4rgwAgGoGgYoRTsTRESdLHCorCQq5+vWtXtiE3vz6rMq0xCFq+0/uOMfSQbkgAAAAASUVORK5CYII=";
-            this._loadForm.Image = osfDesigner.OneScriptFormsDesigner.Base64ToImage(str_loadForm);
+            this._loadForm.Image = OneScriptFormsDesigner.Base64ToImage(str_loadForm);
             this._loadForm.Name = "_loadForm";
             this._loadForm.Text = "Открыть форму";
             this._loadForm.Click += _loadForm_Click;
@@ -278,7 +270,7 @@ namespace osfDesigner
             // _saveForm
             // 
             string str_saveForm = "iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAABBUlEQVR42u3awQ6CMBAEUPai/v/f6qXCgYTAbruF0p3qTMIBgW1fS4RYZfqRSHQHCKmAJNB+uS94zNs7ELHmOW+fK5DImTiN2UPSbkeUC5J17GpEH0QXxoRYHQ2ALHlNhdu9O0Tr7FprW1s5LzszsBDjXHNmwiDbUbcgNRh4iBczBMTAiLmDDClhhoIomHjIrlFCwiAeZFdIa4y3bjOIUqxpSoPTFHIXxjPDzSFRIQQthKBliG+tE+3iPkcq28Z7sntrD/Gu5alPCCGEEEIIIYQQohTuDSksNfwhpNTQ3RDruBtiFYuE1Pwaf8AAJ7s+sgTlDwO5HBZGc7cH6syI+8MRQwhavjI5HUJUEs5VAAAAAElFTkSuQmCC";
-            this._saveForm.Image = osfDesigner.OneScriptFormsDesigner.Base64ToImage(str_saveForm);
+            this._saveForm.Image = OneScriptFormsDesigner.Base64ToImage(str_saveForm);
             this._saveForm.Name = "_saveForm";
             this._saveForm.Text = "Сохранить форму";
             this._saveForm.Click += _saveForm_Click;
@@ -295,7 +287,7 @@ namespace osfDesigner
             // 
             // _edit
             // 
-            this._edit.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this._edit.DropDownItems.AddRange(new ToolStripItem[] {
             this._unDo,
             this._reDo,
             this._stripSeparator3,
@@ -304,26 +296,26 @@ namespace osfDesigner
             this._paste,
             this._delete});
             this._edit.Name = "_edit";
-            this._edit.Size = new System.Drawing.Size(69, 24);
+            this._edit.Size = new Size(69, 24);
             this._edit.Text = "Правка";
             // 
             // _unDo
             // 
             string str_unDo = "iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAA2klEQVR42u3YSw6AIAwEULz/oTGamBAjyqdlZky7YSfzRH5uOWnXFoAABMDoQSnlfDaCgCP80UoCrvCSgDK8HOAeXgrwFF4GUAsvAXgLTw/4Ck8NaAk/WrPoT4BneAvIK2BV+BlIFYAIP4KgBPQg6D6hXgTNJHYDsCNgG1nrSzEDtHTavQQaIOCHudmRpThOz4wsxYUGAnjqWA5w71wSUAaQmcS1IBLLqFVBNjLvsL8DmB3mAjAAMLnQoAAmV0oUwOxSvxrg8ltlBcD9xxZ7BQBdAUBXANAlD9gBBDWIAQ4VHAYAAAAASUVORK5CYII=";
-            this._unDo.Image = osfDesigner.OneScriptFormsDesigner.Base64ToImage(str_unDo);
+            this._unDo.Image = OneScriptFormsDesigner.Base64ToImage(str_unDo);
             this._unDo.Name = "_unDo";
             this._unDo.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
-            this._unDo.Size = new System.Drawing.Size(212, 26);
+            this._unDo.Size = new Size(212, 26);
             this._unDo.Text = "Отменить";
             this._unDo.Click += _unDo_Click;
             // 
             // _reDo
             // 
             string str_reDo = "iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAA10lEQVR42u3YSw7EIAwDUHr/QzOaXqD52IkjJRt21A+JEnjumV3PAhawgIaPnnPvOwwG/EcEohWAQLQDsggJQAYhA4gipAARhBzAi5AEeBBpgCVMtCyIMIAZ3INwA6qCWxEuQEf4L4QZ0Bk+DVANPwKQ3sTK4aEA1+lZdZAxwlvmhbUSyJWyzgtt5pArZZkX3k5XAigXmioA7UpZAaBe6tmbmP6swvyNlj1ssRCoorYSFShqM7cAFCCKkAJEEHIAL0IS4IFIAyyQEYDuWkB3LaC7FtBd4wE/1ESIAWn6qDIAAAAASUVORK5CYII=";
-            this._reDo.Image = osfDesigner.OneScriptFormsDesigner.Base64ToImage(str_reDo);
+            this._reDo.Image = OneScriptFormsDesigner.Base64ToImage(str_reDo);
             this._reDo.Name = "_reDo";
             this._reDo.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Y)));
-            this._reDo.Size = new System.Drawing.Size(212, 26);
+            this._reDo.Size = new Size(212, 26);
             this._reDo.Text = "Вернуть";
             this._reDo.Click += _reDo_Click;
             // 
@@ -334,61 +326,61 @@ namespace osfDesigner
             // _cut
             // 
             string str_cut = "iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAABNUlEQVR42u2Y0Q7CIAxF4f8/ekYjZpmU3sItlIS+OTI9BxDa5ivtHfkIHIEjsHc0BXJK1eHrMxQjqgISeESRPwEUPooEJHCHfI6HF6gBektokwgLiC/9hnkCyNatTmYEgZFDY+kWshwY8BbSACPBiwKWH7AKsMBVAQ8JNrwqwBLxADcJWECeAJ7wZgEEqkDMSkm60+nWbTkznxqqB2qXnveWoQoU4Br8+9mMeoJWkQmr8f3IB6cKSP+H8vy+QvTMlbGFWuPS9goh0APPlqAeoyg8U8QsYLmNZzQHYIHuislZQhVgACxJ5jxmzuU7Zze23AsarWRklJRMiS2KelNNDLZVaI2t0dVYLmARcekLUfMaoNIbFgjf3NVmIhK8KIBIRIBvCrREosBDAtHjCKyOI7A6thd4ARhzzAEzNxSrAAAAAElFTkSuQmCC";
-            this._cut.Image = osfDesigner.OneScriptFormsDesigner.Base64ToImage(str_cut);
-            this._cut.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this._cut.Image = OneScriptFormsDesigner.Base64ToImage(str_cut);
+            this._cut.ImageTransparentColor = Color.Magenta;
             this._cut.Name = "_cut";
             this._cut.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
-            this._cut.Size = new System.Drawing.Size(212, 26);
+            this._cut.Size = new Size(212, 26);
             this._cut.Text = "Вырезать";
             this._cut.Click += OnMenuClick;
             // 
             // _copy
             // 
             string str_copy = "iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAABOElEQVR42u3WrQ7CMBAH8DUIBAaD4AnAYtCEZ8DxEih4BhwejeMZCBoECRiQ6CUEMwghY7AlJCPpPq7tbddwfzOxNe2vubtMOJZHlH0ABqS8CwrYwwoAKiIT0F94oM1Xw1q0buf6otOoxC8BBYEGOHsvcbkFDjYCFRA+sRHoAGxEIQBMRGEALIQRwPfQBgIGUQOAEUYBs80DtPmoW43WHa++aNfVSosEIOyX+zNwVBBkAOFTBQECZNW6LkAFQQ4ARZAqIRUEWYAEoQ84rLfSD915TwuQMwww3sRAJC3A52Cy9bgASAkByyPxIhiAOUbzhAGqTTxdnnIfcjJo0QPIpkxW0KdQUmQlBGnitNJjgAbAaY73eQ0/ifcEAyAhOUZtBkBC8lfivwGmwgAG2ARADgNIhgFlx3rAG9GomUA3I+5MAAAAAElFTkSuQmCC";
-            this._copy.Image = osfDesigner.OneScriptFormsDesigner.Base64ToImage(str_copy);
-            this._copy.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this._copy.Image = OneScriptFormsDesigner.Base64ToImage(str_copy);
+            this._copy.ImageTransparentColor = Color.Magenta;
             this._copy.Name = "_copy";
             this._copy.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
-            this._copy.Size = new System.Drawing.Size(212, 26);
+            this._copy.Size = new Size(212, 26);
             this._copy.Text = "Копировать";
             this._copy.Click += OnMenuClick;
             // 
             // _paste
             // 
             string str_paste = "iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAABIklEQVR42u3awQnCMBQG4OTkFL07gY6Rg6eCriAFcQoRiiso9CbFKcQNvIpLeHoWaaGWtEmapH2h77/12b68DxPxUM4CDx97ADSAY5ZHu1i86rX0fJsnG/FED5ANX+V0uUbb9eqNGsAYQK0lb6+hBzQHbasPC4DOy/92LQCtpXshVQ+BVqmBOGT5ch+Le4+ljRFdD4BR2Tjc+AMrAAD87i02iRNBsbnKfrzZzz2gGt4HQILwDeCs+3BqLcuh1mJQgI8QgAAEGBkg+S334vQKSB8fb99SspgBAQhAAAJMCFAuaBVJPwJoA1yHAAQIDWB6iFV4AkxuCxGAAJaA4P9KBA9wHWuAChEEQBWMACMEVoA2AjNAJyjPwLQAvoZXzRr82ypful5dQCOEOe0AAAAASUVORK5CYII=";
-            this._paste.Image = osfDesigner.OneScriptFormsDesigner.Base64ToImage(str_paste);
-            this._paste.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this._paste.Image = OneScriptFormsDesigner.Base64ToImage(str_paste);
+            this._paste.ImageTransparentColor = Color.Magenta;
             this._paste.Name = "_paste";
             this._paste.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
-            this._paste.Size = new System.Drawing.Size(212, 26);
+            this._paste.Size = new Size(212, 26);
             this._paste.Text = "Вставить";
             this._paste.Click += OnMenuClick;
             // 
             // _delete
             // 
             string str_delete = "iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAABmJLR0QA/wD/AP+gvaeTAAACJUlEQVRoge2YvW/TQBiHn7sjY9UFiSIYOjSiVGyt5HYAUkLyR0NVRwgJkBiRGGAEqaIsSQZKFfsYiFFUXXJ3vtdIiHtG34d/j+9svzZkMplMJhPIfFgcTEdFv6v5p4OTvfmwOIgZo0M7zsaH+wp7Zmr7av78+GF8vM1MR0XfmGqisOV8fPQodJwK6TQbH+7rypwDd5eHLqzSz7bO3n5sE/Ym01HRN7UtgXvLQ9+sqYdbL95/8I31CjjCN4hIOMI3BEl4t1DvuncF/HQ07Shbn6dspw3hAWrqW5VvjqAt9GNwvFuZugR2Hc2tVsITPnjOIAGQlZAKDxECICMhGR4iBSBNQjo8tBCAdhJdhIeWAhAn0VV4SBCAMIla2UVX4SFRADwSikssNXDHMVTkRZgsAN6VcCFWiogIQJSEaB0lJgC/JRamfq3c+x0L31H6iVR4iCinQ7ju2Z62mHXtoldriZhA86i0ip0N3W6nFoA3Ebkonue8C7H7IHkFNoa3XAIXjmHJpXhDkoD3Dav106oyj4EvjnYRidZbKKY8mA5O9oypSuC+r28srQTa1DZdSUQLpBRmXUhECUhUlUuJScocqwTfxFIl8fbkzedKq1Pgq6M5+sYOWoEu6vm/9lHf5ceIxNzeLaQWlV7TL/ltuv3y3acN20mjF2vrqj/5Qk40Oz16oLUu+Rd/LTasSCjJ8A0rEr3Q8NF0/nt9VPRjf69nMplM5v/mF/i6x8b172ZWAAAAAElFTkSuQmCC";
-            this._delete.Image = osfDesigner.OneScriptFormsDesigner.Base64ToImage(str_delete);
+            this._delete.Image = OneScriptFormsDesigner.Base64ToImage(str_delete);
             this._delete.Name = "_delete";
             this._delete.ShortcutKeys = System.Windows.Forms.Keys.Delete;
-            this._delete.Size = new System.Drawing.Size(212, 26);
+            this._delete.Size = new Size(212, 26);
             this._delete.Text = "Удалить";
             this._delete.Click += OnMenuClick;
             // 
             // _view
             // 
-            this._view.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this._view.DropDownItems.AddRange(new ToolStripItem[] {
             this._form,
             this._code});
             this._view.Name = "_view";
-            this._view.Size = new System.Drawing.Size(50, 24);
+            this._view.Size = new Size(50, 24);
             this._view.Text = "Вид";
             // 
             // _form
             // 
             string str_form = "iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAA1klEQVR42u3a4QqCMBQF4EaB9R69/wv5IAktavfHYippebVzdz0HJvhjcj5EpsxwcJKALkDIBOSJLqMxyKFJo0O3UeYskPJOCOiGbvVlLgLIJwJp07iiWynTCuSexgndRJkokJjGEd1EmQchxkKItYwgtb2y5DWQECshxFr2C0F/q8z1IoQQQlaCWA0hP119iwwKbgf5x8NUlCSEEEJQkDlMWDjvw/z9ruyEEELI9ASrIcRafELKrbdaIXG4q1sTptfb1fa0mx8GctCL3tK8f+FwEUKs5QXoOIWG//RH0wAAAABJRU5ErkJggg==";
-            this._form.Image = osfDesigner.OneScriptFormsDesigner.Base64ToImage(str_form);
+            this._form.Image = OneScriptFormsDesigner.Base64ToImage(str_form);
             this._form.Name = "_form";
-            this._form.Size = new System.Drawing.Size(50, 24);
+            this._form.Size = new Size(50, 24);
             this._form.Text = "Форма";
             this._form.Click += _form_Click;
             this._form.Enabled = false;
@@ -397,31 +389,31 @@ namespace osfDesigner
             // _code
             // 
             string str_code = "iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAAvElEQVR42u3WQQqDMBSE4eQ2FWk3Hsoz9VBd6cLb6BNcdSE1IWby+g8ICYjOpz4wru8heEj8C0gcP+sNHSbr8PIA2bNYj644xM6JJdp/PagsjApkseMRMj4zCch+fVvPtuxD4puRgRz7ZIwUJAcjB0nFSEJSMLKQqxgJyI+ZrcfTA+S0R1XIVTAQIC1BSv3in90LCJCWIHcGCJAWIW6GHQgQhh0IkCoQN8MOBAjDDgQIECBAKkNUAqSluIFsV0sN9+kjczYAAAAASUVORK5CYII=";
-            this._code.Image = osfDesigner.OneScriptFormsDesigner.Base64ToImage(str_code);
+            this._code.Image = OneScriptFormsDesigner.Base64ToImage(str_code);
             this._code.Name = "_code";
-            this._code.Size = new System.Drawing.Size(50, 24);
+            this._code.Size = new Size(50, 24);
             this._code.Text = "Скрипт";
             this._code.Click += _code_Click;
             this._code.CheckState = System.Windows.Forms.CheckState.Unchecked;
             // 
             // _tools
             // 
-            this._tools.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this._tools.DropDownItems.AddRange(new ToolStripItem[] {
             this._tabOrder,
             this._stripSeparator5,
             this._run,
             this._stripSeparator6,
             this._settings});
             this._tools.Name = "_tools";
-            this._tools.Size = new System.Drawing.Size(113, 24);
+            this._tools.Size = new Size(113, 24);
             this._tools.Text = "Инструменты";
             // 
             // _tabOrder
             // 
             string str_tabOrder = "iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAA3ElEQVR42u3ZSw6AIAwEULj/oTExcdOApjD9menWiPOiQNU+Wu3qaEBvbXvIcZ8eCDgJv4v4BMhQqwsgwsMBq1DyIqjwIQBkeAJ2AGgEJ/FbuK/BUy6jGsApwmwj0wC8awqYpBzrQ9jS3j4CCLAATEC1JjEBlQHo5u6pZQuTrZXQItI1c1BARDvtDvAKT8DbQGkfoVm4UpNYhiu5jGoAlgiXjSyiCIiu/wJE0npvZAQQcAgQGPONbHeBSNVKmHwb9Wzm4ADvdjoEEPl3hgA0gpP4tFIuo14I040sc11VMcAB84B/6gAAAABJRU5ErkJggg==";
-            this._tabOrder.Image = osfDesigner.OneScriptFormsDesigner.Base64ToImage(str_tabOrder);
+            this._tabOrder.Image = OneScriptFormsDesigner.Base64ToImage(str_tabOrder);
             this._tabOrder.Name = "_tabOrder";
-            this._tabOrder.Size = new System.Drawing.Size(217, 26);
+            this._tabOrder.Size = new Size(217, 26);
             this._tabOrder.Text = "Порядок обхода";
             this._tabOrder.Click += _tabOrder_Click;
             // 
@@ -432,7 +424,7 @@ namespace osfDesigner
             // _run
             // 
             string str_run = "iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAABkUlEQVR42t3Z0Q7CIAwFUPv/H42JmWYD2t4WCkUejDrAHjsGbPT6k0K7AwBL0RyZIVrw6SEWQEoIDyjVoTbsFBAcwIe+FeIDJIO0kSLBJ4OMIxJAnhF7AB3E7+UoxGaIjPgGZh/kSyE8gjuzDZfd5s1mBDX1exgmG9EQ7HRqYygghP+QAMFjhGxEQfR5Yhwiq5YgdIw5G7MhthnbMthJP4tmQXzLDuTyC2QDhdinYO8CENh3sF1sR2g4MFbp4DEIqYK+wKt/bCOCq3QcoldxD4LGr6g2SFKEDpFKIoTUSI4yGQJtOG+LGoSwNJY3PJsR6yFBiLWQQATa0ey7gtMRSGflLnlURjHkXrDGQcwYci9Y4yEwprcKAHZ6URAfhlvKrIaUK26q9tIFadx0Ztt7T4OUKt4hjJypOEhh1lgSJh2kl4n7dzVG+EOQWzoxEA2hYPhdZn+QT0d8OkQywWRGKtIEE3K/WQ1aGPweSNjdf5IGuBPBYUKfxbBjYRBRQ8KfjLEZGUQsLyrkBMQVJzQRpi9vUR3TM0g50FMAAAAASUVORK5CYII=";
-            this._run.Image = osfDesigner.OneScriptFormsDesigner.Base64ToImage(str_run);
+            this._run.Image = OneScriptFormsDesigner.Base64ToImage(str_run);
             this._run.Name = "_run";
             this._run.Text = "Запуск";
             this._run.Click += _run_Click;
@@ -446,24 +438,24 @@ namespace osfDesigner
             // _settings
             // 
             string str_settings = "iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAABI0lEQVR42u3YwQ6EMAgEUP3/j3aTPRhFaGkLOLNZrqKZp9JY92P7jdr/kKgA29aNcHzbQCEeADTEAlzDXns8iHKIhpBBZxClEInQQs4iXoNEI8og2YhySCRCXjMd0gq6iqCGWItGGSTitWot3zQQ2fvajFhBPRh1JpCGXR7Xeqzz4SAaRisLCAXpYTxPCQZigbyLRCrEEyrqxqRBKhFpkGxECeQNRDhkBNHbLXq2xCmQVUSvup8wEZBMRNnPhxVExPyEQFAQSxAkxDQEDTEFQUQMQ1ARQxBkhBuCjnBBGBBdCAuiCWFCmBA2hAphRDwgrIgbhBlxQtgRKoQRMQRBRpwQGbT1ixIRYUKuYRkQN4gWWhYq4gFpYZARKkQDoSOaELb6AFfXABC6bvmCAAAAAElFTkSuQmCC";
-            this._settings.Image = osfDesigner.OneScriptFormsDesigner.Base64ToImage(str_settings);
+            this._settings.Image = OneScriptFormsDesigner.Base64ToImage(str_settings);
             this._settings.Name = "_settings";
             this._settings.Text = "Параметры";
             this._settings.Click += _settings_Click;
             // 
             // _help
             // 
-            this._help.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { this._about });
+            this._help.DropDownItems.AddRange(new ToolStripItem[] { this._about });
             this._help.Name = "_help";
-            this._help.Size = new System.Drawing.Size(77, 24);
+            this._help.Size = new Size(77, 24);
             this._help.Text = "Помощь";
             // 
             // _about
             // 
             string str_about = "iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAABCklEQVR42u3WwRKDIAyE4fLmvjntpRenSDbZTaBDzo7+n4NCu157TzuAA1gE8LlPB69vSwDQcDbGDWCEMyAwQBEeQUAAdbwHYQZkxaMIEyA7HkFMAVXxVsQjwBvfBw9tzvs9IaiAbl23xE1vCFDFsxEUABrvQUCAjHgUMEJIAd9AyzU0ABL/FHcPY/2Z7ogwYBS3FcCL3AbA3NjSAawPuATAjk8FKOKXAETi0wCq+FIAI/4AVpgpYGXEpTiN/hrVEjIDIois////A7yIjOODFDBCKN7+FMBCqOJNgAgiOrN4M6ACYYmHAJkIazwMyEAg8S6ACoKGhwEsiDecBvBCouF0QNUcQPVsD3gDeqycMcHL1j4AAAAASUVORK5CYII=";
-            this._about.Image = osfDesigner.OneScriptFormsDesigner.Base64ToImage(str_about);
+            this._about.Image = OneScriptFormsDesigner.Base64ToImage(str_about);
             this._about.Name = "_about";
-            this._about.Size = new System.Drawing.Size(187, 26);
+            this._about.Size = new Size(187, 26);
             this._about.Text = "О программе...";
             this._about.Click += _about_Click;
             // 
@@ -472,9 +464,9 @@ namespace osfDesigner
             this.pnl4Toolbox.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.pnl4Toolbox.Controls.Add(this.listBox1);
             this.pnl4Toolbox.Dock = System.Windows.Forms.DockStyle.Left;
-            this.pnl4Toolbox.Location = new System.Drawing.Point(0, 26);
+            this.pnl4Toolbox.Location = new Point(0, 26);
             this.pnl4Toolbox.Name = "pnl4Toolbox";
-            this.pnl4Toolbox.Size = new System.Drawing.Size(163, 489);
+            this.pnl4Toolbox.Size = new Size(163, 489);
             this.pnl4Toolbox.TabIndex = 2;
             // 
             // listBox1
@@ -482,33 +474,33 @@ namespace osfDesigner
             this.listBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listBox1.FormattingEnabled = true;
             this.listBox1.ItemHeight = 16;
-            this.listBox1.Location = new System.Drawing.Point(0, 0);
+            this.listBox1.Location = new Point(0, 0);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(159, 485);
+            this.listBox1.Size = new Size(159, 485);
             this.listBox1.TabIndex = 0;
             // 
             // pnl4pDesigner
             // 
             this.pnl4pDesigner.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnl4pDesigner.Location = new System.Drawing.Point(163, 26);
+            this.pnl4pDesigner.Location = new Point(163, 26);
             this.pnl4pDesigner.Name = "pnl4pDesigner";
-            this.pnl4pDesigner.Size = new System.Drawing.Size(726, 489);
+            this.pnl4pDesigner.Size = new Size(726, 489);
             this.pnl4pDesigner.TabIndex = 3;
             // 
             // pnl4splitter
             // 
-            this.pnl4splitter.BackColor = System.Drawing.Color.LightSteelBlue;
-            this.pnl4splitter.Location = new System.Drawing.Point(163, 26);
+            this.pnl4splitter.BackColor = Color.LightSteelBlue;
+            this.pnl4splitter.Location = new Point(163, 26);
             this.pnl4splitter.Name = "pnl4splitter";
-            this.pnl4splitter.Size = new System.Drawing.Size(5, 489);
+            this.pnl4splitter.Size = new Size(5, 489);
             this.pnl4splitter.TabIndex = 4;
             this.pnl4splitter.TabStop = false;
             // 
             // pDesignerMainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(889, 515);
+            this.ClientSize = new Size(889, 515);
             this.Controls.Add(this.pnl4splitter);
             this.Controls.Add(this.pnl4pDesigner);
             this.Controls.Add(this.pnl4Toolbox);
@@ -521,7 +513,7 @@ namespace osfDesigner
             str_Icon = str_Icon.Replace("у", "zMzMzM");
             str_Icon = str_Icon.Replace("ц", "//////");
             str_Icon = str_Icon.Replace("й", "AAAAAA");
-            this.Icon = new System.Drawing.Icon((System.IO.Stream)new System.IO.MemoryStream(Convert.FromBase64String(str_Icon)));
+            this.Icon = new Icon(new MemoryStream(Convert.FromBase64String(str_Icon)));
             this.MainMenuStrip = this.menuStrip1;
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "pDesignerMainForm";
@@ -536,170 +528,170 @@ namespace osfDesigner
             this.ResumeLayout(false);
             this.PerformLayout();
 
-            // элемент управления: (pDesigner)pDesignerCore 
+            // Элемент управления: (pDesigner)pDesignerCore.
             IpDesignerCore = this.pDesignerCore as IpDesigner;
             pDesignerCore.Parent = this.pnl4pDesigner;
 
-            // Добавим элементы (toolboxItems) к будущей панели элементов (toolbox) указатель
-            ToolboxItem toolPointer = new System.Drawing.Design.ToolboxItem();
+            // Добавим указатель.
+            ToolboxItem toolPointer = new ToolboxItem();
             toolPointer.DisplayName = "<Указатель>";
-            toolPointer.Bitmap = new System.Drawing.Bitmap(16, 16);
+            toolPointer.Bitmap = new Bitmap(16, 16);
             listBox1.Items.Add(toolPointer);
 
-            // элементы управления
-            ToolboxItem toolButton = new System.Drawing.Design.ToolboxItem(typeof(Button));
+            // Добавим элементы управления.
+            ToolboxItem toolButton = new ToolboxItem(typeof(Button));
             toolButton.DisplayName = "Кнопка (Button)";
             listBox1.Items.Add(toolButton);
 
-            ToolboxItem toolCheckBox = new System.Drawing.Design.ToolboxItem(typeof(CheckBox));
+            ToolboxItem toolCheckBox = new ToolboxItem(typeof(CheckBox));
             toolCheckBox.DisplayName = "Флажок (CheckBox)";
             listBox1.Items.Add(toolCheckBox);
 
-            ToolboxItem toolColorDialog = new System.Drawing.Design.ToolboxItem(typeof(ColorDialog));
+            ToolboxItem toolColorDialog = new ToolboxItem(typeof(ColorDialog));
             toolColorDialog.DisplayName = "ДиалогВыбораЦвета (ColorDialog)";
             listBox1.Items.Add(toolColorDialog);
 
-            ToolboxItem toolComboBox = new System.Drawing.Design.ToolboxItem(typeof(ComboBox));
+            ToolboxItem toolComboBox = new ToolboxItem(typeof(ComboBox));
             toolComboBox.DisplayName = "ПолеВыбора (ComboBox)";
             listBox1.Items.Add(toolComboBox);
 
-            ToolboxItem toolDataGrid = new System.Drawing.Design.ToolboxItem(typeof(DataGrid));
+            ToolboxItem toolDataGrid = new ToolboxItem(typeof(DataGrid));
             toolDataGrid.DisplayName = "СеткаДанных (DataGrid)";
             listBox1.Items.Add(toolDataGrid);
 
-            ToolboxItem toolDateTimePicker = new System.Drawing.Design.ToolboxItem(typeof(DateTimePicker));
+            ToolboxItem toolDateTimePicker = new ToolboxItem(typeof(DateTimePicker));
             toolDateTimePicker.DisplayName = "ПолеКалендаря (DateTimePicker)";
             listBox1.Items.Add(toolDateTimePicker);
 
-            ToolboxItem toolFileSystemWatcher = new System.Drawing.Design.ToolboxItem(typeof(FileSystemWatcher));
+            ToolboxItem toolFileSystemWatcher = new ToolboxItem(typeof(FileSystemWatcher));
             toolFileSystemWatcher.DisplayName = "НаблюдательФайловойСистемы (FileSystemWatcher)";
             listBox1.Items.Add(toolFileSystemWatcher);
 
-            ToolboxItem toolFontDialog = new System.Drawing.Design.ToolboxItem(typeof(FontDialog));
+            ToolboxItem toolFontDialog = new ToolboxItem(typeof(FontDialog));
             toolFontDialog.DisplayName = "ДиалогВыбораШрифта (FontDialog)";
             listBox1.Items.Add(toolFontDialog);
 
-            ToolboxItem toolFolderBrowserDialog = new System.Drawing.Design.ToolboxItem(typeof(FolderBrowserDialog));
+            ToolboxItem toolFolderBrowserDialog = new ToolboxItem(typeof(FolderBrowserDialog));
             toolFolderBrowserDialog.DisplayName = "ДиалогВыбораКаталога (FolderBrowserDialog)";
             listBox1.Items.Add(toolFolderBrowserDialog);
 
-            ToolboxItem toolGroupBox = new System.Drawing.Design.ToolboxItem(typeof(GroupBox));
+            ToolboxItem toolGroupBox = new ToolboxItem(typeof(GroupBox));
             toolGroupBox.DisplayName = "РамкаГруппы (GroupBox)";
             listBox1.Items.Add(toolGroupBox);
 
-            ToolboxItem toolHProgressBar = new System.Drawing.Design.ToolboxItem(typeof(HProgressBar));
+            ToolboxItem toolHProgressBar = new ToolboxItem(typeof(HProgressBar));
             toolHProgressBar.DisplayName = "ИндикаторГоризонтальный (HProgressBar)";
             listBox1.Items.Add(toolHProgressBar);
 
-            ToolboxItem toolVProgressBar = new System.Drawing.Design.ToolboxItem(typeof(VProgressBar));
+            ToolboxItem toolVProgressBar = new ToolboxItem(typeof(VProgressBar));
             toolVProgressBar.DisplayName = "ИндикаторВертикальный (VProgressBar)";
             listBox1.Items.Add(toolVProgressBar);
 
-            ToolboxItem toolHScrollBar = new System.Drawing.Design.ToolboxItem(typeof(HScrollBar));
+            ToolboxItem toolHScrollBar = new ToolboxItem(typeof(HScrollBar));
             toolHScrollBar.DisplayName = "ГоризонтальнаяПрокрутка (HScrollBar)";
             listBox1.Items.Add(toolHScrollBar);
 
-            ToolboxItem toolImageList = new System.Drawing.Design.ToolboxItem(typeof(System.Windows.Forms.ImageList));
+            ToolboxItem toolImageList = new ToolboxItem(typeof(System.Windows.Forms.ImageList));
             toolImageList.DisplayName = "СписокИзображений (ImageList)";
             listBox1.Items.Add(toolImageList);
 
-            ToolboxItem toolLabel = new System.Drawing.Design.ToolboxItem(typeof(Label));
+            ToolboxItem toolLabel = new ToolboxItem(typeof(Label));
             toolLabel.DisplayName = "Надпись (Label)";
             listBox1.Items.Add(toolLabel);
 
-            ToolboxItem toolLinkLabel = new System.Drawing.Design.ToolboxItem(typeof(LinkLabel));
+            ToolboxItem toolLinkLabel = new ToolboxItem(typeof(LinkLabel));
             toolLinkLabel.DisplayName = "НадписьСсылка (LinkLabel)";
             listBox1.Items.Add(toolLinkLabel);
 
-            ToolboxItem toolListBox = new System.Drawing.Design.ToolboxItem(typeof(ListBox));
+            ToolboxItem toolListBox = new ToolboxItem(typeof(ListBox));
             toolListBox.DisplayName = "ПолеСписка (ListBox)";
             listBox1.Items.Add(toolListBox);
 
-            ToolboxItem toolListView = new System.Drawing.Design.ToolboxItem(typeof(ListView));
+            ToolboxItem toolListView = new ToolboxItem(typeof(ListView));
             toolListView.DisplayName = "СписокЭлементов (ListView)";
             listBox1.Items.Add(toolListView);
 
-            ToolboxItem toolMainMenu = new System.Drawing.Design.ToolboxItem(typeof(System.Windows.Forms.MainMenu));
+            ToolboxItem toolMainMenu = new ToolboxItem(typeof(System.Windows.Forms.MainMenu));
             toolMainMenu.DisplayName = "ГлавноеМеню (MainMenu)";
             listBox1.Items.Add(toolMainMenu);
 
-            ToolboxItem toolMonthCalendar = new System.Drawing.Design.ToolboxItem(typeof(MonthCalendar));
+            ToolboxItem toolMonthCalendar = new ToolboxItem(typeof(MonthCalendar));
             toolMonthCalendar.DisplayName = "Календарь (MonthCalendar)";
             listBox1.Items.Add(toolMonthCalendar);
 
-            ToolboxItem toolNotifyIcon = new System.Drawing.Design.ToolboxItem(typeof(NotifyIcon));
+            ToolboxItem toolNotifyIcon = new ToolboxItem(typeof(NotifyIcon));
             toolNotifyIcon.DisplayName = "ЗначокУведомления (NotifyIcon)";
             listBox1.Items.Add(toolNotifyIcon);
 
-            ToolboxItem toolNumericUpDown = new System.Drawing.Design.ToolboxItem(typeof(NumericUpDown));
+            ToolboxItem toolNumericUpDown = new ToolboxItem(typeof(NumericUpDown));
             toolNumericUpDown.DisplayName = "РегуляторВверхВниз (NumericUpDown)";
             listBox1.Items.Add(toolNumericUpDown);
 
-            ToolboxItem toolOpenFileDialog = new System.Drawing.Design.ToolboxItem(typeof(OpenFileDialog));
+            ToolboxItem toolOpenFileDialog = new ToolboxItem(typeof(OpenFileDialog));
             toolOpenFileDialog.DisplayName = "ДиалогОткрытияФайла (OpenFileDialog)";
             listBox1.Items.Add(toolOpenFileDialog);
 
-            ToolboxItem toolPanel = new System.Drawing.Design.ToolboxItem(typeof(Panel));
+            ToolboxItem toolPanel = new ToolboxItem(typeof(Panel));
             toolPanel.DisplayName = "Панель (Panel)";
             listBox1.Items.Add(toolPanel);
 
-            ToolboxItem toolPictureBox = new System.Drawing.Design.ToolboxItem(typeof(PictureBox));
+            ToolboxItem toolPictureBox = new ToolboxItem(typeof(PictureBox));
             toolPictureBox.DisplayName = "ПолеКартинки (PictureBox)";
             listBox1.Items.Add(toolPictureBox);
 
-            ToolboxItem toolPropertyGrid = new System.Drawing.Design.ToolboxItem(typeof(PropertyGrid));
+            ToolboxItem toolPropertyGrid = new ToolboxItem(typeof(PropertyGrid));
             toolPropertyGrid.DisplayName = "СеткаСвойств (PropertyGrid)";
             listBox1.Items.Add(toolPropertyGrid);
 
-            ToolboxItem toolRadioButton = new System.Drawing.Design.ToolboxItem(typeof(RadioButton));
+            ToolboxItem toolRadioButton = new ToolboxItem(typeof(RadioButton));
             toolRadioButton.DisplayName = "Переключатель (RadioButton)";
             listBox1.Items.Add(toolRadioButton);
 
-            ToolboxItem toolRichTextBox = new System.Drawing.Design.ToolboxItem(typeof(RichTextBox));
+            ToolboxItem toolRichTextBox = new ToolboxItem(typeof(RichTextBox));
             toolRichTextBox.DisplayName = "ФорматированноеПолеВвода (RichTextBox)";
             listBox1.Items.Add(toolRichTextBox);
 
-            ToolboxItem toolSaveFileDialog = new System.Drawing.Design.ToolboxItem(typeof(SaveFileDialog));
+            ToolboxItem toolSaveFileDialog = new ToolboxItem(typeof(SaveFileDialog));
             toolSaveFileDialog.DisplayName = "ДиалогСохраненияФайла (SaveFileDialog)";
             listBox1.Items.Add(toolSaveFileDialog);
 
-            ToolboxItem toolSplitter = new System.Drawing.Design.ToolboxItem(typeof(Splitter));
+            ToolboxItem toolSplitter = new ToolboxItem(typeof(Splitter));
             toolSplitter.DisplayName = "Разделитель (Splitter)";
             listBox1.Items.Add(toolSplitter);
 
-            ToolboxItem toolStatusBar = new System.Drawing.Design.ToolboxItem(typeof(StatusBar));
+            ToolboxItem toolStatusBar = new ToolboxItem(typeof(StatusBar));
             toolStatusBar.DisplayName = "СтрокаСостояния (StatusBar)";
             listBox1.Items.Add(toolStatusBar);
 
-            ToolboxItem toolTabControl = new System.Drawing.Design.ToolboxItem(typeof(TabControl));
+            ToolboxItem toolTabControl = new ToolboxItem(typeof(TabControl));
             toolTabControl.DisplayName = "ПанельВкладок (TabControl)";
             listBox1.Items.Add(toolTabControl);
 
-            ToolboxItem toolTextBox = new System.Drawing.Design.ToolboxItem(typeof(TextBox));
+            ToolboxItem toolTextBox = new ToolboxItem(typeof(TextBox));
             toolTextBox.DisplayName = "ПолеВвода (TextBox)";
             listBox1.Items.Add(toolTextBox);
 
-            ToolboxItem toolTimer = new System.Drawing.Design.ToolboxItem(typeof(Timer));
+            ToolboxItem toolTimer = new ToolboxItem(typeof(Timer));
             toolTimer.DisplayName = "Таймер (Timer)";
             listBox1.Items.Add(toolTimer);
 
-            ToolboxItem toolToolBar = new System.Drawing.Design.ToolboxItem(typeof(ToolBar));
+            ToolboxItem toolToolBar = new ToolboxItem(typeof(ToolBar));
             toolToolBar.DisplayName = "ПанельИнструментов (ToolBar)";
             listBox1.Items.Add(toolToolBar);
 
-            ToolboxItem toolToolTip = new System.Drawing.Design.ToolboxItem(typeof(ToolTip));
+            ToolboxItem toolToolTip = new ToolboxItem(typeof(ToolTip));
             toolToolTip.DisplayName = "Подсказка (ToolTip)";
             listBox1.Items.Add(toolToolTip);
 
-            ToolboxItem toolTreeView = new System.Drawing.Design.ToolboxItem(typeof(TreeView));
+            ToolboxItem toolTreeView = new ToolboxItem(typeof(TreeView));
             toolTreeView.DisplayName = "Дерево (TreeView)";
             listBox1.Items.Add(toolTreeView);
 
-            ToolboxItem toolUserControl = new System.Drawing.Design.ToolboxItem(typeof(UserControl));
+            ToolboxItem toolUserControl = new ToolboxItem(typeof(UserControl));
             toolUserControl.DisplayName = "ПользовательскийЭлементУправления (UserControl)";
             listBox1.Items.Add(toolUserControl);
 
-            ToolboxItem toolVScrollBar = new System.Drawing.Design.ToolboxItem(typeof(VScrollBar));
+            ToolboxItem toolVScrollBar = new ToolboxItem(typeof(VScrollBar));
             toolVScrollBar.DisplayName = "ВертикальнаяПрокрутка (VScrollBar)";
             listBox1.Items.Add(toolVScrollBar);
 
@@ -710,8 +702,8 @@ namespace osfDesigner
 
         private void _run_Click(object sender, EventArgs e)
         {
-            string strTempFile = String.Format(System.IO.Path.GetTempPath() + "oscript_{0}_{1}.os", DateTime.Now.ToString("yyyyMMddHHmmssfff"), Guid.NewGuid().ToString().Replace("-", ""));
-            System.IO.File.WriteAllText(strTempFile, SaveScript.GetScriptText(), System.Text.Encoding.UTF8);
+            string strTempFile = String.Format(Path.GetTempPath() + "oscript_{0}_{1}.os", DateTime.Now.ToString("yyyyMMddHHmmssfff"), Guid.NewGuid().ToString().Replace("-", ""));
+            File.WriteAllText(strTempFile, SaveScript.GetScriptText(), Encoding.UTF8);
 
             System.Diagnostics.ProcessStartInfo psi = new System.Diagnostics.ProcessStartInfo();
             psi.Arguments = strTempFile;
@@ -735,7 +727,7 @@ namespace osfDesigner
             str_settingsForm = str_settingsForm.Replace("у", "AAAD/A");
             str_settingsForm = str_settingsForm.Replace("ц", "йййййй");
             str_settingsForm = str_settingsForm.Replace("й", "//////");
-            settingsForm.Icon = new System.Drawing.Icon((System.IO.Stream)new System.IO.MemoryStream(Convert.FromBase64String(str_settingsForm)));
+            settingsForm.Icon = new Icon(new MemoryStream(Convert.FromBase64String(str_settingsForm)));
 
             tabControl = new System.Windows.Forms.TabControl();
             tabControl.Parent = settingsForm;
@@ -745,7 +737,7 @@ namespace osfDesigner
                 System.Windows.Forms.AnchorStyles.Top |
                 System.Windows.Forms.AnchorStyles.Right |
                 System.Windows.Forms.AnchorStyles.Bottom;
-            tabControl.Size = new System.Drawing.Size(settingsForm.Width - 120, settingsForm.Height - 50);
+            tabControl.Size = new Size(settingsForm.Width - 120, settingsForm.Height - 50);
 
             tabPage1 = new System.Windows.Forms.TabPage("Файлы");
             tabPage1.Parent = tabControl;
@@ -780,7 +772,7 @@ namespace osfDesigner
 
             button_osPath = new System.Windows.Forms.Button();
             button_osPath.Parent = groupBox;
-            button_osPath.Font = new System.Drawing.Font(groupBox.Font, System.Drawing.FontStyle.Bold);
+            button_osPath.Font = new Font(groupBox.Font, FontStyle.Bold);
             button_osPath.Text = "...";
             button_osPath.Left = 115;
             button_osPath.Top = textBox_osPath.Top;
@@ -808,7 +800,7 @@ namespace osfDesigner
 
             button_dllPath = new System.Windows.Forms.Button();
             button_dllPath.Parent = groupBox;
-            button_dllPath.Font = new System.Drawing.Font(groupBox.Font, System.Drawing.FontStyle.Bold);
+            button_dllPath.Font = new Font(groupBox.Font, FontStyle.Bold);
             button_dllPath.Text = "...";
             button_dllPath.Left = 115;
             button_dllPath.Top = textBox_dllPath.Top;
@@ -841,7 +833,7 @@ namespace osfDesigner
 
             if (settingsForm.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                // Записываем значения в Settings
+                // Записываем значения в Settings.
                 Settings.Default["osPath"] = textBox_osPath.Text;
                 Settings.Default["dllPath"] = textBox_dllPath.Text;
                 Settings.Default.Save();
@@ -910,9 +902,9 @@ namespace osfDesigner
             {
                 return;
             }
-            System.IO.File.WriteAllText(saveFileDialog1.FileName, SaveForm.GetScriptText(saveFileDialog1.FileName), Encoding.UTF8);
+            File.WriteAllText(saveFileDialog1.FileName, SaveForm.GetScriptText(saveFileDialog1.FileName), Encoding.UTF8);
 
-            //System.IO.File.WriteAllText("C:\\444\\Форма1сохран\\Форма1сохран.osd", SaveForm.GetScriptText("C:\\444\\Форма1сохран\\"), Encoding.UTF8);
+            //File.WriteAllText("C:\\444\\Форма1сохран\\Форма1сохран.osd", SaveForm.GetScriptText("C:\\444\\Форма1сохран\\"), Encoding.UTF8);
         }
 
         private void _loadForm_Click(object sender, EventArgs e)
@@ -935,10 +927,9 @@ namespace osfDesigner
             string ComponentBlok = null;
             string rootBlok = null;
 
-            // соберем из блока конструкторов имена компонентов в CompNames. ///////////////////////////////////////////////////////////////////////////////////////////
+            // Соберем из блока конструкторов имена компонентов в CompNames.
             List<string> CompNames = new List<string>();
-            //Dictionary<string, Component> dictComponents = new Dictionary<string, Component>();// словарь для соответствия имени переменной в скрипте объекту в библиотеке
-            Dictionary<string, object> dictObjects = new Dictionary<string, object>();// словарь для соответствия имени переменной в скрипте объекту в библиотеке
+            Dictionary<string, object> dictObjects = new Dictionary<string, object>(); // Словарь для соответствия имени переменной в скрипте объекту в библиотеке.
             string ConstructorBlok = OneScriptFormsDesigner.ParseBetween(strOSD, @"[<Конструкторы]", @"[Конструкторы>]");
             result = ConstructorBlok.Split(stringSeparators, StringSplitOptions.RemoveEmptyEntries);
             for (int i = 0; i < result.Length; i++)
@@ -955,7 +946,7 @@ namespace osfDesigner
             }
             result = null;
 
-            ////// добавим вкладку и создадим на ней загружаемую форму. ////////////////////////////////////////////////////////////////////////////////////////////////
+            // Добавим вкладку и создадим на ней загружаемую форму.
             DesignSurfaceExt2 var1 = IpDesignerCore.AddDesignSurface<Form>(670, 600, AlignmentModeEnum.SnapLines, new Size(1, 1), CompNames[0]);
             Component rootComponent = (Component)var1.ComponentContainer.Components[0];
 
@@ -966,7 +957,7 @@ namespace osfDesigner
             rootBlok = OneScriptFormsDesigner.ParseBetween(strOSD, @"[<" + formName + @"]", @"[" + formName + @">]");
             if (rootBlok != null)
             {
-                // установим для формы свойства
+                // Установим для формы свойства.
                 result = rootBlok.Split(stringSeparators, StringSplitOptions.RemoveEmptyEntries);
                 for (int i1 = 0; i1 < result.Length; i1++)
                 {
@@ -988,7 +979,7 @@ namespace osfDesigner
                 result = null;
             }
 
-            ////// создадим остальные компоненты но пока не устанавливаем для них свойства, так как могут быть не все родители созданы. ///////////////////////////////
+            // Создадим остальные компоненты но пока не устанавливаем для них свойства, так как могут быть не все родители созданы.
             IDesignSurfaceExt surface = pDesigner.DSME.ActiveDesignSurface;
             for (int i = 1; i < CompNames.Count; i++)
             {
@@ -999,42 +990,42 @@ namespace osfDesigner
                     type_NameRu = type_NameRu.Replace(i1.ToString(), "");
                 }
 
-                string type_NameEn = "osfDesigner." + osfDesigner.OneScriptFormsDesigner.namesRuEn[type_NameRu];
-                System.Type type = Type.GetType(type_NameEn);
+                string type_NameEn = "osfDesigner." + OneScriptFormsDesigner.namesRuEn[type_NameRu];
+                Type type = Type.GetType(type_NameEn);
 
                 if (type == typeof(osfDesigner.ImageList))
                 {
-                    ToolboxItem toolImageList1 = new System.Drawing.Design.ToolboxItem(typeof(System.Windows.Forms.ImageList));
+                    ToolboxItem toolImageList1 = new ToolboxItem(typeof(System.Windows.Forms.ImageList));
                     Component comp1 = (Component)toolImageList1.CreateComponents(pDesigner.DSME.ActiveDesignSurface.GetIDesignerHost())[0];
-                    //  для comp1 уже создан дублер, получим его
+                    // Для comp1 уже создан дублер, получим его.
                     osfDesigner.ImageList SimilarObj = OneScriptFormsDesigner.RevertSimilarObj(comp1);
                     dictObjects[componentName] = SimilarObj;
                 }
                 else if (type == typeof(osfDesigner.MainMenu))
                 {
-                    ToolboxItem toolMainMenu1 = new System.Drawing.Design.ToolboxItem(typeof(System.Windows.Forms.MainMenu));
+                    ToolboxItem toolMainMenu1 = new ToolboxItem(typeof(System.Windows.Forms.MainMenu));
                     Component comp1 = (Component)toolMainMenu1.CreateComponents(pDesigner.DSME.ActiveDesignSurface.GetIDesignerHost())[0];
-                    //  для comp1 уже создан дублер, получим его
+                    // Для comp1 уже создан дублер, получим его.
                     osfDesigner.MainMenu SimilarObj = OneScriptFormsDesigner.RevertSimilarObj(comp1);
                     dictObjects[componentName] = SimilarObj;
                 }
                 else if (type == typeof(osfDesigner.TabPage))
                 {
-                    ToolboxItem toolTabPage1 = new System.Drawing.Design.ToolboxItem(typeof(System.Windows.Forms.TabPage));
+                    ToolboxItem toolTabPage1 = new ToolboxItem(typeof(System.Windows.Forms.TabPage));
                     Component comp1 = (Component)toolTabPage1.CreateComponents(pDesigner.DSME.ActiveDesignSurface.GetIDesignerHost())[0];
-                    //  для comp1 уже создан дублер, получим его
+                    // Для comp1 уже создан дублер, получим его.
                     osfDesigner.TabPage SimilarObj = OneScriptFormsDesigner.RevertSimilarObj(comp1);
                     SimilarObj.OriginalObj = (System.Windows.Forms.TabPage)comp1;
-                    OneScriptFormsDesigner.PassProperties(comp1, SimilarObj);//передадим свойства
+                    OneScriptFormsDesigner.PassProperties(comp1, SimilarObj); // Передадим свойства.
                     dictObjects[componentName] = SimilarObj;
 
                     GetDefaultValues(SimilarObj);
                 }
                 else if (type == typeof(osfDesigner.TabControl))
                 {
-                    ToolboxItem toolTabControl1 = new System.Drawing.Design.ToolboxItem(typeof(osfDesigner.TabControl));
+                    ToolboxItem toolTabControl1 = new ToolboxItem(typeof(osfDesigner.TabControl));
                     Component comp1 = (Component)toolTabControl1.CreateComponents(pDesigner.DSME.ActiveDesignSurface.GetIDesignerHost())[0];
-                    // удалим две вкладки, которые панель вкладок создает автоматически
+                    // Удалим две вкладки, которые панель вкладок создает автоматически.
                     IDesignerEventService des = (IDesignerEventService)pDesigner.DSME.GetService(typeof(IDesignerEventService));
                     if (des != null)
                     {
@@ -1069,7 +1060,7 @@ namespace osfDesigner
                 ((Component)dictObjects[componentName]).Site.Name = componentName;
             }
 
-            ////// установим для компонентов свойства. //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            // Установим свойства компонентов.
             for (int i = 1; i < CompNames.Count; i++)
             {
                 string componentName = CompNames[i];
@@ -1112,7 +1103,6 @@ namespace osfDesigner
                                     }
                                     else
                                     {
-                                        //Календарь1.ВыделенныеДаты.Добавить(Дата(2021, 11, 01, 00, 00, 00));
                                         string displayName = OneScriptFormsDesigner.ParseBetween(strCurrent, componentName + ".", ".");
                                         string strPropertyValue = OneScriptFormsDesigner.ParseBetween(strCurrent, "Дата(", "))");
                                         string parentName = OneScriptFormsDesigner.ParseBetween(ComponentBlok, componentName + @".Родитель=", @";");
@@ -1120,19 +1110,16 @@ namespace osfDesigner
                                         PropValueConverter.SetPropValue(control, displayName, strPropertyValue, parent);
                                     }
                                 }
-                                
                                 else if (componentName.Contains("ГлавноеМеню"))
                                 {
                                     string controlName = ((osfDesigner.MainMenu)control).Name;
                                     if (strCurrent.Contains(".ЭлементыМеню.Добавить(Ф.ЭлементМеню("))
                                     {
-                                        ////Меню0 = ГлавноеМеню1.ЭлементыМеню.Добавить(Ф.ЭлементМеню("Меню0"));
-                                        ////Меню1 = Меню0.ЭлементыМеню.Добавить(Ф.ЭлементМеню("Меню1"));
                                         osfDesigner.MainMenu MainMenu1 = (osfDesigner.MainMenu)control;
                                         System.Windows.Forms.TreeView TreeView1 = MainMenu1.TreeView;
                                         string Text = OneScriptFormsDesigner.ParseBetween(strCurrent, "(\u0022", "\u0022)");
                                         string Name = OneScriptFormsDesigner.ParseBetween(strCurrent, null, "=");
-                                        if (strCurrent.Contains(componentName + "."))// создаем элемент главного меню
+                                        if (strCurrent.Contains(componentName + ".")) // Создаем элемент главного меню.
                                         {
                                             if (!Name.Contains("Сепаратор"))
                                             {
@@ -1173,7 +1160,7 @@ namespace osfDesigner
 ТипСлияния == Добавить
 (Name) == ";
                                                 MenuItemEntry1.Name = Name;
-                                                //имя в виде тире не присваивать, заменять на тире только во время формирования сценария
+                                                // Имя в виде тире не присваивать, заменять на тире только во время формирования сценария.
                                                 MenuItemEntry1.Text = MenuItemEntry1.Name;
                                                 MainMenu1.MenuItems.Add(MenuItemEntry1.M_MenuItem);
                                                 OneScriptFormsDesigner.AddToHashtable(MenuItemEntry1.M_MenuItem, MenuItemEntry1);
@@ -1184,7 +1171,7 @@ namespace osfDesigner
                                                 TreeView1.Nodes.Add(TreeNode1);
                                                 TreeView1.SelectedNode = TreeNode1;
 
-                                                // свойство Checked у родителя нужно установить в false
+                                                // Свойство Checked у родителя нужно установить в false.
                                                 if (MenuItemEntry1.Parent.GetType() != typeof(osfDesigner.MainMenu))
                                                 {
                                                     ((MenuItem)MenuItemEntry1.Parent).Checked = false;
@@ -1192,7 +1179,7 @@ namespace osfDesigner
                                                 TreeView1.SelectedNode.Expand();
                                             }
                                         }
-                                        else// создаем элемент подменю
+                                        else // Создаем элемент подменю.
                                         {
                                             if (!Name.Contains("Сепаратор"))
                                             {
@@ -1224,7 +1211,7 @@ namespace osfDesigner
                                                 TreeNode1.Text = MenuItemEntry1.Text;
                                                 TreeView1.SelectedNode.Nodes.Add(TreeNode1);
 
-                                                // свойство Checked у родителя нужно установить в false
+                                                // Свойство Checked у родителя нужно установить в false.
                                                 if (MenuItemEntry1.Parent.GetType() != typeof(osfDesigner.MainMenu))
                                                 {
                                                     ((MenuItem)MenuItemEntry1.Parent).Checked = false;
@@ -1246,7 +1233,7 @@ namespace osfDesigner
 ТипСлияния == Добавить
 (Name) == ";
                                                 MenuItemEntry1.Name = Name;
-                                                //имя в виде тире не присваивать, заменять на тире только во время формирования сценария
+                                                // Имя в виде тире не присваивать, заменять на тире только во время формирования сценария.
                                                 MenuItemEntry1.Text = MenuItemEntry1.Name;
                                                 string nameNodeParent = OneScriptFormsDesigner.ParseBetween(strCurrent, "=", ".");
 
@@ -1263,7 +1250,7 @@ namespace osfDesigner
                                                 TreeNode1.Text = MenuItemEntry1.Name;
                                                 TreeView1.SelectedNode.Nodes.Add(TreeNode1);
 
-                                                // свойство Checked у родителя нужно установить в false
+                                                // Свойство Checked у родителя нужно установить в false.
                                                 if (MenuItemEntry1.Parent.GetType() != typeof(osfDesigner.MainMenu))
                                                 {
                                                     ((MenuItem)MenuItemEntry1.Parent).Checked = false;
@@ -1272,10 +1259,8 @@ namespace osfDesigner
                                             }
                                         }
                                     }
-                                    else // обрабатываем как свойство элемента меню
+                                    else // Обрабатываем как свойство элемента меню.
                                     {
-                                        //Меню1.Нажатие = Ф.Действие(ЭтотОбъект, "й111");
-                                        //Меню1.Переключатель = Истина;
                                         string displayName = OneScriptFormsDesigner.ParseBetween(strCurrent, ".", "=");
                                         string nameObj = controlName + OneScriptFormsDesigner.ParseBetween(strCurrent, null, ".");
                                         object control2 = (object)dictObjects[nameObj];
@@ -1299,8 +1284,6 @@ namespace osfDesigner
                                 }
                                 else if (strCurrent.StartsWith("Подсказка"))
                                 {
-                                    //Подсказка1.УстановитьПодсказку(Форма_0, "фор");
-
                                     string displayName = "ToolTip на " + OneScriptFormsDesigner.ParseBetween(strCurrent, null, ".УстановитьПодсказку");
                                     string strPropertyValue = strCurrent;
                                     PropValueConverter.SetPropValue(control, displayName, strPropertyValue, null);
@@ -1313,27 +1296,20 @@ namespace osfDesigner
                                     Control parent = (Control)dictObjects[parentName];
                                     PropValueConverter.SetPropValue(control, displayName, strPropertyValue, parent);
                                 }
-
                                 else if (componentName.Contains("СтрокаСостояния"))
                                 {
-                                    //СтрокаСостояния1.Родитель = Форма_0;
-                                    //СтрокаСостояния1.Текст = "СтрокаСостояния1";
-
                                     string controlName = ((osfDesigner.StatusBar)control).Name;
                                     string header = OneScriptFormsDesigner.ParseBetween(strCurrent, null, ".");
                                     if (header.Contains("СтрокаСостояния"))
                                     {
-                                        if (strCurrent.Contains(".Панели.Добавить(")) // добавляем панель
+                                        if (strCurrent.Contains(".Панели.Добавить(")) // Добавляем панель.
                                         {
-                                            //СтрокаСостояния2.Панели.Добавить(ПанельСтрокиСостояния0);
                                             string nameItem = controlName + OneScriptFormsDesigner.ParseBetween(strCurrent, "(", ")");
                                             StatusBarPanel StatusBarPanel1 = (StatusBarPanel)dictObjects[nameItem];
                                             ((osfDesigner.StatusBar)control).Panels.Add(StatusBarPanel1);
                                         }
-                                        else // обрабатываем как свойство строки состояния
+                                        else // Обрабатываем как свойство строки состояния.
                                         {
-                                            //СтрокаСостояния2.Родитель = Форма_0;
-                                            //СтрокаСостояния2.ПорядокОбхода = 1;
                                             string displayName = OneScriptFormsDesigner.ParseBetween(strCurrent, componentName + ".", "=");
                                             string strPropertyValue = OneScriptFormsDesigner.ParseBetween(strCurrent, "=", ";");
                                             string parentName = OneScriptFormsDesigner.ParseBetween(ComponentBlok, componentName + @".Родитель=", @";");
@@ -1343,9 +1319,8 @@ namespace osfDesigner
                                     }
                                     else 
                                     {
-                                        if (strCurrent.Contains("Ф.ПанельСтрокиСостояния();")) // создаем панель
+                                        if (strCurrent.Contains("Ф.ПанельСтрокиСостояния();")) // Создаем панель.
                                         {
-                                            //ПанельСтрокиСостояния0 = Ф.ПанельСтрокиСостояния();
                                             StatusBarPanel StatusBarPanel1 = new StatusBarPanel();
                                             string nameItem = OneScriptFormsDesigner.ParseBetween(strCurrent, null, "=");
                                             StatusBarPanel1.Name = nameItem;
@@ -1360,9 +1335,8 @@ namespace osfDesigner
 (Name) == 
 ";
                                         }
-                                        else // обрабатываем как свойство панели строки состояния
+                                        else // Обрабатываем как свойство панели строки состояния.
                                         {
-                                            //ПанельСтрокиСостояния1.Ширина = 150;
                                             string displayName = OneScriptFormsDesigner.ParseBetween(strCurrent, ".", "=");
                                             string nameObj = controlName + OneScriptFormsDesigner.ParseBetween(strCurrent, null, ".");
                                             object control2 = dictObjects[nameObj];
@@ -1371,22 +1345,17 @@ namespace osfDesigner
                                         }
                                     }
                                 }
-
-
-
-
                                 else if (componentName.Contains("ПанельИнструментов"))
                                 {
                                     string controlName = ((osfDesigner.ToolBar)control).Name;
                                     string header = OneScriptFormsDesigner.ParseBetween(strCurrent, null, ".");
                                     if (header.Contains("ПанельИнструментов"))
                                     {
-                                        if (strCurrent.Contains(".Кнопки.Добавить(")) // добавляем кнопку панели инструментов
+                                        if (strCurrent.Contains(".Кнопки.Добавить(")) // Добавляем кнопку панели инструментов.
                                         {
-                                            //Кн0 = ПанельИнструментов1.Кнопки.Добавить(Ф.КнопкаПанелиИнструментов());
                                             System.Windows.Forms.ToolBarButton OriginalObj = new System.Windows.Forms.ToolBarButton();
                                             osfDesigner.ToolBarButton SimilarObj = new osfDesigner.ToolBarButton();
-                                            OneScriptFormsDesigner.PassProperties(OriginalObj, SimilarObj);//передадим свойства
+                                            OneScriptFormsDesigner.PassProperties(OriginalObj, SimilarObj); // Передадим свойства.
                                             SimilarObj.OriginalObj = OriginalObj;
                                             SimilarObj.Parent = OriginalObj.Parent;
                                             SimilarObj.Style = (osfDesigner.ToolBarButtonStyle)OriginalObj.Style;
@@ -1408,10 +1377,8 @@ namespace osfDesigner
 ТекстПодсказки == 
 (Name) == ";
                                         }
-                                        else // обрабатываем как свойство панели инструментов
+                                        else // Обрабатываем как свойство панели инструментов.
                                         {
-                                            //ПанельИнструментов1.Положение = Ф.Точка(0, 0);
-                                            //ПанельИнструментов1.ПорядокОбхода = 0;
                                             string displayName = OneScriptFormsDesigner.ParseBetween(strCurrent, componentName + ".", "=");
                                             string strPropertyValue = OneScriptFormsDesigner.ParseBetween(strCurrent, "=", ";");
                                             string parentName = OneScriptFormsDesigner.ParseBetween(ComponentBlok, componentName + @".Родитель=", @";");
@@ -1419,10 +1386,8 @@ namespace osfDesigner
                                             PropValueConverter.SetPropValue(control, displayName, strPropertyValue, parent);
                                         }
                                     }
-                                    else // обрабатываем как свойство кнопки панели инструментов
+                                    else // Обрабатываем как свойство кнопки панели инструментов.
                                     {
-                                        //Кн0.Текст = "Кн000";
-                                        //Кн0.ТекстПодсказки = "фыфыфы";
                                         string displayName = OneScriptFormsDesigner.ParseBetween(strCurrent, ".", "=");
                                         string nameObj = controlName + OneScriptFormsDesigner.ParseBetween(strCurrent, null, ".");
                                         object control2 = dictObjects[nameObj];
@@ -1434,29 +1399,22 @@ namespace osfDesigner
                                 {
                                     string controlName = ((osfDesigner.ListView)control).Name;
                                     string header = OneScriptFormsDesigner.ParseBetween(strCurrent, null, ".");
-                                    if (header.Contains("СписокЭлементов"))// обрабатываем как свойство списка элементов
+                                    if (header.Contains("СписокЭлементов")) // Обрабатываем как свойство списка элементов.
                                     {
-                                        if (strCurrent.Contains(".Элементы.Добавить(")) // добавляем элемент списка элементов
+                                        if (strCurrent.Contains(".Элементы.Добавить(")) // Добавляем элемент списка элементов.
                                         {
-                                            //СписокЭлементов1.Элементы.Добавить(Элемент0);
                                             string nameItem = controlName + OneScriptFormsDesigner.ParseBetween(strCurrent, "(", ")");
                                             ListViewItem ListViewItem1 = (ListViewItem)dictObjects[nameItem];
                                             ((osfDesigner.ListView)control).Items.Add(ListViewItem1);
                                         }
-                                        else if(strCurrent.Contains(".Колонки.Добавить(")) // добавляем колонку списка элементов
+                                        else if (strCurrent.Contains(".Колонки.Добавить(")) // Добавляем колонку списка элементов.
                                         {
-                                            //СписокЭлементов2.Колонки.Добавить(Колонка0);
                                             string nameItem = controlName + OneScriptFormsDesigner.ParseBetween(strCurrent, "(", ")");
                                             ColumnHeader ColumnHeader1 = (ColumnHeader)dictObjects[nameItem];
                                             ((osfDesigner.ListView)control).Columns.Add(ColumnHeader1);
                                         }
-                                        else // обрабатываем как свойство для СписокЭлементов
+                                        else // Обрабатываем как свойство для СписокЭлементов.
                                         {
-                                            //СписокЭлементов1.Родитель = Форма_0;
-                                            //СписокЭлементов1.Положение = Ф.Точка(49, 51);
-                                            //СписокЭлементов1.ПорядокОбхода = 0;
-                                            //СписокЭлементов1.Размер = Ф.Размер(121, 97);
-                                            //СписокЭлементов1.Элементы.Добавить(Элемент2);
                                             string displayName = OneScriptFormsDesigner.ParseBetween(strCurrent, componentName + ".", "=");
                                             string strPropertyValue = OneScriptFormsDesigner.ParseBetween(strCurrent, "=", ";");
                                             string parentName = OneScriptFormsDesigner.ParseBetween(ComponentBlok, componentName + @".Родитель=", @";");
@@ -1466,9 +1424,8 @@ namespace osfDesigner
                                     }
                                     else
                                     {
-                                        if (strCurrent.Contains("Ф.ЭлементСпискаЭлементов();")) // создаем элемент списка элементов
+                                        if (strCurrent.Contains("Ф.ЭлементСпискаЭлементов();")) // Создаем элемент списка элементов.
                                         {
-                                            //Элемент0 = Ф.ЭлементСпискаЭлементов();
                                             ListViewItem ListViewItem1 = new ListViewItem();
                                             string nameItem = OneScriptFormsDesigner.ParseBetween(strCurrent, null, "=");
                                             ListViewItem1.Name = nameItem;
@@ -1484,9 +1441,8 @@ namespace osfDesigner
 ИндексИзображения == -1
 (Name) == ";
                                         }
-                                        else if (strCurrent.Contains("Ф.ПодэлементСпискаЭлементов();")) // создаем подэлемент списка элементов
+                                        else if (strCurrent.Contains("Ф.ПодэлементСпискаЭлементов();")) // Создаем подэлемент списка элементов.
                                         {
-                                            //Подэлемент1 = Ф.ПодэлементСпискаЭлементов();
                                             ListViewSubItem ListViewSubItem1 = new ListViewSubItem();
                                             string nameItem = OneScriptFormsDesigner.ParseBetween(strCurrent, null, "=");
                                             ListViewSubItem1.Name = nameItem;
@@ -1498,9 +1454,8 @@ namespace osfDesigner
 Шрифт == Microsoft Sans Serif; 7,8pt
 (Name) == ";
                                         }
-                                        else if (strCurrent.Contains("Ф.Колонка();")) // создаем колонку списка элементов
+                                        else if (strCurrent.Contains("Ф.Колонка();")) // Создаем колонку списка элементов.
                                         {
-                                            //Колонка0 = Ф.Колонка();
                                             ColumnHeader ColumnHeader1 = new ColumnHeader();
                                             string nameItem = OneScriptFormsDesigner.ParseBetween(strCurrent, null, "=");
                                             ColumnHeader1.Name = nameItem;
@@ -1512,19 +1467,16 @@ namespace osfDesigner
 Ширина == 60
 (Name) == ";
                                         }
-                                        else if (strCurrent.Contains(".Подэлементы.Добавить(")) // добавляем подэлемент списка элементов
+                                        else if (strCurrent.Contains(".Подэлементы.Добавить(")) // Добавляем подэлемент списка элементов.
                                         {
-                                            //Элемент0.Подэлементы.Добавить(Подэлемент1);
                                             string nameItem = controlName + OneScriptFormsDesigner.ParseBetween(strCurrent, null, ".");
                                             ListViewItem ListViewItem1 = (osfDesigner.ListViewItem)dictObjects[nameItem];
                                             string nameSubItem = controlName + OneScriptFormsDesigner.ParseBetween(strCurrent, "(", ")");
                                             ListViewSubItem ListViewSubItem1 = (osfDesigner.ListViewSubItem)dictObjects[nameSubItem];
                                             ListViewItem1.SubItems.Add(ListViewSubItem1);
                                         }
-                                        else // обрабатываем как свойство для элемента или подэлемента СписокЭлементов
+                                        else // Обрабатываем как свойство для элемента или подэлемента СписокЭлементов.
                                         {
-                                            //Элемент0.Текст = "Элемент0";
-                                            //Подэлемент2.Текст = "Подэлемент2";
                                             string displayName = OneScriptFormsDesigner.ParseBetween(strCurrent, ".", "=");
                                             string nameObj = controlName + OneScriptFormsDesigner.ParseBetween(strCurrent, null, ".");
                                             object control2 = dictObjects[nameObj];
@@ -1533,15 +1485,10 @@ namespace osfDesigner
                                         }
                                     }
                                 }
-
                                 else if (componentName.Contains("ПолеСписка"))
                                 {
-                                    if (strCurrent.Contains(".Элементы.Добавить(Ф.ЭлементСписка(")) // добавляем элемент поля списка
+                                    if (strCurrent.Contains(".Элементы.Добавить(Ф.ЭлементСписка(")) // Добавляем элемент поля списка.
                                     {
-                                        //ПолеСписка1.Элементы.Добавить(Ф.ЭлементСписка("ййй", "ййй"));
-                                        //ПолеСписка1.Элементы.Добавить(Ф.ЭлементСписка("3", 3));
-                                        //ПолеСписка1.Элементы.Добавить(Ф.ЭлементСписка("Истина", Истина));
-                                        //ПолеСписка1.Элементы.Добавить(Ф.ЭлементСписка("01.01.0001 0:00:00", Дата(0001, 01, 01, 00, 00, 00)));
                                         string strPropertyValue = OneScriptFormsDesigner.ParseBetween(strCurrent, "(Ф.ЭлементСписка", ");");
                                         string itemText = OneScriptFormsDesigner.ParseBetween(strPropertyValue, "(", ",").Replace("\u0022", "");
                                         string itemValue = OneScriptFormsDesigner.ParseBetween(strPropertyValue, ",", ")");
@@ -1549,13 +1496,13 @@ namespace osfDesigner
                                         osfDesigner.ListItemListBox ListItemListBox1 = new ListItemListBox();
                                         ListItemListBox1.Text = itemText;
 
-                                        if (itemValue.StartsWith("\u0022") && itemValue.EndsWith("\u0022")) // это тип Строка
+                                        if (itemValue.StartsWith("\u0022") && itemValue.EndsWith("\u0022")) // Тип Строка.
                                         {
                                             itemValue = itemValue.Replace("\u0022", "");
                                             ListItemListBox1.Value = itemValue;
                                             ListItemListBox1.ValueType = DataType.Строка;
                                         }
-                                        else if (strPropertyValue.Contains("Ложь") || strPropertyValue.Contains("Истина")) // это тип Булево
+                                        else if (strPropertyValue.Contains("Ложь") || strPropertyValue.Contains("Истина")) // Тип Булево.
                                         {
                                             ListItemListBox1.Value = true;
                                             ListItemListBox1.ValueType = DataType.Булево;
@@ -1564,10 +1511,9 @@ namespace osfDesigner
                                                 ListItemListBox1.Value = false;
                                             }
                                         }
-                                        else if (strPropertyValue.Contains("Дата")) // это тип Дата
+                                        else if (strPropertyValue.Contains("Дата")) // Тип Дата.
                                         {
                                             DateTime rez1 = new DateTime();
-                                            //("19.01.2022 0:00:00", Дата(2022, 01, 19, 00, 00, 00))
                                             string[] result1 = OneScriptFormsDesigner.ParseBetween(strPropertyValue, "Дата(", "))").Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
                                             for (int i2 = 0; i2 < result1.Length; i2++)
                                             {
@@ -1599,17 +1545,15 @@ namespace osfDesigner
                                             ListItemListBox1.Value = rez1;
                                             ListItemListBox1.ValueType = DataType.Дата;
                                         }
-                                        else // это тип Число
+                                        else // Тип Число.
                                         {
                                             ListItemListBox1.Value = Int32.Parse(itemValue);
                                             ListItemListBox1.ValueType = DataType.Число;
                                         }
                                         ((ListBox)control).Items.Add(ListItemListBox1);
                                     }
-                                    else // обрабатываем как свойство поля списка
+                                    else // Обрабатываем как свойство поля списка.
                                     {
-                                        //ПолеВыбора1.Родитель = Форма_0;
-                                        //ПолеВыбора1.ВысотаЭлемента = 16;
                                         string displayName = OneScriptFormsDesigner.ParseBetween(strCurrent, componentName + ".", "=");
                                         string strPropertyValue = OneScriptFormsDesigner.ParseBetween(strCurrent, "=", ";");
                                         string parentName = OneScriptFormsDesigner.ParseBetween(ComponentBlok, componentName + @".Родитель=", @";");
@@ -1617,16 +1561,11 @@ namespace osfDesigner
                                         PropValueConverter.SetPropValue(control, displayName, strPropertyValue, parent);
                                     }
                                 }
-
                                 else if (componentName.Contains("ПолеВыбора"))
                                 {
-                                    if (strCurrent.Contains(".Элементы.Добавить(Ф.ЭлементСписка(")) // добавляем элемент поля выбора
+                                    if (strCurrent.Contains(".Элементы.Добавить(Ф.ЭлементСписка(")) // Добавляем элемент поля выбора.
                                     {
-                                        //ПолеВыбора1.Элементы.Добавить(Ф.ЭлементСписка("фыфы", "фыфы"));
-                                        //ПолеВыбора1.Элементы.Добавить(Ф.ЭлементСписка("0", 0));
-                                        //ПолеВыбора1.Элементы.Добавить(Ф.ЭлементСписка("Ложь", Ложь));
-                                        //ПолеВыбора1.Элементы.Добавить(Ф.ЭлементСписка("19.01.2022 0:00:00", Дата(2022, 01, 19, 00, 00, 00)));
-                                        //Определяем тип элемента списка и создаем его
+                                        // Определяем тип элемента списка и создаем его.
                                         string strPropertyValue = OneScriptFormsDesigner.ParseBetween(strCurrent, "(Ф.ЭлементСписка", ");");
                                         string itemText = OneScriptFormsDesigner.ParseBetween(strPropertyValue, "(", ",").Replace("\u0022", "");
                                         string itemValue = OneScriptFormsDesigner.ParseBetween(strPropertyValue, ",", ")");
@@ -1634,13 +1573,13 @@ namespace osfDesigner
                                         osfDesigner.ListItemComboBox ListItemComboBox1 = new ListItemComboBox();
                                         ListItemComboBox1.Text = itemText;
 
-                                        if (itemValue.StartsWith("\u0022") && itemValue.EndsWith("\u0022")) // это тип Строка
+                                        if (itemValue.StartsWith("\u0022") && itemValue.EndsWith("\u0022")) // Тип Строка.
                                         {
                                             itemValue = itemValue.Replace("\u0022", "");
                                             ListItemComboBox1.Value = itemValue;
                                             ListItemComboBox1.ValueType = DataType.Строка;
                                         }
-                                        else if (strPropertyValue.Contains("Ложь") || strPropertyValue.Contains("Истина")) // это тип Булево
+                                        else if (strPropertyValue.Contains("Ложь") || strPropertyValue.Contains("Истина")) // Тип Булево.
                                         {
                                             ListItemComboBox1.Value = true;
                                             ListItemComboBox1.ValueType = DataType.Булево;
@@ -1649,10 +1588,9 @@ namespace osfDesigner
                                                 ListItemComboBox1.Value = false;
                                             }
                                         }
-                                        else if (strPropertyValue.Contains("Дата")) // это тип Дата
+                                        else if (strPropertyValue.Contains("Дата")) // Тип Дата.
                                         {
                                             DateTime rez1 = new DateTime();
-                                            //("19.01.2022 0:00:00", Дата(2022, 01, 19, 00, 00, 00))
                                             string[] result1 = OneScriptFormsDesigner.ParseBetween(strPropertyValue, "Дата(", "))").Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
                                             for (int i2 = 0; i2 < result1.Length; i2++)
                                             {
@@ -1691,10 +1629,8 @@ namespace osfDesigner
                                         }
                                         ((ComboBox)control).Items.Add(ListItemComboBox1);
                                     }
-                                    else // обрабатываем как свойство поля выбора
+                                    else // Обрабатываем как свойство поля выбора.
                                     {
-                                        //ПолеВыбора1.Родитель = Форма_0;
-                                        //ПолеВыбора1.ВысотаЭлемента = 16;
                                         string displayName = OneScriptFormsDesigner.ParseBetween(strCurrent, componentName + ".", "=");
                                         string strPropertyValue = OneScriptFormsDesigner.ParseBetween(strCurrent, "=", ";");
                                         string parentName = OneScriptFormsDesigner.ParseBetween(ComponentBlok, componentName + @".Родитель=", @";");
@@ -1702,27 +1638,14 @@ namespace osfDesigner
                                         PropValueConverter.SetPropValue(control, displayName, strPropertyValue, parent);
                                     }
                                 }
-
                                 else if (componentName.Contains("СеткаДанных"))
                                 {
-                                    //СеткаДанных1.Родитель = Форма_0;
-                                    //СеткаДанных1.Положение = Ф.Точка(45, 49);
-                                    //СеткаДанных1.ПорядокОбхода = 0;
-                                    //СеткаДанных1.Размер = Ф.Размер(255, 168);
                                     string controlName = ((osfDesigner.DataGrid)control).Name;
                                     string header = OneScriptFormsDesigner.ParseBetween(strCurrent, null, ".");
-                                    if (header.Contains("СеткаДанных"))// обрабатываем как свойство сетки данных
+                                    if (header.Contains("СеткаДанных")) // Обрабатываем как свойство сетки данных.
                                     {
                                         if (!strCurrent.Contains(".СтилиТаблицы.Добавить("))
                                         {
-                                            //СеткаДанных1.Родитель = Форма_0;
-                                            //СеткаДанных1.Положение = Ф.Точка(10, 200);
-                                            //СеткаДанных1.ПорядокОбхода = 0;
-                                            //СеткаДанных1.Размер = Ф.Размер(200, 137);
-                                            //Стиль0 = Ф.СтильТаблицыСеткиДанных();
-                                            //Стиль0.ИмяОтображаемого = "";
-                                            //СеткаДанных1.СтилиТаблицы.Добавить(Стиль0);
-
                                             string displayName = OneScriptFormsDesigner.ParseBetween(strCurrent, componentName + ".", "=");
                                             string strPropertyValue = OneScriptFormsDesigner.ParseBetween(strCurrent, "=", ";");
                                             string parentName = OneScriptFormsDesigner.ParseBetween(ComponentBlok, componentName + @".Родитель=", @";");
@@ -1734,13 +1657,11 @@ namespace osfDesigner
                                     {
                                         if (strCurrent.Contains("Ф.СтильТаблицыСеткиДанных();"))
                                         {
-                                            //Стиль0 = Ф.СтильТаблицыСеткиДанных();
-                                            //СеткаДанных1.СтилиТаблицы.Добавить(Стиль0);
                                             osfDesigner.DataGridTableStyle SimilarObj = new osfDesigner.DataGridTableStyle();
                                             System.Windows.Forms.DataGridTableStyle OriginalObj = new System.Windows.Forms.DataGridTableStyle();
                                             SimilarObj.OriginalObj = OriginalObj;
                                             OneScriptFormsDesigner.AddToHashtable(OriginalObj, SimilarObj);
-                                            OneScriptFormsDesigner.PassProperties(OriginalObj, SimilarObj);//передадим свойства
+                                            OneScriptFormsDesigner.PassProperties(OriginalObj, SimilarObj); // Передадим свойства.
                                             string nameStyle = OneScriptFormsDesigner.ParseBetween(strCurrent, null, "=");
                                             SimilarObj.NameStyle = nameStyle;
                                             ((osfDesigner.DataGrid)control).TableStyles.Add(OriginalObj);
@@ -1765,7 +1686,6 @@ namespace osfDesigner
                                         }
                                         else if (strCurrent.Contains("Ф.СтильКолонкиБулево();"))
                                         {
-                                            //СтильКолонкиБулево0 = Ф.СтильКолонкиБулево();
                                             string nameObj = OneScriptFormsDesigner.ParseBetween(strCurrent, null, "=");
                                             DataGridBoolColumn DataGridBoolColumn1 = new DataGridBoolColumn();
                                             dictObjects.Add(controlName + nameObj, DataGridBoolColumn1);
@@ -1777,9 +1697,8 @@ namespace osfDesigner
 ИмяОтображаемого == 
 ТолькоЧтение == Ложь";
                                         }
-                                        else if(strCurrent.Contains("Ф.СтильКолонкиПолеВвода();"))
+                                        else if (strCurrent.Contains("Ф.СтильКолонкиПолеВвода();"))
                                         {
-                                            //СтильКолонкиПолеВвода0 = Ф.СтильКолонкиПолеВвода();
                                             string nameObj = OneScriptFormsDesigner.ParseBetween(strCurrent, null, "=");
                                             DataGridTextBoxColumn DataGridTextBoxColumn1 = new DataGridTextBoxColumn();
                                             dictObjects.Add(controlName + nameObj, DataGridTextBoxColumn1);
@@ -1792,9 +1711,8 @@ namespace osfDesigner
 ИмяОтображаемого == 
 ТолькоЧтение == Ложь";
                                         }
-                                        else if(strCurrent.Contains("Ф.СтильКолонкиПолеВыбора();"))
+                                        else if (strCurrent.Contains("Ф.СтильКолонкиПолеВыбора();"))
                                         {
-                                            //СтильКолонкиПолеВыбора2 = Ф.СтильКолонкиПолеВыбора();
                                             string nameObj = OneScriptFormsDesigner.ParseBetween(strCurrent, null, "=");
                                             DataGridComboBoxColumnStyle DataGridComboBoxColumnStyle1 = new DataGridComboBoxColumnStyle();
                                             dictObjects.Add(controlName + nameObj, DataGridComboBoxColumnStyle1);
@@ -1808,7 +1726,6 @@ namespace osfDesigner
                                         }
                                         else if (strCurrent.Contains(".СтилиКолонкиСеткиДанных.Добавить("))
                                         {
-                                            //Стиль0.СтилиКолонкиСеткиДанных.Добавить(СтильКолонкиПолеВвода0);
                                             string nameTableStyle = controlName + OneScriptFormsDesigner.ParseBetween(strCurrent, null, ".");
                                             osfDesigner.DataGridTableStyle tableStyle = (osfDesigner.DataGridTableStyle)dictObjects[nameTableStyle];
                                             string nameColumnStyle = controlName + OneScriptFormsDesigner.ParseBetween(strCurrent, "(", ")");
@@ -1817,8 +1734,6 @@ namespace osfDesigner
                                         }
                                         else
                                         {
-                                            //СтильКолонкиБулево0.ИмяОтображаемого = "хх";
-
                                             string displayName = OneScriptFormsDesigner.ParseBetween(strCurrent, ".", "=");
                                             string nameObj = controlName + OneScriptFormsDesigner.ParseBetween(strCurrent, null, ".");
                                             Component control2 = (Component)dictObjects[nameObj];
@@ -1827,15 +1742,13 @@ namespace osfDesigner
                                         }
                                     }
                                 }
-
                                 else if (componentName.Contains("Дерево"))
                                 {
                                     string header = OneScriptFormsDesigner.ParseBetween(strCurrent, null, ".");
-                                    if (header.Contains("Дерево"))// обрабатываем как свойство дерева
+                                    if (header.Contains("Дерево")) // Обрабатываем как свойство дерева.
                                     {
                                         if (strCurrent.Contains("Узлы"))
                                         {
-                                            //Узел0 = Дерево1.Узлы.Добавить("Узел0");
                                             string displayName = OneScriptFormsDesigner.ParseBetween(strCurrent, ".", ".");
                                             PropValueConverter.SetPropValue(control, displayName, strCurrent, null);
                                         }
@@ -1848,17 +1761,15 @@ namespace osfDesigner
                                             PropValueConverter.SetPropValue(control, displayName, strPropertyValue, parent);
                                         }
                                     }
-                                    else// обрабатываем как свойство узла
+                                    else // Обрабатываем как свойство узла.
                                     {
                                         if (strCurrent.Contains("Узлы"))
                                         {
-                                            //Узел1 = Узел0.Узлы.Добавить("Узел1");
                                             string displayName = OneScriptFormsDesigner.ParseBetween(strCurrent, ".", ".");
                                             PropValueConverter.SetPropValue(control, displayName, strCurrent, null);
                                         }
                                         else
                                         {
-                                            //Узел3.ШрифтУзла = Ф.Шрифт("Microsoft Sans Serif", 7.8, Ф.СтильШрифта.Жирный);
                                             string displayName = "Узлы";
                                             PropValueConverter.SetPropValue(control, displayName, strCurrent, null);
                                         }
@@ -1870,12 +1781,6 @@ namespace osfDesigner
                                     string strPropertyValue = OneScriptFormsDesigner.ParseBetween(strCurrent, "=", ";");
                                     string parentName = OneScriptFormsDesigner.ParseBetween(ComponentBlok, componentName + @".Родитель=", @";");
                                     Control parent = (Control)dictObjects[parentName];
-
-                                    //System.Windows.Forms.MessageBox.Show("1control=" + control.GetType() + Environment.NewLine +
-                                    //    "displayName=" + displayName + Environment.NewLine +
-                                    //    "strPropertyValue=" + strPropertyValue + Environment.NewLine +
-                                    //    "parent.GetType=" + parent.GetType() + Environment.NewLine +
-                                    //    "");
 
                                     if (parent.GetType() == typeof(osfDesigner.TabPage))
                                     {
@@ -1902,10 +1807,10 @@ namespace osfDesigner
 
             }
 
-            // если для формы заданы КнопкаОтмена и/или КнопкаПринять, установим их
+            // Если для формы заданы КнопкаОтмена и/или КнопкаПринять, установим их.
             if (rootBlok != null)
             {
-                // установим для формы свойства
+                // Установим для формы свойства.
                 result = rootBlok.Split(stringSeparators, StringSplitOptions.RemoveEmptyEntries);
                 for (int i1 = 0; i1 < result.Length; i1++)
                 {
@@ -1923,7 +1828,6 @@ namespace osfDesigner
 	
                             if (displayName == "Меню")
                             {
-                                //Форма_0.Меню = ГлавноеМеню2;
                                 string strPropertyValue = OneScriptFormsDesigner.ParseBetween(strCurrent, "=", ";");
                                 ((Form)rootComponent).Menu = (System.Windows.Forms.MainMenu)dictObjects[strPropertyValue];
                             }
@@ -1954,13 +1858,13 @@ namespace osfDesigner
 
         private void _form_Click(object sender, EventArgs e)
         {
-            osfDesigner.pDesigner.SplitterpDesigner.Visible = true;
-            osfDesigner.pDesigner.CodePanel.Visible = false;
-            this._addForm.Enabled = true;//"Добавить Форму"
-            this._deleteForm.Enabled = true;//"Удалить Форму"
-            this._edit.Enabled = true;//"Правка"
-            this._tools.Enabled = true;//"Инструменты"
-            osfDesigner.pDesigner.SplitterpDesigner.Panel2Collapsed = false;
+            pDesigner.SplitterpDesigner.Visible = true;
+            pDesigner.CodePanel.Visible = false;
+            this._addForm.Enabled = true; // "Добавить Форму"
+            this._deleteForm.Enabled = true; // "Удалить Форму"
+            this._edit.Enabled = true; // "Правка"
+            this._tools.Enabled = true; // "Инструменты"
+            pDesigner.SplitterpDesigner.Panel2Collapsed = false;
             pnl4Toolbox.Visible = true;
             this._form.Enabled = false;
             this._code.Enabled = true;
@@ -1971,19 +1875,19 @@ namespace osfDesigner
         private void _code_Click(object sender, EventArgs e)
         {
             SaveScript.comps.Clear();
-            osfDesigner.pDesigner.SplitterpDesigner.Visible = false;
-            osfDesigner.pDesigner.CodePanel.Visible = true;
-            this._addForm.Enabled = false;//"Добавить Форму"
-            this._deleteForm.Enabled = false;//"Удалить Форму"
-            this._edit.Enabled = false;//"Правка"
-            this._tools.Enabled = false;//"Инструменты"
-            osfDesigner.pDesigner.SplitterpDesigner.Panel2Collapsed = true;
+            pDesigner.SplitterpDesigner.Visible = false;
+            pDesigner.CodePanel.Visible = true;
+            this._addForm.Enabled = false; // "Добавить Форму"
+            this._deleteForm.Enabled = false; // "Удалить Форму"
+            this._edit.Enabled = false; // "Правка"
+            this._tools.Enabled = false; // "Инструменты"
+            pDesigner.SplitterpDesigner.Panel2Collapsed = true;
             pnl4Toolbox.Visible = false;
             this._form.Enabled = true;
             this._code.Enabled = false;
             this._form.CheckState = System.Windows.Forms.CheckState.Unchecked;
             this._code.CheckState = System.Windows.Forms.CheckState.Checked;
-            osfDesigner.pDesigner.RichTextBox.Text = SaveScript.GetScriptText();
+            pDesigner.RichTextBox.Text = SaveScript.GetScriptText();
         }
 
         public string Version
@@ -1992,8 +1896,8 @@ namespace osfDesigner
             {
                 if (string.IsNullOrEmpty(_version))
                 {
-                    // Получение версии файла запущенной сборки
-                    System.Diagnostics.FileVersionInfo FVI = System.Diagnostics.FileVersionInfo.GetVersionInfo(System.Reflection.Assembly.GetExecutingAssembly().Location);
+                    // Получение версии файла запущенной сборки.
+                    System.Diagnostics.FileVersionInfo FVI = System.Diagnostics.FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location);
                     _version = FVI.ProductVersion;
                 }
                 return _version;
@@ -2029,10 +1933,10 @@ namespace osfDesigner
 
         private void pDesignerMainForm_Load(object sender, EventArgs e)
         {
-            // таймер для обеспечения срабатывания по правой кнопке мыши сворачивания раскрытого свойства СписокИзображений
+            // таймер для обеспечения срабатывания по правой кнопке мыши сворачивания раскрытого свойства СписокИзображений.
             this.timerLoad = new System.Windows.Forms.Timer();
             this.timerLoad.Enabled = true;
-            this.timerLoad.Tick += new System.EventHandler(this.timerLoad_Tick);
+            this.timerLoad.Tick += new EventHandler(this.timerLoad_Tick);
         }
 
         private void _deleteForm_Click(object sender, EventArgs e)
@@ -2064,9 +1968,9 @@ namespace osfDesigner
                 return;
             }
             SaveScript.comps.Clear();
-            System.IO.File.WriteAllText(saveFileDialog1.FileName, SaveScript.GetScriptText(saveFileDialog1.FileName), Encoding.UTF8);
+            File.WriteAllText(saveFileDialog1.FileName, SaveScript.GetScriptText(saveFileDialog1.FileName), Encoding.UTF8);
 
-            //System.IO.File.WriteAllText("C:\\444\\Проба.os", SaveScript.GetScriptText("C:\\444\\"), Encoding.UTF8);
+            //File.WriteAllText("C:\\444\\Проба.os", SaveScript.GetScriptText("C:\\444\\"), Encoding.UTF8);
         }
 
         private void _unDo_Click(object sender, EventArgs e)
@@ -2116,7 +2020,11 @@ namespace osfDesigner
 
         private void _about_Click(object sender, EventArgs e)
         {
-            string str1 = "Дизайнер форм от ahyahy " + Environment.NewLine + "Версия 1.0.0.0 " + Environment.NewLine + "(Создана на основе программы: " + Environment.NewLine + "picoFormDesigner coded by Paolo Foti " + Environment.NewLine + "Version is: " + Version + ")";
+            string str1 = "Дизайнер форм от ahyahy " + Environment.NewLine + 
+                "Версия " + Version + Environment.NewLine + 
+                "(Создана на основе программы: " + Environment.NewLine + 
+                "picoFormDesigner coded by Paolo Foti " + Environment.NewLine +
+                "Version is: 1.0.0.0)";
             MessageBox.Show(str1, "Дизайнер форм для OneScriptForms", MessageBoxButtons.OK, MessageBoxIcon.Question);
         }
 
@@ -2141,7 +2049,6 @@ namespace osfDesigner
         }
 
         //* 17.12.2021 perfolenta
-
         private bool ГотовоКЗакрытию()
         {
             if (pDesignerCore.Dirty)
@@ -2152,7 +2059,6 @@ namespace osfDesigner
             }
             return true;
         }
-
 
         private void pDesignerMainForm_Closing(object sender, CancelEventArgs e)
         {
@@ -2175,33 +2081,27 @@ namespace osfDesigner
 
             return true;
         }
-
         //***
+
         public void GetDefaultValues(dynamic comp)
         {
             // Заполним для компонента начальные свойства. Они нужны будут при создании скрипта.
             string DefaultValues1 = "";
             object pg = pDesigner.DSME.PropertyGridHost.PropertyGrid;
-
-            //System.Windows.Forms.MessageBox.Show("222pg=" + pg);
-
             ((System.Windows.Forms.PropertyGrid)pg).SelectedObject = comp;
-
-            //System.Windows.Forms.MessageBox.Show("222((System.Windows.Forms.PropertyGrid)pg).SelectedObject=" + ((System.Windows.Forms.PropertyGrid)pg).SelectedObject.GetType());
-
-            object view1 = pg.GetType().GetField("gridView", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).GetValue(pg);
-            GridItemCollection GridItemCollection1 = (GridItemCollection)view1.GetType().InvokeMember("GetAllGridEntries", System.Reflection.BindingFlags.InvokeMethod | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance, null, view1, null);
+            object view1 = pg.GetType().GetField("gridView", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(pg);
+            GridItemCollection GridItemCollection1 = (GridItemCollection)view1.GetType().InvokeMember("GetAllGridEntries", BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Instance, null, view1, null);
             if (GridItemCollection1 == null)
             {
                 return;
             }
             foreach (GridItem GridItem in GridItemCollection1)
             {
-                if (GridItem.PropertyDescriptor == null)// исключим из обхода категории
+                if (GridItem.PropertyDescriptor == null)  // Исключим из обхода категории.
                 {
                     continue;
                 }
-                if (GridItem.Label == "Locked")// исключим из обхода ненужные свойства
+                if (GridItem.Label == "Locked")  // Исключим из обхода ненужные свойства.
                 {
                     continue;
                 }
@@ -2209,7 +2109,7 @@ namespace osfDesigner
                 {
                     string str7 = "";
                     string strTab = "            ";
-                    str7 = str7 + osfDesigner.OneScriptFormsDesigner.ObjectConvertToString(GridItem.Value);
+                    str7 = str7 + OneScriptFormsDesigner.ObjectConvertToString(GridItem.Value);
                     if (GridItem.GridItems.Count > 0)
                     {
                         strTab = strTab + "\t\t";
@@ -2271,39 +2171,11 @@ namespace osfDesigner
                 }
             }
         }
-
-        //////public static void NodeSearch(System.Windows.Forms.TreeView treeView, string nameNodeParent, ref osfDesigner.MyTreeNode node, System.Windows.Forms.TreeNodeCollection treeNodes = null)
-        //////{
-        //////    System.Windows.Forms.TreeNodeCollection _treeNodes;
-        //////    if (treeNodes == null)
-        //////    {
-        //////        _treeNodes = treeView.Nodes;
-        //////    }
-        //////    else
-        //////    {
-        //////        _treeNodes = treeNodes;
-        //////    }
-        //////    osfDesigner.MyTreeNode treeNode = null;
-        //////    for (int i = 0; i < _treeNodes.Count; i++)
-        //////    {
-        //////        treeNode = (osfDesigner.MyTreeNode)_treeNodes[i];
-        //////        if (treeNode.Name == nameNodeParent)
-        //////        {
-        //////            node = treeNode;
-        //////            break;
-        //////        }
-        //////        if (treeNode.Nodes.Count > 0)
-        //////        {
-        //////            NodeSearch(treeView, nameNodeParent, ref node, treeNode.Nodes);
-        //////        }
-        //////    }
-        //////}
-
     }
 
     public class PropertyGridMessageFilter : IMessageFilter
     {
-        public Control Control;// Элемент управления для мониторинга
+        public Control Control; // Элемент управления для мониторинга.
 
         public MouseEventHandler MouseUp;
 

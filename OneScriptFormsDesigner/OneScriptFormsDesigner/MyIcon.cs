@@ -1,13 +1,14 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Drawing;
+using System.IO;
+using System;
 
 namespace osfDesigner
 {
     [TypeConverter(typeof(ExpandableObjectConverter))]
     public class MyIcon
     {
-        public System.Drawing.Icon M_Icon;
+        public Icon M_Icon;
 
         public MyIcon()
         {
@@ -18,7 +19,7 @@ namespace osfDesigner
             M_Icon = p1.M_Icon;
         }
 
-        public MyIcon(System.Drawing.Icon p1)
+        public MyIcon(Icon p1)
         {
             M_Icon = p1;
         }
@@ -28,20 +29,20 @@ namespace osfDesigner
             M_Icon = null;
             try
             {
-                System.Drawing.Bitmap Bitmap = new System.Drawing.Bitmap((System.IO.Stream)new System.IO.MemoryStream(Convert.FromBase64String(p1)));
+                Bitmap Bitmap = new Bitmap(new MemoryStream(Convert.FromBase64String(p1)));
                 IntPtr Hicon = Bitmap.GetHicon();
-                System.Drawing.Icon Icon1 = System.Drawing.Icon.FromHandle(Hicon);
+                Icon Icon1 = Icon.FromHandle(Hicon);
                 M_Icon = Icon1;
             }
             catch { }
             try
             {
-                M_Icon = new System.Drawing.Icon((System.IO.Stream)new System.IO.MemoryStream(Convert.FromBase64String(p1)));
+                M_Icon = new Icon(new MemoryStream(Convert.FromBase64String(p1)));
             }
             catch { }
             if (M_Icon == null)
             {
-                M_Icon = new System.Drawing.Icon(p1);
+                M_Icon = new Icon(p1);
             }
         }
 

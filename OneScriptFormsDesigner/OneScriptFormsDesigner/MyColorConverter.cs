@@ -1,27 +1,27 @@
-﻿using System;
+﻿using System.ComponentModel;
 using System.Drawing;
-using System.ComponentModel; 
 using System.Globalization;
 using System.Runtime.CompilerServices;
+using System;
 
 namespace osfDesigner
 {
     public class MyColorConverter : ColorConverter
     {
-        public override bool CanConvertFrom(ITypeDescriptorContext context, System.Type sourceType)
+        public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
         {
             return true;
         }
 
-        public override object ConvertTo(ITypeDescriptorContext context, CultureInfo cultureInfo, object value, System.Type destinationType)
+        public override object ConvertTo(ITypeDescriptorContext context, CultureInfo cultureInfo, object value, Type destinationType)
         {
             if (destinationType == typeof(string))
             {
                 string res1 = value.ToString();
                 string[] stringSeparators = new string[] { "[", "]" };
                 string[] result = res1.Split(stringSeparators, StringSplitOptions.RemoveEmptyEntries);
-                //result[1] - это либо имя цвета (Green), либо его RGB значения (A = 255, R = 255, G = 224, B = 192)
-                //меняем result[1] на значение из словаря colors
+                // result[1] - это либо имя цвета (Green), либо его RGB значения (A = 255, R = 255, G = 224, B = 192).
+                // Меняем result[1] на значение из словаря colors.
                 string[] stringSeparators2 = new string[] { ", " };
                 string[] result2 = result[1].Split(stringSeparators2, StringSplitOptions.RemoveEmptyEntries);
                 if (result2.Length == 4)//цвет в ARGB
@@ -32,11 +32,11 @@ namespace osfDesigner
                 {
                     try
                     {
-                        return "Цвет [" + osfDesigner.OneScriptFormsDesigner.colors[result[1]] + "]";
+                        return "Цвет [" + OneScriptFormsDesigner.colors[result[1]] + "]";
                     }
                     catch
                     {
-                        System.Drawing.Color Color1 = (System.Drawing.Color)value;
+                        Color Color1 = (Color)value;
                         return "Цвет [A=" + Color1.A + ", R=" + Color1.R + ", G=" + Color1.G + ", B=" + Color1.B + "]";
                     }
                 }
@@ -48,7 +48,7 @@ namespace osfDesigner
         {
             try
             {
-                return osfDesigner.OneScriptFormsDesigner.colors[value.ToString()];
+                return OneScriptFormsDesigner.colors[value.ToString()];
             }
             catch
             {
@@ -56,7 +56,7 @@ namespace osfDesigner
             }
         }
 
-        public override bool CanConvertTo(ITypeDescriptorContext context, System.Type destinationType)
+        public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
         {
             if (destinationType.Equals(typeof(string)))
             {
@@ -73,8 +73,8 @@ namespace osfDesigner
             }
             string[] stringSeparators = new string[] { "[", "]" };
             string[] result = ((string)value).Split(stringSeparators, StringSplitOptions.RemoveEmptyEntries);
-            //result[1] - это либо имя цвета (Green), либо его RGB значения (A = 255, R = 255, G = 224, B = 192)
-            //из него нужно создать System.Drawing.Color
+            // result[1] - это либо имя цвета (Green), либо его RGB значения (A = 255, R = 255, G = 224, B = 192).
+            // Из него нужно создать Color.
             string[] stringSeparators2 = new string[] { ", " };
             string[] result2 = result[1].Split(stringSeparators2, StringSplitOptions.RemoveEmptyEntries);
             if (result2.Length == 4)
@@ -83,25 +83,25 @@ namespace osfDesigner
                 int R = Convert.ToInt32(result2[1].Replace("R=", ""));
                 int G = Convert.ToInt32(result2[2].Replace("G=", ""));
                 int B = Convert.ToInt32(result2[3].Replace("B=", ""));
-                return System.Drawing.Color.FromArgb(255, R, G, B);
+                return Color.FromArgb(255, R, G, B);
             }
             else
             {
-                System.Drawing.Color Color2 = System.Drawing.Color.FromName(result[1]);
-                if ((Color2.A + Color2.R + Color2.G + Color2.B) == 0 )
+                Color Color2 = Color.FromName(result[1]);
+                if ((Color2.A + Color2.R + Color2.G + Color2.B) == 0)
                 {
                     try
                     {
-                        return System.Drawing.Color.FromName(osfDesigner.OneScriptFormsDesigner.colors[result[1]]);
+                        return Color.FromName(OneScriptFormsDesigner.colors[result[1]]);
                     }
                     catch
                     {
-                        return System.Drawing.Color.FromArgb(255, 0, 0, 0);
+                        return Color.FromArgb(255, 0, 0, 0);
                     }
                 }
                 else
                 {
-                    return System.Drawing.Color.FromName(result[1]);
+                    return Color.FromName(result[1]);
                 }
             }
         }

@@ -1,19 +1,18 @@
-﻿using System;
-using System.Drawing;
-using System.Windows.Forms;
-using System.Drawing.Design;
-using System.Reflection;
-using System.ComponentModel;
-using System.ComponentModel.Design;
-using osfDesigner.Properties;
-using System.Collections;
+﻿using osfDesigner.Properties;
 using System.Collections.Generic;
-using System.Text;
+using System.Collections;
+using System.ComponentModel.Design;
+using System.ComponentModel;
+using System.Drawing.Design;
+using System.Drawing;
 using System.IO;
+using System.Reflection;
+using System.Text;
+using System.Windows.Forms;
+using System;
 
 namespace osfDesigner
 {
-    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     public class pDesignerMainFormPFL : System.Windows.Forms.Form, IDesignerMainForm
     {
         private string _version = string.Empty;
@@ -964,7 +963,8 @@ namespace osfDesigner
                     //osfDesigner.TabPage SimilarObj = OneScriptFormsDesigner.RevertSimilarObj(comp1);
                     //SimilarObj.OriginalObj = (System.Windows.Forms.TabPage)comp1;
                     ////////////////////////OneScriptFormsDesigner.AddToHashtable(comp1, SimilarObj);
-                    //OneScriptFormsDesigner.PassProperties(comp1, SimilarObj);//передадим свойства
+                    //// присвоим дублёру значения всех свойств исходного объекта
+                    //OneScriptFormsDesigner.PassProperties(comp1, SimilarObj);//без этой строки компонент глючит
                     //dictComponents[componentName] = comp1;
 
                 }
@@ -1171,7 +1171,7 @@ namespace osfDesigner
             // если для формы заданы КнопкаОтмена и/или КнопкаПринять, установим их
             if (rootBlok != null)
             {
-                // установим для формы свойства
+                // Установим для формы свойства.
                 result = rootBlok.Split(stringSeparators, StringSplitOptions.RemoveEmptyEntries);
                 for (int i1 = 0; i1 < result.Length; i1++)
                 {
@@ -1198,19 +1198,6 @@ namespace osfDesigner
                 }
                 propertyGrid1.Refresh();
             }
-
-            // установим правильный порядок компонентов для дерева компонентов при загрузке сохраненной формы
-            string HierarchyBlok = OneScriptFormsDesigner.ParseBetween(strOSD, @"[<Иерархия]", @"[Иерархия>]");
-            if (ComponentBlok != null)
-            {
-                result = HierarchyBlok.Split(stringSeparators, StringSplitOptions.RemoveEmptyEntries);
-                for (int i1 = 0; i1 < result.Length; i1++)
-                {
-                    ((Form)rootComponent).ArrayListComponentsAddingOrder.Add(result[i1]);
-                }
-            }
-
-
 
             ComponentCollection ctrlsExisting = pDesigner.DSME.ActiveDesignSurface.GetIDesignerHost().Container.Components;
             ISelectionService iSel = pDesigner.DSME.ActiveDesignSurface.GetIDesignerHost().GetService(typeof(ISelectionService)) as ISelectionService;
@@ -1400,7 +1387,6 @@ namespace osfDesigner
             MessageBox.Show(str1, "Дизайнер форм для OneScriptForms", MessageBoxButtons.OK, MessageBoxIcon.Question);
         }
 
-
         //* 17.12.2021 perfolenta
 
         private bool ГотовоКЗакрытию()
@@ -1413,7 +1399,6 @@ namespace osfDesigner
             }
             return true;
         }
-
 
         private void pDesignerMainForm_Closing(object sender, CancelEventArgs e)
         {

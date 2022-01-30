@@ -1,7 +1,7 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Globalization;
-using System.Windows.Forms; 
+using System.Windows.Forms;
+using System; 
 
 namespace osfDesigner
 {
@@ -19,7 +19,7 @@ namespace osfDesigner
             return base.ConvertTo(context, culture, value, destinationType);
         }
 
-        public override object ConvertFrom(System.ComponentModel.ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value)
+        public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
         {
             if (value is string)
             {

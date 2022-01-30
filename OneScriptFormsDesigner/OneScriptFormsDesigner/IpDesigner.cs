@@ -3,7 +3,6 @@ using System.Windows.Forms;
 
 namespace osfDesigner
 {
-    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     public enum AlignmentModeEnum : int { SnapLines = 0, Grid, GridWithoutSnapping, NoGuides };
 
     // Интерфейс, используется для
@@ -30,19 +29,19 @@ namespace osfDesigner
         // DesignSurfaces management section -----------------------------------------------------
         DesignSurfaceExt2 ActiveDesignSurface { get; }
         // Создайте DesignSurface и rootComponent (элемент управления .NET) используя IDesignSurfaceExt.CreateRootComponent()
-        // если режим выравнивания не использует СЕТКУ, то параметр размера сетки игнорируется
+        // Если режим выравнивания не использует СЕТКУ, то параметр размера сетки игнорируется.
         // Note:
-        //     общие параметры используются для определения типа элемента управления, который следует использовать в качестве корневого компонента
+        //     Общие параметры используются для определения типа элемента управления, который следует использовать в качестве корневого компонента.
         //     TT запрашивается как производное от Control класса .NET
 
         DesignSurfaceExt2 AddDesignSurface<TT>(
             int startingFormWidth, int startingFormHeight,
             AlignmentModeEnum alignmentMode, Size gridSize,
             string formName = null
-            ) where TT : Control;
+           ) where TT : Control;
         void RemoveDesignSurface(DesignSurfaceExt2 activeSurface);
 
-        // Раздел редактирования
+        // Раздел редактирования.
         void UndoOnDesignSurface();
         void RedoOnDesignSurface();
         void CutOnDesignSurface();

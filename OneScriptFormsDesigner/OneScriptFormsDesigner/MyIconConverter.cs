@@ -1,17 +1,14 @@
-﻿using System;
-using System.Drawing;
+﻿using System.ComponentModel.Design.Serialization;
 using System.ComponentModel;
+using System.Drawing;
 using System.Globalization;
 using System.IO;
-using System.ComponentModel.Design.Serialization;
+using System;
 
 namespace osfDesigner
 {
     public class MyIconConverter : IconConverter
     {
-        // Получает значение, указывающее, может ли этот преобразователь
-        // преобразовать объект данного исходного типа в собственный тип преобразователя
-        // используя контекст.
         public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
         {
             if (sourceType == typeof(byte[]))
@@ -27,8 +24,6 @@ namespace osfDesigner
             return base.CanConvertFrom(context, sourceType);
         }
 
-        // Получает значение, указывающее, может ли этот конвертер
-        // преобразовать объект в заданный тип назначения с помощью контекста.
         public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
         {
             if (destinationType == typeof(Image) || destinationType == typeof(Bitmap))
@@ -44,7 +39,6 @@ namespace osfDesigner
             return base.CanConvertTo(context, destinationType);
         }
 
-        // Преобразует данный объект в собственный тип преобразователя.
         public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
         {
             if (value is byte[])
@@ -56,10 +50,6 @@ namespace osfDesigner
             return base.ConvertFrom(context, culture, value);
         }
 
-        // Преобразует данный объект в другой тип.  Наиболее распространенные типы преобразования
-        // относятся к преобразованию в строковый объект и из строкового объекта.  Реализация по умолчанию вызовет
-        // преобразованию объекта в строку, если объект допустим и если место назначения
-        // тип-строка. Если это невозможно, будет создано исключение NotSupportedException.
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
         {
             dynamic Instance1 = (dynamic)context.Instance;

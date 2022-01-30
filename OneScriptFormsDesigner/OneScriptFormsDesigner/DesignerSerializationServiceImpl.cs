@@ -1,7 +1,7 @@
-﻿using System;
-using System.Windows.Forms;
+﻿using System.Collections;
 using System.ComponentModel.Design.Serialization;
-using System.Collections;
+using System.Windows.Forms;
+using System;
 
 namespace osfDesigner
 {
@@ -9,26 +9,26 @@ namespace osfDesigner
     {
         private IServiceProvider _serviceProvider;
 
-        public DesignerSerializationServiceImpl ( IServiceProvider serviceProvider )
+        public DesignerSerializationServiceImpl(IServiceProvider serviceProvider)
         {
             this._serviceProvider = serviceProvider;
         }
 
-        public System.Collections.ICollection Deserialize ( object serializationData )
+        public ICollection Deserialize(object serializationData)
         {
             SerializationStore serializationStore = serializationData as SerializationStore;
-            if ( serializationStore != null )
+            if (serializationStore != null)
             {
-                ComponentSerializationService componentSerializationService = _serviceProvider.GetService ( typeof ( ComponentSerializationService ) ) as ComponentSerializationService;
-                ICollection collection = componentSerializationService.Deserialize ( serializationStore );
+                ComponentSerializationService componentSerializationService = _serviceProvider.GetService(typeof(ComponentSerializationService)) as ComponentSerializationService;
+                ICollection collection = componentSerializationService.Deserialize(serializationStore);
                 return collection;
             }
             return new object[] {};
         }
 
-        public object Serialize ( System.Collections.ICollection objects )
+        public object Serialize(ICollection objects)
         {
-            ComponentSerializationService componentSerializationService = _serviceProvider.GetService ( typeof ( ComponentSerializationService ) ) as ComponentSerializationService;
+            ComponentSerializationService componentSerializationService = _serviceProvider.GetService(typeof(ComponentSerializationService)) as ComponentSerializationService;
             SerializationStore returnObject = null;
             using (SerializationStore serializationStore = componentSerializationService.CreateStore())
             {

@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
-using System.Drawing.Design; 
+using System.Drawing.Design;
+using System.Drawing;
 
 namespace osfDesigner
 {
@@ -47,7 +48,7 @@ namespace osfDesigner
         [Browsable(true)]
         [TypeConverter(typeof(MySizeConverter))]
         [Editor(typeof(MySizeEditor), typeof(UITypeEditor))]
-        public System.Drawing.Size ImageSize
+        public Size ImageSize
         {
             get { return M_ImageList.ImageSize; }
             set { M_ImageList.ImageSize = value; }

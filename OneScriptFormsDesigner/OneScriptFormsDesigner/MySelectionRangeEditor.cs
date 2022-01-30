@@ -1,8 +1,9 @@
-﻿using System;
+﻿using System.ComponentModel;
 using System.Drawing.Design;
-using System.Windows.Forms;
+using System.Drawing;
 using System.Windows.Forms.Design;
-using System.ComponentModel;
+using System.Windows.Forms;
+using System;
 
 namespace osfDesigner
 {
@@ -16,8 +17,8 @@ namespace osfDesigner
             {
                 frmSelectionRange _frmSelectionRange = new frmSelectionRange();
 
-                _frmSelectionRange.DateTimePicker1.Value = (DateTime)((System.Windows.Forms.SelectionRange)value).Start;
-                _frmSelectionRange.DateTimePicker2.Value = (DateTime)((System.Windows.Forms.SelectionRange)value).End;
+                _frmSelectionRange.DateTimePicker1.Value = ((System.Windows.Forms.SelectionRange)value).Start;
+                _frmSelectionRange.DateTimePicker2.Value = ((System.Windows.Forms.SelectionRange)value).End;
                 _frmSelectionRange._wfes = wfes;
 
                 wfes.DropDownControl(_frmSelectionRange);
@@ -30,7 +31,6 @@ namespace osfDesigner
 
         public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context)
         {
-            // Вызов модального диалогового окна, в котором запрашивается ввод пользователем данных.
             return UITypeEditorEditStyle.DropDown;
         }
     }
@@ -41,13 +41,13 @@ namespace osfDesigner
         public System.Windows.Forms.DateTimePicker DateTimePicker1;
         private System.Windows.Forms.Label label2;
         public System.Windows.Forms.DateTimePicker DateTimePicker2;
-        private System.ComponentModel.Container components = null;
+        private Container components = null;
 
         public IWindowsFormsEditorService _wfes;
 
         public frmSelectionRange()
         {
-            this.ClientSize = new System.Drawing.Size(192, 70);
+            this.ClientSize = new Size(192, 70);
             this.ControlBox = false;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.MaximizeBox = false;
@@ -58,26 +58,26 @@ namespace osfDesigner
 
             label1 = new System.Windows.Forms.Label();
             label1.Parent = this;
-            label1.Location = new System.Drawing.Point(10, 10);
+            label1.Location = new Point(10, 10);
             label1.Text = "Начало";
             label1.Width = 55;
 
             DateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             DateTimePicker1.Parent = this;
-            DateTimePicker1.Location = new System.Drawing.Point(label1.Left + label1.Width + 5, label1.Top);
+            DateTimePicker1.Location = new Point(label1.Left + label1.Width + 5, label1.Top);
             DateTimePicker1.CustomFormat = "dd.MM.yyyy";
             DateTimePicker1.Format = DateTimePickerFormat.Custom;
             DateTimePicker1.Width = 100;
 
             label2 = new System.Windows.Forms.Label();
             label2.Parent = this;
-            label2.Location = new System.Drawing.Point(label1.Left, label1.Bottom + 5);
+            label2.Location = new Point(label1.Left, label1.Bottom + 5);
             label2.Text = "Конец";
             label2.Width = 55;
 
             DateTimePicker2 = new System.Windows.Forms.DateTimePicker();
             DateTimePicker2.Parent = this;
-            DateTimePicker2.Location = new System.Drawing.Point(label2.Left + label2.Width + 5, label2.Top);
+            DateTimePicker2.Location = new Point(label2.Left + label2.Width + 5, label2.Top);
             DateTimePicker2.CustomFormat = "dd.MM.yyyy";
             DateTimePicker2.Format = DateTimePickerFormat.Custom;
             DateTimePicker2.Width = 100;

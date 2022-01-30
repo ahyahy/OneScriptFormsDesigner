@@ -1,7 +1,9 @@
-﻿using System;
-using System.Windows.Forms;
-using System.ComponentModel.Design;
+﻿using System.ComponentModel.Design;
+using System.ComponentModel;
+using System.Drawing;
 using System.Reflection;
+using System.Windows.Forms;
+using System;
 
 namespace osfDesigner
 {
@@ -25,10 +27,7 @@ namespace osfDesigner
         private System.Windows.Forms.PropertyGrid TopLevelPropertyGrid1;
         private osfDesigner.TabControl TabControl1;
 
-        // Определите статическое событие, чтобы отобразить внутреннюю сетку свойств
-        public delegate void MyPropertyValueChangedEventHandler(object sender, PropertyValueChangedEventArgs e);
-
-        // Унаследуйте конструктор по умолчанию из стандартного редактора коллекций...
+        // Унаследуйте конструктор по умолчанию из стандартного редактора коллекций.
         public MyTabPageCollectionEditor(Type type) : base(type)
         {
         }
@@ -36,7 +35,7 @@ namespace osfDesigner
         // Переопределите этот метод, чтобы получить доступ к форме редактора коллекции. 
         protected override CollectionForm CreateCollectionForm()
         {
-            // Получение макета редактора коллекции по умолчанию...
+            // Получение макета редактора коллекции по умолчанию.
             collectionForm = base.CreateCollectionForm();
             TabControl1 = (osfDesigner.TabControl)this.Context.Instance;
             collectionForm.Text = "Редактор коллекции Вкладки";
@@ -93,9 +92,9 @@ namespace osfDesigner
                         PropertyGrid1.SelectedObjectsChanged += PropertyGrid_SelectedObjectsChanged;
                         PropertyGrid1.PropertyValueChanged += PropertyGrid1_PropertyValueChanged;
 
-                        // также сделать доступным окно с подсказками по параметрам в нижней части 
+                        // Также сделайте доступным окно с подсказками по параметрам в нижней части.
                         PropertyGrid1.HelpVisible = true;
-                        PropertyGrid1.HelpBackColor = System.Drawing.SystemColors.Info;
+                        PropertyGrid1.HelpBackColor = SystemColors.Info;
                     }
                     if (i == 6)
                     {
@@ -157,7 +156,7 @@ namespace osfDesigner
                     MessageBoxIcon.Exclamation,
                     MessageBoxDefaultButton.Button1
                     );
-                System.ComponentModel.PropertyDescriptor pd = System.ComponentModel.TypeDescriptor.GetProperties(((dynamic)PropertyGrid1.SelectedObject).M_TabPage)["Name"];
+                PropertyDescriptor pd = TypeDescriptor.GetProperties(((dynamic)PropertyGrid1.SelectedObject).M_TabPage)["Name"];
                 pd.SetValue(((dynamic)PropertyGrid1.SelectedObject).M_TabPage, (string)e.OldValue);
             }
             UpdateListBox1();
@@ -207,7 +206,7 @@ namespace osfDesigner
         {
             int index = ListBox1.SelectedIndex;
             System.Windows.Forms.TabPage OriginalObj = TabControl1.TabPages[index];
-            PropertyGrid1.SelectedObject = osfDesigner.OneScriptFormsDesigner.RevertSimilarObj(OriginalObj);
+            PropertyGrid1.SelectedObject = OneScriptFormsDesigner.RevertSimilarObj(OriginalObj);
         }
 
         private void ButtonAdd1_Click(object sender, EventArgs e)

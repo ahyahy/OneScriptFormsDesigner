@@ -1,9 +1,9 @@
-﻿using System;
+﻿using System.ComponentModel;
 using System.Drawing.Design;
-using System.Windows.Forms;
-using System.Windows.Forms.Design;
-using System.ComponentModel; 
 using System.Reflection;
+using System.Windows.Forms.Design;
+using System.Windows.Forms;
+using System;
 
 namespace osfDesigner
 {
@@ -12,7 +12,7 @@ namespace osfDesigner
         DockEditor editor;
         public MyDockEditor()
         {
-            editor = new System.Windows.Forms.Design.DockEditor();
+            editor = new DockEditor();
         }
         public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
         {
@@ -31,27 +31,27 @@ namespace osfDesigner
             var none = dockUiObject.Controls[1];
             none.Text = "Отсутствие";
 
-            if ((int)value == 1)//верх
+            if ((int)value == 1) // верх
             {
                 CheckBox1.Checked = true;
             }
-            else if ((int)value == 2)//низ
+            else if ((int)value == 2) // низ
             {
                 CheckBox2.Checked = true;
             }
-            else if ((int)value == 3)//лево
+            else if ((int)value == 3) // лево
             {
                 CheckBox3.Checked = true;
             }
-            else if ((int)value == 4)//право
+            else if ((int)value == 4) // право
             {
                 CheckBox4.Checked = true;
             }
-            else if ((int)value == 5)//заполнение
+            else if ((int)value == 5) // заполнение
             {
                 CheckBox5.Checked = true;
             }
-            else//отсутствие
+            else // отсутствие
             {
                 CheckBox0.Checked = true;
             }

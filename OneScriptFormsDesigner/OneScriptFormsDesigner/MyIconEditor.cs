@@ -1,10 +1,11 @@
-﻿using System;
-using System.Drawing;
+﻿using System.ComponentModel;
 using System.Drawing.Design;
-using System.Windows.Forms;
-using System.Windows.Forms.Design;
-using System.ComponentModel; 
+using System.Drawing;
+using System.IO;
 using System.Runtime.InteropServices;
+using System.Windows.Forms.Design;
+using System.Windows.Forms;
+using System;
 
 namespace osfDesigner
 {
@@ -39,7 +40,7 @@ namespace osfDesigner
             {
                 if (_fileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
-                    var file = new System.IO.FileStream(_fileDialog.FileName, System.IO.FileMode.Open, System.IO.FileAccess.Read, System.IO.FileShare.Read);
+                    var file = new FileStream(_fileDialog.FileName, FileMode.Open, FileAccess.Read, FileShare.Read);
                     value = LoadFromStream(file);
                 }
                 else
@@ -63,14 +64,14 @@ namespace osfDesigner
 
         public override void PaintValue(PaintValueEventArgs e)
         {
-            if (((dynamic)e.Value).M_Icon.GetType() != typeof(System.Drawing.Icon))
+            if (((dynamic)e.Value).M_Icon.GetType() != typeof(Icon))
             {
                 return;
             }
 
-            System.Drawing.Icon icon = ((MyIcon)e.Value).M_Icon;
+            Icon icon = ((MyIcon)e.Value).M_Icon;
 
-            // Если значок меньше прямоугольника, просто отцентрируйте его в центре прямоугольника
+            // Если значок меньше прямоугольника, просто отцентруйте его в прямоугольнике.
             Rectangle rectangle = e.Bounds;
             if (icon.Width < rectangle.Width)
             {

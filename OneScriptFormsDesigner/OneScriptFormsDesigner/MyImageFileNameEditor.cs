@@ -1,12 +1,11 @@
-﻿using System;
-using System.Drawing;
+﻿using System.ComponentModel;
 using System.Drawing.Design;
+using System.Drawing;
 using System.Windows.Forms.Design;
-using System.ComponentModel;
+using System;
 
 namespace osfDesigner
 {
-    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     public class MyImageFileNameEditor : FileNameEditor
     {
         private System.Windows.Forms.OpenFileDialog _openFileDialog;
@@ -17,7 +16,7 @@ namespace osfDesigner
 
             if (wfes != null)
             {
-                frmImageFileName _frmImageFileName = new frmImageFileName(value, osfDesigner.Program.pDesignerMainForm1.GetmainForm());
+                frmImageFileName _frmImageFileName = new frmImageFileName(value, Program.pDesignerMainForm1.GetmainForm());
                 _frmImageFileName._wfes = wfes;
 
                 if (value == null)
@@ -33,7 +32,7 @@ namespace osfDesigner
                     }
                     if (_openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                     {
-                        System.Drawing.Image Imag1 = System.Drawing.Image.FromFile(_openFileDialog.FileName);
+                        Image Imag1 = Image.FromFile(_openFileDialog.FileName);
                         Imag1.Tag = _openFileDialog.FileName;
                         return Imag1;
                     }
@@ -58,7 +57,7 @@ namespace osfDesigner
                         }
                         if (_openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                         {
-                            System.Drawing.Image Imag1 = System.Drawing.Image.FromFile(_openFileDialog.FileName);
+                            Image Imag1 = Image.FromFile(_openFileDialog.FileName);
                             Imag1.Tag = _openFileDialog.FileName;
                             return Imag1;
                         }
@@ -108,7 +107,7 @@ namespace osfDesigner
                 {
                     return;
                 }
-                System.Drawing.Image img = (System.Drawing.Image)e.Value;
+                Image img = (Image)e.Value;
                 if (img == null)
                 {
                     return;
@@ -129,7 +128,7 @@ namespace osfDesigner
 
     public class frmImageFileName : System.Windows.Forms.Form
     {
-        private System.ComponentModel.Container components = null;
+        private Container components = null;
         public IWindowsFormsEditorService _wfes;
         private System.Windows.Forms.Panel Panel1;
         private System.Windows.Forms.Panel Panel2;
@@ -145,24 +144,24 @@ namespace osfDesigner
             this.MinimizeBox = false;
             this.ShowInTaskbar = false;
             this.Closed += frmImageFileName_Closed;
-            this.MinimumSize = new System.Drawing.Size(300, 150);
+            this.MinimumSize = new Size(300, 150);
             this.Width = 700;
             this.Height = 200;
             this.Location = new Point(mainForm.Left + ((mainForm.Width / 2) - (700 / 2)), mainForm.Top + ((mainForm.Height / 2) - (200 / 2)));
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
 
-            // панель с ListView1
+            // Панель с ListView1.
             Panel1 = new System.Windows.Forms.Panel();
             Panel1.Parent = this;
             Panel1.Dock = System.Windows.Forms.DockStyle.Fill;
 
-            // панель с ButtonChange и ButtonDel
+            // Панель с ButtonChange и ButtonDel.
             Panel2 = new System.Windows.Forms.Panel();
             Panel2.Parent = this;
             Panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
             Panel2.Height = 32;
 
-            // панель с ButtonChange и ButtonDel
+            // Панель с ButtonChange и ButtonDel.
             Panel3 = new System.Windows.Forms.Panel();
             Panel3.Parent = Panel2;
             Panel3.Dock = System.Windows.Forms.DockStyle.Right;
@@ -170,13 +169,13 @@ namespace osfDesigner
 
             ButtonChange = new System.Windows.Forms.Button();
             ButtonChange.Parent = Panel3;
-            ButtonChange.Bounds = new System.Drawing.Rectangle(6, 5, 110, 22);
+            ButtonChange.Bounds = new Rectangle(6, 5, 110, 22);
             ButtonChange.Text = "Изменить";
             ButtonChange.Click += ButtonChange_Click;
 
             ButtonDel = new System.Windows.Forms.Button();
             ButtonDel.Parent = Panel3;
-            ButtonDel.Bounds = new System.Drawing.Rectangle(122, 5, 110, 22);
+            ButtonDel.Bounds = new Rectangle(122, 5, 110, 22);
             ButtonDel.Text = "Удалить";
             ButtonDel.Click += ButtonDel_Click;
 

@@ -1,7 +1,8 @@
 ﻿using System.ComponentModel.Design;
 using System.ComponentModel;
-using System.Drawing.Design; 
+using System.Drawing.Design;
 using System.Drawing;
+using System.Reflection;
 using System.Windows.Forms.Design;
 using System.Windows.Forms;
 using System;
@@ -10,7 +11,7 @@ namespace osfDesigner
 {
     public class ListBox : System.Windows.Forms.ListBox
     {
-        private int tic1 = 0; // счетчик для правильной работы смарт-тэгов
+        private int tic1 = 0; // Счетчик для правильной работы смарт-тэгов.
         private string _DoubleClick_osf;
         private string _SelectedIndexChanged_osf;
         private string _KeyUp_osf;
@@ -44,10 +45,10 @@ namespace osfDesigner
             e.DrawBackground();
             e.DrawFocusRectangle();
             dynamic item = base.Items[e.Index];
-            System.Type type = item.GetType();
-            System.Drawing.Color color1 = base.ForeColor;
-            System.Reflection.PropertyInfo propertyForeColor = type.GetProperty("ForeColor");
-            Color colorForeColor = System.Drawing.Color.Empty;
+            Type type = item.GetType();
+            Color color1 = base.ForeColor;
+            PropertyInfo propertyForeColor = type.GetProperty("ForeColor");
+            Color colorForeColor = Color.Empty;
             if (propertyForeColor != null)
             {
                 try
@@ -71,12 +72,12 @@ namespace osfDesigner
                 }
                 catch
                 {
-                    color1 = System.Drawing.SystemColors.GrayText;
+                    color1 = SystemColors.GrayText;
                 }
             }
             else if ((e.State & System.Windows.Forms.DrawItemState.Selected) == System.Windows.Forms.DrawItemState.Selected)
             {
-                color1 = System.Drawing.SystemColors.HighlightText;
+                color1 = SystemColors.HighlightText;
             }
             else
             {
@@ -149,7 +150,7 @@ namespace osfDesigner
         [TypeConverter(typeof(MyBooleanConverter))]
         public bool Enabled_osf { get; set; }
 				
-        //скроем унаследованное свойство, для того чтобы оно не мешало нашему замещающему свойству использовать свой эдитор и конвертер.
+        // Скроем унаследованное свойство, для того чтобы оно не мешало нашему замещающему свойству использовать свой эдитор и конвертер.
         [Browsable(false)]
         public new bool Enabled { get; set; }
 
@@ -287,7 +288,7 @@ namespace osfDesigner
         [TypeConverter(typeof(MyBooleanConverter))]
         public bool Visible_osf { get; set; }
 				
-        //скроем унаследованное свойство, для того чтобы оно не мешало нашему замещающему свойству использовать свой эдитор и конвертер.
+        // Скроем унаследованное свойство, для того чтобы оно не мешало нашему замещающему свойству использовать свой эдитор и конвертер.
         [Browsable(false)]
         public new bool Visible { get; set; }
 
@@ -325,7 +326,7 @@ namespace osfDesigner
             set { base.Location = value; }
         }
 				
-        //скроем унаследованное свойство, для того чтобы оно не мешало нашему замещающему свойству использовать свой эдитор и конвертер.
+        // Скроем унаследованное свойство, для того чтобы оно не мешало нашему замещающему свойству использовать свой эдитор и конвертер.
         [Browsable(false)]
         public new Point Location { get; set; }
 
@@ -665,11 +666,11 @@ namespace osfDesigner
 
         [Browsable(false)]
         [ReadOnly(true)]
-        public new System.Drawing.Size MaximumSize { get; set; }
+        public new Size MaximumSize { get; set; }
 
         [Browsable(false)]
         [ReadOnly(true)]
-        public new System.Drawing.Size MinimumSize { get; set; }
+        public new Size MinimumSize { get; set; }
 
         [Browsable(false)]
         [ReadOnly(true)]

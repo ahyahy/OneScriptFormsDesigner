@@ -1,71 +1,71 @@
-﻿using System;
-using System.Windows.Forms;
+﻿using System.ComponentModel.Design;
 using System.Drawing;
-using System.ComponentModel.Design;
+using System.Windows.Forms;
+using System;
 
 namespace osfDesigner
 {
     class MenuCommandServiceExt : IMenuCommandService
     {
-        // этот ServiceProvider является экземпляром DesignsurfaceExt2, переданным в качестве параметра внутри конструктора
+        // Этот ServiceProvider является экземпляром DesignsurfaceExt2, переданным в качестве параметра внутри конструктора.
         IServiceProvider _serviceProvider = null;
         MenuCommandService _menuCommandService = null;
 
-        public MenuCommandServiceExt( IServiceProvider serviceProvider )
+        public MenuCommandServiceExt(IServiceProvider serviceProvider)
         {
             this._serviceProvider = serviceProvider;
-            _menuCommandService = new MenuCommandService( serviceProvider );
+            _menuCommandService = new MenuCommandService(serviceProvider);
         }
         
-        public void ShowContextMenu( CommandID menuID, int x, int y )
+        public void ShowContextMenu(CommandID menuID, int x, int y)
         {
             ContextMenu contextMenu = new ContextMenu();
 
-            // Добавим стандартные команды CUT/COPY/PASTE/DELETE
-            MenuCommand command = FindCommand( StandardCommands.Cut );
-            if( command != null )
+            // Добавим стандартные команды CUT/COPY/PASTE/DELETE.
+            MenuCommand command = FindCommand(StandardCommands.Cut);
+            if (command != null)
             {
-                MenuItem menuItem = new MenuItem( "Вырезать", new EventHandler( OnMenuClicked ) );
+                MenuItem menuItem = new MenuItem("Вырезать", new EventHandler(OnMenuClicked));
                 menuItem.Tag = command;
-                contextMenu.MenuItems.Add( menuItem );
+                contextMenu.MenuItems.Add(menuItem);
             }
-            command = FindCommand( StandardCommands.Copy );
-            if( command != null )
+            command = FindCommand(StandardCommands.Copy);
+            if (command != null)
             {
-                MenuItem menuItem = new MenuItem( "Копировать", new EventHandler( OnMenuClicked ) );
+                MenuItem menuItem = new MenuItem("Копировать", new EventHandler(OnMenuClicked));
                 menuItem.Tag = command;
-                contextMenu.MenuItems.Add( menuItem );
+                contextMenu.MenuItems.Add(menuItem);
             }
-            command = FindCommand( StandardCommands.Paste );
-            if( command != null )
+            command = FindCommand(StandardCommands.Paste);
+            if (command != null)
             {
-                MenuItem menuItem = new MenuItem( "Вставить", new EventHandler( OnMenuClicked ) );
+                MenuItem menuItem = new MenuItem("Вставить", new EventHandler(OnMenuClicked));
                 menuItem.Tag = command;
-                contextMenu.MenuItems.Add( menuItem );
+                contextMenu.MenuItems.Add(menuItem);
             }
-            command = FindCommand( StandardCommands.Delete );
-            if( command != null )
+            command = FindCommand(StandardCommands.Delete);
+            if (command != null)
             {
-                MenuItem menuItem = new MenuItem( "Удалить", new EventHandler( OnMenuClicked ) );
+                MenuItem menuItem = new MenuItem("Удалить", new EventHandler(OnMenuClicked));
                 menuItem.Tag = command;
-                contextMenu.MenuItems.Add( menuItem );
+                contextMenu.MenuItems.Add(menuItem);
             }
 
-            // Покажем контекстное меню
-            DesignSurface surface = (DesignSurface) _serviceProvider;
-            Control viewService = (Control) surface.View;
+            // Покажем контекстное меню.
+            DesignSurface surface = (DesignSurface)_serviceProvider;
+            Control viewService = (Control)surface.View;
             
-            if( viewService != null )
+            if (viewService != null)
             {
-                contextMenu.Show( viewService, viewService.PointToClient( new Point( x, y ) ) );
+                contextMenu.Show(viewService, viewService.PointToClient(new Point(x, y)));
             }
         }
 
-        // Управление при выборе контекстного меню
-        private void OnMenuClicked( object sender, EventArgs e )
+        // Управление при выборе контекстного меню.
+        private void OnMenuClicked(object sender, EventArgs e)
         {
             MenuItem menuItem = sender as MenuItem;
-            if( menuItem != null && menuItem.Tag is MenuCommand )
+            if (menuItem != null && menuItem.Tag is MenuCommand)
             {
                 MenuCommand command = menuItem.Tag as MenuCommand;
                 if (command.CommandID.ID == 17)
@@ -76,7 +76,7 @@ namespace osfDesigner
                         MessageBoxButtons.YesNoCancel,
                         MessageBoxIcon.Exclamation,
                         MessageBoxDefaultButton.Button2
-                        );
+                       );
 
                     if (res1 == System.Windows.Forms.DialogResult.OK || res1 == System.Windows.Forms.DialogResult.Yes)
                     {
@@ -90,34 +90,34 @@ namespace osfDesigner
             }
         }
 
-        public void AddCommand( MenuCommand command )
+        public void AddCommand(MenuCommand command)
         {
-            _menuCommandService.AddCommand( command );
+            _menuCommandService.AddCommand(command);
         }
 
-        public void AddVerb( DesignerVerb verb )
+        public void AddVerb(DesignerVerb verb)
         {
-            _menuCommandService.AddVerb( verb );
+            _menuCommandService.AddVerb(verb);
         }
 
-        public MenuCommand FindCommand( CommandID commandID )
+        public MenuCommand FindCommand(CommandID commandID)
         {
-            return _menuCommandService.FindCommand( commandID );
+            return _menuCommandService.FindCommand(commandID);
         }
 
-        public bool GlobalInvoke( CommandID commandID )
+        public bool GlobalInvoke(CommandID commandID)
         {
-            return _menuCommandService.GlobalInvoke( commandID );
+            return _menuCommandService.GlobalInvoke(commandID);
         }
 
-        public void RemoveCommand( MenuCommand command )
+        public void RemoveCommand(MenuCommand command)
         {
-            _menuCommandService.RemoveCommand( command );
+            _menuCommandService.RemoveCommand(command);
         }
     
-        public void RemoveVerb( DesignerVerb verb )
+        public void RemoveVerb(DesignerVerb verb)
         {
-            _menuCommandService.RemoveVerb( verb );
+            _menuCommandService.RemoveVerb(verb);
         }
 
         public DesignerVerbCollection Verbs

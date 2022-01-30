@@ -1,14 +1,14 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
+using System;
 
 namespace osfDesigner
 {
-    // Атрибут для поддержки динамически показываемых свойств
+    // Атрибут для поддержки динамически показываемых свойств.
     [AttributeUsage(AttributeTargets.Property, Inherited = true)]
     class DynamicPropertyFilterAttribute : Attribute
     {
-        string _propertyName;// Название свойства, от которого будет зависеть видимость
-        string _showOn;// Значения свойства, от которого зависит видимость (через запятую, если несколько), при котором свойство, к которому применен атрибут, будет видимо. 
+        string _propertyName; // Название свойства, от которого будет зависеть видимость.
+        string _showOn; // Значения свойства, от которого зависит видимость (через запятую, если несколько), при котором свойство, к которому применен атрибут, будет видимо. 
         
         public string PropertyName
         {
@@ -20,9 +20,6 @@ namespace osfDesigner
             get { return _showOn; }
         }
 
-        // Конструктор  
-        // <param name="propName">Название свойства, от которого будет зависеть видимость</param>
-        // <param name="value">Значения свойства (через запятую, если несколько), при котором свойство, к которому применен атрибут, будет видимо.</param>
         public DynamicPropertyFilterAttribute(string propertyName, string value)
         {
             _propertyName = propertyName;
@@ -30,7 +27,7 @@ namespace osfDesigner
         }
     }
 
-    // Базовый класс для объектов, поддерживающих динамическое отображение свойств в PropertyGrid
+    // Базовый класс для объектов, поддерживающих динамическое отображение свойств в PropertyGrid.
     public class FilterablePropertyBase : ICustomTypeDescriptor
     {
         protected PropertyDescriptorCollection GetFilteredProperties(Attribute[] attributes)

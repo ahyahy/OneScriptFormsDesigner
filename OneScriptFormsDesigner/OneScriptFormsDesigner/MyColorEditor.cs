@@ -1,19 +1,19 @@
-﻿using System;
-using System.ComponentModel;
-using System.Drawing;
+﻿using System.ComponentModel;
 using System.Drawing.Design;
-using System.Windows.Forms;
+using System.Drawing;
 using System.Reflection;
+using System.Windows.Forms;
+using System;
 
 namespace osfDesigner
 {
     public class MyColorEditor : ColorEditor
     {
-        System.Drawing.Design.ColorEditor editor;
+        ColorEditor editor;
 
         public MyColorEditor()
         {
-            editor = new System.Drawing.Design.ColorEditor();
+            editor = new ColorEditor();
         }
         public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
         {
@@ -23,14 +23,14 @@ namespace osfDesigner
             var colorUiObject = colorUiConstructor.Invoke(new[] { editor }) as Control;
             colorUiField.SetValue(editor, colorUiObject);
             var container = colorUiObject.Controls[0];
-            var tab1 = container.Controls[0];//System.Windows.Forms.TabPage
+            var tab1 = container.Controls[0]; // System.Windows.Forms.TabPage
             tab1.Text = "Пользовательский";
-            var tab2 = container.Controls[1];//System.Windows.Forms.TabPage
+            var tab2 = container.Controls[1]; // System.Windows.Forms.TabPage
             tab2.Text = "Интернет";
-            var tab3 = container.Controls[2];//System.Windows.Forms.TabPage
+            var tab3 = container.Controls[2]; // System.Windows.Forms.TabPage
             tab3.Text = "Системный";
-            container.Controls.Add(new System.Windows.Forms.TabPage());//System.Windows.Forms.TabPage
-            var tab4 = container.Controls[3];//System.Windows.Forms.TabPage
+            container.Controls.Add(new System.Windows.Forms.TabPage()); // System.Windows.Forms.TabPage
+            var tab4 = container.Controls[3]; // System.Windows.Forms.TabPage
             tab4.Text = "Свойства";
             System.Windows.Forms.ListView ListView1 = new System.Windows.Forms.ListView();
             tab4.Controls.Add(ListView1);
@@ -131,9 +131,9 @@ namespace osfDesigner
             SubItems9.Add(Color1.R.ToString());
             Items1.Add(ListViewItem9);
 
-            System.Windows.Forms.Control Control1 = tab1.Controls[0];//System.Drawing.Design.ColorEditor+ColorPalette
-            System.Windows.Forms.Control Control2 = tab2.Controls[0];//System.Drawing.Design.ColorEditor+ColorUI+ColorEditorListBox
-            System.Windows.Forms.Control Control3 = tab3.Controls[0];//System.Drawing.Design.ColorEditor+ColorUI+ColorEditorListBox
+            Control Control1 = tab1.Controls[0]; // System.Drawing.Design.ColorEditor+ColorPalette
+            Control Control2 = tab2.Controls[0]; // System.Drawing.Design.ColorEditor+ColorUI+ColorEditorListBox
+            Control Control3 = tab3.Controls[0]; // System.Drawing.Design.ColorEditor+ColorUI+ColorEditorListBox
 
             System.Windows.Forms.ListBox ListBox1 = (System.Windows.Forms.ListBox)Control2;
             ListBox1.DrawItem += ListBox1_DrawItem;
@@ -148,7 +148,7 @@ namespace osfDesigner
                 string item2Name = item.Name;
                 try
                 {
-                    item2Name = osfDesigner.OneScriptFormsDesigner.colors[item2Name];
+                    item2Name = OneScriptFormsDesigner.colors[item2Name];
                     i = i + 1;
                 }
                 catch
@@ -164,7 +164,7 @@ namespace osfDesigner
         {
             System.Windows.Forms.ListBox listbox2 = (System.Windows.Forms.ListBox)sender;
             object item2 = listbox2.Items[e.Index];
-            System.Drawing.Font font2 = ((Control)sender).Font;
+            Font font2 = ((Control)sender).Font;
             listbox2.ItemHeight = listbox2.Font.Height;
 
             Graphics graphics = e.Graphics;
@@ -177,7 +177,7 @@ namespace osfDesigner
             string item2Name = ((Color)item2).Name;
             try
             {
-                item2Name = osfDesigner.OneScriptFormsDesigner.colors[item2Name];
+                item2Name = OneScriptFormsDesigner.colors[item2Name];
             }
             catch { }
 
@@ -189,7 +189,7 @@ namespace osfDesigner
         {
             System.Windows.Forms.ListBox listbox1 = (System.Windows.Forms.ListBox)sender;
             object item1 = listbox1.Items[e.Index];
-            System.Drawing.Font font1 = ((Control)sender).Font;
+            Font font1 = ((Control)sender).Font;
             listbox1.ItemHeight = listbox1.Font.Height;
 
             Graphics graphics = e.Graphics;
@@ -202,7 +202,7 @@ namespace osfDesigner
             string item1Name = ((Color)item1).Name;
             try
             {
-                item1Name = osfDesigner.OneScriptFormsDesigner.colors[item1Name];
+                item1Name = OneScriptFormsDesigner.colors[item1Name];
             }
             catch { }
 

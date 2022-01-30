@@ -1,9 +1,9 @@
-﻿using System;
+﻿using System.ComponentModel;
 using System.Drawing.Design;
-using System.Windows.Forms;
-using System.Windows.Forms.Design;
-using System.ComponentModel;
 using System.Reflection;
+using System.Windows.Forms.Design;
+using System.Windows.Forms;
+using System;
 
 namespace osfDesigner
 {
@@ -13,7 +13,7 @@ namespace osfDesigner
 
         public MyAnchorEditor()
         {
-            editor = new System.Windows.Forms.Design.AnchorEditor();
+            editor = new AnchorEditor();
         }
         public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
         {

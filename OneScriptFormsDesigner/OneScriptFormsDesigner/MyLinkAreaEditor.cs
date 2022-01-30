@@ -1,8 +1,8 @@
-﻿using System;
+﻿using System.ComponentModel;
 using System.Drawing.Design;
-using System.Windows.Forms;
-using System.ComponentModel;
 using System.Windows.Forms.Design;
+using System.Windows.Forms;
+using System;
 
 namespace osfDesigner
 {
@@ -60,7 +60,7 @@ namespace osfDesigner
         private dynamic _editor;
         private ITypeDescriptorContext _context;
         public IWindowsFormsEditorService _wfes;
-        private System.ComponentModel.Container components = null;
+        private Container components = null;
         private System.Windows.Forms.LinkLabel LinkLabel1;
         private System.Windows.Forms.Label Label1 = null;
         private System.Windows.Forms.TextBox TextBox1 = null;
@@ -146,7 +146,7 @@ namespace osfDesigner
 
         private void OkButton1_Click(object sender, EventArgs e)
         {
-            Value = new System.Windows.Forms.LinkArea(TextBox1.SelectionStart, TextBox1.SelectionLength);
+            Value = new LinkArea(TextBox1.SelectionStart, TextBox1.SelectionLength);
         }
 
         public void Start(object value)
@@ -163,15 +163,15 @@ namespace osfDesigner
 
         private void UpdateSelection()
         {
-            if (Value.GetType() != typeof(System.Windows.Forms.LinkArea))
+            if (Value.GetType() != typeof(LinkArea))
             {
                 return;
             }
 
             try
             {
-                TextBox1.SelectionStart = ((System.Windows.Forms.LinkArea)Value).Start;
-                TextBox1.SelectionLength = ((System.Windows.Forms.LinkArea)Value).Length;
+                TextBox1.SelectionStart = ((LinkArea)Value).Start;
+                TextBox1.SelectionLength = ((LinkArea)Value).Length;
             }
             catch { }
         }

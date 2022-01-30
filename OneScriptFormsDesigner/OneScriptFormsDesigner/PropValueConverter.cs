@@ -1,56 +1,49 @@
-﻿using System;
-using System.Windows.Forms;
-using System.Reflection;
+﻿using System.ComponentModel.Design;
 using System.ComponentModel;
-using osfDesigner.Properties;
+using System.Drawing;
+using System.IO;
+using System.Reflection;
+using System.Windows.Forms;
+using System;
 
 namespace osfDesigner
 {
     public class PropValueConverter
     {
-        ////////string propertyName = OneScriptFormsDesigner.GetPropName(control, displayName);
-        ////////control.GetType().GetProperty(propertyName).SetValue(control, Int32.Parse(valProp));
-
         public static void SetPropValue(
             object component,
             string displayName, 
             string valProp, 
-            System.Windows.Forms.Control parent = null)
+            Control parent = null)
         {
-            //System.Windows.Forms.MessageBox.Show("component=" + component + Environment.NewLine +
-            //    "displayName=" + displayName + Environment.NewLine +
-            //    "valProp=" + valProp + Environment.NewLine +
-            //    "parent=" + parent + Environment.NewLine +
-            //    "");
-
             dynamic control = null;
-            if (component.GetType().ToString() == "osfDesigner.ImageList" ||
-                component.GetType().ToString() == "osfDesigner.MainMenu" ||
-                component.GetType().ToString() == "osfDesigner.MenuItemEntry" ||
-                component.GetType().ToString() == "osfDesigner.ListViewItem" ||
-                component.GetType().ToString() == "osfDesigner.ListViewSubItem" ||
+            if (component.GetType().ToString() == "osfDesigner.ColorDialog" ||
                 component.GetType().ToString() == "osfDesigner.ColumnHeader" ||
-                component.GetType().ToString() == "osfDesigner.ToolBarButton" ||
-                component.GetType().ToString() == "osfDesigner.StatusBarPanel" ||
-                component.GetType().ToString() == "osfDesigner.DataGridTableStyle" ||
-                component.GetType().ToString() == "osfDesigner.DataGridTextBoxColumn" ||
                 component.GetType().ToString() == "osfDesigner.DataGridBoolColumn" ||
                 component.GetType().ToString() == "osfDesigner.DataGridComboBoxColumnStyle" ||
+                component.GetType().ToString() == "osfDesigner.DataGridTableStyle" ||
+                component.GetType().ToString() == "osfDesigner.DataGridTextBoxColumn" ||
+                component.GetType().ToString() == "osfDesigner.FileSystemWatcher" ||
                 component.GetType().ToString() == "osfDesigner.FolderBrowserDialog" ||
-                component.GetType().ToString() == "osfDesigner.ColorDialog" ||
                 component.GetType().ToString() == "osfDesigner.FontDialog" ||
+                component.GetType().ToString() == "osfDesigner.ImageList" ||
+                component.GetType().ToString() == "osfDesigner.ListViewItem" ||
+                component.GetType().ToString() == "osfDesigner.ListViewSubItem" ||
+                component.GetType().ToString() == "osfDesigner.MainMenu" ||
+                component.GetType().ToString() == "osfDesigner.MenuItemEntry" ||
+                component.GetType().ToString() == "osfDesigner.NotifyIcon" ||
                 component.GetType().ToString() == "osfDesigner.OpenFileDialog" ||
                 component.GetType().ToString() == "osfDesigner.SaveFileDialog" ||
-                component.GetType().ToString() == "osfDesigner.NotifyIcon" ||
-                component.GetType().ToString() == "osfDesigner.FileSystemWatcher" ||
-                component.GetType().ToString() == "osfDesigner.ToolTip" ||
-                component.GetType().ToString() == "osfDesigner.Timer")
+                component.GetType().ToString() == "osfDesigner.StatusBarPanel" ||
+                component.GetType().ToString() == "osfDesigner.Timer" ||
+                component.GetType().ToString() == "osfDesigner.ToolBarButton" ||
+                component.GetType().ToString() == "osfDesigner.ToolTip")
             {
                 control = component;
             }
             else
             {
-                control = (System.Windows.Forms.Control)component;
+                control = (Control)component;
             }
 
             if (displayName == "Родитель")
@@ -60,7 +53,6 @@ namespace osfDesigner
                     control.Parent = parent;
                 }
             }
-
             if (valProp == "Истина")
             {
                 bool rez = true;
@@ -79,19 +71,16 @@ namespace osfDesigner
             }
             if (displayName.Contains("ToolTip на"))
             {
-                //Подсказка1.УстановитьПодсказку(Форма_0, "фор");
                 string toolTipName = OneScriptFormsDesigner.ParseBetween(valProp, null, ".УстановитьПодсказку");
                 System.Windows.Forms.ToolTip ToolTip1 = (System.Windows.Forms.ToolTip)OneScriptFormsDesigner.GetComponentByName(toolTipName);
                 string caption = OneScriptFormsDesigner.ParseBetween(valProp, "\u0022", "\u0022);");
                 ToolTip1.SetToolTip(control, caption);
                 control.ToolTip[toolTipName] = caption;
             }
-
             if (displayName == "ОбластьСсылки")
             {
                 if (valProp != null)
                 {
-                    //Ф.ОбластьСсылки(0, 14)
                     int start = Int32.Parse(OneScriptFormsDesigner.ParseBetween(valProp, "Ф.ОбластьСсылки(", ","));
                     int length = Int32.Parse(OneScriptFormsDesigner.ParseBetween(valProp, ",", ")"));
                     System.Windows.Forms.LinkArea LinkArea1 = new LinkArea(start, length);
@@ -100,15 +89,12 @@ namespace osfDesigner
                     PropertyInfo pi = control.GetType().GetProperty(propertyName);
                     pi.SetValue(control, LinkArea1);
                 }
+                return;
             }
-
             if (displayName == "Узлы")
             {
-                //Узел0 = Дерево1.Узлы.Добавить("Узел0");
-                //Узел1 = Узел0.Узлы.Добавить("Узел1");
-
                 string nameNode = OneScriptFormsDesigner.ParseBetween(valProp, "Добавить(\u0022", "\u0022)");
-                if (nameNode != null)// нужно добавить узел
+                if (nameNode != null) // Нужно добавить узел.
                 {
                     string nameNodeParent = OneScriptFormsDesigner.ParseBetween(valProp, "=", ".");
                     if (nameNodeParent == control.Name)
@@ -144,10 +130,9 @@ namespace osfDesigner
                         MyTreeNode2.Nodes.Add(MyTreeNode1);
                     }
                 }
-                else// нужно обработать свойство узла
+                else // Нужно обработать свойство узла.
                 {
-                    //Узел1.Текст = "Узел111";
-                    // найдем узел и установим для него свойство
+                    // Найдем узел и установим для него свойство.
                     string nameNode2 = OneScriptFormsDesigner.ParseBetween(valProp, null, ".");
                     osfDesigner.MyTreeNode MyTreeNode3 = null;
                     NodeSearch(((osfDesigner.TreeView)control), nameNode2, ref MyTreeNode3, null);
@@ -157,11 +142,10 @@ namespace osfDesigner
 
                     SetNodePropValue(MyTreeNode3, nodeDisplayName, strNodePropertyValue);
                 }
+                return;
             }
             if (displayName == "Шрифт" || displayName == "ШрифтУзла" || displayName == "ШрифтЗаголовков")
             {
-                //Ф.Шрифт("Microsoft Sans Serif", 10.2, Ф.СтильШрифта.Курсив + Ф.СтильШрифта.Подчеркнутый + Ф.СтильШрифта.Зачеркнутый)
-
                 string[] result = valProp.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
 
                 string FontName;
@@ -208,27 +192,27 @@ namespace osfDesigner
                     {
                         if (result[2].Contains("Жирный"))
                         {
-                            Style1 = Style1 + (int)System.Drawing.FontStyle.Bold;
+                            Style1 = Style1 + (int)FontStyle.Bold;
                         }
                         if (result[2].Contains("Зачеркнутый"))
                         {
-                            Style1 = Style1 + (int)System.Drawing.FontStyle.Strikeout;
+                            Style1 = Style1 + (int)FontStyle.Strikeout;
                         }
                         if (result[2].Contains("Курсив"))
                         {
-                            Style1 = Style1 + (int)System.Drawing.FontStyle.Italic;
+                            Style1 = Style1 + (int)FontStyle.Italic;
                         }
                         if (result[2].Contains("Подчеркнутый"))
                         {
-                            Style1 = Style1 + (int)System.Drawing.FontStyle.Underline;
+                            Style1 = Style1 + (int)FontStyle.Underline;
                         }
                     }
                 }
-                control.Font = new System.Drawing.Font(FontName, FontSize, (System.Drawing.FontStyle)Style1);
+                control.Font = new Font(FontName, FontSize, (FontStyle)Style1);
+                return;
             }
             if (displayName == "ВыделенныеДаты")
             {
-                //9998,12,01,00,00,00
                 osfDesigner.MonthCalendar MonthCalendar1 = (osfDesigner.MonthCalendar)control;
                 string[] result = valProp.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
                 DateTime rez = new DateTime();
@@ -270,10 +254,10 @@ namespace osfDesigner
                     DateTime1[i] = MyBoldedDatesList1[i].Value;
                 }
                 MonthCalendar1.BoldedDates = DateTime1;
+                return;
             }
             if (displayName == "ЕжегодныеДаты")
             {
-                //9998,12,01,00,00,00
                 osfDesigner.MonthCalendar MonthCalendar1 = (osfDesigner.MonthCalendar)control;
                 string[] result = valProp.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
                 DateTime rez = new DateTime();
@@ -315,10 +299,10 @@ namespace osfDesigner
                     DateTime1[i] = MyAnnuallyBoldedDatesList1[i].Value;
                 }
                 MonthCalendar1.AnnuallyBoldedDates = DateTime1;
+                return;
             }
             if (displayName == "ЕжемесячныеДаты")
             {
-                //9998,12,01,00,00,00
                 osfDesigner.MonthCalendar MonthCalendar1 = (osfDesigner.MonthCalendar)control;
                 string[] result = valProp.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
                 DateTime rez = new DateTime();
@@ -360,13 +344,14 @@ namespace osfDesigner
                     DateTime1[i] = MyMonthlyBoldedDatesList1[i].Value;
                 }
                 MonthCalendar1.MonthlyBoldedDates = DateTime1;
+                return;
             }
             if (displayName == "Изображения")
             {
-                if (System.IO.File.Exists(valProp))
+                if (File.Exists(valProp))
                 {
                     ImageEntry ImageEntry1 = new ImageEntry();
-                    System.Drawing.Bitmap Bitmap1 = new System.Drawing.Bitmap(valProp);
+                    Bitmap Bitmap1 = new Bitmap(valProp);
                     Bitmap1.Tag = valProp;
                     ImageEntry1.Image = Bitmap1;
                     ImageEntry1.Path = valProp;
@@ -378,14 +363,15 @@ namespace osfDesigner
                 {
                     System.Windows.Forms.MessageBox.Show("Не найден файл " + valProp);
                 }
+                return;
             }
             if (displayName == "СписокИзображений" || displayName == "СписокБольшихИзображений" || displayName == "СписокМаленькихИзображений")
             {
-                System.ComponentModel.Design.IDesignerHost host = pDesigner.DSME.ActiveDesignSurface.GetIDesignerHost();
-                System.ComponentModel.ComponentCollection ctrlsExisting = host.Container.Components;
+                IDesignerHost host = pDesigner.DSME.ActiveDesignSurface.GetIDesignerHost();
+                ComponentCollection ctrlsExisting = host.Container.Components;
 
                 System.Windows.Forms.ImageList ImageList1 = null;
-                foreach (System.ComponentModel.Component comp in ctrlsExisting)
+                foreach (Component comp in ctrlsExisting)
                 {
                     if (comp.Site.Name == valProp)
                     {
@@ -400,17 +386,16 @@ namespace osfDesigner
                     PropertyInfo pi = control.GetType().GetProperty(propertyName);
                     pi.SetValue(control, ImageList1);
                 }
+                return;
             }
             if (displayName == "Изображение" || displayName == "ФоновоеИзображение")
             {
-                //Ф.Картинка("C:\444\Pic\maslenica10.JPG")
-
-                System.Drawing.Bitmap Bitmap = null;
+                Bitmap Bitmap = null;
                 string rez = valProp.Replace("\u0022", "");
                 rez = OneScriptFormsDesigner.ParseBetween(rez, "(", ")");
                 try
                 {
-                    Bitmap = new System.Drawing.Bitmap(rez);
+                    Bitmap = new Bitmap(rez);
                 }
                 catch { }
                 if (Bitmap != null)
@@ -438,10 +423,10 @@ namespace osfDesigner
                 {
                     System.Windows.Forms.MessageBox.Show("Не найден файл " + rez);
                 }
+                return;
             }
             if (displayName == "ВыделенныйДиапазон")
             {
-                //Ф.ВыделенныйДиапазон(Дата(2021, 11, 01, 00, 00, 00), Дата(2021, 11, 04, 00, 00, 00))
                 DateTime rez1 = new DateTime();
                 DateTime rez2 = new DateTime();
 
@@ -509,8 +494,9 @@ namespace osfDesigner
                 string propertyName = OneScriptFormsDesigner.GetPropName(control, displayName);
                 PropertyInfo pi = control.GetType().GetProperty(propertyName);
                 pi.SetValue(control, sr);
+                return;
             }
-            //если это цвет
+            // Если это цвет.
             if (displayName == "ОсновнойЦвет" ||
                 displayName == "ОсновнойЦветЗаголовков" ||
                 displayName == "ПрозрачныйЦвет" ||
@@ -525,10 +511,7 @@ namespace osfDesigner
                 displayName == "ЦветФонаНечетныхСтрок" ||
                 displayName == "ЦветФонаСеткиДанных")
             {
-                //Ф.Цвет("РабочийСтол")
-                //Ф.Цвет(192, 255, 255)
-
-                System.Drawing.Color Color1 = System.Drawing.Color.Empty;
+                Color Color1 = Color.Empty;
                 string strColor = valProp.Replace("\u0022", "");
                 strColor = OneScriptFormsDesigner.ParseBetween(strColor, "(", ")");
                 if (strColor.Contains(","))
@@ -536,33 +519,34 @@ namespace osfDesigner
                     string[] result = strColor.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
                     if (result.Length == 3)
                     {
-                        Color1 = System.Drawing.Color.FromArgb(Int32.Parse(result[0]), Int32.Parse(result[1]), Int32.Parse(result[2]));
+                        Color1 = Color.FromArgb(Int32.Parse(result[0]), Int32.Parse(result[1]), Int32.Parse(result[2]));
                     }
                 }
                 else
                 {
-                    Color1 = System.Drawing.Color.FromName(osfDesigner.OneScriptFormsDesigner.colors[strColor]);
+                    Color1 = Color.FromName(OneScriptFormsDesigner.colors[strColor]);
                 }
-                if (Color1 != System.Drawing.Color.Empty)
+                if (Color1 != Color.Empty)
                 {
                     string propertyName = OneScriptFormsDesigner.GetPropName(control, displayName);
                     PropertyInfo pi = control.GetType().GetProperty(propertyName);
                     pi.SetValue(control, Color1);
                 }
+                return;
             }
-            //если valProp это КнопкаОтмена или КнопкаПринять
+            // Если это КнопкаОтмена или КнопкаПринять.
             if (displayName == "КнопкаОтмена" ||
                 displayName == "КнопкаПринять")
             {
-                System.ComponentModel.Design.IDesignerHost host = pDesigner.DSME.ActiveDesignSurface.GetIDesignerHost();
-                System.ComponentModel.ComponentCollection ctrlsExisting = host.Container.Components;
+                IDesignerHost host = pDesigner.DSME.ActiveDesignSurface.GetIDesignerHost();
+                ComponentCollection ctrlsExisting = host.Container.Components;
 
-                System.Windows.Forms.IButtonControl IButtonControl1 = null;
-                foreach (System.ComponentModel.Component comp in ctrlsExisting)
+                IButtonControl IButtonControl1 = null;
+                foreach (Component comp in ctrlsExisting)
                 {
                     if (comp.Site.Name == valProp)
                     {
-                        IButtonControl1 = (System.Windows.Forms.IButtonControl)comp;
+                        IButtonControl1 = (IButtonControl)comp;
                         break;
                     }
                 }
@@ -573,19 +557,20 @@ namespace osfDesigner
                     PropertyInfo pi = control.GetType().GetProperty(propertyName);
                     pi.SetValue(control, IButtonControl1);
                 }
+                return;
             }
-            //если valProp это ВыбранныйОбъект для сетки свойств
+            // Если это ВыбранныйОбъект для сетки свойств.
             if (displayName == "ВыбранныйОбъект")
             {
-                System.ComponentModel.Design.IDesignerHost host = pDesigner.DSME.ActiveDesignSurface.GetIDesignerHost();
-                System.ComponentModel.ComponentCollection ctrlsExisting = host.Container.Components;
+                IDesignerHost host = pDesigner.DSME.ActiveDesignSurface.GetIDesignerHost();
+                ComponentCollection ctrlsExisting = host.Container.Components;
 
-                System.Windows.Forms.Control Control1 = null;
-                foreach (System.ComponentModel.Component comp in ctrlsExisting)
+                Control Control1 = null;
+                foreach (Component comp in ctrlsExisting)
                 {
                     if (comp.Site.Name == valProp)
                     {
-                        Control1 = (System.Windows.Forms.Control)comp;
+                        Control1 = (Control)comp;
                         break;
                     }
                 }
@@ -596,8 +581,9 @@ namespace osfDesigner
                     PropertyInfo pi = control.GetType().GetProperty(propertyName);
                     pi.SetValue(control, Control1);
                 }
+                return;
             }
-            //если valProp это событие
+            // Если это событие.
             if (displayName == "ВыбранныйЭлементСеткиИзменен" ||
                 displayName == "ВыделениеИзменено" ||
                 displayName == "ДатаВыбрана" ||
@@ -650,14 +636,14 @@ namespace osfDesigner
                 displayName == "ЭлементПомечен" ||
                 displayName == "ЭлементУдален")
             {
-                //"ПриЗагр()"
                 string rez = valProp.Replace("\u0022", "").Replace("(", "").Replace(")", "");
 
                 string propertyName = OneScriptFormsDesigner.GetPropName(control, displayName);
                 PropertyInfo pi = control.GetType().GetProperty(propertyName);
                 pi.SetValue(control, rez);
+                return;
             }
-            //если valProp это строка
+            // Если это Строка.
             if (displayName == "ВыбранныйПуть" ||
                 displayName == "Заголовок" ||
                 displayName == "ИмяОтображаемого" ||
@@ -686,16 +672,10 @@ namespace osfDesigner
                     valProp = valProp.Replace("\u0022", "");
                 }
                 string propertyName = OneScriptFormsDesigner.GetPropName(control, displayName);
-
-                //System.Windows.Forms.MessageBox.Show("control=" + control.GetType() + Environment.NewLine +
-                //    "valProp=" + valProp + Environment.NewLine +
-                //    "propertyName=" + propertyName + Environment.NewLine +
-                //    "displayName=" + displayName + Environment.NewLine +
-                //    "");
-
                 control.GetType().GetProperty(propertyName).SetValue(control, valProp);
+                return;
             }
-            //если valProp это число
+            // Если это Число.
             if (displayName == "АвтоЗадержка" ||
                 displayName == "АвтоЗадержкаПоказа" ||
                 displayName == "БольшоеИзменение" ||
@@ -746,8 +726,9 @@ namespace osfDesigner
                 {
                     control.GetType().GetProperty(propertyName).SetValue(control, Int32.Parse(valProp));
                 }
+                return;
             }
-            //если valProp это Размер
+            // Если это Размер.
             if (displayName == "МаксимальныйРазмер" ||
                 displayName == "МинимальныйРазмер" ||
                 displayName == "Размер" ||
@@ -756,19 +737,18 @@ namespace osfDesigner
                 displayName == "РазмерПоляАвтоПрокрутки" ||
                 displayName == "РазмерЭлемента")
             {
-                //Ф.Размер(670, 600)
-                System.Drawing.Size Size1 = new System.Drawing.Size();
+                Size Size1 = new Size();
                 Size1.Width = Int32.Parse(OneScriptFormsDesigner.ParseBetween(valProp, "Ф.Размер(", ","));
                 Size1.Height = Int32.Parse(OneScriptFormsDesigner.ParseBetween(valProp, ",", ")"));
 
                 string propertyName = OneScriptFormsDesigner.GetPropName(control, displayName);
                 control.GetType().GetProperty(propertyName).SetValue(control, Size1);
+                return;
             }
-            //если valProp это Точка
+            // Если это Точка.
             if (displayName == "Положение")
             {
-                //Ф.Точка(15, 15)
-                System.Drawing.Point Point1 = new System.Drawing.Point();
+                Point Point1 = new Point();
                 Point1.X = Int32.Parse(OneScriptFormsDesigner.ParseBetween(valProp, "Ф.Точка(", ","));
                 Point1.Y = Int32.Parse(OneScriptFormsDesigner.ParseBetween(valProp, ",", ")"));
 
@@ -784,10 +764,10 @@ namespace osfDesigner
                     PropertyInfo pi = control.GetType().BaseType.GetProperty(propertyName);
                     pi.SetValue(control, Point1);
                 }
+                return;
             }
             if (displayName == "Курсор")
             {
-                //Ф.Курсоры().Луч
                 string propNameRu = OneScriptFormsDesigner.ParseBetween(valProp, "Ф.Курсоры().", null);
                 System.Windows.Forms.Cursor cursor = null;
 
@@ -804,9 +784,10 @@ namespace osfDesigner
                 string propertyName = OneScriptFormsDesigner.GetPropName(control, displayName);
                 PropertyInfo pi = control.GetType().BaseType.GetProperty(propertyName);
                 pi.SetValue(control, cursor);
+                return;
             }
 
-            //если valProp это Перечисление
+            // Если это Перечисление.
             if (displayName == "АвтоРазмер" ||
                 displayName == "Активация" ||
                 displayName == "Выравнивание" ||
@@ -844,10 +825,9 @@ namespace osfDesigner
                 displayName == "Формат" ||
                 displayName == "Якорь")
             {
-                ////////Ф.СтилиПривязки.Верх + Ф.СтилиПривязки.Лево
                 string enumName = OneScriptFormsDesigner.ParseBetween(valProp, "Ф.", ".");
                 string type_Name = "osfDesigner." + OneScriptFormsDesigner.namesEnum[enumName];
-                System.Type enumType = Type.GetType(type_Name);
+                Type enumType = Type.GetType(type_Name);
                 var names = Enum.GetNames(enumType);
                 int rez = 0;
                 foreach (var name in names)
@@ -877,11 +857,10 @@ namespace osfDesigner
                 {
                     ((Control)component).BringToFront();
                 }
+                return;
             }
             if (displayName == "Значок")
             {
-                //Ф.Значок("C:\444\Pic\Иконка.ico")
-
                 string rez = null;
                 osfDesigner.MyIcon MyIcon1 = null;
                 rez = valProp.Replace("\u0022", "");
@@ -904,12 +883,12 @@ namespace osfDesigner
                         ((osfDesigner.NotifyIcon)control).Icon = MyIcon1;
                     }
                 }
+                return;
             }
             if (displayName == "МаксимальнаяДата" ||
                 displayName == "МинимальнаяДата" ||
                 displayName == "ТекущаяДата")
             {
-                //Дата(9998, 12, 01, 00, 00, 00)
                 string[] result = valProp.Replace("Дата(", "").Replace(")", "").Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
                 DateTime rez = new DateTime();
                 for (int i = 0; i < result.Length; i++)
@@ -943,6 +922,7 @@ namespace osfDesigner
                 string propertyName = OneScriptFormsDesigner.GetPropName(control, displayName);
                 PropertyInfo pi = control.GetType().GetProperty(propertyName);
                 pi.SetValue(control, rez);
+                return;
             }
         }
 
@@ -1011,7 +991,7 @@ namespace osfDesigner
                 }
                 control.Checked = bool1;
             }
-            //если valProp это число
+            // Если это Число.
             if (displayName == "Индекс" ||
                 displayName == "ИндексВыбранногоИзображения" ||
                 displayName == "ИндексИзображения")
@@ -1019,7 +999,7 @@ namespace osfDesigner
                 string propertyName = OneScriptFormsDesigner.GetPropName(control, displayName);
                 control.GetType().GetProperty(propertyName).SetValue(control, Int32.Parse(valProp));
             }
-            //если valProp это строка
+            // Если это Строка.
             if (displayName == "ПолныйПуть" ||
                 displayName == "Текст")
             {
@@ -1037,8 +1017,6 @@ namespace osfDesigner
             }
             if (displayName == "ШрифтУзла")
             {
-                //Ф.Шрифт("Microsoft Sans Serif", 10.2, Ф.СтильШрифта.Курсив + Ф.СтильШрифта.Подчеркнутый + Ф.СтильШрифта.Зачеркнутый)
-
                 string[] result = valProp.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
 
                 string FontName = "";
@@ -1074,23 +1052,23 @@ namespace osfDesigner
                     {
                         if (result[2].Contains("Жирный"))
                         {
-                            Style1 = Style1 + (int)System.Drawing.FontStyle.Bold;
+                            Style1 = Style1 + (int)FontStyle.Bold;
                         }
                         if (result[2].Contains("Зачеркнутый"))
                         {
-                            Style1 = Style1 + (int)System.Drawing.FontStyle.Strikeout;
+                            Style1 = Style1 + (int)FontStyle.Strikeout;
                         }
                         if (result[2].Contains("Курсив"))
                         {
-                            Style1 = Style1 + (int)System.Drawing.FontStyle.Italic;
+                            Style1 = Style1 + (int)FontStyle.Italic;
                         }
                         if (result[2].Contains("Подчеркнутый"))
                         {
-                            Style1 = Style1 + (int)System.Drawing.FontStyle.Underline;
+                            Style1 = Style1 + (int)FontStyle.Underline;
                         }
                     }
                 }
-                control.NodeFont = new System.Drawing.Font(FontName, FontSize, (System.Drawing.FontStyle)Style1);
+                control.NodeFont = new Font(FontName, FontSize, (FontStyle)Style1);
             }
         }
     }

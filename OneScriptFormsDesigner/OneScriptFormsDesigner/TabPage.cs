@@ -368,7 +368,7 @@ namespace osfDesigner
         [DefaultValue(null)]
         public new Bitmap BackgroundImage
         {
-            get { return (System.Drawing.Bitmap)M_TabPage.BackgroundImage; }
+            get { return (Bitmap)M_TabPage.BackgroundImage; }
             set { M_TabPage.BackgroundImage = value; }
         }
 

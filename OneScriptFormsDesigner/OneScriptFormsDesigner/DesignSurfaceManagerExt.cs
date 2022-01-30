@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.Design;
+﻿using System.Collections.Generic;
 using System.Collections;
+using System.ComponentModel.Design;
+using System;
 
 namespace osfDesigner
 {
-    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    // этот класс управляет коллекцией экземпляров DesignSurfaceExt2
-    // этот класс добавляет к экземплярам DesignSurfaceExt2 следующие объекты:
+    // Этот класс управляет коллекцией экземпляров DesignSurfaceExt2.
+    // Этот класс добавляет к экземплярам DesignSurfaceExt2 следующие объекты:
     // PropertyGridHost 
     //
     // DesignSurfaceExt2
@@ -30,12 +29,10 @@ namespace osfDesigner
 
     public class DesignSurfaceManagerExt : DesignSurfaceManager
     {
-        private const string _Name_ = "DesignSurfaceManagerExt";
-
         // Список List<> необходим для удаления ранее созданных поверхностей проектирования
         // Note: 
-        // Свойство DesignSurfaceManager.DesignSurfaces - это набор поверхностей проектирования
-        // которые в настоящее время размещены в DesignSurfaceManager, но доступны только для чтения
+        // Свойство DesignSurfaceManager.DesignSurfaces - это набор поверхностей проектирования,
+        // которые в настоящее время размещены в DesignSurfaceManager, но доступны только для чтения.
         private List<DesignSurfaceExt2> DesignSurfaceExt2Collection = new List<DesignSurfaceExt2>();
 
         public DesignSurfaceManagerExt() : base()
@@ -44,7 +41,7 @@ namespace osfDesigner
         }
         // Параметры:
         //   parentProvider:
-        //      Родительский поставщик услуг. Запросы на обслуживание направляются этому поставщику
+        //      Родительский поставщик услуг. Запросы на обслуживание направляются этому поставщику, 
         //      если они не могут быть разрешены менеджером поверхности проектирования.
         public DesignSurfaceManagerExt(IServiceProvider parentProvider) : base(parentProvider)
         {
@@ -56,14 +53,14 @@ namespace osfDesigner
         private void Init()
         {
             this.PropertyGridHost = new PropertyGridHost(this);
-            // добавьте PropertyGridHost и ComboBox в качестве служб чтобы они были доступны для каждой поверхности дизайна
+            // Добавьте PropertyGridHost и ComboBox в качестве служб, чтобы они были доступны для каждой поверхности дизайна.
             // (DesignSurface нуждается в PropertyGridHost/ComboBox, а не в размещающем их UserControl, поэтому
-            // мы предоставляем PropertyGridHost/ComboBox, встроенный в наш UserControl PropertyGridExt)
+            // мы предоставляем PropertyGridHost/ComboBox, встроенный в наш UserControl PropertyGridExt).
             this.ServiceContainer.AddService(typeof(System.Windows.Forms.PropertyGrid), PropertyGridHost.PropertyGrid);
             this.ServiceContainer.AddService(typeof(System.Windows.Forms.ComboBox), PropertyGridHost.ComboBox);
             this.ActiveDesignSurfaceChanged += (object sender, ActiveDesignSurfaceChangedEventArgs e) =>
             {
-                //меняем изображение на менюшке Порядок обхода
+                // Меняем изображение на менюшке <Порядок обхода>.
                 Program.pDesignerMainForm1.ChangeImage(pDesigner.DSME.ActiveDesignSurface.TabOrder._tabOrder != null);
 
                 DesignSurfaceExt2 surface = e.NewSurface as DesignSurfaceExt2;
@@ -105,16 +102,16 @@ namespace osfDesigner
                 return;
             }
 
-            // синхронизируем с PropertyGridHost
+            // Синхронизируем с PropertyGridHost.
             this.PropertyGridHost.SelectedObject = host.RootComponent;
             this.PropertyGridHost.ReloadComboBox();
         }
 
-        // Метод CreateDesignSurfaceCore вызывается обоими методами CreateDesignSurface
-        // Это реализация, которая фактически создает поверхность проектирования
+        // Метод CreateDesignSurfaceCore вызывается обоими методами CreateDesignSurface.
+        // Это реализация, которая фактически создает поверхность проектирования.
         // Реализация по умолчанию просто возвращает новую поверхность дизайна, мы переопределяем
         // этот метод, чтобы предоставить пользовательский объект, производный от класса DesignSurface
-        // т. е. новый экземпляр DesignSurfaceExt2
+        // т. е. новый экземпляр DesignSurfaceExt2.
         protected override DesignSurface CreateDesignSurfaceCore(IServiceProvider parentProvider)
         {
             return new DesignSurfaceExt2(parentProvider);
@@ -123,21 +120,18 @@ namespace osfDesigner
         // Получим новый DesignSurfaceExt2 и загрузим его с соответствующим типом корневого компонента.
         public DesignSurfaceExt2 CreateDesignSurfaceExt2()
         {
-            // с классом DesignSurfaceManager бесполезно добавлять новые службы 
-            // для каждой поверхности дизайна, которую мы собираемся создать,
+            // С классом DesignSurfaceManager бесполезно добавлять новые службы для каждой поверхности дизайна, которую мы собираемся создать,
             // из-за параметра "IServiceProvider" метода CreateDesignSurface(IServiceProvider).
-            // Этот параметр позволяет каждой созданной поверхности дизайнера
-            // использовать сервисы DesignSurfaceManager.
-            // Будет создан новый объединенный поставщик услуг, который сначала запросит
-            // у этого поставщика услугу, а затем делегирует любые сбои 
+            // Этот параметр позволяет каждой созданной поверхности дизайнера использовать сервисы DesignSurfaceManager.
+            // Будет создан новый объединенный поставщик услуг, который сначала запросит у этого поставщика услугу, а затем делегирует любые сбои 
             // к объекту диспетчера поверхности проектирования.
             // Note:
-            //     следующая строка кода создает совершенно новую поверхность дизайна, которая добавляется
+            //     Следующая строка кода создает совершенно новую поверхность дизайна, которая добавляется
             //     в коллекцию Designsurfeces, т.е. свойство "this.DesignSurfaces"(.Count увеличится на единицу)
             DesignSurfaceExt2 surface = (DesignSurfaceExt2)(this.CreateDesignSurface(this.ServiceContainer));
 
-            // каждый раз, когда создается совершенно новая поверхность дизайна, подписывайте наш обработчик на
-            //  его SelectionService.SelectionChanged событие для синхронизации PropertyGridHost
+            // Каждый раз, когда создается совершенно новая поверхность дизайна, подписывайте наш обработчик на
+            //  его SelectionService.SelectionChanged событие для синхронизации PropertyGridHost.
             ISelectionService selectionService = (ISelectionService)(surface.GetService(typeof(ISelectionService)));
             if (null != selectionService)
             {
@@ -152,7 +146,7 @@ namespace osfDesigner
                     {
                         return;
                     }
-                    // Синхронизация с PropertyGridHost
+                    // Синхронизация с PropertyGridHost.
                     System.Windows.Forms.PropertyGrid propertyGrid = (System.Windows.Forms.PropertyGrid)this.GetService(typeof(System.Windows.Forms.PropertyGrid));
                     if (null == propertyGrid)
                     {
@@ -167,7 +161,7 @@ namespace osfDesigner
             DesignSurfaceExt2Collection.Add(surface);
             this.ActiveDesignSurface = surface;
 
-            // и вернем поверхность дизайнера (чтобы можно было вызвать её метод BeginLoad())
+            // И вернем поверхность дизайнера (чтобы можно было вызвать её метод BeginLoad()).
             return surface;
         }
 
@@ -210,13 +204,13 @@ namespace osfDesigner
             }
         }
 
-        // просмотрим коллекцию всех поверхностей дизайнера DesignSurface чтобы узнать новое имя формы
+        // Просмотрим коллекцию всех поверхностей дизайнера DesignSurface чтобы узнать новое имя формы.
         public string GetValidFormName()
         {
-            // мы решили использовать "Form_" с символом подчеркивания в качестве шаблона потому что .NET сервисы
+            // Мы решили использовать "Form_" с символом подчеркивания в качестве шаблона потому что .NET сервисы
             // дизайнера предоставляют имя типа: "FormN" с N=1,2,3,4,... поэтому использование "Форма",
             // без символа подчеркивания в качестве шаблона, вызовет некоторые проблемы, когда мы ищем, используется имя
-            // или нет использование другого шаблона (с подчеркиванием) позволяет избежать этой проблемы
+            // или нет. Использование другого шаблона (с подчеркиванием) позволяет избежать этой проблемы.
             string newFormNameHeader = "Form_";
             newFormNameHeader = newFormNameHeader.Replace("Form_", "Форма_");
             int newFormNametrailer = -1;

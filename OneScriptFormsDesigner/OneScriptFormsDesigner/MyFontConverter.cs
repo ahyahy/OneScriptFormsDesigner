@@ -1,24 +1,25 @@
-﻿using System;
+﻿using System.ComponentModel;
+using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Text;
-using System.ComponentModel;
-using System.Drawing;
+using System;
 
 namespace osfDesigner
 {
     class MyFontConverter: FontConverter
     {
-        public override bool CanConvertFrom(System.ComponentModel.ITypeDescriptorContext context, Type sourceType)
+        public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
         {
             return base.CanConvertFrom(context, sourceType);
         }
 
-        public override bool CanConvertTo(System.ComponentModel.ITypeDescriptorContext context, Type destinationType)
+        public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
         {
             return base.CanConvertTo(context, destinationType);
         }
 
-        public override object ConvertFrom(System.ComponentModel.ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value)
+        public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
         {
             if (!(value is string))
             {
@@ -34,7 +35,7 @@ namespace osfDesigner
             return base.ConvertFrom(context, culture, (object)str3);
         }
 
-        public override object ConvertTo(System.ComponentModel.ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value, Type destinationType)
+        public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
         {
             object str2 = base.ConvertTo(context, culture, value, destinationType);
 
@@ -166,35 +167,35 @@ namespace osfDesigner
             {
                 return "Ложь";
             }
-            else if(var1 == true.ToString())
+            else if (var1 == true.ToString())
             {
                 return "Истина";
             }
-            else if(var1 == System.Drawing.GraphicsUnit.Display.ToString())
+            else if (var1 == GraphicsUnit.Display.ToString())
             {
                 return "дисплей (пиксель для дисплеев)";
             }
-            else if (var1 == System.Drawing.GraphicsUnit.Document.ToString())
+            else if (var1 == GraphicsUnit.Document.ToString())
             {
                 return "документ (1/300 дюйма)";
             }
-            else if (var1 == System.Drawing.GraphicsUnit.Inch.ToString())
+            else if (var1 == GraphicsUnit.Inch.ToString())
             {
                 return "дюйм";
             }
-            else if (var1 == System.Drawing.GraphicsUnit.Millimeter.ToString())
+            else if (var1 == GraphicsUnit.Millimeter.ToString())
             {
                 return "миллиметр";
             }
-            else if (var1 == System.Drawing.GraphicsUnit.Pixel.ToString())
+            else if (var1 == GraphicsUnit.Pixel.ToString())
             {
                 return "пиксель";
             }
-            else if (var1 == System.Drawing.GraphicsUnit.Point.ToString())
+            else if (var1 == GraphicsUnit.Point.ToString())
             {
                 return "пункт (1/72 дюйма)";
             }
-            else if (var1 == System.Drawing.GraphicsUnit.World.ToString())
+            else if (var1 == GraphicsUnit.World.ToString())
             {
                 return "мировая";
             }
