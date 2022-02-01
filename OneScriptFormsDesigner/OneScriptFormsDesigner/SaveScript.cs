@@ -21,6 +21,8 @@ namespace osfDesigner
 @"Перем Ф;
 // конец Перем
 
+#Область КонструкторФорм_Инициализация
+
 Процедура ПодготовкаКомпонентов()
     ПодключитьВнешнююКомпоненту(" + "\u0022" + Settings.Default["dllPath"] + "\u0022" + @");
     Ф = Новый ФормыДляОдноСкрипта();
@@ -31,6 +33,8 @@ namespace osfDesigner
 КонецПроцедуры
 
 ПодготовкаКомпонентов();
+
+#КонецОбласти
 
 // ...
 
@@ -269,6 +273,25 @@ namespace osfDesigner
                     newScript = newScript + strCurrent + Environment.NewLine;
                 }
             }
+
+            if (!(bool)Settings.Default["styleScript"])
+            {
+                newScript = newScript.Replace("Процедура ПодготовкаКомпонентов()", "Процедура ПриСозданииФормы(_Форма) Экспорт");
+                newScript = newScript.Replace("= Ф.Форма();", "= _Форма;");
+
+                string strFind = @"ПодготовкаКомпонентов();
+
+#КонецОбласти
+
+// ...
+
+Ф.ЗапуститьОбработкуСобытий();";
+                string strReplace = @"#КонецОбласти
+
+// ...";
+                newScript = newScript.Replace(strFind, strReplace);
+            }
+            newScript = newScript.Trim() + Environment.NewLine;
             return newScript;
         }
 
@@ -1180,7 +1203,8 @@ namespace osfDesigner
 ";
                 if (OneScriptFormsDesigner.ParseBetween(Template1, null, strProc) == null)
                 {
-                    Template1 = Template1.Replace("Процедура ПодготовкаКомпонентов()", strProc + Environment.NewLine + "Процедура ПодготовкаКомпонентов()");
+                    //Template1 = Template1.Replace("Процедура ПодготовкаКомпонентов()", strProc + Environment.NewLine + "Процедура ПодготовкаКомпонентов()");
+                    Template1 = Template1.Replace(@"#Область КонструкторФорм_Инициализация", strProc + Environment.NewLine + @"#Область КонструкторФорм_Инициализация");
                 }
                 strNameProc = "Ф.Действие(ЭтотОбъект, \u0022" + strNameProc + "\u0022);";
                 AddToScript(compName + "." + valueName + " = " + strNameProc);

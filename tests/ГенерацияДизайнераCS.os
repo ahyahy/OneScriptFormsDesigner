@@ -7120,6 +7120,8 @@
 	|@""Перем Ф;
 	|// конец Перем
 	|
+	|#Область КонструкторФорм_Инициализация
+	|
 	|Процедура ПодготовкаКомпонентов()
 	|    ПодключитьВнешнююКомпоненту("" + ""\u0022"" + Settings.Default[""dllPath""] + ""\u0022"" + @"");
 	|    Ф = Новый ФормыДляОдноСкрипта();
@@ -7130,6 +7132,8 @@
 	|КонецПроцедуры
 	|
 	|ПодготовкаКомпонентов();
+	|
+	|#КонецОбласти
 	|
 	|// ...
 	|
@@ -7368,6 +7372,25 @@
 	|                    newScript = newScript + strCurrent + Environment.NewLine;
 	|                }
 	|            }
+	|
+	|            if (!(bool)Settings.Default[""styleScript""])
+	|            {
+	|                newScript = newScript.Replace(""Процедура ПодготовкаКомпонентов()"", ""Процедура ПриСозданииФормы(_Форма) Экспорт"");
+	|                newScript = newScript.Replace(""= Ф.Форма();"", ""= _Форма;"");
+	|
+	|                string strFind = @""ПодготовкаКомпонентов();
+	|
+	|#КонецОбласти
+	|
+	|// ...
+	|
+	|Ф.ЗапуститьОбработкуСобытий();"";
+	|                string strReplace = @""#КонецОбласти
+	|
+	|// ..."";
+	|                newScript = newScript.Replace(strFind, strReplace);
+	|            }
+	|            newScript = newScript.Trim() + Environment.NewLine;
 	|            return newScript;
 	|        }
 	|
@@ -8279,7 +8302,8 @@
 	|"";
 	|                if (OneScriptFormsDesigner.ParseBetween(Template1, null, strProc) == null)
 	|                {
-	|                    Template1 = Template1.Replace(""Процедура ПодготовкаКомпонентов()"", strProc + Environment.NewLine + ""Процедура ПодготовкаКомпонентов()"");
+	|                    //Template1 = Template1.Replace(""Процедура ПодготовкаКомпонентов()"", strProc + Environment.NewLine + ""Процедура ПодготовкаКомпонентов()"");
+	|                    Template1 = Template1.Replace(@""#Область КонструкторФорм_Инициализация"", strProc + Environment.NewLine + @""#Область КонструкторФорм_Инициализация"");
 	|                }
 	|                strNameProc = ""Ф.Действие(ЭтотОбъект, \u0022"" + strNameProc + ""\u0022);"";
 	|                AddToScript(compName + ""."" + valueName + "" = "" + strNameProc);
@@ -11436,17 +11460,17 @@
 	ТекстДокХХХ.Записать("C:\444\ВыгрузкаДизайнера\Program.cs");
 	
 	СтрВыгрузки = 
-	"using System;
-	|using System.Drawing;
-	|using System.Windows.Forms;
-	|using System.Drawing.Design;
-	|using System.Reflection;
-	|using System.ComponentModel;
-	|using System.ComponentModel.Design;
-	|using osfDesigner.Properties;
+	"using osfDesigner.Properties;
 	|using System.Collections.Generic;
-	|using System.Text;
+	|using System.ComponentModel.Design;
+	|using System.ComponentModel;
+	|using System.Drawing.Design;
+	|using System.Drawing;
 	|using System.IO;
+	|using System.Reflection;
+	|using System.Text;
+	|using System.Windows.Forms;
+	|using System;
 	|
 	|namespace osfDesigner
 	|{
@@ -11511,7 +11535,11 @@
 	|        private System.Windows.Forms.Form settingsForm;
 	|        private System.Windows.Forms.TabControl tabControl;
 	|        private System.Windows.Forms.TabPage tabPage1;
-	|        private System.Windows.Forms.GroupBox groupBox;
+	|        private System.Windows.Forms.TabPage tabPage2;
+	|        private System.Windows.Forms.GroupBox groupBox1;
+	|        private System.Windows.Forms.GroupBox groupBox2;
+	|        private System.Windows.Forms.RadioButton radioButton1;
+	|        private System.Windows.Forms.RadioButton radioButton2;
 	|        private System.Windows.Forms.Label label_os;
 	|        private System.Windows.Forms.Label label_dll;
 	|        private System.Windows.Forms.TextBox textBox_osPath;
@@ -12140,8 +12168,19 @@
 	|
 	|        private void _run_Click(object sender, EventArgs e)
 	|        {
+	|            string Script = SaveScript.GetScriptText();
+	|            if (!(bool)Settings.Default[""styleScript""])
+	|            {
+	|                string strFind = @""#КонецОбласти"";
+	|                string strReplace = @""#КонецОбласти"" + Environment.NewLine + 
+	|""ПодключитьВнешнююКомпоненту("" + ""\u0022"" + Settings.Default[""dllPath""] + ""\u0022"" + @"");"" + Environment.NewLine +
+	|@""Ф = Новый ФормыДляОдноСкрипта();
+	|ПриСозданииФормы(Ф.Форма());
+	|Ф.ЗапуститьОбработкуСобытий();"";
+	|                Script = Script.Replace(strFind, strReplace);
+	|            }
 	|            string strTempFile = String.Format(Path.GetTempPath() + ""oscript_{0}_{1}.os"", DateTime.Now.ToString(""yyyyMMddHHmmssfff""), Guid.NewGuid().ToString().Replace(""-"", """"));
-	|            File.WriteAllText(strTempFile, SaveScript.GetScriptText(), Encoding.UTF8);
+	|            File.WriteAllText(strTempFile, Script, Encoding.UTF8);
 	|
 	|            System.Diagnostics.ProcessStartInfo psi = new System.Diagnostics.ProcessStartInfo();
 	|            psi.Arguments = strTempFile;
@@ -12180,27 +12219,27 @@
 	|            tabPage1 = new System.Windows.Forms.TabPage(""Файлы"");
 	|            tabPage1.Parent = tabControl;
 	|
-	|            groupBox = new System.Windows.Forms.GroupBox();
-	|            groupBox.Parent = tabPage1;
-	|            groupBox.Text = ""Пути"";
-	|            groupBox.Anchor = System.Windows.Forms.AnchorStyles.Left |
+	|            groupBox1 = new System.Windows.Forms.GroupBox();
+	|            groupBox1.Parent = tabPage1;
+	|            groupBox1.Text = ""Пути"";
+	|            groupBox1.Anchor = System.Windows.Forms.AnchorStyles.Left |
 	|                System.Windows.Forms.AnchorStyles.Top |
 	|                System.Windows.Forms.AnchorStyles.Right;
-	|            groupBox.Left = 25;
-	|            groupBox.Top = 25;
-	|            groupBox.Width = 150;
-	|            groupBox.Height = 170;
+	|            groupBox1.Left = 25;
+	|            groupBox1.Top = 25;
+	|            groupBox1.Width = 150;
+	|            groupBox1.Height = 170;
 	|
 	|            label_os = new System.Windows.Forms.Label();
-	|            label_os.Parent = groupBox;
+	|            label_os.Parent = groupBox1;
 	|            label_os.Left = 10;
-	|            label_os.Top = groupBox.Top;
+	|            label_os.Top = groupBox1.Top;
 	|            label_os.Width = 80;
 	|            label_os.Text = ""oscript.exe:"";
 	|            label_os.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
 	|
 	|            textBox_osPath = new System.Windows.Forms.TextBox();
-	|            textBox_osPath.Parent = groupBox;
+	|            textBox_osPath.Parent = groupBox1;
 	|            textBox_osPath.Left = label_os.Left;
 	|            textBox_osPath.Top = label_os.Bottom + 3;
 	|            textBox_osPath.Anchor = System.Windows.Forms.AnchorStyles.Left |
@@ -12209,8 +12248,8 @@
 	|            textBox_osPath.Text = (string)Settings.Default[""osPath""];
 	|
 	|            button_osPath = new System.Windows.Forms.Button();
-	|            button_osPath.Parent = groupBox;
-	|            button_osPath.Font = new Font(groupBox.Font, FontStyle.Bold);
+	|            button_osPath.Parent = groupBox1;
+	|            button_osPath.Font = new Font(groupBox1.Font, FontStyle.Bold);
 	|            button_osPath.Text = ""..."";
 	|            button_osPath.Left = 115;
 	|            button_osPath.Top = textBox_osPath.Top;
@@ -12220,7 +12259,7 @@
 	|            button_osPath.Click += button_osPath_Click;
 	|
 	|            label_dll = new System.Windows.Forms.Label();
-	|            label_dll.Parent = groupBox;
+	|            label_dll.Parent = groupBox1;
 	|            label_dll.Left = textBox_osPath.Left;
 	|            label_dll.Top = textBox_osPath.Bottom + 10;
 	|            label_dll.Width = 140;
@@ -12228,7 +12267,7 @@
 	|            label_dll.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
 	|
 	|            textBox_dllPath = new System.Windows.Forms.TextBox();
-	|            textBox_dllPath.Parent = groupBox;
+	|            textBox_dllPath.Parent = groupBox1;
 	|            textBox_dllPath.Left = label_dll.Left;
 	|            textBox_dllPath.Top = label_dll.Bottom + 3;
 	|            textBox_dllPath.Anchor = System.Windows.Forms.AnchorStyles.Left |
@@ -12237,8 +12276,8 @@
 	|            textBox_dllPath.Text = (string)Settings.Default[""dllPath""];
 	|
 	|            button_dllPath = new System.Windows.Forms.Button();
-	|            button_dllPath.Parent = groupBox;
-	|            button_dllPath.Font = new Font(groupBox.Font, FontStyle.Bold);
+	|            button_dllPath.Parent = groupBox1;
+	|            button_dllPath.Font = new Font(groupBox1.Font, FontStyle.Bold);
 	|            button_dllPath.Text = ""..."";
 	|            button_dllPath.Left = 115;
 	|            button_dllPath.Top = textBox_dllPath.Top;
@@ -12246,6 +12285,45 @@
 	|            button_dllPath.Anchor = System.Windows.Forms.AnchorStyles.Top |
 	|                System.Windows.Forms.AnchorStyles.Right;
 	|            button_dllPath.Click += Button_dllPath_Click;
+	|
+	|
+	|
+	|
+	|
+	|
+	|            tabPage2 = new System.Windows.Forms.TabPage(""Стиль сценария"");
+	|            tabPage2.Parent = tabControl;
+	|
+	|            groupBox2 = new System.Windows.Forms.GroupBox();
+	|            groupBox2.Parent = tabPage2;
+	|            groupBox2.Text = ""Стиль"";
+	|            groupBox2.Anchor = System.Windows.Forms.AnchorStyles.Left |
+	|                System.Windows.Forms.AnchorStyles.Top |
+	|                System.Windows.Forms.AnchorStyles.Right;
+	|            groupBox2.Left = 25;
+	|            groupBox2.Top = 25;
+	|            groupBox2.Width = 150;
+	|            groupBox2.Height = 170;
+	|
+	|            radioButton1 = new System.Windows.Forms.RadioButton();
+	|            radioButton1.Parent = groupBox2;
+	|            radioButton1.Left = label_os.Left;
+	|            radioButton1.Top = label_os.Bottom + 3;
+	|            radioButton1.Anchor = System.Windows.Forms.AnchorStyles.Left |
+	|                System.Windows.Forms.AnchorStyles.Top |
+	|                System.Windows.Forms.AnchorStyles.Right;
+	|            radioButton1.Text = ""Стиль скрипта."";
+	|            radioButton1.Checked = (bool)Settings.Default[""styleScript""];
+	|
+	|            radioButton2 = new System.Windows.Forms.RadioButton();
+	|            radioButton2.Parent = groupBox2;
+	|            radioButton2.Left = label_dll.Left;
+	|            radioButton2.Top = label_dll.Bottom + 3;
+	|            radioButton2.Anchor = System.Windows.Forms.AnchorStyles.Left |
+	|                System.Windows.Forms.AnchorStyles.Top |
+	|                System.Windows.Forms.AnchorStyles.Right;
+	|            radioButton2.Text = ""Стиль приложения."";
+	|            radioButton2.Checked = !(bool)Settings.Default[""styleScript""];
 	|
 	|            buttonOK = new System.Windows.Forms.Button();
 	|            buttonOK.Parent = settingsForm;
@@ -12274,6 +12352,7 @@
 	|                // Записываем значения в Settings.
 	|                Settings.Default[""osPath""] = textBox_osPath.Text;
 	|                Settings.Default[""dllPath""] = textBox_dllPath.Text;
+	|                Settings.Default[""styleScript""] = radioButton1.Checked;
 	|                Settings.Default.Save();
 	|            }
 	|        }

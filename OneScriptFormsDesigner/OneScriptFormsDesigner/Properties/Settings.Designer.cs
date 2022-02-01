@@ -46,5 +46,17 @@ namespace osfDesigner.Properties {
                 this["dllPath"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool styleScript {
+            get {
+                return ((bool)(this["styleScript"]));
+            }
+            set {
+                this["styleScript"] = value;
+            }
+        }
     }
 }
