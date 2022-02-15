@@ -651,6 +651,13 @@ namespace osfDesigner
             set { base.Anchor = (System.Windows.Forms.AnchorStyles)value; }
         }
 
+        [DisplayName("Путь")]
+        [Description("Путь до файла osd этой формы.")]
+        [Browsable(true)]
+        [DefaultValue(typeof(String), null)]
+        [ReadOnly(true)]
+        public string Path { get; set; }
+		
         [Browsable(false)]
         [ReadOnly(true)]
         public new string AccessibleDescription { get; set; }

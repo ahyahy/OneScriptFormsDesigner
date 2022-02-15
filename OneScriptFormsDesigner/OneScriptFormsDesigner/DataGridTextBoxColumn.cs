@@ -85,6 +85,19 @@ namespace osfDesigner
         [Browsable(true)]
         [ReadOnly(true)]
         public string NameStyle { get; set; }
+		
+        [DisplayName("Текст")]
+        [Category("Прочее")]
+        [Browsable(true)]
+        public string Text { get; set; }
+
+        private System.Collections.Hashtable toolTip = new System.Collections.Hashtable();
+        [Browsable(false)]
+        public System.Collections.Hashtable ToolTip
+        {
+            get { return toolTip; }
+            set { toolTip = value; }
+        }
 
         [Browsable(false)]
         public string DefaultValues { get; set; }
@@ -94,7 +107,9 @@ namespace osfDesigner
         {
             get
             {
-                return @"";
+                return @"
+Текст ==
+";
             }
         }
     }

@@ -31,6 +31,11 @@ namespace osfDesigner
         [Browsable(true)]
         [ReadOnly(true)]
         public string NameStyle { get; set; }
+	
+        [DisplayName("Текст")]
+        [Category("Прочее")]
+        [Browsable(true)]
+        public string Text { get; set; }
 
         [DisplayName("ИмяОтображаемого")]
         [Description("Возвращает или задает имя элемента данных, на который отображается стиль столбца.")]
@@ -98,6 +103,7 @@ namespace osfDesigner
             get
             {
                 return @"
+Текст ==
 ";
             }
         }

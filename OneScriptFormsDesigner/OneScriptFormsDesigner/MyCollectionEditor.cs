@@ -39,6 +39,7 @@ namespace osfDesigner
             collectionForm = base.CreateCollectionForm();
             collectionForm.Text = "Редактор коллекции Изображения";
             collectionForm.Shown += CollectionForm_Shown;
+            collectionForm.FormClosed += CollectionForm_FormClosed;
 
             frmCollectionEditorForm = (System.Windows.Forms.Form)collectionForm;
             TableLayoutPanel1 = (System.Windows.Forms.TableLayoutPanel)frmCollectionEditorForm.Controls[0];
@@ -132,6 +133,11 @@ namespace osfDesigner
             return collectionForm;
         }
 
+        private void CollectionForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            OneScriptFormsDesigner.SetDesignSurfaceState();
+        }
+
         private void CollectionForm_Shown(object sender, EventArgs e)
         {
             PropertiesLabel1.Text = "Свойства:";
@@ -189,11 +195,6 @@ namespace osfDesigner
 
         void PropertyGrid1_PropertyValueChanged(object sender, PropertyValueChangedEventArgs e)
         {
-        }
-
-        private void PropertyGrid_SelectedObjectsChanged(object sender, EventArgs e)
-        {
-            PropertiesLabel1.Text = "Свойства:";
         }
 
         private void ButtonAdd1_Click(object sender, EventArgs e)

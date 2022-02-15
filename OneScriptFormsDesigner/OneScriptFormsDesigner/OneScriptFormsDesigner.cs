@@ -17,12 +17,15 @@ namespace osfDesigner
     [ContextClass("ДизайнерФормДляОдноСкрипта", "OneScriptFormsDesigner")]
     public class OneScriptFormsDesigner : AutoContext<OneScriptFormsDesigner>
     {
-        public static Hashtable hashtable = new Hashtable(); // Хранит связь исходного объекта с его дублером.
-        public static Hashtable hashtableDesignerTabName = new Hashtable(); // Хранит имя вкладок дизайнера.
-        public static Hashtable hashtableDesignerTabRootComponent = new Hashtable(); // Хранит связь rootComponent и создаваемой для него вкладки дризайнера.
+        public static Dictionary<object, object> dictionary = new Dictionary<object, object>(); // Хранит связь исходного объекта с его дублером.
+        public static Dictionary<string, string> dictionaryDesignerTabName = new Dictionary<string, string>(); // Хранит имя вкладок дизайнера.
+        public static Dictionary<object, object> dictionaryDesignerTabRootComponent = new Dictionary<object, object>(); // Хранит связь rootComponent и создаваемой для него вкладки дризайнера.
+        public static Dictionary<DesignSurfaceExt2, string> dictionaryDesignSurfaceState = new Dictionary<DesignSurfaceExt2, string>(); // Хранит связь между поверхностью дизайнера и снимком свойств его компонентов.
+        public static Dictionary<System.Windows.Forms.TabPage, bool> dictionaryTabPageChanged = new Dictionary<System.Windows.Forms.TabPage, bool>(); // Хранит связь между вкладкой дизайнера и статусом его измененности.
         public static string str1 = "";
         public static int tic1 = 0; // Счетчик для правильной работы TabControl, пропуск двух шагов по созданию дизайнером двух вкладок по умолчанию.
         public static bool block1 = false; // Тригер для блокировки выделения объекта на форме.
+        public static bool block2 = false; // Тригер для блокировки проверки измененности формы. Если true - не проверять.
 
         [DllImport("kernel32.dll")]
         static extern IntPtr GetConsoleWindow();
@@ -119,7 +122,7 @@ namespace osfDesigner
                 System.Windows.Forms.TreeNode TreeNode1 = TreeView.Nodes[i];
                 ArrayList.Add(TreeNode1.Name);
 
-                num = Int32.Parse(TreeNode1.Name.Replace("Узел", ""));
+                num = Int32.Parse(ParseBetween(TreeNode1.Name, "Узел", null));
                 if ((num + 1) > max)
                 {
                     max = num + 1;
@@ -140,7 +143,7 @@ namespace osfDesigner
                 System.Windows.Forms.TreeNode TreeNode1 = treeNode.Nodes[i];
                 ArrayList.Add(TreeNode1.Name);
 
-                num = Int32.Parse(TreeNode1.Name.Replace("Узел", ""));
+                num = Int32.Parse(ParseBetween(TreeNode1.Name, "Узел", null));
                 if ((num + 1) > max)
                 {
                     max = num + 1;
@@ -155,7 +158,7 @@ namespace osfDesigner
 
         public static string RevertNodeName(System.Windows.Forms.TreeView p1)
         {
-            string name = "Узел";
+            string name = p1.Name + "Узел";
             int max = 0;
             string newName = name + Convert.ToString(max);
             ArrayList ArrayList1 = new ArrayList();
@@ -174,14 +177,14 @@ namespace osfDesigner
 
         public static string RevertDesignerTabName(string p1)
         {
-            string p2 = "Вкладка" + (hashtableDesignerTabName.Count).ToString() + "(" + p1 + ")";
-            hashtableDesignerTabName.Add(p2, p1);
+            string p2 = "Вкладка" + (dictionaryDesignerTabName.Count).ToString() + "(" + p1 + ")";
+            dictionaryDesignerTabName.Add(p2, p1);
             return p2;
         }
 	
         public static string RevertStatusBarPanelName(StatusBar p1)
         {
-            string name = "ПанельСтрокиСостояния";
+            string name = p1.Name + "Панель";
             int max = 0;
             int num = 0;
             string newName = name + Convert.ToString(max);
@@ -194,7 +197,7 @@ namespace osfDesigner
                     if (NameItem != "")
                     {
                         ArrayList1.Add(NameItem);
-                        num = Int32.Parse(NameItem.Replace("ПанельСтрокиСостояния", ""));
+                        num = Int32.Parse(ParseBetween(NameItem, "Панель", null));
                         if ((num + 1) > max)
                         {
                             max = num + 1;
@@ -216,7 +219,7 @@ namespace osfDesigner
 
         public static string RevertColumnHeaderName(ListView p1)
         {
-            string name = "Колонка";
+            string name = p1.Name + "Колонка";
             int max = 0;
             int num = 0;
             string newName = name + Convert.ToString(max);
@@ -229,7 +232,7 @@ namespace osfDesigner
                     if (NameItem != "")
                     {
                         ArrayList1.Add(NameItem);
-                        num = Int32.Parse(NameItem.Replace("Колонка", ""));
+                        num = Int32.Parse(ParseBetween(NameItem, "Колонка", null));
                         if ((num + 1) > max)
                         {
                             max = num + 1;
@@ -251,7 +254,7 @@ namespace osfDesigner
 
         public static string RevertListViewItemName(ListView p1)
         {
-            string name = "Элемент";
+            string name = p1.Name + "Элемент";
             int max = 0;
             int num = 0;
             string newName = name + Convert.ToString(max);
@@ -264,7 +267,8 @@ namespace osfDesigner
                     if (NameItem != "")
                     {
                         ArrayList1.Add(NameItem);
-                        num = Int32.Parse(NameItem.Replace("Элемент", ""));
+                        string str1 = ParseBetween(NameItem, "СписокЭлементов", null);
+                        num = Int32.Parse(ParseBetween(str1, "Элемент", null));
                         if ((num + 1) > max)
                         {
                             max = num + 1;
@@ -286,7 +290,7 @@ namespace osfDesigner
 
         public static string RevertListViewSubItemName(ListViewItem p1)
         {
-            string name = "Подэлемент";
+            string name = p1.Name + "Подэлемент";
             int max = 0;
             int num = 0;
             string newName = name + Convert.ToString(max);
@@ -296,10 +300,10 @@ namespace osfDesigner
                 string NameItem = p1.SubItems[i].Name;
                 if (NameItem != null)
                 {
-                    if (NameItem != "" && !NameItem.Contains("Элемент"))
+                    if (NameItem != "" && NameItem.Contains("Подэлемент"))
                     {
                         ArrayList1.Add(NameItem);
-                        num = Int32.Parse(NameItem.Replace("Подэлемент", ""));
+                        num = Int32.Parse(ParseBetween(NameItem, "Подэлемент", null));
                         if ((num + 1) > max)
                         {
                             max = num + 1;
@@ -326,11 +330,12 @@ namespace osfDesigner
                 int num = 0;
                 Menu CurrentMenuItem1 = (Menu)Menu1.MenuItems[i];
                 string Name = CurrentMenuItem1.Name;
+                string fragment = Name.Replace("ГлавноеМеню", "флажок");
 
-                if (Name != "" && !Name.Contains("Меню"))
+                if (Name != "" && !fragment.Contains("Меню"))
                 {
                     ArrayList.Add(CurrentMenuItem1.Name);
-                    num = Int32.Parse(CurrentMenuItem1.Name.Replace("Сепаратор", ""));
+                    num = Int32.Parse(ParseBetween(CurrentMenuItem1.Name, "Сепаратор", null));
                     if ((num + 1) > max)
                     {
                         max = num + 1;
@@ -355,7 +360,7 @@ namespace osfDesigner
                 if (Name != "" && !Name.Contains("Сепаратор"))
                 {
                     ArrayList.Add(CurrentMenuItem1.Name);
-                    num = Int32.Parse(CurrentMenuItem1.Name.Replace("Меню", ""));
+                    num = Int32.Parse(ParseBetween(CurrentMenuItem1.Name.Replace("ГлавноеМеню", ""), "Меню", null));
                     if ((num + 1) > max)
                     {
                         max = num + 1;
@@ -371,7 +376,7 @@ namespace osfDesigner
 
         public static string RevertMenuName(MainMenu p1)
         {
-            string name = "Меню";
+            string name = p1.Name + "Меню";
             int max = 0;
             string newName = name + Convert.ToString(max);
             ArrayList ArrayList1 = new ArrayList();
@@ -390,7 +395,7 @@ namespace osfDesigner
 
         public static string RevertSeparatorName(MainMenu p1)
         {
-            string name = "Сепаратор";
+            string name = p1.Name + "Сепаратор";
             int max = 0;
             string newName = name + Convert.ToString(max);
             ArrayList ArrayList1 = new ArrayList();
@@ -409,7 +414,7 @@ namespace osfDesigner
 
         public static string RevertToolBarButtonName(ToolBar p1)
         {
-            string name = "Кн";
+            string name = p1.Name + "Кн";
             int max = 0;
             int num = 0;
             string newName = name + Convert.ToString(max);
@@ -422,7 +427,8 @@ namespace osfDesigner
                     if (Name != "")
                     {
                         ArrayList1.Add(Name);
-                        num = Int32.Parse(Name.Replace("Кн", ""));
+
+                        num = Int32.Parse(ParseBetween(Name, "Кн", null));
                         if ((num + 1) > max)
                         {
                             max = num + 1;
@@ -444,7 +450,7 @@ namespace osfDesigner
 
         public static string RevertDataGridTableStyleName(DataGrid p1)
         {
-            string name = "Стиль";
+            string name = p1.Name + "Стиль";
             int max = 0;
             int num = 0;
             string newName = name + Convert.ToString(max);
@@ -455,7 +461,7 @@ namespace osfDesigner
                 if (NameStyle != null)
                 {
                     ArrayList1.Add(NameStyle);
-                    num = Int32.Parse(NameStyle.Replace("Стиль", ""));
+                    num = Int32.Parse(ParseBetween(NameStyle, "Стиль", null));
                     if ((num + 1) > max)
                     {
                         max = num + 1;
@@ -480,12 +486,12 @@ namespace osfDesigner
             // p2 - стиль колонки сетки данных.
             if (p2.GetType() == typeof(osfDesigner.DataGridBoolColumn))
             {
-                string name = "СтильКолонкиБулево";
+                osfDesigner.DataGridTableStyle DataGridTableStyle1 = RevertSimilarObj(p1);
+                string name = DataGridTableStyle1.NameStyle + p2.NameStyle + "СтильКолонкиБулево";
                 int max = 0;
                 int num = 0;
                 string newName = name + Convert.ToString(max);
                 ArrayList ArrayList1 = new ArrayList();
-                osfDesigner.DataGridTableStyle DataGridTableStyle1 = RevertSimilarObj(p1);
                 for (int i = 0; i < DataGridTableStyle1.GridColumnStyles.Count; i++)
                 {
                     string NameStyle = ((dynamic)DataGridTableStyle1.GridColumnStyles[i]).NameStyle;
@@ -494,7 +500,7 @@ namespace osfDesigner
                         if (NameStyle.Contains("СтильКолонкиБулево"))
                         {
                             ArrayList1.Add(NameStyle);
-                            num = Int32.Parse(NameStyle.Replace("СтильКолонкиБулево", ""));
+                            num = Int32.Parse(ParseBetween(NameStyle, "СтильКолонкиБулево", null));
                             if ((num + 1) > max)
                             {
                                 max = num + 1;
@@ -515,12 +521,12 @@ namespace osfDesigner
             }
             else if (p2.GetType() == typeof(osfDesigner.DataGridTextBoxColumn))
             {
-                string name = "СтильКолонкиПолеВвода";
+                osfDesigner.DataGridTableStyle DataGridTableStyle1 = RevertSimilarObj(p1);
+                string name = DataGridTableStyle1.NameStyle + p2.NameStyle + "СтильКолонкиПолеВвода";
                 int max = 0;
                 int num = 0;
                 string newName = name + Convert.ToString(max);
                 ArrayList ArrayList1 = new ArrayList();
-                osfDesigner.DataGridTableStyle DataGridTableStyle1 = RevertSimilarObj(p1);
                 for (int i = 0; i < DataGridTableStyle1.GridColumnStyles.Count; i++)
                 {
                     string NameStyle = ((dynamic)DataGridTableStyle1.GridColumnStyles[i]).NameStyle;
@@ -529,7 +535,7 @@ namespace osfDesigner
                         if (NameStyle.Contains("СтильКолонкиПолеВвода"))
                         {
                             ArrayList1.Add(NameStyle);
-                            num = Int32.Parse(NameStyle.Replace("СтильКолонкиПолеВвода", ""));
+                            num = Int32.Parse(ParseBetween(NameStyle, "СтильКолонкиПолеВвода", null));
                             if ((num + 1) > max)
                             {
                                 max = num + 1;
@@ -550,12 +556,12 @@ namespace osfDesigner
             }
             else if (p2.GetType() == typeof(osfDesigner.DataGridComboBoxColumnStyle))
             {
-                string name = "СтильКолонкиПолеВыбора";
+                osfDesigner.DataGridTableStyle DataGridTableStyle1 = RevertSimilarObj(p1);
+                string name = DataGridTableStyle1.NameStyle + p2.NameStyle + "СтильКолонкиПолеВыбора";
                 int max = 0;
                 int num = 0;
                 string newName = name + Convert.ToString(max);
                 ArrayList ArrayList1 = new ArrayList();
-                osfDesigner.DataGridTableStyle DataGridTableStyle1 = RevertSimilarObj(p1);
                 for (int i = 0; i < DataGridTableStyle1.GridColumnStyles.Count; i++)
                 {
                     string NameStyle = ((dynamic)DataGridTableStyle1.GridColumnStyles[i]).NameStyle;
@@ -564,7 +570,7 @@ namespace osfDesigner
                         if (NameStyle.Contains("СтильКолонкиПолеВыбора"))
                         {
                             ArrayList1.Add(NameStyle);
-                            num = Int32.Parse(NameStyle.Replace("СтильКолонкиПолеВыбора", ""));
+                            num = Int32.Parse(ParseBetween(NameStyle, "СтильКолонкиПолеВыбора", null));
                             if ((num + 1) > max)
                             {
                                 max = num + 1;
@@ -586,57 +592,57 @@ namespace osfDesigner
             return null;
         }
 
-        public static void AddToHashtable(dynamic p1, dynamic p2)
+        public static void AddToDictionary(dynamic p1, dynamic p2)
         {
             // p1 - исходный объект (OriginalObj).
             // p2 - дублёр исходного объекта (SimilarObj), для отображения свойств в сетке свойств.
-            if (!hashtable.ContainsKey(p1))
+            if (!dictionary.ContainsKey(p1))
             {
-                hashtable.Add(p1, p2);
+                dictionary.Add(p1, p2);
             }
         }
 
-        public static void AddToHashtableDesignerTabRootComponent(dynamic p1, dynamic p2)
+        public static void AddToDictionaryDesignerTabRootComponent(dynamic p1, dynamic p2)
         {
             // p1 - RootComponent, форма.
             // p2 - DesignerTab, вкладка дизайнера для этой формы.
-            if (!hashtableDesignerTabRootComponent.ContainsKey(p1))
+            if (!dictionaryDesignerTabRootComponent.ContainsKey(p1))
             {
-                hashtableDesignerTabRootComponent.Add(p1, p2);
+                dictionaryDesignerTabRootComponent.Add(p1, p2);
             }
         }
 
         public static dynamic RevertDesignerTab(dynamic rootComponent)
         {
-            foreach (DictionaryEntry de in hashtableDesignerTabRootComponent)
+            try
             {
-                if (de.Key.Equals(rootComponent))
-                {
-                    return de.Value;
-                }
+                return dictionaryDesignerTabRootComponent[rootComponent];
             }
-            return null;
+            catch
+            {
+                return null;
+            }
         }
 
         public static dynamic RevertSimilarObj(dynamic OriginalObj)
         {
-            foreach (DictionaryEntry de in hashtable)
+            try
             {
-                if (de.Key.Equals(OriginalObj))
-                {
-                    return de.Value;
-                }
+                return dictionary[OriginalObj];
             }
-            return null;
+            catch
+            {
+                return null;
+            }
         }
 
         public static dynamic RevertOriginalObj(dynamic SimilarObj)
         {
-            foreach (DictionaryEntry de in hashtable)
+            foreach (KeyValuePair<object, object> keyValue in dictionary)
             {
-                if (de.Value.Equals(SimilarObj))
+                if (keyValue.Value.Equals(SimilarObj))
                 {
-                    return de.Key;
+                    return keyValue.Key;
                 }
             }
             return null;
@@ -1431,7 +1437,7 @@ namespace osfDesigner
             // p1 - исходная строка.
             // p2 - подстрока поиска от которой ведем поиск.
             // p3 - подстрока поиска до которой ведем поиск.
-            // Возвращает строку, ограниченную p2 и p3.
+            // Возвращает строку, ограниченную подстроками p2 и p3.
             string str1 = p1;
             int Position1;
             if (p2 != null && p3 == null)
@@ -1533,6 +1539,392 @@ namespace osfDesigner
         public Form GetRootComponent()
         {
             return (Form)pDesigner.DSME.ActiveDesignSurface.GetIDesignerHost().Container.Components[0];
+        }
+
+        public static string GetDefaultValues(dynamic comp, System.Windows.Forms.PropertyGrid propertyGrid)
+        {
+            // Заполним для компонента начальные свойства. Они нужны будут при создании скрипта.
+            if (comp.DefaultValues == null)
+            {
+                string DefaultValues1 = "";
+                object view1 = typeof(System.Windows.Forms.PropertyGrid).GetField("gridView", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(propertyGrid);
+                GridItemCollection GridItemCollection1 = (GridItemCollection)view1.GetType().InvokeMember("GetAllGridEntries", BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Instance, null, view1, null);
+                if (GridItemCollection1 != null)
+                {
+                    foreach (GridItem GridItem in GridItemCollection1)
+                    {
+                        if (GridItem.PropertyDescriptor == null)  // Исключим из обхода категории.
+                        {
+                            continue;
+                        }
+                        if (GridItem.Label == "Locked")  // Исключим из обхода ненужные свойства.
+                        {
+                            continue;
+                        }
+                        if (GridItem.PropertyDescriptor.Category != GridItem.Label)
+                        {
+                            string str7 = "";
+                            string strTab = "            ";
+                            str7 = str7 + ObjectConvertToString(GridItem.Value);
+                            if (GridItem.GridItems.Count > 0)
+                            {
+                                strTab = strTab + "\t\t";
+                                str7 = str7 + Environment.NewLine;
+                                str7 = str7 + GetGridSubEntries(GridItem.GridItems, "", strTab);
+                                DefaultValues1 = DefaultValues1 + "" + GridItem.Label + " == " + str7 + Environment.NewLine;
+                                strTab = "\t\t";
+                            }
+                            else
+                            {
+                                DefaultValues1 = DefaultValues1 + "" + GridItem.Label + " == " + str7 + Environment.NewLine;
+                            }
+                        }
+                    }
+                    return DefaultValues1;
+                }
+            }
+            return null;
+        }
+
+        public static string GetGridSubEntries(GridItemCollection gridItems, string str, string strTab)
+        {
+            foreach (var item in gridItems)
+            {
+                GridItem _item = (GridItem)item;
+                str = str + strTab + _item.Label + " = " + _item.Value + Environment.NewLine;
+                if (_item.GridItems.Count > 0)
+                {
+                    strTab = strTab + "\t\t";
+                    str = GetGridSubEntries(_item.GridItems, str, strTab);
+                    strTab = "\t\t";
+                }
+            }
+            return str;
+        }
+
+        private static void GetState(dynamic obj, ref string state)
+        {
+            dynamic myobj;
+            if (obj.GetType() == typeof(System.Windows.Forms.MainMenu))
+            {
+                myobj = RevertSimilarObj(obj);
+                osfDesigner.MainMenu mainMenu = myobj;
+                state = state + obj.Name + " = " + myobj + Environment.NewLine;
+            }
+            myobj = obj;
+            Type type = myobj.GetType();
+            PropertyInfo[] PropertyInfo = type.GetProperties();
+            for (int i2 = 0; i2 < PropertyInfo.Length; i2++)
+            {
+                string propName = PropertyInfo[i2].Name;
+                if (GetDisplayName(myobj, propName) != "")
+                {
+                    dynamic propValue = null;
+                    try
+                    {
+                        propValue = type.GetProperty(propName).GetValue(myobj);
+                    }
+                    catch
+                    {
+                        propValue = type.BaseType.GetProperty(propName).GetValue(myobj);
+                    }
+                    if (propValue != null)
+                    {
+                        if (Convert.ToString(propValue) != "")
+                        {
+                            if (propName == "Icon")
+                            {
+                                try
+                                {
+                                    state = state + propName + " = " + ((dynamic)myobj).Icon.Path + Environment.NewLine;
+                                }
+                                catch
+                                {
+                                    state = state + propName + " = " + Convert.ToString(propValue) + Environment.NewLine;
+                                }
+                            }
+                            else
+                            {
+                                state = state + propName + " = " + Convert.ToString(propValue) + Environment.NewLine;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        private static void GetNodes3(dynamic treeView_treeNode, ref ArrayList ArrayList)
+        {
+            for (int i = 0; i < treeView_treeNode.Nodes.Count; i++)
+            {
+                System.Windows.Forms.TreeNode TreeNode1 = treeView_treeNode.Nodes[i];
+                ArrayList.Add(TreeNode1);
+
+                if (TreeNode1.Nodes.Count > 0)
+                {
+                    GetNodes3(TreeNode1, ref ArrayList);
+                }
+            }
+        }
+
+        public static void BypassMainMenu3(Menu Menu1, ref ArrayList ArrayList)
+        {
+            for (int i = 0; i < Menu1.MenuItems.Count; i++)
+            {
+                Menu CurrentMenuItem1 = (Menu)Menu1.MenuItems[i];
+                ArrayList.Add(CurrentMenuItem1);
+
+                if (CurrentMenuItem1.MenuItems.Count > 0)
+                {
+                    BypassMainMenu3(CurrentMenuItem1, ref ArrayList);
+                }
+            }
+        }
+
+        public static string DesignSurfaceState(bool overwrite)
+        {
+            // Делает снимок свойств всех компонентов на переданной в параметре поверхности дизайнера
+            // и фиксирует его в dictionaryDesignSurfaceState.
+            if (!block2)
+            {
+                string state = "";
+                DesignSurfaceExt2 surface = pDesigner.DSME.ActiveDesignSurface;
+                ComponentCollection ctrlsExisting = surface.ComponentContainer.Components;
+                for (int i = 0; i < ctrlsExisting.Count; i++)
+                {
+                    Component component = (Component)ctrlsExisting[i];
+                    GetState(component, ref state);
+
+                    if (component.GetType() == typeof(osfDesigner.TreeView))
+                    {
+                        ArrayList ArrayList1 = new ArrayList();
+                        GetNodes3((osfDesigner.TreeView)component, ref ArrayList1);
+                        for (int i1 = 0; i1 < ArrayList1.Count; i1++)
+                        {
+                            osfDesigner.MyTreeNode treeNode = (osfDesigner.MyTreeNode)ArrayList1[i1];
+                            GetState(treeNode, ref state);
+                        }
+                    }
+                    if (component.GetType() == typeof(osfDesigner.StatusBar))
+                    {
+                        StatusBar statusBar = (osfDesigner.StatusBar)component;
+                        for (int i1 = 0; i1 < statusBar.Panels.Count; i1++)
+                        {
+                            GetState(statusBar.Panels[i1], ref state);
+                        }
+                    }
+                    if (component.GetType() == typeof(osfDesigner.ListView))
+                    {
+                        ListView listView = (osfDesigner.ListView)component;
+                        for (int i1 = 0; i1 < listView.Columns.Count; i1++)
+                        {
+                            GetState(listView.Columns[i1], ref state);
+                        }
+                        for (int i1 = 0; i1 < listView.Items.Count; i1++)
+                        {
+                            ListViewItem listViewItem = (osfDesigner.ListViewItem)listView.Items[i1];
+                            GetState(listViewItem, ref state);
+                            if (listViewItem.SubItems.Count > 0)
+                            {
+                                for (int i2 = 1; i2 < listViewItem.SubItems.Count; i2++)
+                                {
+                                    ListViewSubItem listViewSubItem = (osfDesigner.ListViewSubItem)listViewItem.SubItems[i2];
+                                    GetState(listViewSubItem, ref state);
+                                }
+                            }
+                        }
+                    }
+                    if (component.GetType() == typeof(System.Windows.Forms.MainMenu))
+                    {
+                        ArrayList ArrayList1 = new ArrayList();
+                        MainMenu mainMenu = RevertSimilarObj((System.Windows.Forms.MainMenu)component);
+                        BypassMainMenu3(mainMenu, ref ArrayList1);
+                        for (int i1 = 0; i1 < ArrayList1.Count; i1++)
+                        {
+                            MenuItemEntry menuItemEntry = RevertSimilarObj(ArrayList1[i1]);
+                            GetState(menuItemEntry, ref state);
+                        }
+                    }
+                    if (component.GetType() == typeof(osfDesigner.ToolBar))
+                    {
+                        ToolBar toolBar = (osfDesigner.ToolBar)component;
+                        for (int i1 = 0; i1 < toolBar.Buttons.Count; i1++)
+                        {
+                            System.Windows.Forms.ToolBarButton OriginalObj = toolBar.Buttons[i1];
+                            osfDesigner.ToolBarButton SimilarObj = new osfDesigner.ToolBarButton();
+                            PassProperties(OriginalObj, SimilarObj); // Передадим свойства.
+                            SimilarObj.OriginalObj = OriginalObj;
+                            SimilarObj.Parent = OriginalObj.Parent;
+                            SimilarObj.Style = (osfDesigner.ToolBarButtonStyle)OriginalObj.Style;
+
+                            state = state + "Enabled = " + Convert.ToString(SimilarObj.Enabled_osf) + Environment.NewLine;
+                            state = state + "ImageIndex = " + Convert.ToString(SimilarObj.ImageIndex) + Environment.NewLine;
+                            state = state + "Pushed = " + Convert.ToString(SimilarObj.Pushed) + Environment.NewLine;
+                            state = state + "Visible = " + Convert.ToString(SimilarObj.Visible_osf) + Environment.NewLine;
+                            state = state + "Rectangle = " + Convert.ToString(SimilarObj.Rectangle) + Environment.NewLine;
+                            state = state + "Style = " + Convert.ToString(SimilarObj.Style) + Environment.NewLine;
+                            state = state + "Text = " + Convert.ToString(SimilarObj.Text) + Environment.NewLine;
+                            state = state + "ToolTipText = " + Convert.ToString(SimilarObj.ToolTipText) + Environment.NewLine;
+                            state = state + "Name = " + Convert.ToString(SimilarObj.Name) + Environment.NewLine;
+                        }
+                    }
+                    if (component.GetType() == typeof(osfDesigner.DataGrid))
+                    {
+                        DataGrid dataGrid = (osfDesigner.DataGrid)component;
+                        for (int i1 = 0; i1 < dataGrid.TableStyles.Count; i1++)
+                        {
+                            System.Windows.Forms.DataGridTableStyle dataGridTableStyle = dataGrid.TableStyles[i1];
+                            dynamic SimilarObj = RevertSimilarObj(dataGridTableStyle);
+                            GetState(SimilarObj, ref state);
+                            for (int i2 = 0; i2 < dataGridTableStyle.GridColumnStyles.Count; i2++)
+                            {
+                                GetState(dataGridTableStyle.GridColumnStyles[i2], ref state);
+                            }
+                        }
+                    }
+                    if (component.GetType() == typeof(osfDesigner.TabControl))
+                    {
+                        TabControl tabControl = (osfDesigner.TabControl)component;
+                        for (int i1 = 0; i1 < tabControl.TabPages.Count; i1++)
+                        {
+                            osfDesigner.TabPage tabPage = OneScriptFormsDesigner.RevertSimilarObj(tabControl.TabPages[i1]);
+                            GetState(tabPage, ref state);
+                        }
+                    }
+                    if (component.GetType() == typeof(osfDesigner.ListBox))
+                    {
+                        ListBox listBox = (osfDesigner.ListBox)component;
+                        for (int i1 = 0; i1 < listBox.Items.Count; i1++)
+                        {
+                            ListItemListBox item = (osfDesigner.ListItemListBox)listBox.Items[i1];
+                            state = state + "ValueType = " + Convert.ToString(item.ValueType) + Environment.NewLine;
+                            state = state + "Text = " + Convert.ToString(item.Text) + Environment.NewLine;
+                            try
+                            {
+                                state = state + "ValueBool = " + Convert.ToString(item.ValueBool) + Environment.NewLine;
+                            }
+                            catch { }
+                            try
+                            {
+                                state = state + "ValueDateTime = " + Convert.ToString(item.ValueDateTime) + Environment.NewLine;
+                            }
+                            catch { }
+                            try
+                            {
+                                state = state + "ValueString = " + Convert.ToString(item.ValueString) + Environment.NewLine;
+                            }
+                            catch { }
+                            try
+                            {
+                                state = state + "ValueNumber = " + Convert.ToString(item.ValueNumber) + Environment.NewLine;
+                            }
+                            catch { }
+                        }
+                    }
+                    if (component.GetType() == typeof(System.Windows.Forms.ImageList))
+                    {
+                        ImageList imageList = RevertSimilarObj((System.Windows.Forms.ImageList)component);
+                        GetState(imageList, ref state);
+                        MyList myList = imageList.Images;
+                        for (int i1 = 0; i1 < myList.Count; i1++)
+                        {
+                            ImageEntry imageEntry = myList[i1];
+                            GetState(imageEntry, ref state);
+                        }
+                    }
+                    if (component.GetType() == typeof(osfDesigner.MonthCalendar))
+                    {
+                        MonthCalendar monthCalendar = (osfDesigner.MonthCalendar)component;
+                        osfDesigner.MyBoldedDatesList myBoldedDatesList = monthCalendar.BoldedDates_osf;
+                        for (int i1 = 0; i1 < myBoldedDatesList.Count; i1++)
+                        {
+                            DateEntry dateEntry = myBoldedDatesList[i1];
+                            state = state + "dateEntry = " + Convert.ToString(dateEntry) + Environment.NewLine;
+                        }
+                        osfDesigner.MyAnnuallyBoldedDatesList myAnnuallyBoldedDatesList = monthCalendar.AnnuallyBoldedDates_osf;
+                        for (int i1 = 0; i1 < myAnnuallyBoldedDatesList.Count; i1++)
+                        {
+                            DateEntry dateEntry = myAnnuallyBoldedDatesList[i1];
+                            state = state + "dateEntry = " + Convert.ToString(dateEntry) + Environment.NewLine;
+                        }
+                        osfDesigner.MyMonthlyBoldedDatesList myMonthlyBoldedDatesList = monthCalendar.MonthlyBoldedDates_osf;
+                        for (int i1 = 0; i1 < myMonthlyBoldedDatesList.Count; i1++)
+                        {
+                            DateEntry dateEntry = myMonthlyBoldedDatesList[i1];
+                            state = state + "dateEntry = " + Convert.ToString(dateEntry) + Environment.NewLine;
+                        }
+                    }
+                    if (component.GetType() == typeof(osfDesigner.ComboBox))
+                    {
+                        ComboBox comboBox = (osfDesigner.ComboBox)component;
+                        for (int i1 = 0; i1 < comboBox.Items.Count; i1++)
+                        {
+                            ListItemComboBox item = (osfDesigner.ListItemComboBox)comboBox.Items[i1];
+                            state = state + "ValueType = " + Convert.ToString(item.ValueType) + Environment.NewLine;
+                            state = state + "Text = " + Convert.ToString(item.Text) + Environment.NewLine;
+                            try
+                            {
+                                state = state + "ValueBool = " + Convert.ToString(item.ValueBool) + Environment.NewLine;
+                            }
+                            catch { }
+                            try
+                            {
+                                state = state + "ValueDateTime = " + Convert.ToString(item.ValueDateTime) + Environment.NewLine;
+                            }
+                            catch { }
+                            try
+                            {
+                                state = state + "ValueString = " + Convert.ToString(item.ValueString) + Environment.NewLine;
+                            }
+                            catch { }
+                            try
+                            {
+                                state = state + "ValueNumber = " + Convert.ToString(item.ValueNumber) + Environment.NewLine;
+                            }
+                            catch { }
+                        }
+                    }
+
+                }
+                state = state.Trim();
+                if (!dictionaryDesignSurfaceState.ContainsKey(surface))
+                {
+                    dictionaryDesignSurfaceState.Add(surface, state);
+                    dictionaryTabPageChanged[pDesigner.TabControl.SelectedTab] = false;
+                }
+                else
+                {
+                    if (overwrite)
+                    {
+                        dictionaryDesignSurfaceState[surface] = state;
+                        dictionaryTabPageChanged[pDesigner.TabControl.SelectedTab] = false;
+                    }
+                }
+                pDesigner.TabControl.Refresh();
+                return state;
+            }
+            return "";
+        }
+
+        public static void SetDesignSurfaceState()
+        {
+            string state = DesignSurfaceState(false);
+            if (state != "")
+            {
+                try
+                {
+                    if (state != dictionaryDesignSurfaceState[pDesigner.DSME.ActiveDesignSurface])
+                    {
+                        dictionaryTabPageChanged[pDesigner.TabControl.SelectedTab] = true;
+                    }
+                    else
+                    {
+                        dictionaryTabPageChanged[pDesigner.TabControl.SelectedTab] = false;
+                    }
+                }
+                catch { }
+                pDesigner.TabControl.Refresh();
+            }
         }
     }
 }

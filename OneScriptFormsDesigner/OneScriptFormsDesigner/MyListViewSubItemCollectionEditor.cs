@@ -50,6 +50,7 @@ namespace osfDesigner
                 SetEnabledButtons();
                 PropertiesLabel1.Text = "Свойства:";
             };
+            collectionForm.FormClosed += CollectionForm_FormClosed;
 
             frmCollectionEditorForm = (System.Windows.Forms.Form)collectionForm;
             TableLayoutPanel1 = (System.Windows.Forms.TableLayoutPanel)frmCollectionEditorForm.Controls[0];
@@ -142,67 +143,10 @@ namespace osfDesigner
 
             return collectionForm;
         }
-	
-        private void GetDefaultValues()
+
+        private void CollectionForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            // Заполним для компонента начальные свойства. Они нужны будут при создании скрипта.
-            dynamic comp = PropertyGrid1.SelectedObject;
-            if (comp.DefaultValues != null)
-            {
-                return;
-            }
-            string DefaultValues1 = "";
-            object pg = PropertyGrid1;
-            object view1 = typeof(System.Windows.Forms.PropertyGrid).GetField("gridView", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(pg);
-            dynamic GridItemCollection1 = (dynamic)view1.GetType().InvokeMember("GetAllGridEntries", BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Instance, null, view1, null);
-            foreach (GridItem GridItem in GridItemCollection1)
-            {
-                if (GridItem.PropertyDescriptor == null) // Исключим из обхода категории.
-                {
-                    continue;
-                }
-                if (GridItem.Label == "Locked") // Исключим из обхода ненужные свойства.
-                {
-                    continue;
-                }
-                if (GridItem.PropertyDescriptor.Category != GridItem.Label)
-                {
-                    string str7 = "";
-                    string strTab = "            ";
-                    str7 = str7 + OneScriptFormsDesigner.ObjectConvertToString(GridItem.Value);
-                    if (GridItem.GridItems.Count > 0)
-                    {
-                        strTab = strTab + "\t\t";
-                        str7 = str7 + Environment.NewLine;
-                        str7 = str7 + GetGridSubEntries(GridItem.GridItems, "", strTab);
-
-                        DefaultValues1 = DefaultValues1 + "" + GridItem.Label + " == " + str7 + Environment.NewLine;
-
-                        strTab = "\t\t";
-                    }
-                    else
-                    {
-                        DefaultValues1 = DefaultValues1 + "" + GridItem.Label + " == " + str7 + Environment.NewLine;
-                    }
-                }
-            }
-            comp.DefaultValues = DefaultValues1;
-        }
-
-        public string GetGridSubEntries(GridItemCollection gridItems, string str, string strTab)
-        {
-            foreach (var item in gridItems)
-            {
-                GridItem _item = (GridItem)item;
-                str = str + strTab + _item.Label + " = " + _item.Value + Environment.NewLine;
-                if (_item.GridItems.Count > 0)
-                {
-                    strTab = strTab + "\t\t";
-                    str = GetGridSubEntries(_item.GridItems, str, strTab);
-                    strTab = "\t\t";
-                }
-            }
-            return str;
+            OneScriptFormsDesigner.SetDesignSurfaceState();
         }
 
         private void ListBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -267,11 +211,11 @@ namespace osfDesigner
         private void ButtonAdd1_Click(object sender, EventArgs e)
         {
             osfDesigner.ListViewSubItem SimilarObj = (osfDesigner.ListViewSubItem)PropertyGrid1.SelectedObject;
-            SimilarObj.Text = OneScriptFormsDesigner.RevertListViewSubItemName(ListViewItem1);
-            SimilarObj.Name = SimilarObj.Text;
+            SimilarObj.Name = OneScriptFormsDesigner.RevertListViewSubItemName(ListViewItem1);
+            SimilarObj.Text = "Подэлемент" + OneScriptFormsDesigner.ParseBetween(SimilarObj.Name, "Подэлемент", null);
             ListBox1.Refresh();
             PropertyGrid1.SelectedObject = SimilarObj;
-            GetDefaultValues();
+            SimilarObj.DefaultValues = OneScriptFormsDesigner.GetDefaultValues(SimilarObj, PropertyGrid1);
         }
 	
         private void PropertyGrid1_SelectedGridItemChanged(object sender, SelectedGridItemChangedEventArgs e)

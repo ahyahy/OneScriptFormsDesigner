@@ -394,7 +394,6 @@ namespace osfDesigner
             {
                 return;
             }
-	
             if (val.GetType() == typeof(osfDesigner.Form) && (valueName == "Стыковка"))
             {
                 return;
@@ -423,7 +422,12 @@ namespace osfDesigner
                             MenuItemEntry1 = OneScriptFormsDesigner.RevertSimilarObj(MenuItemCollection1[i]);
                             string strName = MenuItemEntry1.Name.Contains("Сепаратор") ? "-" : MenuItemEntry1.Text;
                             AddToScript(MenuItemEntry1.Name + " = " + compName + ".ЭлементыМеню.Добавить(Ф.ЭлементМеню(\u0022" + strName + "\u0022));");
+
+                            string hide = MenuItemEntry1.Hide;
+                            MenuItemEntry1.Hide = "Показать";
                             PropComponent(MenuItemEntry1);
+                            MenuItemEntry1.Hide = hide;
+
                             if (MenuItemEntry1.MenuItems.Count > 0)
                             {
                                 GetMenuItems((MenuItemEntry)MenuItemEntry1);
@@ -1441,7 +1445,12 @@ namespace osfDesigner
 
                 string strName = MenuItemEntry1.Name.Contains("Сепаратор") ? "-" : MenuItemEntry1.Text;
                 AddToScript(MenuItemEntry1.Name + " = " + strParent + ".ЭлементыМеню.Добавить(Ф.ЭлементМеню(\u0022" + strName + "\u0022));");
+
+                string hide = MenuItemEntry1.Hide;
+                MenuItemEntry1.Hide = "Показать";
                 PropComponent(MenuItemEntry1);
+                MenuItemEntry1.Hide = hide;
+
                 if (MenuItemEntry1.MenuItems.Count > 0)
                 {
                     GetMenuItems(MenuItemEntry1);
@@ -1451,27 +1460,31 @@ namespace osfDesigner
 
         private static void PropComponent(dynamic comp)
         {
+            string comp_Name;
+            if (comp.GetType() == typeof(osfDesigner.DataGridTableStyle) ||
+                comp.GetType() == typeof(osfDesigner.DataGridBoolColumn) ||
+                comp.GetType() == typeof(osfDesigner.DataGridTextBoxColumn) ||
+                comp.GetType() == typeof(osfDesigner.DataGridComboBoxColumnStyle))
+            {
+                comp_Name = comp.NameStyle;
+            }
+            else
+            {
+                comp_Name = comp.Name;
+            }
+
             PropertyInfo[] myPropertyInfo = comp.GetType().GetProperties();
             for (int i = 0; i < myPropertyInfo.Length; i++)
             {
-                string valueName = OneScriptFormsDesigner.GetDisplayName(comp, myPropertyInfo[i].Name);
+                string propName = myPropertyInfo[i].Name;
+                string valueName = OneScriptFormsDesigner.GetDisplayName(comp, propName);
                 if (valueName != "" && !((valueName == "(Name)") || (valueName == "Прямоугольник")))
                 {
-                    PropertyDescriptor pd = TypeDescriptor.GetProperties(comp)[myPropertyInfo[i].Name];
+                    PropertyDescriptor pd = TypeDescriptor.GetProperties(comp)[propName];
                     try
                     {
                         string compValue = OneScriptFormsDesigner.ObjectConvertToString(pd.GetValue(comp));
-                        if (comp.GetType() == typeof(osfDesigner.DataGridTableStyle) ||
-                            comp.GetType() == typeof(osfDesigner.DataGridBoolColumn) ||
-                            comp.GetType() == typeof(osfDesigner.DataGridTextBoxColumn) ||
-                            comp.GetType() == typeof(osfDesigner.DataGridComboBoxColumnStyle))
-                        {
-                            RequiredDefaultValuesValues(comp, comp.NameStyle, valueName, compValue);
-                        }
-                        else
-                        {
-                            RequiredDefaultValuesValues(comp, comp.Name, valueName, compValue);
-                        }
+                        RequiredDefaultValuesValues(comp, comp_Name, valueName, compValue);
                     }
                     catch { }
                 }

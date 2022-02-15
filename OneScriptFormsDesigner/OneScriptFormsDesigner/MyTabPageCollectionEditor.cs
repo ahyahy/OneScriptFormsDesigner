@@ -50,6 +50,7 @@ namespace osfDesigner
             collectionForm.FormClosed += delegate (object sender, FormClosedEventArgs e)
             {
                 OneScriptFormsDesigner.block1 = false;
+                OneScriptFormsDesigner.SetDesignSurfaceState();
                 TopLevelPropertyGrid1.SelectedObject = TabControl1;
             };
 

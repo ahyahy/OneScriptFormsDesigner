@@ -6,7 +6,6 @@ namespace osfDesigner
     public class ToolBarButton : System.Windows.Forms.ToolBarButton
     {
         public System.Windows.Forms.ToolBarButton M_ToolBarButton;
-        private bool _PartialPush_osf;
 
         [Browsable(false)]
         public System.Windows.Forms.ToolBarButton OriginalObj
@@ -54,21 +53,6 @@ namespace osfDesigner
         {
             get { return M_ToolBarButton.Pushed; }
             set { M_ToolBarButton.Pushed = value; }
-        }
-
-        [DisplayName("НейтральноеПоложение")]
-        [Description("Возвращает или задает значение, указывающее, частично ли нажата кнопка панели инструментов в стиле тумблера.")]
-        [Category("Прочее")]
-        [Browsable(true)]
-        [TypeConverter(typeof(MyBooleanConverter))]
-        public  bool PartialPush_osf
-        {
-            get { return _PartialPush_osf; }
-            set
-            {
-                M_ToolBarButton.PartialPush = value;
-                _PartialPush_osf = value;
-            }
         }
 
         [DisplayName("Отображать")]
@@ -161,9 +145,6 @@ namespace osfDesigner
         public new dynamic Tag { get; set; }
 
         [Browsable(false)]
-        public string DefaultValues { get; set; }
-			
-        [Browsable(false)]
         public string RequiredValues
         {
             get
@@ -172,6 +153,27 @@ namespace osfDesigner
 Текст ==
 ";
             }
+        }
+
+        [Browsable(false)]
+        public string DefaultValues
+        {
+            get
+            {
+                return @"
+Доступность == Истина
+ИндексИзображения == -1
+Нажата == Ложь
+НейтральноеПоложение == Ложь
+Отображать == Истина
+Прямоугольник == 
+Стиль == СтандартнаяТрехмерная
+Текст == 
+ТекстПодсказки == 
+(Name) == 
+";
+            }
+            set { }
         }
     }
 }

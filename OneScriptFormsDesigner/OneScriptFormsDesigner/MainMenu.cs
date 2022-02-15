@@ -16,6 +16,9 @@ namespace osfDesigner
         }
 
         [Browsable(false)]
+        public osfDesigner.frmMenuItems FrmMenuItems { get; set; }
+		
+        [Browsable(false)]
         public System.Windows.Forms.TreeView TreeView
         {
             get { return treeView; }
@@ -25,6 +28,7 @@ namespace osfDesigner
         [Description("Возвращает значение, указывающее на коллекцию объектов ЭлементМеню (MenuItem), связанных с меню.")]
         [Category("Прочее")]
         [Browsable(true)]
+        [TypeConverter(typeof(MyCollectionConverter))]
         [Editor(typeof(MyMenuItemsEditor), typeof(UITypeEditor))]
         public new System.Windows.Forms.Menu.MenuItemCollection MenuItems
         {

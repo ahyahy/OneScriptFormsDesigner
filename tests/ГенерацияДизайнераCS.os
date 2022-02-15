@@ -566,6 +566,9 @@
 		|        }
 		|
 		|        [Browsable(false)]
+		|        public osfDesigner.frmMenuItems FrmMenuItems { get; set; }
+		|		
+		|        [Browsable(false)]
 		|        public System.Windows.Forms.TreeView TreeView
 		|        {
 		|            get { return treeView; }
@@ -667,6 +670,9 @@
 				((СвойствоРус = "Меню") и Не(ИмяКонтекстКлассаАнгл = "Form")) или 
 				((СвойствоРус = "Метка")) или 
 				((СвойствоРус = "НачальнаяИнформация") и (ИмяКонтекстКлассаАнгл = "Process")) или 
+				
+				((СвойствоРус = "НейтральноеПоложение") и (ИмяКонтекстКлассаАнгл = "ToolBarButton")) или 
+				
 				((СвойствоРус = "Описание") и (ИмяКонтекстКлассаАнгл = "FolderBrowserDialog")) или 
 				((СвойствоРус = "ОтображениеЭлемента")) или 
 				((СвойствоРус = "ПозицияМыши")) или 
@@ -951,6 +957,9 @@
 				TypeConverterAttribute = СтрЗаменить(TypeConverterAttribute, "typeof()", "typeof(MyImageIndexConverter)");
 				TypeConverterAttribute = СтрЗаменить(TypeConverterAttribute, "//", "");
 			ИначеЕсли СвойствоАнгл = "Buttons" Тогда
+				TypeConverterAttribute = СтрЗаменить(TypeConverterAttribute, "typeof()", "typeof(MyCollectionConverter)");
+				TypeConverterAttribute = СтрЗаменить(TypeConverterAttribute, "//", "");
+			ИначеЕсли (СвойствоАнгл = "MenuItems") и (ИмяКонтекстКлассаАнгл = "MainMenu") Тогда
 				TypeConverterAttribute = СтрЗаменить(TypeConverterAttribute, "typeof()", "typeof(MyCollectionConverter)");
 				TypeConverterAttribute = СтрЗаменить(TypeConverterAttribute, "//", "");
 			ИначеЕсли (СвойствоАнгл = "Items") и (ИмяКонтекстКлассаАнгл = "ComboBox") Тогда
@@ -1654,22 +1663,22 @@
 				|";
 				Стр = Стр + Символы.ПС;
 				Продолжить;
-			ИначеЕсли (СвойствоРус = "НейтральноеПоложение") и (ИмяКонтекстКлассаАнгл = "ToolBarButton") Тогда
-				СтрРазделОбъявленияПеременных = СтрРазделОбъявленияПеременных + Символы.ПС +
-				"        private bool _PartialPush_osf;";
-				Стр = Стр + 
-				"        public  bool PartialPush_osf
-				|        {
-				|            get { return _PartialPush_osf; }
-				|            set
-				|            {
-				|                M_ToolBarButton.PartialPush = value;
-				|                _PartialPush_osf = value;
-				|            }
-				|        }
-				|";
-				Стр = Стр + Символы.ПС;
-				Продолжить;
+			// // // ИначеЕсли (СвойствоРус = "НейтральноеПоложение") и (ИмяКонтекстКлассаАнгл = "ToolBarButton") Тогда
+				// // // СтрРазделОбъявленияПеременных = СтрРазделОбъявленияПеременных + Символы.ПС +
+				// // // "        private bool _PartialPush_osf;";
+				// // // Стр = Стр + 
+				// // // "        public  bool PartialPush_osf
+				// // // |        {
+				// // // |            get { return _PartialPush_osf; }
+				// // // |            set
+				// // // |            {
+				// // // |                M_ToolBarButton.PartialPush = value;
+				// // // |                _PartialPush_osf = value;
+				// // // |            }
+				// // // |        }
+				// // // |";
+				// // // Стр = Стр + Символы.ПС;
+				// // // Продолжить;
 			ИначеЕсли (СвойствоРус = "Меню") и (ИмяКонтекстКлассаАнгл = "Form") Тогда
 				Стр = Стр + 
 				"        public new System.Windows.Forms.MainMenu Menu
@@ -2716,7 +2725,42 @@
 			|        }
             |    }
             |}";
-			
+		СтрСвойство_DefaultValues_RequiredValues3 = 
+			""";
+			|            }
+			|        }
+			|
+            |        [Browsable(false)]
+            |        public string DefaultValues
+			|        {
+            |            get
+            |            {
+            |                return @""
+            |Доступность == Истина
+            |ИндексИзображения == -1
+            |Нажата == Ложь
+            |НейтральноеПоложение == Ложь
+            |Отображать == Истина
+            |Прямоугольник == 
+            |Стиль == СтандартнаяТрехмерная
+            |Текст == 
+            |ТекстПодсказки == 
+            |(Name) == 
+            |"";
+            |            }
+            |            set { }
+			|        }
+            |    }
+            |}";
+		СтрСвойство_DefaultValues_RequiredValues4 = 
+			"			
+			|
+            |        [Browsable(false)]
+			|        public string RequiredValues
+			|        {
+			|            get
+			|            {
+			|                return @""";
 		ПодстрокаЗамены = СтрПодвал;
 		
 		Если ИмяКонтекстКлассаАнгл = "TabPage" Тогда
@@ -2763,16 +2807,16 @@
 			ИмяКонтекстКлассаАнгл = "OpenFileDialog" или 
 			ИмяКонтекстКлассаАнгл = "FontDialog" или 
 			ИмяКонтекстКлассаАнгл = "ColorDialog" или 
-			ИмяКонтекстКлассаАнгл = "FolderBrowserDialog" или 
-			ИмяКонтекстКлассаАнгл = "DataGridBoolColumn" или 
-			ИмяКонтекстКлассаАнгл = "DataGridTextBoxColumn" Тогда
+			ИмяКонтекстКлассаАнгл = "FolderBrowserDialog" Тогда
 			ПодстрокаЗамены = СтрСвойство_DefaultValues_RequiredValues1 + СтрСвойство_DefaultValues_RequiredValues2;
 		ИначеЕсли ИмяКонтекстКлассаАнгл = "StatusBar" Тогда
 			ПодстрокаЗамены = СтрСвойствоПодсказка + СтрСвойство_DefaultValues_RequiredValues1 + 
             "
 			|Панели ==
 			|" + СтрСвойство_DefaultValues_RequiredValues2;
-		ИначеЕсли ИмяКонтекстКлассаАнгл = "StatusBarPanel" Тогда
+		ИначеЕсли ИмяКонтекстКлассаАнгл = "StatusBarPanel" или 
+			ИмяКонтекстКлассаАнгл = "DataGridTextBoxColumn" или 
+			ИмяКонтекстКлассаАнгл = "DataGridBoolColumn" Тогда
 			ПодстрокаЗамены = СтрСвойствоПодсказка + СтрСвойство_DefaultValues_RequiredValues1 + 
             "
 			|Текст ==
@@ -2818,6 +2862,7 @@
             "
 			|Положение ==
 			|ПорядокОбхода ==
+			|РазмерКнопки ==
 			|Размер ==
 			|Кнопки ==
 			|" + СтрСвойство_DefaultValues_RequiredValues2;
@@ -2850,14 +2895,19 @@
 			ПодстрокаЗамены = СтрСвойство_DefaultValues_RequiredValues1 + 
             "
 			|СтилиКолонкиСеткиДанных ==
+			|Текст ==
 			|" + СтрСвойство_DefaultValues_RequiredValues2;
 		ИначеЕсли ИмяКонтекстКлассаАнгл = "ColumnHeader" или 
-			ИмяКонтекстКлассаАнгл = "ToolBarButton" или 
 			ИмяКонтекстКлассаАнгл = "ListViewSubItem" Тогда
 			ПодстрокаЗамены = СтрСвойство_DefaultValues_RequiredValues1 + 
             "
 			|Текст ==
 			|" + СтрСвойство_DefaultValues_RequiredValues2;
+		ИначеЕсли ИмяКонтекстКлассаАнгл = "ToolBarButton" Тогда
+			ПодстрокаЗамены = СтрСвойство_DefaultValues_RequiredValues4 + 
+            "
+			|Текст ==
+			|" + СтрСвойство_DefaultValues_RequiredValues3;
 		ИначеЕсли ИмяКонтекстКлассаАнгл = "ListViewItem" Тогда
 			ПодстрокаЗамены = СтрСвойство_DefaultValues_RequiredValues1 + 
             "
@@ -3875,7 +3925,7 @@
 	|                    ////  для comp1 уже создан дублер, получим его
 	|                    //osfDesigner.TabPage SimilarObj = OneScriptFormsDesigner.RevertSimilarObj(comp1);
 	|                    //SimilarObj.OriginalObj = (System.Windows.Forms.TabPage)comp1;
-	|                    ////////////////////////OneScriptFormsDesigner.AddToHashtable(comp1, SimilarObj);
+	|                    ////////////////////////OneScriptFormsDesigner.AddToDictionary(comp1, SimilarObj);
 	|                    //// присвоим дублёру значения всех свойств исходного объекта
 	|                    //OneScriptFormsDesigner.PassProperties(comp1, SimilarObj);//без этой строки компонент глючит
 	|                    //dictComponents[componentName] = comp1;
@@ -4808,7 +4858,6 @@
 	|            {
 	|                return;
 	|            }
-	|	
 	|            if (val.GetType() == typeof(osfDesigner.Form) && (valueName == ""Стыковка""))
 	|            {
 	|                return;
@@ -4837,7 +4886,12 @@
 	|                            MenuItemEntry1 = OneScriptFormsDesigner.RevertSimilarObj(MenuItemCollection1[i]);
 	|                            string strName = MenuItemEntry1.Name.Contains(""Сепаратор"") ? ""-"" : MenuItemEntry1.Text;
 	|                            AddToScript(MenuItemEntry1.Name + "" = "" + compName + "".ЭлементыМеню.Добавить(Ф.ЭлементМеню(\u0022"" + strName + ""\u0022));"");
+	|
+	|                            string hide = MenuItemEntry1.Hide;
+	|                            MenuItemEntry1.Hide = ""Показать"";
 	|                            PropComponent(MenuItemEntry1);
+	|                            MenuItemEntry1.Hide = hide;
+	|
 	|                            if (MenuItemEntry1.MenuItems.Count > 0)
 	|                            {
 	|                                GetMenuItems((MenuItemEntry)MenuItemEntry1);
@@ -5855,7 +5909,12 @@
 	|
 	|                string strName = MenuItemEntry1.Name.Contains(""Сепаратор"") ? ""-"" : MenuItemEntry1.Text;
 	|                AddToScript(MenuItemEntry1.Name + "" = "" + strParent + "".ЭлементыМеню.Добавить(Ф.ЭлементМеню(\u0022"" + strName + ""\u0022));"");
+	|
+	|                string hide = MenuItemEntry1.Hide;
+	|                MenuItemEntry1.Hide = ""Показать"";
 	|                PropComponent(MenuItemEntry1);
+	|                MenuItemEntry1.Hide = hide;
+	|
 	|                if (MenuItemEntry1.MenuItems.Count > 0)
 	|                {
 	|                    GetMenuItems(MenuItemEntry1);
@@ -5865,27 +5924,31 @@
 	|
 	|        private static void PropComponent(dynamic comp)
 	|        {
+	|            string comp_Name;
+	|            if (comp.GetType() == typeof(osfDesigner.DataGridTableStyle) ||
+	|                comp.GetType() == typeof(osfDesigner.DataGridBoolColumn) ||
+	|                comp.GetType() == typeof(osfDesigner.DataGridTextBoxColumn) ||
+	|                comp.GetType() == typeof(osfDesigner.DataGridComboBoxColumnStyle))
+	|            {
+	|                comp_Name = comp.NameStyle;
+	|            }
+	|            else
+	|            {
+	|                comp_Name = comp.Name;
+	|            }
+	|
 	|            PropertyInfo[] myPropertyInfo = comp.GetType().GetProperties();
 	|            for (int i = 0; i < myPropertyInfo.Length; i++)
 	|            {
-	|                string valueName = OneScriptFormsDesigner.GetDisplayName(comp, myPropertyInfo[i].Name);
+	|                string propName = myPropertyInfo[i].Name;
+	|                string valueName = OneScriptFormsDesigner.GetDisplayName(comp, propName);
 	|                if (valueName != """" && !((valueName == ""(Name)"") || (valueName == ""Прямоугольник"")))
 	|                {
-	|                    PropertyDescriptor pd = TypeDescriptor.GetProperties(comp)[myPropertyInfo[i].Name];
+	|                    PropertyDescriptor pd = TypeDescriptor.GetProperties(comp)[propName];
 	|                    try
 	|                    {
 	|                        string compValue = OneScriptFormsDesigner.ObjectConvertToString(pd.GetValue(comp));
-	|                        if (comp.GetType() == typeof(osfDesigner.DataGridTableStyle) ||
-	|                            comp.GetType() == typeof(osfDesigner.DataGridBoolColumn) ||
-	|                            comp.GetType() == typeof(osfDesigner.DataGridTextBoxColumn) ||
-	|                            comp.GetType() == typeof(osfDesigner.DataGridComboBoxColumnStyle))
-	|                        {
-	|                            RequiredDefaultValuesValues(comp, comp.NameStyle, valueName, compValue);
-	|                        }
-	|                        else
-	|                        {
-	|                            RequiredDefaultValuesValues(comp, comp.Name, valueName, compValue);
-	|                        }
+	|                        RequiredDefaultValuesValues(comp, comp_Name, valueName, compValue);
 	|                    }
 	|                    catch { }
 	|                }
@@ -6016,13 +6079,13 @@
 	ТекстДокХХХ.Записать("C:\444\ВыгрузкаДизайнера\MyNotifyFiltersEditor.cs");
 	
 	СтрВыгрузки = 
-	"using System;
-	|using System.IO;
-	|using System.Windows.Forms;
-	|using System.Drawing;
-	|using System.Reflection;
+	"using System.ComponentModel.Design;
 	|using System.ComponentModel;
-	|using System.ComponentModel.Design;
+	|using System.Drawing;
+	|using System.IO;
+	|using System.Reflection;
+	|using System.Windows.Forms;
+	|using System;
 	|
 	|namespace osfDesigner
 	|{
@@ -6194,7 +6257,6 @@
 	|                    {
 	|                        try
 	|                        {
-	|
 	|                            FontSize = Single.Parse(result[1].Trim());
 	|                        }
 	|                        catch
@@ -6804,7 +6866,6 @@
 	|                pi.SetValue(control, cursor);
 	|                return;
 	|            }
-	|
 	|            // Если это Перечисление.
 	|            if (displayName == ""АвтоРазмер"" ||
 	|                displayName == ""Активация"" ||
@@ -6869,6 +6930,10 @@
 	|                    PropertyInfo pi = component.GetType().BaseType.GetProperty(propertyName);
 	|                    pi.SetValue(component, rez);
 	|                }
+	|                if (component.GetType() == typeof(osfDesigner.ToolBarButton))
+	|                {
+	|                    ((osfDesigner.ToolBarButton)component).Style = (osfDesigner.ToolBarButtonStyle)rez;
+	|                }
 	|                if ((displayName == ""Стыковка"" && component.GetType() != typeof(osfDesigner.ToolBar)) ||
 	|                    (displayName == ""Стыковка"" && component.GetType() != typeof(osfDesigner.Splitter)) ||
 	|                    (displayName == ""Стыковка"" && component.GetType() != typeof(osfDesigner.StatusBar)))
@@ -6900,6 +6965,10 @@
 	|                    {
 	|                        ((osfDesigner.NotifyIcon)control).Icon = MyIcon1;
 	|                    }
+	|                }
+	|                else if (control.GetType() == typeof(osfDesigner.StatusBarPanel))
+	|                {
+	|                    ((osfDesigner.StatusBarPanel)control).Icon = MyIcon1;
 	|                }
 	|                return;
 	|            }
@@ -6967,33 +7036,6 @@
 	|                if (treeNode.Nodes.Count > 0)
 	|                {
 	|                    NodeSearch(treeView, nameNodeParent, ref node, treeNode.Nodes);
-	|                }
-	|            }
-	|        }
-	|
-	|        public static void SelectedNodeSearch(System.Windows.Forms.TreeView treeView, string nameNodeParent, ref System.Windows.Forms.TreeNode node, System.Windows.Forms.TreeNodeCollection treeNodes = null)
-	|        {
-	|            System.Windows.Forms.TreeNodeCollection _treeNodes;
-	|            if (treeNodes == null)
-	|            {
-	|                _treeNodes = treeView.Nodes;
-	|            }
-	|            else
-	|            {
-	|                _treeNodes = treeNodes;
-	|            }
-	|            System.Windows.Forms.TreeNode treeNode = null;
-	|            for (int i = 0; i < _treeNodes.Count; i++)
-	|            {
-	|                treeNode = (System.Windows.Forms.TreeNode)_treeNodes[i];
-	|                if (((MenuItemEntry)treeNode.Tag).Name == nameNodeParent)
-	|                {
-	|                    node = treeNode;
-	|                    break;
-	|                }
-	|                if (treeNode.Nodes.Count > 0)
-	|                {
-	|                    SelectedNodeSearch(treeView, nameNodeParent, ref node, treeNode.Nodes);
 	|                }
 	|            }
 	|        }
@@ -7356,7 +7398,9 @@
 	|            {
 	|                string strCurrent = result[i1];
 	|
-	|                if (strCurrent.Contains(@""// блок КонецКонструкторы"") || strCurrent.Contains(@""// конец Перем"") || strCurrent.Contains(@""// блок Форма""))
+	|                if (strCurrent.Contains(@""// блок КонецКонструкторы"") || 
+	|                    strCurrent.Contains(@""// конец Перем"") || 
+	|                    (strCurrent.Contains(@""// блок Форма"") && strCurrent.Trim().Replace(@""// блок Форма"", """").Length == 0))
 	|                {
 	|                }
 	|                else if (strCurrent.Contains(@""// блок""))
@@ -7615,7 +7659,11 @@
 	|            {
 	|                return;
 	|            }
-	|            if (val.GetType() == typeof(osfDesigner.MenuItemEntry) && (valueName == ""Текст""))
+	|            if ((val.GetType() == typeof(osfDesigner.MenuItemEntry) ||
+	|                val.GetType() == typeof(osfDesigner.DataGridTableStyle) ||
+	|                val.GetType() == typeof(osfDesigner.DataGridTextBoxColumn) ||
+	|                val.GetType() == typeof(osfDesigner.DataGridComboBoxColumnStyle) ||
+	|                val.GetType() == typeof(osfDesigner.DataGridBoolColumn)) && (valueName == ""Текст""))
 	|            {
 	|                return;
 	|            }
@@ -7639,7 +7687,6 @@
 	|            {
 	|                return;
 	|            }
-	|	
 	|            if (val.GetType() == typeof(osfDesigner.Form) && (valueName == ""Стыковка""))
 	|            {
 	|                return;
@@ -7648,7 +7695,7 @@
 	|            {
 	|                return;
 	|            }
-	|            // закончили пропуск свойств
+	|            // Закончили пропуск свойств.
 	|
 	|            if (compValue == ""Ложь"" || compValue == ""Истина"")
 	|            {
@@ -7668,7 +7715,12 @@
 	|                            MenuItemEntry1 = OneScriptFormsDesigner.RevertSimilarObj(MenuItemCollection1[i]);
 	|                            string strName = MenuItemEntry1.Name.Contains(""Сепаратор"") ? ""-"" : MenuItemEntry1.Text;
 	|                            AddToScript(MenuItemEntry1.Name + "" = "" + compName + "".ЭлементыМеню.Добавить(Ф.ЭлементМеню(\u0022"" + strName + ""\u0022));"");
+	|
+	|                            string hide = MenuItemEntry1.Hide;
+	|                            MenuItemEntry1.Hide = ""Показать"";
 	|                            PropComponent(MenuItemEntry1);
+	|                            MenuItemEntry1.Hide = hide;
+	|
 	|                            if (MenuItemEntry1.MenuItems.Count > 0)
 	|                            {
 	|                                GetMenuItems((MenuItemEntry)MenuItemEntry1);
@@ -8302,7 +8354,6 @@
 	|"";
 	|                if (OneScriptFormsDesigner.ParseBetween(Template1, null, strProc) == null)
 	|                {
-	|                    //Template1 = Template1.Replace(""Процедура ПодготовкаКомпонентов()"", strProc + Environment.NewLine + ""Процедура ПодготовкаКомпонентов()"");
 	|                    Template1 = Template1.Replace(@""#Область КонструкторФорм_Инициализация"", strProc + Environment.NewLine + @""#Область КонструкторФорм_Инициализация"");
 	|                }
 	|                strNameProc = ""Ф.Действие(ЭтотОбъект, \u0022"" + strNameProc + ""\u0022);"";
@@ -8701,7 +8752,12 @@
 	|
 	|                string strName = MenuItemEntry1.Name.Contains(""Сепаратор"") ? ""-"" : MenuItemEntry1.Text;
 	|                AddToScript(MenuItemEntry1.Name + "" = "" + strParent + "".ЭлементыМеню.Добавить(Ф.ЭлементМеню(\u0022"" + strName + ""\u0022));"");
+	|
+	|                string hide = MenuItemEntry1.Hide;
+	|                MenuItemEntry1.Hide = ""Показать"";
 	|                PropComponent(MenuItemEntry1);
+	|                MenuItemEntry1.Hide = hide;
+	|
 	|                if (MenuItemEntry1.MenuItems.Count > 0)
 	|                {
 	|                    GetMenuItems(MenuItemEntry1);
@@ -8711,27 +8767,31 @@
 	|
 	|        private static void PropComponent(dynamic comp)
 	|        {
+	|            string comp_Name;
+	|            if (comp.GetType() == typeof(osfDesigner.DataGridTableStyle) ||
+	|                comp.GetType() == typeof(osfDesigner.DataGridBoolColumn) ||
+	|                comp.GetType() == typeof(osfDesigner.DataGridTextBoxColumn) ||
+	|                comp.GetType() == typeof(osfDesigner.DataGridComboBoxColumnStyle))
+	|            {
+	|                comp_Name = comp.NameStyle;
+	|            }
+	|            else
+	|            {
+	|                comp_Name = comp.Name;
+	|            }
+	|
 	|            PropertyInfo[] myPropertyInfo = comp.GetType().GetProperties();
 	|            for (int i = 0; i < myPropertyInfo.Length; i++)
 	|            {
-	|                string valueName = OneScriptFormsDesigner.GetDisplayName(comp, myPropertyInfo[i].Name);
+	|                string propName = myPropertyInfo[i].Name;
+	|                string valueName = OneScriptFormsDesigner.GetDisplayName(comp, propName);
 	|                if (valueName != """" && !((valueName == ""(Name)"") || (valueName == ""Прямоугольник"")))
 	|                {
-	|                    PropertyDescriptor pd = TypeDescriptor.GetProperties(comp)[myPropertyInfo[i].Name];
+	|                    PropertyDescriptor pd = TypeDescriptor.GetProperties(comp)[propName];
 	|                    try
 	|                    {
 	|                        string compValue = OneScriptFormsDesigner.ObjectConvertToString(pd.GetValue(comp));
-	|                        if (comp.GetType() == typeof(osfDesigner.DataGridTableStyle) ||
-	|                            comp.GetType() == typeof(osfDesigner.DataGridBoolColumn) ||
-	|                            comp.GetType() == typeof(osfDesigner.DataGridTextBoxColumn) ||
-	|                            comp.GetType() == typeof(osfDesigner.DataGridComboBoxColumnStyle))
-	|                        {
-	|                            RequiredDefaultValuesValues(comp, comp.NameStyle, valueName, compValue);
-	|                        }
-	|                        else
-	|                        {
-	|                            RequiredDefaultValuesValues(comp, comp.Name, valueName, compValue);
-	|                        }
+	|                        RequiredDefaultValuesValues(comp, comp_Name, valueName, compValue);
 	|                    }
 	|                    catch { }
 	|                }
@@ -8745,14 +8805,13 @@
 	ТекстДокХХХ.Записать("C:\444\ВыгрузкаДизайнера\SaveScript.cs");
 	
 	СтрВыгрузки = 
-	"using System;
-	|using System.Drawing;
+	"using System.ComponentModel;
 	|using System.Drawing.Design;
-	|using System.Windows.Forms;
-	|using System.Windows.Forms.Design;
-	|using System.ComponentModel;
-	|using System.Reflection;
+	|using System.Drawing;
 	|using System.IO;
+	|using System.Windows.Forms.Design;
+	|using System.Windows.Forms;
+	|using System;
 	|
 	|namespace osfDesigner
 	|{
@@ -8764,12 +8823,16 @@
 	|
 	|            if (wfes != null)
 	|            {
-	|                frmMenuItems _frmMenuItems = new frmMenuItems(context, value);
-	|                _frmMenuItems._wfes = wfes;
-	|
-	|                if (wfes.ShowDialog(_frmMenuItems) == System.Windows.Forms.DialogResult.OK)
+	|                osfDesigner.MainMenu mainMenu = (osfDesigner.MainMenu)context.Instance;
+	|                if (mainMenu.FrmMenuItems == null)
+	|                {
+	|                    mainMenu.FrmMenuItems = new frmMenuItems(mainMenu);
+	|                }
+	|                mainMenu.FrmMenuItems._wfes = wfes;
+	|                if (wfes.ShowDialog(mainMenu.FrmMenuItems) == System.Windows.Forms.DialogResult.OK)
 	|                {
 	|                }
+	|
 	|            }
 	|            return null;
 	|        }
@@ -8784,16 +8847,14 @@
 	|    {
 	|        private System.Windows.Forms.Label Label1;
 	|        private System.Windows.Forms.Label Label2;
-	|        private osfDesigner.MainMenu MainMenu1;
+	|        public osfDesigner.MainMenu MainMenu;
 	|        public System.Windows.Forms.TreeView TreeView1;
 	|        private System.Windows.Forms.Button ButtonAddRoot;
 	|        private System.Windows.Forms.Button ButtonAddChild;
 	|        private System.Windows.Forms.Button ButtonAddSeparator;
 	|        private System.Windows.Forms.Button ButtonDelete;
-	|
 	|        private System.Windows.Forms.Button ButtonMoveUp;
 	|        private System.Windows.Forms.Button ButtonMoveDown;
-	|
 	|        private System.Windows.Forms.Button ButtonCollapse;
 	|        private System.Windows.Forms.Button ButtonExpand;
 	|        private System.Windows.Forms.Button ButtonOK;
@@ -8812,16 +8873,11 @@
 	|        private System.Windows.Forms.Panel Panel12;
 	|        private System.Windows.Forms.Panel Panel13;
 	|        private System.Windows.Forms.Panel Panel14;
-	|        private Container components = null;
-	|        private ITypeDescriptorContext _context;
-	|        private object _value;
 	|        public IWindowsFormsEditorService _wfes;
 	|
-	|        public frmMenuItems(ITypeDescriptorContext context, object value)
+	|        public frmMenuItems(osfDesigner.MainMenu mainMenu)
 	|        {
-	|            _context = context;
-	|            _value = value;
-	|            MainMenu1 = (osfDesigner.MainMenu)_context.Instance;
+	|            MainMenu = mainMenu;
 	|            this.Size = new Size(864, 485);
 	|            this.Text = ""Редактор коллекции ЭлементыМеню"";
 	|            this.ControlBox = true;
@@ -8940,7 +8996,7 @@
 	|            Label1.Bounds = new Rectangle(1, 16, 276, 20);
 	|            Label1.Text = ""Выберите меню для правки:"";
 	|
-	|            TreeView1 = MainMenu1.TreeView;
+	|            TreeView1 = MainMenu.TreeView;
 	|            TreeView1.Parent = Panel6;
 	|            TreeView1.Dock = System.Windows.Forms.DockStyle.Fill;
 	|            TreeView1.HideSelection = false;
@@ -9015,82 +9071,6 @@
 	|            TopLevel = true;
 	|        }
 	|
-	|        public string GetDefaultValues(MenuItemEntry comp)
-	|        {
-	|            // Заполним для компонента начальные свойства. Они нужны будут при создании скрипта.
-	|            string DefaultValues1 = """";
-	|            PropertyGrid1.SelectedObject = comp;
-	|            PropertyGrid1.Refresh();
-	|            object view1 = PropertyGrid1.GetType().GetField(""gridView"", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(PropertyGrid1);
-	|            GridItemCollection GridItemCollection1 = (GridItemCollection)view1.GetType().InvokeMember(""GetAllGridEntries"", BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Instance, null, view1, null);
-	|            foreach (GridItem GridItem in GridItemCollection1)
-	|            {
-	|                if (GridItem.PropertyDescriptor == null) // Исключим из обхода категории.
-	|                {
-	|                    continue;
-	|                }
-	|                if (GridItem.Label == ""Locked"") // Исключим из обхода ненужные свойства.
-	|                {
-	|                    continue;
-	|                }
-	|                if (GridItem.PropertyDescriptor.Category != GridItem.Label)
-	|                {
-	|                    string str7 = """";
-	|                    string strTab = ""            "";
-	|                    str7 = str7 + OneScriptFormsDesigner.ObjectConvertToString(GridItem.Value);
-	|                    if (GridItem.GridItems.Count > 0)
-	|                    {
-	|                        strTab = strTab + ""\t\t"";
-	|                        str7 = str7 + Environment.NewLine;
-	|                        str7 = str7 + GetGridSubEntries(GridItem.GridItems, """", strTab);
-	|
-	|                        DefaultValues1 = DefaultValues1 + """" + GridItem.Label + "" == "" + str7 + Environment.NewLine;
-	|
-	|                        strTab = ""\t\t"";
-	|                    }
-	|                    else
-	|                    {
-	|                        DefaultValues1 = DefaultValues1 + """" + GridItem.Label + "" == "" + str7 + Environment.NewLine;
-	|                    }
-	|                }
-	|            }
-	|            return DefaultValues1;
-	|        }
-	|
-	|        public string GetGridSubEntries(GridItemCollection gridItems, string str, string strTab)
-	|        {
-	|            foreach (var item in gridItems)
-	|            {
-	|                GridItem _item = (GridItem)item;
-	|                str = str + strTab + _item.Label + "" = "" + _item.Value + Environment.NewLine;
-	|                if (_item.GridItems.Count > 0)
-	|                {
-	|                    strTab = strTab + ""\t\t"";
-	|                    str = GetGridSubEntries(_item.GridItems, str, strTab);
-	|                    strTab = ""\t\t"";
-	|                }
-	|            }
-	|            return str;
-	|        }
-	|
-	|        public void BypassMainMenuForDelete(Menu Menu1, Menu MenuForDelete, System.Windows.Forms.TreeNode NodeForDelete)
-	|        {
-	|            for (int i = 0; i < Menu1.MenuItems.Count; i++)
-	|            {
-	|                Menu CurrentMenuItem1 = (Menu)Menu1.MenuItems[i];
-	|                if (CurrentMenuItem1.Equals(MenuForDelete))
-	|                {
-	|                    ((System.Windows.Forms.Menu.MenuItemCollection)Menu1.MenuItems).Remove((System.Windows.Forms.MenuItem)MenuForDelete);
-	|                    NodeForDelete.Parent.Nodes.Remove(NodeForDelete);
-	|                    break;
-	|                }
-	|                if (CurrentMenuItem1.MenuItems.Count > 0)
-	|                {
-	|                    BypassMainMenuForDelete(CurrentMenuItem1, MenuForDelete, NodeForDelete);
-	|                }
-	|            }
-	|        }
-	|
 	|        private void ButtonDelete_Click(object sender, EventArgs e)
 	|        {
 	|            System.Windows.Forms.TreeNode DeletedTreeNode = TreeView1.SelectedNode;
@@ -9134,7 +9114,7 @@
 	|                    else
 	|                    {
 	|                        TreeView1.Nodes.Insert(Parent.Index + 1, TreeNode1);
-	|                        MainMenu1.MenuItems.Add(Parent.Index + 1, MenuItem1.M_MenuItem);
+	|                        MainMenu.MenuItems.Add(Parent.Index + 1, MenuItem1.M_MenuItem);
 	|                    }
 	|                }
 	|                else
@@ -9148,7 +9128,7 @@
 	|            else
 	|            {
 	|                TreeView1.Nodes.Remove(TreeNode1);
-	|                MainMenu1.MenuItems.Remove(MenuItem1.M_MenuItem);
+	|                MainMenu.MenuItems.Remove(MenuItem1.M_MenuItem);
 	|                TreeNode Next = TreeView1.Nodes[Index1];
 	|                Next.Nodes.Insert(0, TreeNode1);
 	|                MenuItemEntry MenuItem1Next = (MenuItemEntry)Next.Tag;
@@ -9187,14 +9167,14 @@
 	|                    else
 	|                    {
 	|                        TreeView1.Nodes.Insert(Parent.Index, TreeNode1);
-	|                        MainMenu1.MenuItems.Add(Parent.Index - 1, MenuItem1.M_MenuItem);
+	|                        MainMenu.MenuItems.Add(Parent.Index - 1, MenuItem1.M_MenuItem);
 	|                    }
 	|                }
 	|            }
 	|            else
 	|            {
 	|                TreeView1.Nodes.Remove(TreeNode1);
-	|                MainMenu1.MenuItems.Remove(MenuItem1.M_MenuItem);
+	|                MainMenu.MenuItems.Remove(MenuItem1.M_MenuItem);
 	|                TreeNode Previos = TreeView1.Nodes[Index1 - 1];
 	|                Previos.Nodes.Add(TreeNode1);
 	|                MenuItemEntry MenuItem1Previos = (MenuItemEntry)Previos.Tag;
@@ -9241,6 +9221,7 @@
 	|        private void TreeView1_AfterSelect(object sender, TreeViewEventArgs e)
 	|        {
 	|            MenuItemEntry CurrentMenuItem1 = (MenuItemEntry)e.Node.Tag;
+	|
 	|            if (e.Node.Text.Contains(""Сепаратор""))
 	|            {
 	|                CurrentMenuItem1.Hide = ""Скрыть"";
@@ -9266,10 +9247,10 @@
 	|        private void ButtonAddRoot_Click(object sender, EventArgs e)
 	|        {
 	|            MenuItemEntry MenuItemEntry1 = new MenuItemEntry();
-	|            MenuItemEntry1.Text = OneScriptFormsDesigner.RevertMenuName(MainMenu1);
-	|            MenuItemEntry1.Name = MenuItemEntry1.Text;
-	|            MainMenu1.MenuItems.Add(MenuItemEntry1.M_MenuItem);
-	|            OneScriptFormsDesigner.AddToHashtable(MenuItemEntry1.M_MenuItem, MenuItemEntry1);
+	|            MenuItemEntry1.Name = OneScriptFormsDesigner.RevertMenuName(MainMenu);
+	|            MenuItemEntry1.Text = ""Меню"" + OneScriptFormsDesigner.ParseBetween(MenuItemEntry1.Name.Replace(""ГлавноеМеню"", """"), ""Меню"", null);
+	|            MainMenu.MenuItems.Add(MenuItemEntry1.M_MenuItem);
+	|            OneScriptFormsDesigner.AddToDictionary(MenuItemEntry1.M_MenuItem, MenuItemEntry1);
 	|            System.Windows.Forms.TreeNode TreeNode1 = new System.Windows.Forms.TreeNode();
 	|            TreeNode1.Tag = MenuItemEntry1;
 	|            TreeNode1.Text = MenuItemEntry1.Text;
@@ -9282,18 +9263,20 @@
 	|            ButtonAddSeparator.Enabled = false;
 	|            TreeView1.SelectedNode = TreeNode1;
 	|            UpdateButtonsState();
-	|            MenuItemEntry1.DefaultValues = GetDefaultValues(MenuItemEntry1);
+	|            PropertyGrid1.SelectedObject = MenuItemEntry1;
+	|            PropertyGrid1.Refresh();
+	|            MenuItemEntry1.DefaultValues = OneScriptFormsDesigner.GetDefaultValues(MenuItemEntry1, PropertyGrid1);
 	|            TreeView1.Focus();
 	|        }
 	|
 	|        private void ButtonAddChild_Click(object sender, EventArgs e)
 	|        {
 	|            MenuItemEntry MenuItemEntry1 = new MenuItemEntry();
-	|            MenuItemEntry1.Text = OneScriptFormsDesigner.RevertMenuName(MainMenu1);
-	|            MenuItemEntry1.Name = MenuItemEntry1.Text;
+	|            MenuItemEntry1.Name = OneScriptFormsDesigner.RevertMenuName(MainMenu);
+	|            MenuItemEntry1.Text = ""Меню"" + OneScriptFormsDesigner.ParseBetween(MenuItemEntry1.Name.Replace(""ГлавноеМеню"", """"), ""Меню"", null);
 	|            MenuItemEntry MenuItemParent = (MenuItemEntry)TreeView1.SelectedNode.Tag;
 	|            MenuItemParent.MenuItems.Add(MenuItemEntry1.M_MenuItem);
-	|            OneScriptFormsDesigner.AddToHashtable(MenuItemEntry1.M_MenuItem, MenuItemEntry1);
+	|            OneScriptFormsDesigner.AddToDictionary(MenuItemEntry1.M_MenuItem, MenuItemEntry1);
 	|            System.Windows.Forms.TreeNode TreeNode1 = new System.Windows.Forms.TreeNode();
 	|            TreeNode1.Tag = MenuItemEntry1;
 	|            TreeNode1.Text = MenuItemEntry1.Text;
@@ -9308,7 +9291,9 @@
 	|            TreeView1.SelectedNode.Expand();
 	|            UpdateButtonsState();
 	|            MenuItemEntry1.Hide = ""Показать"";
-	|            MenuItemEntry1.DefaultValues = GetDefaultValues(MenuItemEntry1);
+	|            PropertyGrid1.SelectedObject = MenuItemEntry1;
+	|            PropertyGrid1.Refresh();
+	|            MenuItemEntry1.DefaultValues = OneScriptFormsDesigner.GetDefaultValues(MenuItemEntry1, PropertyGrid1);
 	|            MenuItemEntry1.Hide = ""Скрыть"";
 	|            PropertyGrid1.SelectedObject = TreeView1.SelectedNode.Tag;
 	|            TreeView1.Focus();
@@ -9317,18 +9302,16 @@
 	|        private void ButtonAddSeparator_Click(object sender, EventArgs e)
 	|        {
 	|            MenuItemEntry MenuItemEntry1 = new MenuItemEntry();
-	|            MenuItemEntry1.Name = OneScriptFormsDesigner.RevertSeparatorName(MainMenu1);
-	|
+	|            MenuItemEntry1.Name = OneScriptFormsDesigner.RevertSeparatorName(MainMenu);
 	|            // Имя в виде тире не присваивать, заменять на тире только во время формирования сценария.
-	|
-	|            MenuItemEntry1.Text = MenuItemEntry1.Name;
+	|            MenuItemEntry1.Text = ""Сепаратор"" + OneScriptFormsDesigner.ParseBetween(MenuItemEntry1.Name.Replace(""ГлавноеМеню"", """"), ""Сепаратор"", null);
 	|            MenuItemEntry MenuItemParent = (MenuItemEntry)TreeView1.SelectedNode.Tag;
 	|            MenuItemParent.MenuItems.Add(MenuItemEntry1.M_MenuItem);
-	|            OneScriptFormsDesigner.AddToHashtable(MenuItemEntry1.M_MenuItem, MenuItemEntry1);
+	|            OneScriptFormsDesigner.AddToDictionary(MenuItemEntry1.M_MenuItem, MenuItemEntry1);
 	|
 	|            System.Windows.Forms.TreeNode TreeNode1 = new System.Windows.Forms.TreeNode();
 	|            TreeNode1.Tag = MenuItemEntry1;
-	|            TreeNode1.Text = MenuItemEntry1.Name;
+	|            TreeNode1.Text = MenuItemEntry1.Text;
 	|            TreeView1.SelectedNode.Nodes.Add(TreeNode1);
 	|
 	|            // Свойство Checked у родителя нужно установить в false.
@@ -9339,7 +9322,9 @@
 	|
 	|            TreeView1.SelectedNode.Expand();
 	|            UpdateButtonsState();
-	|            MenuItemEntry1.DefaultValues = GetDefaultValues(MenuItemEntry1);
+	|            PropertyGrid1.SelectedObject = MenuItemEntry1;
+	|            PropertyGrid1.Refresh();
+	|            MenuItemEntry1.DefaultValues = OneScriptFormsDesigner.GetDefaultValues(MenuItemEntry1, PropertyGrid1);
 	|            PropertyGrid1.SelectedObject = TreeView1.SelectedNode.Tag;
 	|            TreeView1.Focus();
 	|        }
@@ -9414,19 +9399,8 @@
 	|
 	|        private void FrmMenuItems_Closed(object sender, EventArgs e)
 	|        {
+	|            OneScriptFormsDesigner.SetDesignSurfaceState();
 	|            _wfes.CloseDropDown();
-	|        }
-	|
-	|        protected override void Dispose(bool disposing)
-	|        {
-	|            if (disposing)
-	|            {
-	|                if (components != null)
-	|                {
-	|                    components.Dispose();
-	|                }
-	|            }
-	|            base.Dispose(disposing);
 	|        }
 	|    }
 	|}
@@ -10448,7 +10422,6 @@
 	|            this.pgrdTreeView.Size = new Size(150, 200);
 	|            this.pgrdTreeView.NodeMouseClick += PgrdTreeView_NodeMouseClick;
 	|            this.pgrdTreeView.TabIndex = 5;
-	|
 	|            // 
 	|            // buttonSort
 	|            // 
@@ -10460,7 +10433,6 @@
 	|            this.buttonSort.ImageIndex = 0;
 	|            this.buttonSort.Name = ""buttonSort"";
 	|            this.buttonSort.Pushed = true;
-	|
 	|            // 
 	|            // pgrdToolBar
 	|            // 
@@ -10472,7 +10444,6 @@
 	|            this.pgrdToolBar.Buttons.Add(buttonSort);
 	|            this.pgrdToolBar.ImageList = ImageList1;
 	|            this.pgrdToolBar.ButtonClick += PgrdToolBar_ButtonClick;
-	|
 	|            // 
 	|            // PropertyGridHost
 	|            // 
@@ -10485,7 +10456,6 @@
 	|            this.Controls.Add(this.pgrdToolBar);
 	|            this.Name = ""PropertyGridHost"";
 	|            this.ResumeLayout(false);
-	|
 	|            this.Dock = System.Windows.Forms.DockStyle.Fill;
 	|
 	|            // Диспетчер поверхности строго связан с PropertyGridHost.
@@ -10503,13 +10473,13 @@
 	|            // событие PropertyGridHost.SelectedObjectsChanged вызывает метод ReloadComboBox().
 	|            pgrdPropertyGrid.SelectedObjectsChanged += (object sender, EventArgs e) =>
 	|            {
-	|                // !!!здесь делаем подмену исходного компонента, указанного в свойстве pgrdPropertyGrid.SelectedObject на 
+	|                // Здесь делаем подмену исходного компонента, указанного в свойстве pgrdPropertyGrid.SelectedObject на 
 	|                // наш компонент - двойник (similar). Связь между ними через OneScriptFormsDesigner.hashtable.
 	|                System.Windows.Forms.PropertyGrid propertyGrid = (System.Windows.Forms.PropertyGrid)sender;
 	|                dynamic OriginalObj = propertyGrid.SelectedObject;
 	|                dynamic SimilarObj = OneScriptFormsDesigner.RevertSimilarObj(OriginalObj);
 	|
-	|                // !!!делаем невидимыми свойства, которые хотим скрыть.
+	|                // Сделаем невидимыми свойства, которые хотим скрыть.
 	|                // Компонент System.Windows.Forms.ImageList и System.Windows.Forms.MainMenu используем от Майкрософт для помещения на форму, а 
 	|                // в сетке свойств показываем свойства нашего osfDesigner.ImageList и osfDesigner.MainMenu.
 	|                if (SimilarObj == null)
@@ -10518,14 +10488,14 @@
 	|                    {
 	|                        SimilarObj = new osfDesigner.ImageList();
 	|                        ((osfDesigner.ImageList)SimilarObj).OriginalObj = OriginalObj;
-	|                        OneScriptFormsDesigner.AddToHashtable(OriginalObj, SimilarObj);
+	|                        OneScriptFormsDesigner.AddToDictionary(OriginalObj, SimilarObj);
 	|                        OneScriptFormsDesigner.PassProperties(OriginalObj, SimilarObj); // Передадим свойства.
 	|                        propertyGrid.SelectedObject = SimilarObj;
 	|                    }
 	|                    else if (OriginalObj.GetType().ToString() == ""System.Windows.Forms.MainMenu"")
 	|                    {
 	|                        SimilarObj = new osfDesigner.MainMenu();
-	|                        OneScriptFormsDesigner.AddToHashtable(OriginalObj, SimilarObj);
+	|                        OneScriptFormsDesigner.AddToDictionary(OriginalObj, SimilarObj);
 	|                        OneScriptFormsDesigner.PassProperties(OriginalObj, SimilarObj); // Передадим свойства.
 	|                        propertyGrid.SelectedObject = SimilarObj;
 	|                    }
@@ -10953,7 +10923,6 @@
 	|                    {
 	|                        TreeView.Nodes.Add(TreeNode1);
 	|                    }
-	|
 	|                }
 	|            }
 	|            else
@@ -11495,6 +11464,7 @@
 	|        private ToolStripSeparator _stripSeparator2;
 	|        private ToolStripMenuItem _loadForm;
 	|        private ToolStripMenuItem _saveForm;
+	|        private ToolStripMenuItem _saveFormAs;
 	|        private ToolStripSeparator _stripSeparator4;
 	|        private ToolStripMenuItem _exit;
 	|
@@ -11594,6 +11564,7 @@
 	|            this._stripSeparator2 = new ToolStripSeparator();
 	|            this._loadForm = new ToolStripMenuItem();
 	|            this._saveForm = new ToolStripMenuItem();
+	|            this._saveFormAs = new ToolStripMenuItem();
 	|            this._stripSeparator4 = new ToolStripSeparator();
 	|            this._exit = new ToolStripMenuItem();
 	|
@@ -11654,6 +11625,7 @@
 	|            this._stripSeparator2,
 	|            this._loadForm,
 	|            this._saveForm,
+	|            this._saveFormAs,
 	|            this._stripSeparator4,
 	|            this._exit});
 	|            this._file.Name = ""_file"";
@@ -11740,6 +11712,13 @@
 	|            this._saveForm.Name = ""_saveForm"";
 	|            this._saveForm.Text = ""Сохранить форму"";
 	|            this._saveForm.Click += _saveForm_Click;
+	|            // 
+	|            // _saveFormAs
+	|            // 
+	|            this._saveFormAs.Image = OneScriptFormsDesigner.Base64ToImage(str_saveForm);
+	|            this._saveFormAs.Name = ""_saveFormAs"";
+	|            this._saveFormAs.Text = ""Сохранить форму как"";
+	|            this._saveFormAs.Click += _saveFormAs_Click;
 	|            // 
 	|            // _stripSeparator4
 	|            // 
@@ -12286,11 +12265,6 @@
 	|                System.Windows.Forms.AnchorStyles.Right;
 	|            button_dllPath.Click += Button_dllPath_Click;
 	|
-	|
-	|
-	|
-	|
-	|
 	|            tabPage2 = new System.Windows.Forms.TabPage(""Стиль сценария"");
 	|            tabPage2.Parent = tabControl;
 	|
@@ -12381,6 +12355,13 @@
 	|
 	|        private void ButtonOK_Click(object sender, EventArgs e)
 	|        {
+	|            System.Windows.Forms.MessageBox.Show(
+	|                ""Параметры сохранены, но вступят в силу после перезапуска дизайнера."",
+	|                """",
+	|                MessageBoxButtons.OK,
+	|                MessageBoxIcon.Exclamation,
+	|                MessageBoxDefaultButton.Button1
+	|                );
 	|            settingsForm.DialogResult = System.Windows.Forms.DialogResult.OK;
 	|        }
 	|
@@ -12415,13 +12396,43 @@
 	|            saveFileDialog1.RestoreDirectory = true;
 	|            saveFileDialog1.OverwritePrompt = true;
 	|            saveFileDialog1.Filter = ""OSD files(*.osd)|*.osd|All files(*.*)|*.*"";
+	|            Form savedForm = (Form)pDesigner.DSME.ActiveDesignSurface.GetIDesignerHost().RootComponent;
+	|            if (savedForm.Path != null)
+	|            {
+	|                saveFileDialog1.FileName = savedForm.Path;
+	|                File.WriteAllText(saveFileDialog1.FileName, SaveForm.GetScriptText(saveFileDialog1.FileName), Encoding.UTF8);
+	|            }
+	|            else
+	|            {
+	|                if (saveFileDialog1.ShowDialog() == System.Windows.Forms.DialogResult.Cancel)
+	|                {
+	|                    return;
+	|                }
+	|                savedForm.Path = saveFileDialog1.FileName;
+	|                File.WriteAllText(saveFileDialog1.FileName, SaveForm.GetScriptText(saveFileDialog1.FileName), Encoding.UTF8);
+	|                //File.WriteAllText(""C:\\444\\Форма1сохран\\Форма1сохран.osd"", SaveForm.GetScriptText(""C:\\444\\Форма1сохран\\""), Encoding.UTF8);
+	|            }
+	|
+	|            // Запомним состояние дизайнера с этой формой.
+	|            OneScriptFormsDesigner.DesignSurfaceState(true);
+	|        }
+	|
+	|        private void _saveFormAs_Click(object sender, EventArgs e)
+	|        {
+	|            System.Windows.Forms.SaveFileDialog saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+	|            saveFileDialog1.RestoreDirectory = true;
+	|            saveFileDialog1.OverwritePrompt = true;
+	|            saveFileDialog1.Filter = ""OSD files(*.osd)|*.osd|All files(*.*)|*.*"";
 	|            if (saveFileDialog1.ShowDialog() == System.Windows.Forms.DialogResult.Cancel)
 	|            {
 	|                return;
 	|            }
+	|            ((Form)pDesigner.DSME.ActiveDesignSurface.GetIDesignerHost().RootComponent).Path = saveFileDialog1.FileName;
 	|            File.WriteAllText(saveFileDialog1.FileName, SaveForm.GetScriptText(saveFileDialog1.FileName), Encoding.UTF8);
-	|
 	|            //File.WriteAllText(""C:\\444\\Форма1сохран\\Форма1сохран.osd"", SaveForm.GetScriptText(""C:\\444\\Форма1сохран\\""), Encoding.UTF8);
+	|
+	|            // Запомним состояние дизайнера с этой формой.
+	|            OneScriptFormsDesigner.DesignSurfaceState(true);
 	|        }
 	|
 	|        private void _loadForm_Click(object sender, EventArgs e)
@@ -12434,9 +12445,9 @@
 	|                return;
 	|            }
 	|            string strOSD = File.ReadAllText(OpenFileDialog1.FileName);
-	|
 	|            //string strOSD = File.ReadAllText(""C:\\444\\Форма1сохран\\Форма1сохран.osd"");
 	|
+	|            OneScriptFormsDesigner.block2 = true;
 	|            strOSD = strOSD.Replace("" "", """");
 	|
 	|            string[] result = null;
@@ -12466,6 +12477,7 @@
 	|            // Добавим вкладку и создадим на ней загружаемую форму.
 	|            DesignSurfaceExt2 var1 = IpDesignerCore.AddDesignSurface<Form>(670, 600, AlignmentModeEnum.SnapLines, new Size(1, 1), CompNames[0]);
 	|            Component rootComponent = (Component)var1.ComponentContainer.Components[0];
+	|            ((Form)rootComponent).Path = OpenFileDialog1.FileName;
 	|
 	|            dictObjects[CompNames[0]] = rootComponent;
 	|
@@ -12525,6 +12537,8 @@
 	|                    // Для comp1 уже создан дублер, получим его.
 	|                    osfDesigner.MainMenu SimilarObj = OneScriptFormsDesigner.RevertSimilarObj(comp1);
 	|                    dictObjects[componentName] = SimilarObj;
+	|
+	|                    SimilarObj.FrmMenuItems = new frmMenuItems(SimilarObj);
 	|                }
 	|                else if (type == typeof(osfDesigner.TabPage))
 	|                {
@@ -12536,13 +12550,14 @@
 	|                    OneScriptFormsDesigner.PassProperties(comp1, SimilarObj); // Передадим свойства.
 	|                    dictObjects[componentName] = SimilarObj;
 	|
-	|                    GetDefaultValues(SimilarObj);
+	|                    pDesigner.DSME.PropertyGridHost.PropertyGrid.SelectedObject = SimilarObj;
+	|                    SimilarObj.DefaultValues = OneScriptFormsDesigner.GetDefaultValues(SimilarObj, pDesigner.DSME.PropertyGridHost.PropertyGrid);
 	|                }
 	|                else if (type == typeof(osfDesigner.TabControl))
 	|                {
 	|                    ToolboxItem toolTabControl1 = new ToolboxItem(typeof(osfDesigner.TabControl));
 	|                    Component comp1 = (Component)toolTabControl1.CreateComponents(pDesigner.DSME.ActiveDesignSurface.GetIDesignerHost())[0];
-	|                    // Удалим две вкладки, которые панель вкладок создает автоматически.
+	|                    // Удалим две вкладки, которые дизайнер для панели вкладок создает автоматически.
 	|                    IDesignerEventService des = (IDesignerEventService)pDesigner.DSME.GetService(typeof(IDesignerEventService));
 	|                    if (des != null)
 	|                    {
@@ -12642,6 +12657,8 @@
 	|                                            {
 	|                                                MenuItemEntry MenuItemEntry1 = new MenuItemEntry();
 	|                                                dictObjects.Add(componentName + Name, MenuItemEntry1);
+	|                                                MenuItemEntry1.Text = Text;
+	|                                                MenuItemEntry1.Name = Name;
 	|                                                MenuItemEntry1.DefaultValues = @""Доступность == Истина
 	|Нажатие == 
 	|Отображать == Истина
@@ -12649,13 +12666,11 @@
 	|Помечен == Ложь
 	|ПорядокСлияния == 0
 	|СочетаниеКлавиш == Отсутствие
-	|Текст == 
-	|ТипСлияния == Добавить
-	|(Name) == "";
-	|                                                MenuItemEntry1.Text = Text;
-	|                                                MenuItemEntry1.Name = Name;
+	|Текст == "" + Name + Environment.NewLine + 
+	|@""ТипСлияния == Добавить
+	|(Name) == "" + Name + Environment.NewLine;
 	|                                                MainMenu1.MenuItems.Add(MenuItemEntry1.M_MenuItem);
-	|                                                OneScriptFormsDesigner.AddToHashtable(MenuItemEntry1.M_MenuItem, MenuItemEntry1);
+	|                                                OneScriptFormsDesigner.AddToDictionary(MenuItemEntry1.M_MenuItem, MenuItemEntry1);
 	|                                                System.Windows.Forms.TreeNode TreeNode1 = new System.Windows.Forms.TreeNode();
 	|                                                TreeNode1.Tag = MenuItemEntry1;
 	|                                                TreeNode1.Text = MenuItemEntry1.Text;
@@ -12666,6 +12681,9 @@
 	|                                            {
 	|                                                MenuItemEntry MenuItemEntry1 = new MenuItemEntry();
 	|                                                dictObjects.Add(componentName + Name, MenuItemEntry1);
+	|                                                MenuItemEntry1.Name = Name;
+	|                                                // Имя в виде тире не присваивать, заменять на тире только во время формирования сценария.
+	|                                                MenuItemEntry1.Text = MenuItemEntry1.Name;
 	|                                                MenuItemEntry1.DefaultValues = @""Доступность == Истина
 	|Нажатие == 
 	|Отображать == Истина
@@ -12673,14 +12691,11 @@
 	|Помечен == Ложь
 	|ПорядокСлияния == 0
 	|СочетаниеКлавиш == Отсутствие
-	|Текст == 
-	|ТипСлияния == Добавить
-	|(Name) == "";
-	|                                                MenuItemEntry1.Name = Name;
-	|                                                // Имя в виде тире не присваивать, заменять на тире только во время формирования сценария.
-	|                                                MenuItemEntry1.Text = MenuItemEntry1.Name;
+	|Текст == "" + Name + Environment.NewLine +
+	|@""ТипСлияния == Добавить
+	|(Name) == "" + Name + Environment.NewLine;
 	|                                                MainMenu1.MenuItems.Add(MenuItemEntry1.M_MenuItem);
-	|                                                OneScriptFormsDesigner.AddToHashtable(MenuItemEntry1.M_MenuItem, MenuItemEntry1);
+	|                                                OneScriptFormsDesigner.AddToDictionary(MenuItemEntry1.M_MenuItem, MenuItemEntry1);
 	|
 	|                                                System.Windows.Forms.TreeNode TreeNode1 = new System.Windows.Forms.TreeNode();
 	|                                                TreeNode1.Tag = MenuItemEntry1;
@@ -12702,6 +12717,8 @@
 	|                                            {
 	|                                                MenuItemEntry MenuItemEntry1 = new MenuItemEntry();
 	|                                                dictObjects.Add(componentName + Name, MenuItemEntry1);
+	|                                                MenuItemEntry1.Text = Text;
+	|                                                MenuItemEntry1.Name = Name;
 	|                                                MenuItemEntry1.DefaultValues = @""Доступность == Истина
 	|Нажатие == 
 	|Отображать == Истина
@@ -12709,11 +12726,9 @@
 	|Помечен == Ложь
 	|ПорядокСлияния == 0
 	|СочетаниеКлавиш == Отсутствие
-	|Текст == 
-	|ТипСлияния == Добавить
-	|(Name) == "";
-	|                                                MenuItemEntry1.Text = Text;
-	|                                                MenuItemEntry1.Name = Name;
+	|Текст == "" + Name + Environment.NewLine +
+	|@""ТипСлияния == Добавить
+	|(Name) == "" + Name + Environment.NewLine;
 	|
 	|                                                string nameNodeParent = OneScriptFormsDesigner.ParseBetween(strCurrent, ""="", ""."");
 	|                                                System.Windows.Forms.TreeNode SelectedNode = null;
@@ -12722,7 +12737,7 @@
 	|
 	|                                                MenuItemEntry MenuItemParent = (MenuItemEntry)TreeView1.SelectedNode.Tag;
 	|                                                MenuItemParent.MenuItems.Add(MenuItemEntry1.M_MenuItem);
-	|                                                OneScriptFormsDesigner.AddToHashtable(MenuItemEntry1.M_MenuItem, MenuItemEntry1);
+	|                                                OneScriptFormsDesigner.AddToDictionary(MenuItemEntry1.M_MenuItem, MenuItemEntry1);
 	|                                                System.Windows.Forms.TreeNode TreeNode1 = new System.Windows.Forms.TreeNode();
 	|                                                TreeNode1.Tag = MenuItemEntry1;
 	|                                                TreeNode1.Text = MenuItemEntry1.Text;
@@ -12739,6 +12754,9 @@
 	|                                            {
 	|                                                MenuItemEntry MenuItemEntry1 = new MenuItemEntry();
 	|                                                dictObjects.Add(componentName + Name, MenuItemEntry1);
+	|                                                MenuItemEntry1.Name = Name;
+	|                                                // Имя в виде тире не присваивать, заменять на тире только во время формирования сценария.
+	|                                                MenuItemEntry1.Text = MenuItemEntry1.Name;
 	|                                                MenuItemEntry1.DefaultValues = @""Доступность == Истина
 	|Нажатие == 
 	|Отображать == Истина
@@ -12746,12 +12764,9 @@
 	|Помечен == Ложь
 	|ПорядокСлияния == 0
 	|СочетаниеКлавиш == Отсутствие
-	|Текст == 
-	|ТипСлияния == Добавить
-	|(Name) == "";
-	|                                                MenuItemEntry1.Name = Name;
-	|                                                // Имя в виде тире не присваивать, заменять на тире только во время формирования сценария.
-	|                                                MenuItemEntry1.Text = MenuItemEntry1.Name;
+	|Текст == "" + Name + Environment.NewLine +
+	|@""ТипСлияния == Добавить
+	|(Name) == "" + Name + Environment.NewLine;
 	|                                                string nameNodeParent = OneScriptFormsDesigner.ParseBetween(strCurrent, ""="", ""."");
 	|
 	|                                                System.Windows.Forms.TreeNode SelectedNode = null;
@@ -12760,7 +12775,7 @@
 	|
 	|                                                MenuItemEntry MenuItemParent = (MenuItemEntry)TreeView1.SelectedNode.Tag;
 	|                                                MenuItemParent.MenuItems.Add(MenuItemEntry1.M_MenuItem);
-	|                                                OneScriptFormsDesigner.AddToHashtable(MenuItemEntry1.M_MenuItem, MenuItemEntry1);
+	|                                                OneScriptFormsDesigner.AddToDictionary(MenuItemEntry1.M_MenuItem, MenuItemEntry1);
 	|
 	|                                                System.Windows.Forms.TreeNode TreeNode1 = new System.Windows.Forms.TreeNode();
 	|                                                TreeNode1.Tag = MenuItemEntry1;
@@ -12817,7 +12832,7 @@
 	|                                {
 	|                                    string controlName = ((osfDesigner.StatusBar)control).Name;
 	|                                    string header = OneScriptFormsDesigner.ParseBetween(strCurrent, null, ""."");
-	|                                    if (header.Contains(""СтрокаСостояния""))
+	|                                    if (header.Contains(""СтрокаСостояния"") && !header.Contains(""Панель""))
 	|                                    {
 	|                                        if (strCurrent.Contains("".Панели.Добавить("")) // Добавляем панель.
 	|                                        {
@@ -12866,24 +12881,22 @@
 	|                                {
 	|                                    string controlName = ((osfDesigner.ToolBar)control).Name;
 	|                                    string header = OneScriptFormsDesigner.ParseBetween(strCurrent, null, ""."");
-	|                                    if (header.Contains(""ПанельИнструментов""))
+	|                                    if (strCurrent.Contains("".Кнопки.Добавить("")) // Добавляем кнопку панели инструментов.
 	|                                    {
-	|                                        if (strCurrent.Contains("".Кнопки.Добавить("")) // Добавляем кнопку панели инструментов.
-	|                                        {
-	|                                            System.Windows.Forms.ToolBarButton OriginalObj = new System.Windows.Forms.ToolBarButton();
-	|                                            osfDesigner.ToolBarButton SimilarObj = new osfDesigner.ToolBarButton();
-	|                                            OneScriptFormsDesigner.PassProperties(OriginalObj, SimilarObj); // Передадим свойства.
-	|                                            SimilarObj.OriginalObj = OriginalObj;
-	|                                            SimilarObj.Parent = OriginalObj.Parent;
-	|                                            SimilarObj.Style = (osfDesigner.ToolBarButtonStyle)OriginalObj.Style;
-	|                                            OriginalObj.Tag = SimilarObj;
+	|                                        System.Windows.Forms.ToolBarButton OriginalObj = new System.Windows.Forms.ToolBarButton();
+	|                                        osfDesigner.ToolBarButton SimilarObj = new osfDesigner.ToolBarButton();
+	|                                        OneScriptFormsDesigner.PassProperties(OriginalObj, SimilarObj); // Передадим свойства.
+	|                                        SimilarObj.OriginalObj = OriginalObj;
+	|                                        SimilarObj.Parent = OriginalObj.Parent;
+	|                                        SimilarObj.Style = (osfDesigner.ToolBarButtonStyle)OriginalObj.Style;
+	|                                        OriginalObj.Tag = SimilarObj;
 	|
-	|                                            string nameItem = OneScriptFormsDesigner.ParseBetween(strCurrent, null, ""="");
-	|                                            SimilarObj.Name = nameItem;
-	|                                            ((osfDesigner.ToolBar)control).Buttons.Add(OriginalObj);
-	|                                            dictObjects.Add(controlName + nameItem, SimilarObj);
+	|                                        string nameItem = OneScriptFormsDesigner.ParseBetween(strCurrent, null, ""="");
+	|                                        SimilarObj.Name = nameItem;
+	|                                        ((osfDesigner.ToolBar)control).Buttons.Add(OriginalObj);
+	|                                        dictObjects.Add(controlName + nameItem, SimilarObj);
 	|
-	|                                            SimilarObj.DefaultValues = @""Доступность == Истина
+	|                                        SimilarObj.DefaultValues = @""Доступность == Истина
 	|ИндексИзображения == -1
 	|Нажата == Ложь
 	|НейтральноеПоложение == Ложь
@@ -12893,15 +12906,14 @@
 	|Текст == 
 	|ТекстПодсказки == 
 	|(Name) == "";
-	|                                        }
-	|                                        else // Обрабатываем как свойство панели инструментов.
-	|                                        {
-	|                                            string displayName = OneScriptFormsDesigner.ParseBetween(strCurrent, componentName + ""."", ""="");
-	|                                            string strPropertyValue = OneScriptFormsDesigner.ParseBetween(strCurrent, ""="", "";"");
-	|                                            string parentName = OneScriptFormsDesigner.ParseBetween(ComponentBlok, componentName + @"".Родитель="", @"";"");
-	|                                            Control parent = (Control)dictObjects[parentName];
-	|                                            PropValueConverter.SetPropValue(control, displayName, strPropertyValue, parent);
-	|                                        }
+	|                                    }
+	|                                    else if (!header.Contains(""Кн"")) // Обрабатываем как свойство панели инструментов.
+	|                                    {
+	|                                        string displayName = OneScriptFormsDesigner.ParseBetween(strCurrent, componentName + ""."", ""="");
+	|                                        string strPropertyValue = OneScriptFormsDesigner.ParseBetween(strCurrent, ""="", "";"");
+	|                                        string parentName = OneScriptFormsDesigner.ParseBetween(ComponentBlok, componentName + @"".Родитель="", @"";"");
+	|                                        Control parent = (Control)dictObjects[parentName];
+	|                                        PropValueConverter.SetPropValue(control, displayName, strPropertyValue, parent);
 	|                                    }
 	|                                    else // Обрабатываем как свойство кнопки панели инструментов.
 	|                                    {
@@ -12916,7 +12928,9 @@
 	|                                {
 	|                                    string controlName = ((osfDesigner.ListView)control).Name;
 	|                                    string header = OneScriptFormsDesigner.ParseBetween(strCurrent, null, ""."");
-	|                                    if (header.Contains(""СписокЭлементов"")) // Обрабатываем как свойство списка элементов.
+	|                                    string fragment1 = OneScriptFormsDesigner.ParseBetween(header, ""СписокЭлементов"", null);
+	|                                    fragment1 = fragment1.Replace(""Колонка"", ""флажок"").Replace(""Элемент"", ""флажок"").Replace(""Подэлемент"", ""флажок"");
+	|                                    if (header.Contains(""СписокЭлементов"") && !fragment1.Contains(""флажок"")) // Обрабатываем как свойство списка элементов.
 	|                                    {
 	|                                        if (strCurrent.Contains("".Элементы.Добавить("")) // Добавляем элемент списка элементов.
 	|                                        {
@@ -13139,7 +13153,7 @@
 	|                                            ListItemComboBox1.Value = rez1;
 	|                                            ListItemComboBox1.ValueType = DataType.Дата;
 	|                                        }
-	|                                        else // это тип Число
+	|                                        else // Это тип Число
 	|                                        {
 	|                                            ListItemComboBox1.Value = Int32.Parse(itemValue);
 	|                                            ListItemComboBox1.ValueType = DataType.Число;
@@ -13159,7 +13173,7 @@
 	|                                {
 	|                                    string controlName = ((osfDesigner.DataGrid)control).Name;
 	|                                    string header = OneScriptFormsDesigner.ParseBetween(strCurrent, null, ""."");
-	|                                    if (header.Contains(""СеткаДанных"")) // Обрабатываем как свойство сетки данных.
+	|                                    if (header.Contains(""СеткаДанных"") && !header.Contains(""Стиль"")) // Обрабатываем как свойство сетки данных.
 	|                                    {
 	|                                        if (!strCurrent.Contains("".СтилиТаблицы.Добавить(""))
 	|                                        {
@@ -13177,7 +13191,7 @@
 	|                                            osfDesigner.DataGridTableStyle SimilarObj = new osfDesigner.DataGridTableStyle();
 	|                                            System.Windows.Forms.DataGridTableStyle OriginalObj = new System.Windows.Forms.DataGridTableStyle();
 	|                                            SimilarObj.OriginalObj = OriginalObj;
-	|                                            OneScriptFormsDesigner.AddToHashtable(OriginalObj, SimilarObj);
+	|                                            OneScriptFormsDesigner.AddToDictionary(OriginalObj, SimilarObj);
 	|                                            OneScriptFormsDesigner.PassProperties(OriginalObj, SimilarObj); // Передадим свойства.
 	|                                            string nameStyle = OneScriptFormsDesigner.ParseBetween(strCurrent, null, ""="");
 	|                                            SimilarObj.NameStyle = nameStyle;
@@ -13193,6 +13207,7 @@
 	|ОтображатьЗаголовкиСтрок == Истина
 	|ИмяОтображаемого == 
 	|СтилиКолонкиСеткиДанных == (Коллекция)
+	|Текст == 
 	|ТолькоЧтение == Ложь
 	|ОсновнойЦвет == ТекстОкна
 	|ОсновнойЦветЗаголовков == ТекстЭлемента
@@ -13212,6 +13227,7 @@
 	|Выравнивание == Лево
 	|ТекстЗаголовка == 
 	|ИмяОтображаемого == 
+	|Текст == 
 	|ТолькоЧтение == Ложь"";
 	|                                        }
 	|                                        else if (strCurrent.Contains(""Ф.СтильКолонкиПолеВвода();""))
@@ -13226,6 +13242,7 @@
 	|ТекстЗаголовка == 
 	|ДвойноеНажатие == 
 	|ИмяОтображаемого == 
+	|Текст == 
 	|ТолькоЧтение == Ложь"";
 	|                                        }
 	|                                        else if (strCurrent.Contains(""Ф.СтильКолонкиПолеВыбора();""))
@@ -13239,6 +13256,7 @@
 	|Выравнивание == Лево
 	|ТекстЗаголовка == 
 	|ИмяОтображаемого == 
+	|Текст == 
 	|ТолькоЧтение == Ложь"";
 	|                                        }
 	|                                        else if (strCurrent.Contains("".СтилиКолонкиСеткиДанных.Добавить(""))
@@ -13262,7 +13280,7 @@
 	|                                else if (componentName.Contains(""Дерево""))
 	|                                {
 	|                                    string header = OneScriptFormsDesigner.ParseBetween(strCurrent, null, ""."");
-	|                                    if (header.Contains(""Дерево"")) // Обрабатываем как свойство дерева.
+	|                                    if (header.Contains(""Дерево"") && !header.Contains(""Узел"")) // Обрабатываем как свойство дерева.
 	|                                    {
 	|                                        if (strCurrent.Contains(""Узлы""))
 	|                                        {
@@ -13271,6 +13289,7 @@
 	|                                        }
 	|                                        else
 	|                                        {
+	|
 	|                                            string displayName = OneScriptFormsDesigner.ParseBetween(strCurrent, componentName + ""."", ""="");
 	|                                            string strPropertyValue = OneScriptFormsDesigner.ParseBetween(strCurrent, ""="", "";"");
 	|                                            string parentName = OneScriptFormsDesigner.ParseBetween(ComponentBlok, componentName + @"".Родитель="", @"";"");
@@ -13322,6 +13341,10 @@
 	|                    propertyGrid1.Refresh();
 	|                }
 	|
+	|                if (componentName.Contains(""ГлавноеМеню""))
+	|                {
+	|                    OneScriptFormsDesigner.PassProperties(control, OneScriptFormsDesigner.RevertOriginalObj(control)); // Передадим свойства.
+	|                }
 	|            }
 	|
 	|            // Если для формы заданы КнопкаОтмена и/или КнопкаПринять, установим их.
@@ -13371,6 +13394,11 @@
 	|
 	|            pDesigner.DSME.PropertyGridHost.ReloadTreeView();
 	|            pDesigner.DSME.PropertyGridHost.ChangeSelectNode((Component)ctrlsExisting[0]);
+	|
+	|            OneScriptFormsDesigner.block2 = false;
+	|
+	|            // Запомним начальное состояние дизайнера после загрузки этой формы.
+	|            OneScriptFormsDesigner.DesignSurfaceState(true);
 	|        }
 	|
 	|        private void _form_Click(object sender, EventArgs e)
@@ -13470,7 +13498,10 @@
 	|            }
 	|            else
 	|            {
+	|                OneScriptFormsDesigner.block2 = true;
+	|                OneScriptFormsDesigner.dictionaryTabPageChanged.Remove(pDesigner.TabControl.SelectedTab);
 	|                IpDesignerCore.RemoveDesignSurface(IpDesignerCore.ActiveDesignSurface);
+	|                OneScriptFormsDesigner.block2 = false;
 	|            }
 	|        }
 	|
@@ -13547,119 +13578,74 @@
 	|
 	|        private void _useSnapLines_Click(object sender, EventArgs e)
 	|        {
+	|            OneScriptFormsDesigner.block2 = true;
 	|            IpDesignerCore.AddDesignSurface<Form>(640, 480, AlignmentModeEnum.SnapLines, new Size(1, 1));
+	|            OneScriptFormsDesigner.block2 = false;
+	|
+	|            // Запомним начальное состояние дизайнера после добавления новой формы.
+	|            OneScriptFormsDesigner.DesignSurfaceState(true);
+	|            OneScriptFormsDesigner.dictionaryTabPageChanged[pDesigner.TabControl.SelectedTab] = true;
 	|        }
 	|
 	|        private void _useGrid_Click(object sender, EventArgs e)
 	|        {
+	|            OneScriptFormsDesigner.block2 = true;
 	|            IpDesignerCore.AddDesignSurface<Form>(640, 480, AlignmentModeEnum.Grid, new Size(16, 16));
+	|            OneScriptFormsDesigner.block2 = false;
+	|
+	|            // Запомним начальное состояние дизайнера после добавления новой формы.
+	|            OneScriptFormsDesigner.DesignSurfaceState(true);
+	|            OneScriptFormsDesigner.dictionaryTabPageChanged[pDesigner.TabControl.SelectedTab] = true;
 	|        }
 	|
 	|        private void _useGridWithoutSnapping_Click(object sender, EventArgs e)
 	|        {
+	|            OneScriptFormsDesigner.block2 = true;
 	|            IpDesignerCore.AddDesignSurface<Form>(640, 480, AlignmentModeEnum.GridWithoutSnapping, new Size(16, 16));
+	|            OneScriptFormsDesigner.block2 = false;
+	|
+	|            // Запомним начальное состояние дизайнера после добавления новой формы.
+	|            OneScriptFormsDesigner.DesignSurfaceState(true);
+	|            OneScriptFormsDesigner.dictionaryTabPageChanged[pDesigner.TabControl.SelectedTab] = true;
 	|        }
 	|
 	|        private void _useNoGuides_Click(object sender, EventArgs e)
 	|        {
+	|            OneScriptFormsDesigner.block2 = true;
 	|            IpDesignerCore.AddDesignSurface<Form>(640, 480, AlignmentModeEnum.NoGuides, new Size(1, 1));
-	|        }
+	|            OneScriptFormsDesigner.block2 = false;
 	|
-	|        //* 17.12.2021 perfolenta
-	|        private bool ГотовоКЗакрытию()
-	|        {
-	|            if (pDesignerCore.Dirty)
-	|            {
-	|                string str1 = ""Одна из редактируемых форм изменена! Изменения будут потеряны!\n\nВыйти из конструктора форм?"";
-	|                if (MessageBox.Show(str1, ""Дизайнер форм для OneScriptForms"", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != System.Windows.Forms.DialogResult.Yes)
-	|                    return false;
-	|            }
-	|            return true;
+	|            // Запомним начальное состояние дизайнера после добавления новой формы.
+	|            OneScriptFormsDesigner.DesignSurfaceState(true);
+	|            OneScriptFormsDesigner.dictionaryTabPageChanged[pDesigner.TabControl.SelectedTab] = true;
 	|        }
 	|
 	|        private void pDesignerMainForm_Closing(object sender, CancelEventArgs e)
 	|        {
-	|            if (!ГотовоКЗакрытию())
+	|            bool closeDesigner = true;
+	|            foreach (KeyValuePair<System.Windows.Forms.TabPage, bool> keyValue in OneScriptFormsDesigner.dictionaryTabPageChanged)
 	|            {
-	|                e.Cancel = true;
-	|                return;
-	|            }
-	|
-	|            if (DestroyDesignSurfaces())
-	|                e.Cancel = false;
-	|            else
-	|                e.Cancel = true;
-	|
-	|        }
-	|
-	|        private bool DestroyDesignSurfaces()
-	|        {
-	|            //????????????? тут надо уничтожить все DesignSurfaces и вернуть успешность этой операции
-	|
-	|            return true;
-	|        }
-	|        //***
-	|
-	|        public void GetDefaultValues(dynamic comp)
-	|        {
-	|            // Заполним для компонента начальные свойства. Они нужны будут при создании скрипта.
-	|            string DefaultValues1 = """";
-	|            object pg = pDesigner.DSME.PropertyGridHost.PropertyGrid;
-	|            ((System.Windows.Forms.PropertyGrid)pg).SelectedObject = comp;
-	|            object view1 = pg.GetType().GetField(""gridView"", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(pg);
-	|            GridItemCollection GridItemCollection1 = (GridItemCollection)view1.GetType().InvokeMember(""GetAllGridEntries"", BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Instance, null, view1, null);
-	|            if (GridItemCollection1 == null)
-	|            {
-	|                return;
-	|            }
-	|            foreach (GridItem GridItem in GridItemCollection1)
-	|            {
-	|                if (GridItem.PropertyDescriptor == null)  // Исключим из обхода категории.
+	|                if (keyValue.Value)
 	|                {
-	|                    continue;
-	|                }
-	|                if (GridItem.Label == ""Locked"")  // Исключим из обхода ненужные свойства.
-	|                {
-	|                    continue;
-	|                }
-	|                if (GridItem.PropertyDescriptor.Category != GridItem.Label)
-	|                {
-	|                    string str7 = """";
-	|                    string strTab = ""            "";
-	|                    str7 = str7 + OneScriptFormsDesigner.ObjectConvertToString(GridItem.Value);
-	|                    if (GridItem.GridItems.Count > 0)
-	|                    {
-	|                        strTab = strTab + ""\t\t"";
-	|                        str7 = str7 + Environment.NewLine;
-	|                        str7 = str7 + GetGridSubEntries(GridItem.GridItems, """", strTab);
-	|
-	|                        DefaultValues1 = DefaultValues1 + """" + GridItem.Label + "" == "" + str7 + Environment.NewLine;
-	|
-	|                        strTab = ""\t\t"";
-	|                    }
-	|                    else
-	|                    {
-	|                        DefaultValues1 = DefaultValues1 + """" + GridItem.Label + "" == "" + str7 + Environment.NewLine;
-	|                    }
+	|                    closeDesigner = false;
+	|                    break;
 	|                }
 	|            }
-	|            comp.DefaultValues = DefaultValues1;
-	|        }
 	|
-	|        public string GetGridSubEntries(GridItemCollection gridItems, string str, string strTab)
-	|        {
-	|            foreach (var item in gridItems)
+	|            if (!closeDesigner)
 	|            {
-	|                GridItem _item = (GridItem)item;
-	|                str = str + strTab + _item.Label + "" = "" + _item.Value + Environment.NewLine;
-	|                if (_item.GridItems.Count > 0)
+	|                string str1 = ""Одна из редактируемых форм изменена! Изменения будут потеряны!\n\nВыйти из конструктора форм?"";
+	|                if (MessageBox.Show(str1, ""Дизайнер форм для OneScriptForms"", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != System.Windows.Forms.DialogResult.Yes)
 	|                {
-	|                    strTab = strTab + ""\t\t"";
-	|                    str = GetGridSubEntries(_item.GridItems, str, strTab);
-	|                    strTab = ""\t\t"";
+	|                    e.Cancel = true;
+	|                    return;
+	|                }
+	|                else
+	|                {
+	|                    e.Cancel = false;
+	|                    return;
 	|                }
 	|            }
-	|            return str;
 	|        }
 	|
 	|        public static void SelectedNodeSearch(System.Windows.Forms.TreeView treeView, string nameNodeParent, ref System.Windows.Forms.TreeNode node, System.Windows.Forms.TreeNodeCollection treeNodes = null)
@@ -13677,7 +13663,7 @@
 	|            for (int i = 0; i < _treeNodes.Count; i++)
 	|            {
 	|                treeNode = (System.Windows.Forms.TreeNode)_treeNodes[i];
-	|                if (treeNode.Name == nameNodeParent)
+	|                if (((MenuItemEntry)treeNode.Tag).Name == nameNodeParent)
 	|                {
 	|                    node = treeNode;
 	|                    break;
@@ -13890,12 +13876,12 @@
 	
 	
 	СтрВыгрузки = 
-	"using System;
+	"using System.ComponentModel.Design.Serialization;
+	|using System.ComponentModel.Design;
 	|using System.ComponentModel;
 	|using System.Drawing;
 	|using System.Windows.Forms;
-	|using System.ComponentModel.Design;
-	|using System.Reflection;
+	|using System;
 	|
 	|namespace osfDesigner
 	|{
@@ -13912,6 +13898,11 @@
 	|        public static System.Windows.Forms.TabControl TabControl;
 	|        public static DesignSurfaceManagerExt DSME = null;
 	|        private System.Windows.Forms.Form form;
+	|        private Image closeImage;
+	|        private Image closeImageBlack;
+	|        private Image saveYesImage;
+	|        private Image saveNoImage;
+	|        private System.Windows.Forms.TextBox textBox;
 	|
 	|        public pDesigner()
 	|        {
@@ -13956,6 +13947,17 @@
 	|            this.tbCtrlpDesigner.Size = new Size(439, 305);
 	|            this.tbCtrlpDesigner.TabIndex = 0;
 	|            this.tbCtrlpDesigner.SelectedIndexChanged += new EventHandler(this.tbCtrlpDesigner_SelectedIndexChanged);
+	|            this.tbCtrlpDesigner.DrawMode = TabDrawMode.OwnerDrawFixed;
+	|            this.tbCtrlpDesigner.DrawItem += tbCtrlpDesigner_DrawItem;
+	|            this.tbCtrlpDesigner.MouseDown += tbCtrlpDesigner_MouseDown;
+	|            string str_Close = ""iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAASUlEQVR42mNkoBAwUtuA/0QYiqKGEU2CkMsw1DASUkBIDptN2BTiNJgYp+JVjy/A/hOjlmYGUOQFigKRomikWkIiOymTBSg2AAD6ABQR9GDqGgAAAABJRU5ErkJggg=="";
+	|            closeImage = OneScriptFormsDesigner.Base64ToImage(str_Close);
+	|            string str_CloseBlack = ""iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAU0lEQVR42mNkoBAwUtWAefPm/U9KSsJrKLoaRmQJGBuXIdjUMBJSQEiOkRhb8BlM0KnIAJvXcAYYuiG4woU2BlDkBYoCkaJopFpCIjspkwsoNgAA24ZQEaHwYTIAAAAASUVORK5CYII="";
+	|            closeImageBlack = OneScriptFormsDesigner.Base64ToImage(str_CloseBlack);
+	|            string str_SaveYes = ""iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAUUlEQVR42mNkgID/DOQBRkaY5v9tbQyMVVVgQRyK/4PUwHVC1IIVwyVIMQCmniYG4AQEDSA5BIehAYQCEQaQ1ZMSjXD9owZgGgAWJCr4MQEjAF/ZYAN2oSypAAAAAElFTkSuQmCC"";
+	|            saveYesImage = OneScriptFormsDesigner.Base64ToImage(str_SaveYes);
+	|            string str_SaveNo = ""iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAUElEQVR42u2RQQoAIAgE9Wc+3Z8ZWRtBRBl0ieZo0xyUqWB0BjM+qyqJiA8nsmUHVNfl9hAJwL8SmLIMRHkxsFoi6P3IGYH9wBjw4db6RzgBtFFgA13ClvoAAAAASUVORK5CYII="";
+	|            saveNoImage = OneScriptFormsDesigner.Base64ToImage(str_SaveNo);
 	|            //
 	|            // pDesigner
 	|            //
@@ -13982,6 +13984,76 @@
 	|            TabControl = tbCtrlpDesigner;
 	|        }
 	|
+	|        private void tbCtrlpDesigner_MouseDown(object sender, MouseEventArgs e)
+	|        {
+	|            for (var i = 0; i < tbCtrlpDesigner.TabPages.Count; i++)
+	|            {
+	|                var tabRect = tbCtrlpDesigner.GetTabRect(i);
+	|                tabRect.Inflate(-2, -2);
+	|
+	|                var imageRect = new Rectangle(
+	|                    (tabRect.Right - closeImage.Width),
+	|                    tabRect.Top + (tabRect.Height - closeImage.Height) / 2,
+	|                    closeImage.Width,
+	|                    closeImage.Height);
+	|                if (imageRect.Contains(e.Location))
+	|                {
+	|                    if (tbCtrlpDesigner.TabPages.Count <= 1)
+	|                    {
+	|                        System.Windows.Forms.MessageBox.Show(
+	|                            ""Удалить единственную форму не допускается."",
+	|                            """",
+	|                            MessageBoxButtons.OK,
+	|                            MessageBoxIcon.Exclamation,
+	|                            MessageBoxDefaultButton.Button1
+	|                            );
+	|                    }
+	|                    else
+	|                    {
+	|                        System.Windows.Forms.DialogResult res1 = System.Windows.Forms.MessageBox.Show(
+	|                            ""Действительно удалить форму "" + tbCtrlpDesigner.TabPages[i].Text.Trim() + ""?"",
+	|                            """",
+	|                            MessageBoxButtons.YesNoCancel,
+	|                            MessageBoxIcon.Exclamation,
+	|                            MessageBoxDefaultButton.Button2
+	|                           );
+	|                        if (res1 == System.Windows.Forms.DialogResult.OK || res1 == System.Windows.Forms.DialogResult.Yes)
+	|                        {
+	|                            OneScriptFormsDesigner.dictionaryTabPageChanged.Remove(TabControl.SelectedTab);
+	|                            RemoveDesignSurface(pDesigner.DSME.ActiveDesignSurface);
+	|                        }
+	|                    }
+	|                    break;
+	|                }
+	|            }
+	|        }
+	|        private void tbCtrlpDesigner_DrawItem(object sender, DrawItemEventArgs e)
+	|        {
+	|            var tabPage = tbCtrlpDesigner.TabPages[e.Index];
+	|            var tabRect = tbCtrlpDesigner.GetTabRect(e.Index);
+	|            tabRect.Inflate(-2, -2);
+	|            
+	|            if (OneScriptFormsDesigner.dictionaryTabPageChanged[tabPage])
+	|            {
+	|                e.Graphics.DrawImage(saveYesImage, (tabRect.Left + 1), tabRect.Top + (tabRect.Height - saveYesImage.Height) / 2);
+	|            }
+	|            else
+	|            {
+	|                e.Graphics.DrawImage(saveNoImage, (tabRect.Left + 1), tabRect.Top + (tabRect.Height - saveNoImage.Height) / 2);
+	|            }
+	|
+	|            if (e.State == DrawItemState.Selected)
+	|            {
+	|                e.Graphics.DrawImage(closeImage, (tabRect.Right - closeImage.Width), tabRect.Top + (tabRect.Height - closeImage.Height) / 2);
+	|                e.Graphics.DrawString(tabPage.Text, new Font(tabPage.Font, FontStyle.Bold), new SolidBrush(Color.Black), e.Bounds.X + 4, e.Bounds.Y + 2);
+	|            }
+	|            else
+	|            {
+	|                e.Graphics.DrawImage(closeImageBlack, (tabRect.Right - closeImageBlack.Width), tabRect.Top + (tabRect.Height - closeImageBlack.Height) / 2);
+	|                e.Graphics.DrawString(tabPage.Text, tabPage.Font, new SolidBrush(tabPage.ForeColor), e.Bounds.X + 4, e.Bounds.Y + 2);
+	|            }
+	|        }
+	|
 	|        // Очистите все используемые ресурсы.
 	|        protected override void Dispose(bool disposing)
 	|        {
@@ -14005,8 +14077,7 @@
 	|
 	|        private void tbCtrlpDesigner_SelectedIndexChanged(object sender, EventArgs e)
 	|        {
-	|            System.Windows.Forms.TabControl tabCtrl = sender as System.Windows.Forms.TabControl;
-	|            int index = this.tbCtrlpDesigner.SelectedIndex;
+	|            int index = tbCtrlpDesigner.SelectedIndex;
 	|            if (index >= 0)
 	|            {
 	|                DesignSurfaceManager.ActiveDesignSurface = (DesignSurfaceExt2)DesignSurfaceManager.DesignSurfaces[index];
@@ -14024,7 +14095,7 @@
 	|
 	|        public System.Windows.Forms.TabControl TabControlHostingDesignSurfaces
 	|        {
-	|            get { return this.tbCtrlpDesigner; }
+	|            get { return tbCtrlpDesigner; }
 	|        }
 	|
 	|        public PropertyGridHost PropertyGridHost
@@ -14056,6 +14127,9 @@
 	|            }
 	|            // Создание области дизайнера (DesignSurface).
 	|            DesignSurfaceExt2 surface = DesignSurfaceManager.CreateDesignSurfaceExt2();
+	|
+	|            OneScriptFormsDesigner.dictionaryDesignSurfaceState.Add(surface, """");
+	|
 	|            this.DesignSurfaceManager.ActiveDesignSurface = surface;
 	|            // Выбор режима выравнивания.
 	|            switch (alignmentMode)
@@ -14107,7 +14181,7 @@
 	|                form.MinimizeBox = false;
 	|                form.ShowInTaskbar = false;
 	|
-	|                System.Windows.Forms.TextBox textBox = new System.Windows.Forms.TextBox();
+	|                textBox = new System.Windows.Forms.TextBox();
 	|                form.Controls.Add(textBox);
 	|                textBox.Bounds = new Rectangle(10, 10, 350, 28);
 	|                textBox.Anchor = System.Windows.Forms.AnchorStyles.Right | System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left;
@@ -14157,7 +14231,7 @@
 	|                            OneScriptFormsDesigner.PassProperties(OriginalObj, SimilarObj); // Передадим свойства.
 	|                            SimilarObj.OriginalObj = OriginalObj;
 	|                            OriginalObj.Tag = SimilarObj;
-	|                            OneScriptFormsDesigner.AddToHashtable(OriginalObj, SimilarObj);
+	|                            OneScriptFormsDesigner.AddToDictionary(OriginalObj, SimilarObj);
 	|                        }
 	|                        DesignSurfaceManager.PropertyGridHost.PropertyGrid.SelectedObject = SimilarObj;
 	|                    }
@@ -14168,6 +14242,8 @@
 	|
 	|                    PropertyGridHost.ReloadTreeView();
 	|                    PropertyGridHost.ChangeSelectNode((Component)e.Component);
+	|
+	|                    OneScriptFormsDesigner.SetDesignSurfaceState();
 	|                };
 	|                componentChangeService.ComponentAdded += (Object sender, ComponentEventArgs e) =>
 	|                {
@@ -14178,7 +14254,14 @@
 	|                        OneScriptFormsDesigner.PassProperties(OriginalObj, SimilarObj); // Передадим свойства.
 	|                        SimilarObj.OriginalObj = OriginalObj;
 	|                        OriginalObj.Tag = SimilarObj;
-	|                        OneScriptFormsDesigner.AddToHashtable(OriginalObj, SimilarObj);
+	|                        OneScriptFormsDesigner.AddToDictionary(OriginalObj, SimilarObj);
+	|                    }
+	|	
+	|                    if (OriginalObj.GetType().ToString() == ""osfDesigner.ToolBar"")
+	|                    {
+	|                        // Избежим некорректного сохранения-восстановления панели инструментов.
+	|                        osfDesigner.ToolBar toolBar = (osfDesigner.ToolBar)OriginalObj;
+	|                        toolBar.ButtonSize = new Size(toolBar.ButtonSize.Width, toolBar.ButtonSize.Height);
 	|                    }
 	|
 	|                    if (OriginalObj.GetType().ToString() == ""System.Windows.Forms.ImageList"" || 
@@ -14214,17 +14297,24 @@
 	|                    DesignSurfaceManager.UpdatePropertyGridHost(surface);
 	|
 	|                    // Получим начальные значения свойств для компонента, они нужны для создания скрипта
-	|                    if (OriginalObj.GetType().ToString() == ""System.Windows.Forms.TabPage"")
+	|                    if (OriginalObj.GetType().ToString() == ""System.Windows.Forms.TabPage"" ||
+	|                        OriginalObj.GetType().ToString() == ""System.Windows.Forms.ImageList"" ||
+	|                        OriginalObj.GetType().ToString() == ""System.Windows.Forms.MainMenu"")
 	|                    {
-	|                        GetDefaultValues(OneScriptFormsDesigner.RevertSimilarObj(OriginalObj));
+	|                        dynamic SimilarObj = OneScriptFormsDesigner.RevertSimilarObj(OriginalObj);
+	|                        DesignSurfaceManager.PropertyGridHost.PropertyGrid.SelectedObject = SimilarObj;
+	|                        SimilarObj.DefaultValues = OneScriptFormsDesigner.GetDefaultValues(SimilarObj, DesignSurfaceManager.PropertyGridHost.PropertyGrid);
 	|                    }
 	|                    else
 	|                    {
-	|                        GetDefaultValues(OriginalObj);
+	|                        DesignSurfaceManager.PropertyGridHost.PropertyGrid.SelectedObject = OriginalObj;
+	|                        OriginalObj.DefaultValues = OneScriptFormsDesigner.GetDefaultValues(OriginalObj, DesignSurfaceManager.PropertyGridHost.PropertyGrid);
 	|                    }
 	|
 	|                    PropertyGridHost.ReloadTreeView();
 	|                    PropertyGridHost.ChangeSelectNode((Component)e.Component);
+	|
+	|                    OneScriptFormsDesigner.SetDesignSurfaceState();
 	|                };
 	|
 	|                componentChangeService.ComponentRemoving += (Object sender, ComponentEventArgs e) =>
@@ -14235,6 +14325,8 @@
 	|                {
 	|                    DesignSurfaceManager.UpdatePropertyGridHost(surface);
 	|                    PropertyGridHost.ReloadTreeView();
+	|
+	|                    OneScriptFormsDesigner.SetDesignSurfaceState();
 	|                };
 	|            }
 	|            // Теперь установим свойство ""Форма.Текст"", потому что это будет пустая строка если мы не установим его.
@@ -14252,104 +14344,49 @@
 	|            }
 	|            // Отобразим область дизайнера (DesignSurface).
 	|            System.Windows.Forms.TabPage newPage = new System.Windows.Forms.TabPage();
+	|            OneScriptFormsDesigner.dictionaryTabPageChanged.Add(newPage, false);
 	|            string sTabPageText = OneScriptFormsDesigner.RevertDesignerTabName(rootComponent.Site.Name);
 	|            // Свяжем rootComponent и создаваемую для него вкладку дризайнера, чтобы потом при удалении формы корректно удалить и вкладку.
-	|            OneScriptFormsDesigner.AddToHashtableDesignerTabRootComponent(rootComponent, newPage);
-	|            newPage.Text = sTabPageText;
+	|            OneScriptFormsDesigner.AddToDictionaryDesignerTabRootComponent(rootComponent, newPage);
+	|            newPage.Text = ""     "" + sTabPageText + ""       "";
 	|            newPage.Name = sTabPageText;
 	|            newPage.SuspendLayout();
 	|            view.Dock = System.Windows.Forms.DockStyle.Fill;
 	|            view.Parent = newPage;
-	|            this.tbCtrlpDesigner.TabPages.Add(newPage);
+	|            tbCtrlpDesigner.TabPages.Add(newPage);
 	|            newPage.ResumeLayout();
 	|            // Выберите созданную вкладку (TabPage).
-	|            this.tbCtrlpDesigner.SelectedIndex = this.tbCtrlpDesigner.TabPages.Count - 1;
+	|            tbCtrlpDesigner.SelectedIndex = tbCtrlpDesigner.TabPages.Count - 1;
 	|            this.PropertyGridHost.ReloadComboBox();
 	|
 	|            // Получим начальные значения свойств формы, они нужны для создания скрипта.
-	|            GetDefaultValues(rootComponent);
+	|            ((dynamic)rootComponent).DefaultValues = OneScriptFormsDesigner.GetDefaultValues(rootComponent, DesignSurfaceManager.PropertyGridHost.PropertyGrid);
 	|
 	|            //* 18.12.2021 perfolenta 
 	|            surface.Dirty = false;
 	|            //***
 	|
-	|            // Наконец, возвратим созданную область дизайнера, чтобы она снова изменялась пользователем.
+	|            // Запомним начальное состояние дизайнера с этой формой.
+	|            OneScriptFormsDesigner.DesignSurfaceState(true);
+	|            OneScriptFormsDesigner.dictionaryTabPageChanged[pDesigner.TabControl.SelectedTab] = true;
+	|
+	|            // Возвратим созданную область дизайнера.
 	|            return surface;
 	|        }
 	|
 	|        private void ButtonOK_Click(object sender, EventArgs e)
 	|        {
-	|            form.DialogResult = System.Windows.Forms.DialogResult.OK;
-	|        }
-	|
-	|        public void GetDefaultValues(dynamic comp)
-	|        {
-	|            // Заполним для компонента начальные свойства. Они нужны будут при создании скрипта.
-	|            string DefaultValues1 = """";
-	|            object pg = DesignSurfaceManager.PropertyGridHost.PropertyGrid;
-	|            ((System.Windows.Forms.PropertyGrid)pg).SelectedObject = comp;
-	|            object view1 = pg.GetType().GetField(""gridView"", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(pg);
-	|            GridItemCollection GridItemCollection1 = (GridItemCollection)view1.GetType().InvokeMember(""GetAllGridEntries"", BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Instance, null, view1, null);
-	|            if (GridItemCollection1 == null)
+	|            INameCreationService iName = DSME.ActiveDesignSurface.GetIDesignerHost().GetService(typeof(INameCreationService)) as INameCreationService;
+	|            if (!iName.IsValidName(textBox.Text))
 	|            {
+	|                System.Windows.Forms.MessageBox.Show(""Имя не должно быть пустым, должно начинаться с буквы, не должно содержать пробелы."");
+	|                textBox.Focus();
 	|                return;
-	|            }
-	|            foreach (GridItem GridItem in GridItemCollection1)
-	|            {
-	|                if (GridItem.PropertyDescriptor == null)  // Исключим из обхода категории.
-	|                {
-	|                    continue;
-	|                }
-	|                if (GridItem.Label == ""Locked"")  // Исключим из обхода ненужные свойства.
-	|                {
-	|                    continue;
-	|                }
-	|                if (GridItem.PropertyDescriptor.Category != GridItem.Label)
-	|                {
-	|                    string str7 = """";
-	|                    string strTab = ""            "";
-	|                    str7 = str7 + OneScriptFormsDesigner.ObjectConvertToString(GridItem.Value);
-	|                    if (GridItem.GridItems.Count > 0)
-	|                    {
-	|                        strTab = strTab + ""\t\t"";
-	|                        str7 = str7 + Environment.NewLine;
-	|                        str7 = str7 + GetGridSubEntries(GridItem.GridItems, """", strTab);
-	|
-	|                        DefaultValues1 = DefaultValues1 + """" + GridItem.Label + "" == "" + str7 + Environment.NewLine;
-	|
-	|                        strTab = ""\t\t"";
-	|                    }
-	|                    else
-	|                    {
-	|                        DefaultValues1 = DefaultValues1 + """" + GridItem.Label + "" == "" + str7 + Environment.NewLine;
-	|                    }
-	|                }
-	|            }
-	|            if (comp.GetType() == typeof(System.Windows.Forms.ImageList) ||
-	|                comp.GetType() == typeof(System.Windows.Forms.MainMenu))
-	|            {
-	|                OneScriptFormsDesigner.RevertSimilarObj(comp).DefaultValues = DefaultValues1;
 	|            }
 	|            else
 	|            {
-	|                comp.DefaultValues = DefaultValues1;
+	|                form.DialogResult = System.Windows.Forms.DialogResult.OK;
 	|            }
-	|        }
-	|
-	|        public string GetGridSubEntries(GridItemCollection gridItems, string str, string strTab)
-	|        {
-	|            foreach (var item in gridItems)
-	|            {
-	|                GridItem _item = (GridItem)item;
-	|                str = str + strTab + _item.Label + "" = "" + _item.Value + Environment.NewLine;
-	|                if (_item.GridItems.Count > 0)
-	|                {
-	|                    strTab = strTab + ""\t\t"";
-	|                    str = GetGridSubEntries(_item.GridItems, str, strTab);
-	|                    strTab = ""\t\t"";
-	|                }
-	|            }
-	|            return str;
 	|        }
 	|
 	|        public void RemoveDesignSurface(DesignSurfaceExt2 surfaceToErase)
@@ -14363,7 +14400,7 @@
 	|                //     что созданных поверхностей Designsurfaces, чтобы избежать конфликта имен.
 	|                System.Windows.Forms.TabPage TabPage1 = OneScriptFormsDesigner.RevertDesignerTab(surfaceToErase.GetIDesignerHost().RootComponent);
 	|                System.Windows.Forms.TabPage tpToRemove = null;
-	|                foreach (System.Windows.Forms.TabPage tp in this.tbCtrlpDesigner.TabPages)
+	|                foreach (System.Windows.Forms.TabPage tp in tbCtrlpDesigner.TabPages)
 	|                {
 	|                    if (tp.Equals(TabPage1))
 	|                    {
@@ -14373,7 +14410,7 @@
 	|                }
 	|                if (null != tpToRemove)
 	|                {
-	|                    this.tbCtrlpDesigner.TabPages.Remove(tpToRemove);
+	|                    tbCtrlpDesigner.TabPages.Remove(tpToRemove);
 	|                }
 	|
 	|                // Теперь удалите поверхность дизайнера.
@@ -14381,7 +14418,7 @@
 	|
 	|                // Наконец, диспетчер DesignSurfaceManager удалит поверхность DesignSurface и установит в качестве активной 
 	|                // поверхности дизайна последнюю, поэтому мы устанавливаем в качестве активной последнюю страницу вкладки.
-	|                this.tbCtrlpDesigner.SelectedIndex = this.tbCtrlpDesigner.TabPages.Count - 1;
+	|                tbCtrlpDesigner.SelectedIndex = tbCtrlpDesigner.TabPages.Count - 1;
 	|            }
 	|            catch { }
 	|        }
@@ -14507,10 +14544,10 @@
 	ТекстДокХХХ.Записать("C:\444\ВыгрузкаДизайнера\pDesigner.cs");
 	
 	СтрВыгрузки = 
-	"using System;
-	|using System.Linq;
-	|using System.ComponentModel.Design.Serialization;
+	"using System.ComponentModel.Design.Serialization;
 	|using System.ComponentModel;
+	|using System.Linq;
+	|using System;
 	|
 	|namespace osfDesigner
 	|{
@@ -14624,6 +14661,12 @@
 	|
 	|            // Затем не допустим ведущего подчеркивания.
 	|            if (name.StartsWith(""_""))
+	|            {
+	|                return false;
+	|            }
+	|
+	|            // Не допустим пробелы.
+	|            if (name.Contains("" ""))
 	|            {
 	|                return false;
 	|            }
@@ -16112,13 +16155,13 @@
 	ТекстДокХХХ.Записать("C:\444\ВыгрузкаДизайнера\ListItemListBox.cs");
 	
 	СтрВыгрузки = 
-	"using System;
-	|using System.Drawing;
+	"using System.ComponentModel.Design;
 	|using System.Drawing.Design;
-	|using System.Windows.Forms;
-	|using System.ComponentModel.Design;
-	|using System.Reflection;
+	|using System.Drawing;
 	|using System.Globalization;
+	|using System.Reflection;
+	|using System.Windows.Forms;
+	|using System;
 	|
 	|namespace osfDesigner
 	|{
@@ -16159,6 +16202,7 @@
 	|            MyListBox1 = (osfDesigner.ListBox)this.Context.Instance;
 	|            collectionForm.Text = ""Редактор элементов ПолеСписка"";
 	|            collectionForm.Shown += CollectionForm_Shown;
+	|            collectionForm.FormClosed += CollectionForm_FormClosed;
 	|
 	|            frmCollectionEditorForm = (System.Windows.Forms.Form)collectionForm;
 	|            TableLayoutPanel1 = (System.Windows.Forms.TableLayoutPanel)frmCollectionEditorForm.Controls[0];
@@ -16250,6 +16294,11 @@
 	|            }
 	|
 	|            return collectionForm;
+	|        }
+	|
+	|        private void CollectionForm_FormClosed(object sender, FormClosedEventArgs e)
+	|        {
+	|            OneScriptFormsDesigner.SetDesignSurfaceState();
 	|        }
 	|
 	|        private void CollectionForm_Shown(object sender, EventArgs e)
@@ -16472,13 +16521,13 @@
 	ТекстДокХХХ.Записать("C:\444\ВыгрузкаДизайнера\MyListBoxCollectionEditor.cs");
 	
 	СтрВыгрузки = 
-	"using System;
-	|using System.Drawing;
+	"using System.ComponentModel.Design;
 	|using System.Drawing.Design;
-	|using System.Windows.Forms;
-	|using System.ComponentModel.Design;
-	|using System.Reflection;
+	|using System.Drawing;
 	|using System.Globalization;
+	|using System.Reflection;
+	|using System.Windows.Forms;
+	|using System;
 	|
 	|namespace osfDesigner
 	|{
@@ -16519,6 +16568,7 @@
 	|            ComboBox1 = (ComboBox)this.Context.Instance;
 	|            collectionForm.Text = ""Редактор элементов ПолеВыбора"";
 	|            collectionForm.Shown += CollectionForm_Shown;
+	|            collectionForm.FormClosed += CollectionForm_FormClosed;
 	|
 	|            frmCollectionEditorForm = (System.Windows.Forms.Form)collectionForm;
 	|            TableLayoutPanel1 = (System.Windows.Forms.TableLayoutPanel)frmCollectionEditorForm.Controls[0];
@@ -16612,6 +16662,11 @@
 	|            }
 	|
 	|            return collectionForm;
+	|        }
+	|
+	|        private void CollectionForm_FormClosed(object sender, FormClosedEventArgs e)
+	|        {
+	|            OneScriptFormsDesigner.SetDesignSurfaceState();
 	|        }
 	|
 	|        private void ButtonOk1_Click(object sender, EventArgs e)
@@ -17409,13 +17464,13 @@
 	ТекстДокХХХ.Записать("C:\444\ВыгрузкаДизайнера\MyMinimumSizeEditor.cs");
 	
 	СтрВыгрузки = 
-	"using System;
-	|using System.Drawing;
+	"using System.ComponentModel.Design;
 	|using System.Drawing.Design;
-	|using System.Windows.Forms;
-	|using System.ComponentModel.Design;
-	|using System.Reflection;
+	|using System.Drawing;
 	|using System.Globalization;
+	|using System.Reflection;
+	|using System.Windows.Forms;
+	|using System;
 	|
 	|namespace osfDesigner
 	|{
@@ -17460,6 +17515,7 @@
 	|            {
 	|                PropertiesLabel1.Text = ""Свойства:"";
 	|            };
+	|            collectionForm.FormClosed += CollectionForm_FormClosed;
 	|
 	|            frmCollectionEditorForm = (System.Windows.Forms.Form)collectionForm;
 	|            TableLayoutPanel1 = (System.Windows.Forms.TableLayoutPanel)frmCollectionEditorForm.Controls[0];
@@ -17550,67 +17606,10 @@
 	|
 	|            return collectionForm;
 	|        }
-	|	
-	|        private void GetDefaultValues()
+	|
+	|        private void CollectionForm_FormClosed(object sender, FormClosedEventArgs e)
 	|        {
-	|            // Заполним для компонента начальные свойства. Они нужны будут при создании скрипта.
-	|            dynamic comp = PropertyGrid1.SelectedObject;
-	|            if (comp.DefaultValues != null)
-	|            {
-	|                return;
-	|            }
-	|            string DefaultValues1 = """";
-	|            object pg = PropertyGrid1;
-	|            object view1 = typeof(System.Windows.Forms.PropertyGrid).GetField(""gridView"", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(pg);
-	|            dynamic GridItemCollection1 = (dynamic)view1.GetType().InvokeMember(""GetAllGridEntries"", BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Instance, null, view1, null);
-	|            foreach (GridItem GridItem in GridItemCollection1)
-	|            {
-	|                if (GridItem.PropertyDescriptor == null) // Исключим из обхода категории.
-	|                {
-	|                    continue;
-	|                }
-	|                if (GridItem.Label == ""Locked"") // Исключим из обхода ненужные свойства.
-	|                {
-	|                    continue;
-	|                }
-	|                if (GridItem.PropertyDescriptor.Category != GridItem.Label)
-	|                {
-	|                    string str7 = """";
-	|                    string strTab = ""            "";
-	|                    str7 = str7 + OneScriptFormsDesigner.ObjectConvertToString(GridItem.Value);
-	|                    if (GridItem.GridItems.Count > 0)
-	|                    {
-	|                        strTab = strTab + ""\t\t"";
-	|                        str7 = str7 + Environment.NewLine;
-	|                        str7 = str7 + GetGridSubEntries(GridItem.GridItems, """", strTab);
-	|
-	|                        DefaultValues1 = DefaultValues1 + """" + GridItem.Label + "" == "" + str7 + Environment.NewLine;
-	|
-	|                        strTab = ""\t\t"";
-	|                    }
-	|                    else
-	|                    {
-	|                        DefaultValues1 = DefaultValues1 + """" + GridItem.Label + "" == "" + str7 + Environment.NewLine;
-	|                    }
-	|                }
-	|            }
-	|            comp.DefaultValues = DefaultValues1;
-	|        }
-	|
-	|        public string GetGridSubEntries(GridItemCollection gridItems, string str, string strTab)
-	|        {
-	|            foreach (var item in gridItems)
-	|            {
-	|                GridItem _item = (GridItem)item;
-	|                str = str + strTab + _item.Label + "" = "" + _item.Value + Environment.NewLine;
-	|                if (_item.GridItems.Count > 0)
-	|                {
-	|                    strTab = strTab + ""\t\t"";
-	|                    str = GetGridSubEntries(_item.GridItems, str, strTab);
-	|                    strTab = ""\t\t"";
-	|                }
-	|            }
-	|            return str;
+	|            OneScriptFormsDesigner.SetDesignSurfaceState();
 	|        }
 	|
 	|        private void UpdateListBox1()
@@ -17632,12 +17631,12 @@
 	|        private void ButtonAdd1_Click(object sender, EventArgs e)
 	|        {
 	|            osfDesigner.StatusBarPanel SimilarObj = (osfDesigner.StatusBarPanel)PropertyGrid1.SelectedObject;
-	|            SimilarObj.Text = OneScriptFormsDesigner.RevertStatusBarPanelName(StatusBar1);
-	|            SimilarObj.Name = SimilarObj.Text;
+	|            SimilarObj.Name = OneScriptFormsDesigner.RevertStatusBarPanelName(StatusBar1);
+	|            SimilarObj.Text = ""Панель"" + OneScriptFormsDesigner.ParseBetween(SimilarObj.Name, ""Панель"", null);
 	|            ListBox1.Refresh();
 	|            PropertyGrid1.SelectedObject = SimilarObj;
 	|            PropertiesLabel1.Text = ""Свойства:"";
-	|            GetDefaultValues();
+	|            SimilarObj.DefaultValues = OneScriptFormsDesigner.GetDefaultValues(SimilarObj, PropertyGrid1);
 	|        }
 	|
 	|        private void PropertyGrid1_SelectedGridItemChanged(object sender, SelectedGridItemChangedEventArgs e)
@@ -17760,13 +17759,13 @@
 	ТекстДокХХХ.Записать("C:\444\ВыгрузкаДизайнера\MyStatusBarPanelCollectionEditor.cs");
 	
 	СтрВыгрузки = 
-	"using System;
-	|using System.Drawing;
+	"using System.ComponentModel.Design;
 	|using System.Drawing.Design;
-	|using System.Windows.Forms;
-	|using System.ComponentModel.Design;
-	|using System.Reflection;
+	|using System.Drawing;
 	|using System.Globalization;
+	|using System.Reflection;
+	|using System.Windows.Forms;
+	|using System;
 	|
 	|namespace osfDesigner
 	|{
@@ -17811,6 +17810,7 @@
 	|            {
 	|                PropertiesLabel1.Text = ""Свойства:"";
 	|            };
+	|            collectionForm.FormClosed += CollectionForm_FormClosed;
 	|
 	|            frmCollectionEditorForm = (System.Windows.Forms.Form)collectionForm;
 	|            TableLayoutPanel1 = (System.Windows.Forms.TableLayoutPanel)frmCollectionEditorForm.Controls[0];
@@ -17901,69 +17901,12 @@
 	|
 	|            return collectionForm;
 	|        }
-	|	
-	|        private void GetDefaultValues()
+	|
+	|        private void CollectionForm_FormClosed(object sender, FormClosedEventArgs e)
 	|        {
-	|            // Заполним для компонента начальные свойства. Они нужны будут при создании скрипта.
-	|            dynamic comp = PropertyGrid1.SelectedObject;
-	|            if (comp.DefaultValues != null)
-	|            {
-	|                return;
-	|            }
-	|            string DefaultValues1 = """";
-	|            object pg = PropertyGrid1;
-	|            object view1 = typeof(System.Windows.Forms.PropertyGrid).GetField(""gridView"", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(pg);
-	|            dynamic GridItemCollection1 = (dynamic)view1.GetType().InvokeMember(""GetAllGridEntries"", BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Instance, null, view1, null);
-	|            foreach (GridItem GridItem in GridItemCollection1)
-	|            {
-	|                if (GridItem.PropertyDescriptor == null)  // Исключим из обхода категории.
-	|                {
-	|                    continue;
-	|                }
-	|                if (GridItem.Label == ""Locked"")  // Исключим из обхода ненужные свойства.
-	|                {
-	|                    continue;
-	|                }
-	|                if (GridItem.PropertyDescriptor.Category != GridItem.Label)
-	|                {
-	|                    string str7 = """";
-	|                    string strTab = ""            "";
-	|                    str7 = str7 + OneScriptFormsDesigner.ObjectConvertToString(GridItem.Value);
-	|                    if (GridItem.GridItems.Count > 0)
-	|                    {
-	|                        strTab = strTab + ""\t\t"";
-	|                        str7 = str7 + Environment.NewLine;
-	|                        str7 = str7 + GetGridSubEntries(GridItem.GridItems, """", strTab);
-	|
-	|                        DefaultValues1 = DefaultValues1 + """" + GridItem.Label + "" == "" + str7 + Environment.NewLine;
-	|
-	|                        strTab = ""\t\t"";
-	|                    }
-	|                    else
-	|                    {
-	|                        DefaultValues1 = DefaultValues1 + """" + GridItem.Label + "" == "" + str7 + Environment.NewLine;
-	|                    }
-	|                }
-	|            }
-	|            comp.DefaultValues = DefaultValues1;
+	|            OneScriptFormsDesigner.SetDesignSurfaceState();
 	|        }
 	|
-	|        public string GetGridSubEntries(GridItemCollection gridItems, string str, string strTab)
-	|        {
-	|            foreach (var item in gridItems)
-	|            {
-	|                GridItem _item = (GridItem)item;
-	|                str = str + strTab + _item.Label + "" = "" + _item.Value + Environment.NewLine;
-	|                if (_item.GridItems.Count > 0)
-	|                {
-	|                    strTab = strTab + ""\t\t"";
-	|                    str = GetGridSubEntries(_item.GridItems, str, strTab);
-	|                    strTab = ""\t\t"";
-	|                }
-	|            }
-	|            return str;
-	|        }
-	|	
 	|        private void UpdateListBox1()
 	|        {
 	|            int index = ListBox1.SelectedIndex;
@@ -17983,12 +17926,12 @@
 	|        private void ButtonAdd1_Click(object sender, EventArgs e)
 	|        {
 	|            ColumnHeader SimilarObj = (ColumnHeader)PropertyGrid1.SelectedObject;
-	|            SimilarObj.Text = OneScriptFormsDesigner.RevertColumnHeaderName(ListView1);
-	|            SimilarObj.Name = SimilarObj.Text;
+	|            SimilarObj.Name = OneScriptFormsDesigner.RevertColumnHeaderName(ListView1);
+	|            SimilarObj.Text = ""Колонка"" + OneScriptFormsDesigner.ParseBetween(SimilarObj.Name, ""Колонка"", null);
 	|            ListBox1.Refresh();
 	|            PropertyGrid1.SelectedObject = SimilarObj;
 	|            PropertiesLabel1.Text = ""Свойства:"";
-	|            GetDefaultValues();
+	|            SimilarObj.DefaultValues = OneScriptFormsDesigner.GetDefaultValues(SimilarObj, PropertyGrid1);
 	|        }
 	|
 	|        private void PropertyGrid1_SelectedGridItemChanged(object sender, SelectedGridItemChangedEventArgs e)
@@ -18111,13 +18054,13 @@
 	ТекстДокХХХ.Записать("C:\444\ВыгрузкаДизайнера\MyColumnHeaderCollectionEditor.cs");
 	
 	СтрВыгрузки = 
-	"using System;
-	|using System.Drawing;
+	"using System.ComponentModel.Design;
 	|using System.Drawing.Design;
-	|using System.Windows.Forms;
-	|using System.ComponentModel.Design; 
-	|using System.Reflection;
+	|using System.Drawing;
 	|using System.Globalization;
+	|using System.Reflection;
+	|using System.Windows.Forms;
+	|using System;
 	|
 	|namespace osfDesigner
 	|{
@@ -18162,6 +18105,7 @@
 	|            {
 	|                PropertiesLabel1.Text = ""Свойства:"";
 	|            };
+	|            collectionForm.FormClosed += CollectionForm_FormClosed;
 	|
 	|            frmCollectionEditorForm = (System.Windows.Forms.Form)collectionForm;
 	|            TableLayoutPanel1 = (System.Windows.Forms.TableLayoutPanel)frmCollectionEditorForm.Controls[0];
@@ -18252,67 +18196,10 @@
 	|
 	|            return collectionForm;
 	|        }
-	|	
-	|        private void GetDefaultValues()
+	|
+	|        private void CollectionForm_FormClosed(object sender, FormClosedEventArgs e)
 	|        {
-	|            // Заполним для компонента начальные свойства. Они нужны будут при создании скрипта.
-	|            dynamic comp = PropertyGrid1.SelectedObject;
-	|            if (comp.DefaultValues != null)
-	|            {
-	|                return;
-	|            }
-	|            string DefaultValues1 = """";
-	|            object pg = PropertyGrid1;
-	|            object view1 = typeof(System.Windows.Forms.PropertyGrid).GetField(""gridView"", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(pg);
-	|            dynamic GridItemCollection1 = (dynamic)view1.GetType().InvokeMember(""GetAllGridEntries"", BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Instance, null, view1, null);
-	|            foreach (GridItem GridItem in GridItemCollection1)
-	|            {
-	|                if (GridItem.PropertyDescriptor == null) // Исключим из обхода категории.
-	|                {
-	|                    continue;
-	|                }
-	|                if (GridItem.Label == ""Locked"") // Исключим из обхода ненужные свойства.
-	|                {
-	|                    continue;
-	|                }
-	|                if (GridItem.PropertyDescriptor.Category != GridItem.Label)
-	|                {
-	|                    string str7 = """";
-	|                    string strTab = ""            "";
-	|                    str7 = str7 + OneScriptFormsDesigner.ObjectConvertToString(GridItem.Value);
-	|                    if (GridItem.GridItems.Count > 0)
-	|                    {
-	|                        strTab = strTab + ""\t\t"";
-	|                        str7 = str7 + Environment.NewLine;
-	|                        str7 = str7 + GetGridSubEntries(GridItem.GridItems, """", strTab);
-	|
-	|                        DefaultValues1 = DefaultValues1 + """" + GridItem.Label + "" == "" + str7 + Environment.NewLine;
-	|
-	|                        strTab = ""\t\t"";
-	|                    }
-	|                    else
-	|                    {
-	|                        DefaultValues1 = DefaultValues1 + """" + GridItem.Label + "" == "" + str7 + Environment.NewLine;
-	|                    }
-	|                }
-	|            }
-	|            comp.DefaultValues = DefaultValues1;
-	|        }
-	|
-	|        public string GetGridSubEntries(GridItemCollection gridItems, string str, string strTab)
-	|        {
-	|            foreach (var item in gridItems)
-	|            {
-	|                GridItem _item = (GridItem)item;
-	|                str = str + strTab + _item.Label + "" = "" + _item.Value + Environment.NewLine;
-	|                if (_item.GridItems.Count > 0)
-	|                {
-	|                    strTab = strTab + ""\t\t"";
-	|                    str = GetGridSubEntries(_item.GridItems, str, strTab);
-	|                    strTab = ""\t\t"";
-	|                }
-	|            }
-	|            return str;
+	|            OneScriptFormsDesigner.SetDesignSurfaceState();
 	|        }
 	|
 	|        private void UpdateListBox1()
@@ -18337,11 +18224,12 @@
 	|        private void ButtonAdd1_Click(object sender, EventArgs e)
 	|        {
 	|            osfDesigner.ListViewItem SimilarObj = (osfDesigner.ListViewItem)PropertyGrid1.SelectedObject;
-	|            SimilarObj.Text = OneScriptFormsDesigner.RevertListViewItemName(ListView1);
-	|            SimilarObj.Name = SimilarObj.Text;
+	|            SimilarObj.Name = OneScriptFormsDesigner.RevertListViewItemName(ListView1);
+	|            string str1 = OneScriptFormsDesigner.ParseBetween(SimilarObj.Name, ""СписокЭлементов"", null);
+	|            SimilarObj.Text = ""Элемент"" + OneScriptFormsDesigner.ParseBetween(str1, ""Элемент"", null);
 	|            ListBox1.Refresh();
 	|            PropertyGrid1.SelectedObject = SimilarObj;
-	|            GetDefaultValues();
+	|            SimilarObj.DefaultValues = OneScriptFormsDesigner.GetDefaultValues(SimilarObj, PropertyGrid1);
 	|        }
 	|
 	|        private void ButtonRemove1_Click(object sender, EventArgs e)
@@ -18459,13 +18347,13 @@
 	ТекстДокХХХ.Записать("C:\444\ВыгрузкаДизайнера\MyListViewItemCollectionEditor.cs");
 	
 	СтрВыгрузки = 
-	"using System;
-	|using System.Drawing;
+	"using System.ComponentModel.Design;
 	|using System.Drawing.Design;
-	|using System.Windows.Forms;
-	|using System.ComponentModel.Design;
-	|using System.Reflection;
+	|using System.Drawing;
 	|using System.Globalization;
+	|using System.Reflection;
+	|using System.Windows.Forms;
+	|using System;
 	|
 	|namespace osfDesigner
 	|{
@@ -18511,6 +18399,7 @@
 	|                SetEnabledButtons();
 	|                PropertiesLabel1.Text = ""Свойства:"";
 	|            };
+	|            collectionForm.FormClosed += CollectionForm_FormClosed;
 	|
 	|            frmCollectionEditorForm = (System.Windows.Forms.Form)collectionForm;
 	|            TableLayoutPanel1 = (System.Windows.Forms.TableLayoutPanel)frmCollectionEditorForm.Controls[0];
@@ -18603,67 +18492,10 @@
 	|
 	|            return collectionForm;
 	|        }
-	|	
-	|        private void GetDefaultValues()
+	|
+	|        private void CollectionForm_FormClosed(object sender, FormClosedEventArgs e)
 	|        {
-	|            // Заполним для компонента начальные свойства. Они нужны будут при создании скрипта.
-	|            dynamic comp = PropertyGrid1.SelectedObject;
-	|            if (comp.DefaultValues != null)
-	|            {
-	|                return;
-	|            }
-	|            string DefaultValues1 = """";
-	|            object pg = PropertyGrid1;
-	|            object view1 = typeof(System.Windows.Forms.PropertyGrid).GetField(""gridView"", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(pg);
-	|            dynamic GridItemCollection1 = (dynamic)view1.GetType().InvokeMember(""GetAllGridEntries"", BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Instance, null, view1, null);
-	|            foreach (GridItem GridItem in GridItemCollection1)
-	|            {
-	|                if (GridItem.PropertyDescriptor == null) // Исключим из обхода категории.
-	|                {
-	|                    continue;
-	|                }
-	|                if (GridItem.Label == ""Locked"") // Исключим из обхода ненужные свойства.
-	|                {
-	|                    continue;
-	|                }
-	|                if (GridItem.PropertyDescriptor.Category != GridItem.Label)
-	|                {
-	|                    string str7 = """";
-	|                    string strTab = ""            "";
-	|                    str7 = str7 + OneScriptFormsDesigner.ObjectConvertToString(GridItem.Value);
-	|                    if (GridItem.GridItems.Count > 0)
-	|                    {
-	|                        strTab = strTab + ""\t\t"";
-	|                        str7 = str7 + Environment.NewLine;
-	|                        str7 = str7 + GetGridSubEntries(GridItem.GridItems, """", strTab);
-	|
-	|                        DefaultValues1 = DefaultValues1 + """" + GridItem.Label + "" == "" + str7 + Environment.NewLine;
-	|
-	|                        strTab = ""\t\t"";
-	|                    }
-	|                    else
-	|                    {
-	|                        DefaultValues1 = DefaultValues1 + """" + GridItem.Label + "" == "" + str7 + Environment.NewLine;
-	|                    }
-	|                }
-	|            }
-	|            comp.DefaultValues = DefaultValues1;
-	|        }
-	|
-	|        public string GetGridSubEntries(GridItemCollection gridItems, string str, string strTab)
-	|        {
-	|            foreach (var item in gridItems)
-	|            {
-	|                GridItem _item = (GridItem)item;
-	|                str = str + strTab + _item.Label + "" = "" + _item.Value + Environment.NewLine;
-	|                if (_item.GridItems.Count > 0)
-	|                {
-	|                    strTab = strTab + ""\t\t"";
-	|                    str = GetGridSubEntries(_item.GridItems, str, strTab);
-	|                    strTab = ""\t\t"";
-	|                }
-	|            }
-	|            return str;
+	|            OneScriptFormsDesigner.SetDesignSurfaceState();
 	|        }
 	|
 	|        private void ListBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -18728,11 +18560,11 @@
 	|        private void ButtonAdd1_Click(object sender, EventArgs e)
 	|        {
 	|            osfDesigner.ListViewSubItem SimilarObj = (osfDesigner.ListViewSubItem)PropertyGrid1.SelectedObject;
-	|            SimilarObj.Text = OneScriptFormsDesigner.RevertListViewSubItemName(ListViewItem1);
-	|            SimilarObj.Name = SimilarObj.Text;
+	|            SimilarObj.Name = OneScriptFormsDesigner.RevertListViewSubItemName(ListViewItem1);
+	|            SimilarObj.Text = ""Подэлемент"" + OneScriptFormsDesigner.ParseBetween(SimilarObj.Name, ""Подэлемент"", null);
 	|            ListBox1.Refresh();
 	|            PropertyGrid1.SelectedObject = SimilarObj;
-	|            GetDefaultValues();
+	|            SimilarObj.DefaultValues = OneScriptFormsDesigner.GetDefaultValues(SimilarObj, PropertyGrid1);
 	|        }
 	|	
 	|        private void PropertyGrid1_SelectedGridItemChanged(object sender, SelectedGridItemChangedEventArgs e)
@@ -18857,13 +18689,13 @@
 	ТекстДокХХХ.Записать("C:\444\ВыгрузкаДизайнера\MyListViewSubItemCollectionEditor.cs");
 	
 	СтрВыгрузки = 
-	"using System;
-	|using System.Drawing;
+	"using System.ComponentModel.Design;
 	|using System.Drawing.Design;
-	|using System.Windows.Forms;
-	|using System.ComponentModel.Design;
-	|using System.Reflection;
+	|using System.Drawing;
 	|using System.Globalization;
+	|using System.Reflection;
+	|using System.Windows.Forms;
+	|using System;
 	|
 	|namespace osfDesigner
 	|{
@@ -18918,6 +18750,7 @@
 	|                PropertiesLabel1.Text = ""Свойства:"";
 	|                TopLevelPropertyGrid1 = pDesigner.DSME.PropertyGridHost.PropertyGrid;
 	|            };
+	|            collectionForm.FormClosed += CollectionForm_FormClosed;
 	|
 	|            frmCollectionEditorForm = (System.Windows.Forms.Form)collectionForm;
 	|            TableLayoutPanel1 = (System.Windows.Forms.TableLayoutPanel)frmCollectionEditorForm.Controls[0];
@@ -18993,7 +18826,7 @@
 	|                            else if (item.Text == ""DataGridTextBoxColumn"")
 	|                            {
 	|                                item.Text = ""СтильКолонкиПолеВвода"";
-	|                                item.Click += Item_BoolColumn_Click;
+	|                                item.Click += Item_TextBoxColumn_Click;
 	|                            }
 	|                            else if (item.Text == ""DataGridComboBoxColumnStyle"")
 	|                            {
@@ -19030,102 +18863,49 @@
 	|            return collectionForm;
 	|        }
 	|
+	|        private void CollectionForm_FormClosed(object sender, FormClosedEventArgs e)
+	|        {
+	|            OneScriptFormsDesigner.SetDesignSurfaceState();
+	|        }
+	|
 	|        private void Item_ComboBoxColumn_Click(object sender, EventArgs e)
 	|        {
 	|            dynamic ColumnStyle1 = PropertyGrid1.SelectedObject;
 	|            ColumnStyle1.NameStyle = OneScriptFormsDesigner.RevertDataGridColumnStyleName(DataGridTableStyle1, ColumnStyle1);
+	|            ColumnStyle1.Text = ""СтильКолонкиПолеВыбора"" + OneScriptFormsDesigner.ParseBetween(ColumnStyle1.NameStyle, ""СтильКолонкиПолеВыбора"", null);
 	|            ListBox1.Refresh();
 	|            PropertyGrid1.SelectedObject = ColumnStyle1;
-	|            GetDefaultValues();
+	|            ColumnStyle1.DefaultValues = OneScriptFormsDesigner.GetDefaultValues(ColumnStyle1, PropertyGrid1);
 	|        }
 	|
 	|        private void Item_TextBoxColumn_Click(object sender, EventArgs e)
 	|        {
 	|            dynamic ColumnStyle1 = PropertyGrid1.SelectedObject;
 	|            ColumnStyle1.NameStyle = OneScriptFormsDesigner.RevertDataGridColumnStyleName(DataGridTableStyle1, ColumnStyle1);
+	|            ColumnStyle1.Text = ""СтильКолонкиПолеВвода"" + OneScriptFormsDesigner.ParseBetween(ColumnStyle1.NameStyle, ""СтильКолонкиПолеВвода"", null);
 	|            ListBox1.Refresh();
 	|            PropertyGrid1.SelectedObject = ColumnStyle1;
-	|            GetDefaultValues();
+	|            ColumnStyle1.DefaultValues = OneScriptFormsDesigner.GetDefaultValues(ColumnStyle1, PropertyGrid1);
 	|        }
 	|
 	|        private void Item_BoolColumn_Click(object sender, EventArgs e)
 	|        {
 	|            dynamic ColumnStyle1 = PropertyGrid1.SelectedObject;
 	|            ColumnStyle1.NameStyle = OneScriptFormsDesigner.RevertDataGridColumnStyleName(DataGridTableStyle1, ColumnStyle1);
+	|            ColumnStyle1.Text = ""СтильКолонкиБулево"" + OneScriptFormsDesigner.ParseBetween(ColumnStyle1.NameStyle, ""СтильКолонкиБулево"", null);
 	|            ListBox1.Refresh();
 	|            PropertyGrid1.SelectedObject = ColumnStyle1;
-	|            GetDefaultValues();
+	|            ColumnStyle1.DefaultValues = OneScriptFormsDesigner.GetDefaultValues(ColumnStyle1, PropertyGrid1);
 	|        }
 	|
 	|        private void ButtonAdd1_Click(object sender, EventArgs e)
 	|        {
 	|            dynamic ColumnStyle1 = PropertyGrid1.SelectedObject;
 	|            ColumnStyle1.NameStyle = OneScriptFormsDesigner.RevertDataGridColumnStyleName(DataGridTableStyle1, ColumnStyle1);
+	|            ColumnStyle1.Text = ""СтильКолонкиПолеВвода"" + OneScriptFormsDesigner.ParseBetween(ColumnStyle1.NameStyle, ""СтильКолонкиПолеВвода"", null);
 	|            ListBox1.Refresh();
 	|            PropertyGrid1.SelectedObject = ColumnStyle1;
-	|            GetDefaultValues();
-	|        }
-	|
-	|        private void GetDefaultValues()
-	|        {
-	|            // Заполним для компонента начальные свойства. Они нужны будут при создании скрипта.
-	|            dynamic comp = PropertyGrid1.SelectedObject;
-	|            if (comp.DefaultValues != null)
-	|            {
-	|                return;
-	|            }
-	|            string DefaultValues1 = """";
-	|            object pg = PropertyGrid1;
-	|            object view1 = typeof(System.Windows.Forms.PropertyGrid).GetField(""gridView"", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(pg);
-	|            dynamic GridItemCollection1 = (dynamic)view1.GetType().InvokeMember(""GetAllGridEntries"", BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Instance, null, view1, null);
-	|            foreach (GridItem GridItem in GridItemCollection1)
-	|            {
-	|                if (GridItem.PropertyDescriptor == null) // Исключим из обхода категории.
-	|                {
-	|                    continue;
-	|                }
-	|                if (GridItem.Label == ""Locked"") // Исключим из обхода ненужные свойства.
-	|                {
-	|                    continue;
-	|                }
-	|                if (GridItem.PropertyDescriptor.Category != GridItem.Label)
-	|                {
-	|                    string str7 = """";
-	|                    string strTab = ""            "";
-	|                    str7 = str7 + OneScriptFormsDesigner.ObjectConvertToString(GridItem.Value);
-	|                    if (GridItem.GridItems.Count > 0)
-	|                    {
-	|                        strTab = strTab + ""\t\t"";
-	|                        str7 = str7 + Environment.NewLine;
-	|                        str7 = str7 + GetGridSubEntries(GridItem.GridItems, """", strTab);
-	|
-	|                        DefaultValues1 = DefaultValues1 + """" + GridItem.Label + "" == "" + str7 + Environment.NewLine;
-	|
-	|                        strTab = ""\t\t"";
-	|                    }
-	|                    else
-	|                    {
-	|                        DefaultValues1 = DefaultValues1 + """" + GridItem.Label + "" == "" + str7 + Environment.NewLine;
-	|                    }
-	|                }
-	|            }
-	|            comp.DefaultValues = DefaultValues1;
-	|        }
-	|
-	|        public string GetGridSubEntries(GridItemCollection gridItems, string str, string strTab)
-	|        {
-	|            foreach (var item in gridItems)
-	|            {
-	|                GridItem _item = (GridItem)item;
-	|                str = str + strTab + _item.Label + "" = "" + _item.Value + Environment.NewLine;
-	|                if (_item.GridItems.Count > 0)
-	|                {
-	|                    strTab = strTab + ""\t\t"";
-	|                    str = GetGridSubEntries(_item.GridItems, str, strTab);
-	|                    strTab = ""\t\t"";
-	|                }
-	|            }
-	|            return str;
+	|            ColumnStyle1.DefaultValues = OneScriptFormsDesigner.GetDefaultValues(ColumnStyle1, PropertyGrid1);
 	|        }
 	|
 	|        private void UpdateListBox1()
@@ -19176,7 +18956,7 @@
 	|                try
 	|                {
 	|                    dynamic ColumnStyle1 = DataGridTableStyle1.GridColumnStyles[e.Index];
-	|                    ListItem1Text = ColumnStyle1.NameStyle;
+	|                    ListItem1Text = ColumnStyle1.Text;
 	|                }
 	|                catch { }
 	|                Graphics Graphics1 = e.Graphics;
@@ -19299,6 +19079,11 @@
 	|        [Browsable(true)]
 	|        [ReadOnly(true)]
 	|        public string NameStyle { get; set; }
+	|	
+	|        [DisplayName(""Текст"")]
+	|        [Category(""Прочее"")]
+	|        [Browsable(true)]
+	|        public string Text { get; set; }
 	|
 	|        [DisplayName(""ИмяОтображаемого"")]
 	|        [Description(""Возвращает или задает имя элемента данных, на который отображается стиль столбца."")]
@@ -19366,6 +19151,7 @@
 	|            get
 	|            {
 	|                return @""
+	|Текст ==
 	|"";
 	|            }
 	|        }
@@ -19515,13 +19301,13 @@
 	ТекстДокХХХ.Записать("C:\444\ВыгрузкаДизайнера\MyConverter.cs");
 	
 	СтрВыгрузки = 
-	"using System;
-	|using System.Drawing;
+	"using System.ComponentModel.Design;
 	|using System.Drawing.Design;
-	|using System.Windows.Forms;
-	|using System.ComponentModel.Design;
-	|using System.Reflection;
+	|using System.Drawing;
 	|using System.Globalization;
+	|using System.Reflection;
+	|using System.Windows.Forms;
+	|using System;
 	|
 	|namespace osfDesigner
 	|{
@@ -19557,6 +19343,7 @@
 	|            DataGrid1 = (DataGrid)this.Context.Instance;
 	|            collectionForm.Text = ""Редактор коллекции СтилиТаблицыСеткиДанных"";
 	|            collectionForm.Shown += CollectionForm_Shown;
+	|            collectionForm.FormClosed += CollectionForm_FormClosed;
 	|
 	|            frmCollectionEditorForm = (System.Windows.Forms.Form)collectionForm;
 	|            TableLayoutPanel1 = (System.Windows.Forms.TableLayoutPanel)frmCollectionEditorForm.Controls[0];
@@ -19648,65 +19435,12 @@
 	|
 	|            return collectionForm;
 	|        }
-	|	
-	|        private void GetDefaultValues()
+	|
+	|        private void CollectionForm_FormClosed(object sender, FormClosedEventArgs e)
 	|        {
-	|            // Заполним для компонента начальные свойства. Они нужны будут при создании скрипта.
-	|            string DefaultValues1 = """";
-	|            object pg = PropertyGrid1;
-	|            dynamic comp = ((System.Windows.Forms.PropertyGrid)pg).SelectedObject;
-	|            object view1 = typeof(System.Windows.Forms.PropertyGrid).GetField(""gridView"", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(pg);
-	|            GridItemCollection GridItemCollection1 = (GridItemCollection)view1.GetType().InvokeMember(""GetAllGridEntries"", BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Instance, null, view1, null);
-	|            foreach (GridItem GridItem in GridItemCollection1)
-	|            {
-	|                if (GridItem.PropertyDescriptor == null) // Исключим из обхода категории.
-	|                {
-	|                    continue;
-	|                }
-	|                if (GridItem.Label == ""Locked"") // Исключим из обхода ненужные свойства.
-	|                {
-	|                    continue;
-	|                }
-	|                if (GridItem.PropertyDescriptor.Category != GridItem.Label)
-	|                {
-	|                    string str7 = """";
-	|                    string strTab = ""            "";
-	|                    str7 = str7 + OneScriptFormsDesigner.ObjectConvertToString(GridItem.Value);
-	|                    if (GridItem.GridItems.Count > 0)
-	|                    {
-	|                        strTab = strTab + ""\t\t"";
-	|                        str7 = str7 + Environment.NewLine;
-	|                        str7 = str7 + GetGridSubEntries(GridItem.GridItems, """", strTab);
-	|
-	|                        DefaultValues1 = DefaultValues1 + """" + GridItem.Label + "" == "" + str7 + Environment.NewLine;
-	|
-	|                        strTab = ""\t\t"";
-	|                    }
-	|                    else
-	|                    {
-	|                        DefaultValues1 = DefaultValues1 + """" + GridItem.Label + "" == "" + str7 + Environment.NewLine;
-	|                    }
-	|                }
-	|            }
-	|            comp.DefaultValues = DefaultValues1;
+	|            OneScriptFormsDesigner.SetDesignSurfaceState();
 	|        }
 	|
-	|        public string GetGridSubEntries(GridItemCollection gridItems, string str, string strTab)
-	|        {
-	|            foreach (var item in gridItems)
-	|            {
-	|                GridItem _item = (GridItem)item;
-	|                str = str + strTab + _item.Label + "" = "" + _item.Value + Environment.NewLine;
-	|                if (_item.GridItems.Count > 0)
-	|                {
-	|                    strTab = strTab + ""\t\t"";
-	|                    str = GetGridSubEntries(_item.GridItems, str, strTab);
-	|                    strTab = ""\t\t"";
-	|                }
-	|            }
-	|            return str;
-	|        }
-	|	
 	|        private void UpdateListBox1()
 	|        {
 	|            int index = ListBox1.SelectedIndex;
@@ -19725,10 +19459,11 @@
 	|        {
 	|            osfDesigner.DataGridTableStyle SimilarObj = (osfDesigner.DataGridTableStyle)PropertyGrid1.SelectedObject;
 	|            SimilarObj.NameStyle = OneScriptFormsDesigner.RevertDataGridTableStyleName(DataGrid1);
+	|            SimilarObj.Text = ""Стиль"" + OneScriptFormsDesigner.ParseBetween(SimilarObj.NameStyle, ""Стиль"", null);
 	|            ListBox1.Refresh();
 	|            PropertyGrid1.SelectedObject = SimilarObj;
 	|	
-	|            GetDefaultValues();
+	|            SimilarObj.DefaultValues = OneScriptFormsDesigner.GetDefaultValues(SimilarObj, PropertyGrid1);
 	|        }
 	|
 	|        private void PropertyGrid1_SelectedGridItemChanged(object sender, SelectedGridItemChangedEventArgs e)
@@ -19748,7 +19483,7 @@
 	|                    {
 	|                        SimilarObj = new osfDesigner.DataGridTableStyle();
 	|                        ((osfDesigner.DataGridTableStyle)SimilarObj).OriginalObj = OriginalObj;
-	|                        OneScriptFormsDesigner.AddToHashtable(OriginalObj, SimilarObj);
+	|                        OneScriptFormsDesigner.AddToDictionary(OriginalObj, SimilarObj);
 	|                        OneScriptFormsDesigner.PassProperties(OriginalObj, SimilarObj); // Передадим свойства.
 	|                        PropertyGrid1.SelectedObject = SimilarObj;
 	|                        PropertiesLabel1.Text = ""Свойства:"";
@@ -19793,7 +19528,7 @@
 	|                    dynamic OriginalObj = DataGridTableStyle1;
 	|                    dynamic SimilarObj = OneScriptFormsDesigner.RevertSimilarObj(OriginalObj);
 	|                    ListItem1.Value = DataGridTableStyle1;
-	|                    ListItem1Text = ((DataGridTableStyle)SimilarObj).NameStyle;
+	|                    ListItem1Text = ((DataGridTableStyle)SimilarObj).Text;
 	|                }
 	|                catch { }
 	|                Graphics Graphics1 = e.Graphics;
@@ -19998,13 +19733,13 @@
 	ТекстДокХХХ.Записать("C:\444\ВыгрузкаДизайнера\MyRectangleConverter.cs");
 	
 	СтрВыгрузки = 
-	"using System;
-	|using System.Drawing;
+	"using System.ComponentModel.Design;
 	|using System.Drawing.Design;
-	|using System.Windows.Forms;
-	|using System.ComponentModel.Design;
-	|using System.Reflection; 
+	|using System.Drawing;
 	|using System.Globalization;
+	|using System.Reflection;
+	|using System.Windows.Forms;
+	|using System;
 	|
 	|namespace osfDesigner
 	|{
@@ -20046,6 +19781,7 @@
 	|                TopLevelPropertyGrid1 = pDesigner.DSME.PropertyGridHost.PropertyGrid;
 	|                PropertiesLabel1.Text = ""Свойства:"";
 	|            };
+	|            collectionForm.FormClosed += CollectionForm_FormClosed;
 	|
 	|            frmCollectionEditorForm = (System.Windows.Forms.Form)collectionForm;
 	|            TableLayoutPanel1 = (System.Windows.Forms.TableLayoutPanel)frmCollectionEditorForm.Controls[0];
@@ -20138,67 +19874,10 @@
 	|
 	|            return collectionForm;
 	|        }
-	|	
-	|        private void GetDefaultValues()
+	|
+	|        private void CollectionForm_FormClosed(object sender, FormClosedEventArgs e)
 	|        {
-	|            // Заполним для компонента начальные свойства. Они нужны будут при создании скрипта.
-	|            dynamic comp = PropertyGrid1.SelectedObject;
-	|            if (comp.DefaultValues != null)
-	|            {
-	|                return;
-	|            }
-	|            string DefaultValues1 = """";
-	|            object pg = PropertyGrid1;
-	|            object view1 = typeof(System.Windows.Forms.PropertyGrid).GetField(""gridView"", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(pg);
-	|            dynamic GridItemCollection1 = (dynamic)view1.GetType().InvokeMember(""GetAllGridEntries"", BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Instance, null, view1, null);
-	|            foreach (GridItem GridItem in GridItemCollection1)
-	|            {
-	|                if (GridItem.PropertyDescriptor == null) // Исключим из обхода категории.
-	|                {
-	|                    continue;
-	|                }
-	|                if (GridItem.Label == ""Locked"") // Исключим из обхода ненужные свойства.
-	|                {
-	|                    continue;
-	|                }
-	|                if (GridItem.PropertyDescriptor.Category != GridItem.Label)
-	|                {
-	|                    string str7 = """";
-	|                    string strTab = ""            "";
-	|                    str7 = str7 + OneScriptFormsDesigner.ObjectConvertToString(GridItem.Value);
-	|                    if (GridItem.GridItems.Count > 0)
-	|                    {
-	|                        strTab = strTab + ""\t\t"";
-	|                        str7 = str7 + Environment.NewLine;
-	|                        str7 = str7 + GetGridSubEntries(GridItem.GridItems, """", strTab);
-	|
-	|                        DefaultValues1 = DefaultValues1 + """" + GridItem.Label + "" == "" + str7 + Environment.NewLine;
-	|
-	|                        strTab = ""\t\t"";
-	|                    }
-	|                    else
-	|                    {
-	|                        DefaultValues1 = DefaultValues1 + """" + GridItem.Label + "" == "" + str7 + Environment.NewLine;
-	|                    }
-	|                }
-	|            }
-	|            comp.DefaultValues = DefaultValues1;
-	|        }
-	|
-	|        public string GetGridSubEntries(GridItemCollection gridItems, string str, string strTab)
-	|        {
-	|            foreach (var item in gridItems)
-	|            {
-	|                GridItem _item = (GridItem)item;
-	|                str = str + strTab + _item.Label + "" = "" + _item.Value + Environment.NewLine;
-	|                if (_item.GridItems.Count > 0)
-	|                {
-	|                    strTab = strTab + ""\t\t"";
-	|                    str = GetGridSubEntries(_item.GridItems, str, strTab);
-	|                    strTab = ""\t\t"";
-	|                }
-	|            }
-	|            return str;
+	|            OneScriptFormsDesigner.SetDesignSurfaceState();
 	|        }
 	|
 	|        private void PropertyGrid1_SelectedGridItemChanged(object sender, SelectedGridItemChangedEventArgs e)
@@ -20220,13 +19899,15 @@
 	|                        SimilarObj.OriginalObj = OriginalObj;
 	|                        SimilarObj.Parent = OriginalObj.Parent;
 	|                        SimilarObj.Style = (osfDesigner.ToolBarButtonStyle)OriginalObj.Style;
+	|
 	|                        OriginalObj.Tag = SimilarObj;
 	|                        PropertyGrid1.SelectedObject = SimilarObj;
 	|                        PropertiesLabel1.Text = ""Свойства:"";
 	|                    }
 	|                    else
 	|                    {
-	|                        PropertyGrid1.SelectedObject = OriginalObj.Tag;
+	|                        osfDesigner.ToolBarButton SimilarObj = (osfDesigner.ToolBarButton)OriginalObj.Tag;
+	|                        PropertyGrid1.SelectedObject = SimilarObj;
 	|                    }
 	|                }
 	|            }
@@ -20277,7 +19958,7 @@
 	|        {
 	|            osfDesigner.ToolBarButton SimilarObj = (osfDesigner.ToolBarButton)PropertyGrid1.SelectedObject;
 	|            SimilarObj.Name = OneScriptFormsDesigner.RevertToolBarButtonName(ToolBar1);
-	|            SimilarObj.Text = SimilarObj.Name;
+	|            SimilarObj.Text = ""Кн"" + OneScriptFormsDesigner.ParseBetween(SimilarObj.Name, ""Кн"", null);
 	|            ListBox1.Refresh();
 	|
 	|            ToolBar1.Buttons.Clear();
@@ -20285,7 +19966,6 @@
 	|            MethodInfo3.Invoke(collectionForm, new object[] { ToolBar1.Buttons });
 	|
 	|            PropertyGrid1.SelectedObject = SimilarObj;
-	|            GetDefaultValues();
 	|
 	|            collectionForm.Refresh();
 	|        }
@@ -20745,12 +20425,12 @@
 	ТекстДокХХХ.Записать("C:\444\ВыгрузкаДизайнера\MyPropertyDescriptor.cs");
 	
 	СтрВыгрузки = 
-	"using System;
-	|using System.Windows.Forms;
-	|using System.ComponentModel.Design;
+	"using System.ComponentModel.Design;
 	|using System.ComponentModel;
-	|using System.Reflection;
 	|using System.Drawing;
+	|using System.Reflection;
+	|using System.Windows.Forms;
+	|using System;
 	|
 	|namespace osfDesigner
 	|{
@@ -20797,6 +20477,7 @@
 	|            collectionForm.FormClosed += delegate (object sender, FormClosedEventArgs e)
 	|            {
 	|                OneScriptFormsDesigner.block1 = false;
+	|                OneScriptFormsDesigner.SetDesignSurfaceState();
 	|                TopLevelPropertyGrid1.SelectedObject = TabControl1;
 	|            };
 	|
@@ -21549,14 +21230,14 @@
 	ТекстДокХХХ.Записать("C:\444\ВыгрузкаДизайнера\MyMonthlyBoldedDatesList.cs");
 	
 	СтрВыгрузки = 
-	"using System;
-	|using System.Drawing;
+	"using System.ComponentModel.Design;
+	|using System.ComponentModel;
 	|using System.Drawing.Design;
-	|using System.Windows.Forms;
-	|using System.ComponentModel; 
-	|using System.ComponentModel.Design;
-	|using System.Reflection;
+	|using System.Drawing;
 	|using System.Globalization;
+	|using System.Reflection;
+	|using System.Windows.Forms;
+	|using System;
 	|
 	|namespace osfDesigner
 	|{
@@ -21664,6 +21345,7 @@
 	|                        }
 	|                    }
 	|                }
+	|                OneScriptFormsDesigner.SetDesignSurfaceState();
 	|            };
 	|
 	|            frmCollectionEditorForm = (System.Windows.Forms.Form)collectionForm;
@@ -22236,48 +21918,6 @@
 	|            }
 	|        }
 	|
-	|        public string GetDefaultValues(MyTreeNode comp)
-	|        {
-	|            // Заполним для компонента начальные свойства. Они нужны будут при создании скрипта.
-	|            string DefaultValues1 = """";
-	|            object pg = PropertyGrid1;
-	|            ((System.Windows.Forms.PropertyGrid)pg).SelectedObject = comp;
-	|            object view1 = pg.GetType().GetField(""gridView"", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(pg);
-	|            GridItemCollection GridItemCollection1 = (GridItemCollection)view1.GetType().InvokeMember(""GetAllGridEntries"", BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Instance, null, view1, null);
-	|            foreach (GridItem GridItem in GridItemCollection1)
-	|            {
-	|                if (GridItem.PropertyDescriptor == null) // Исключим из обхода категории.
-	|                {
-	|                    continue;
-	|                }
-	|                if (GridItem.Label == ""Locked"") // Исключим из обхода ненужные свойства.
-	|                {
-	|                    continue;
-	|                }
-	|                if (GridItem.PropertyDescriptor.Category != GridItem.Label)
-	|                {
-	|                    string str7 = """";
-	|                    string strTab = ""            "";
-	|                    str7 = str7 + OneScriptFormsDesigner.ObjectConvertToString(GridItem.Value);
-	|                    if (GridItem.GridItems.Count > 0)
-	|                    {
-	|                        strTab = strTab + ""\t\t"";
-	|                        str7 = str7 + Environment.NewLine;
-	|                        str7 = str7 + GetGridSubEntries(GridItem.GridItems, """", strTab);
-	|
-	|                        DefaultValues1 = DefaultValues1 + """" + GridItem.Label + "" == "" + str7 + Environment.NewLine;
-	|
-	|                        strTab = ""\t\t"";
-	|                    }
-	|                    else
-	|                    {
-	|                        DefaultValues1 = DefaultValues1 + """" + GridItem.Label + "" == "" + str7 + Environment.NewLine;
-	|                    }
-	|                }
-	|            }
-	|            return DefaultValues1;
-	|        }
-	|
 	|        private void ButtonMoveDown_Click(object sender, EventArgs e)
 	|        {
 	|            TreeNode TreeNode1 = TreeView1.SelectedNode;
@@ -22383,22 +22023,6 @@
 	|            UpdateTreeViewOriginal();
 	|        }
 	|
-	|        public string GetGridSubEntries(GridItemCollection gridItems, string str, string strTab)
-	|        {
-	|            foreach (var item in gridItems)
-	|            {
-	|                GridItem _item = (GridItem)item;
-	|                str = str + strTab + _item.Label + "" = "" + _item.Value + Environment.NewLine;
-	|                if (_item.GridItems.Count > 0)
-	|                {
-	|                    strTab = strTab + ""\t\t"";
-	|                    str = GetGridSubEntries(_item.GridItems, str, strTab);
-	|                    strTab = ""\t\t"";
-	|                }
-	|            }
-	|            return str;
-	|        }
-	|
 	|        private void PropertyGrid1_SelectedObjectsChanged(object sender, EventArgs e)
 	|        {
 	|            MyTreeNode SelectedObject1 = (MyTreeNode)((System.Windows.Forms.PropertyGrid)sender).SelectedObject;
@@ -22482,9 +22106,10 @@
 	|            MyTreeNode TreeNode1 = new MyTreeNode();
 	|            TreeNode1.TreeView = TreeView1;
 	|            TreeNode1.Name = OneScriptFormsDesigner.RevertNodeName(TreeViewOriginal);
-	|            TreeNode1.Text = TreeNode1.Name;
+	|            TreeNode1.Text = ""Узел"" + OneScriptFormsDesigner.ParseBetween(TreeNode1.Name, ""Узел"", null);
 	|            TreeView1.Nodes.Add(TreeNode1);
-	|            TreeNode1.DefaultValues = GetDefaultValues(TreeNode1);
+	|            PropertyGrid1.SelectedObject = TreeNode1;
+	|            TreeNode1.DefaultValues = OneScriptFormsDesigner.GetDefaultValues(TreeNode1, PropertyGrid1);
 	|            UpdateTreeViewOriginal();
 	|            TreeView1.SelectedNode = TreeNode1;
 	|            ButtonDelete.Enabled = true;
@@ -22497,10 +22122,11 @@
 	|            MyTreeNode TreeNode1 = new MyTreeNode();
 	|            TreeNode1.TreeView = TreeView1;
 	|            TreeNode1.Name = OneScriptFormsDesigner.RevertNodeName(TreeViewOriginal);
-	|            TreeNode1.Text = TreeNode1.Name;
+	|            TreeNode1.Text = ""Узел"" + OneScriptFormsDesigner.ParseBetween(TreeNode1.Name, ""Узел"", null);
 	|            TreeView1.SelectedNode.Nodes.Add(TreeNode1);
 	|            TreeView1.SelectedNode.Expand();
-	|            TreeNode1.DefaultValues = GetDefaultValues(TreeNode1);
+	|            PropertyGrid1.SelectedObject = TreeNode1;
+	|            TreeNode1.DefaultValues = OneScriptFormsDesigner.GetDefaultValues(TreeNode1, PropertyGrid1);
 	|            UpdateTreeViewOriginal();
 	|            TreeView1.Focus();
 	|        }
@@ -22547,6 +22173,7 @@
 	|
 	|        private void frmNodes_Closed(object sender, EventArgs e)
 	|        {
+	|            OneScriptFormsDesigner.SetDesignSurfaceState();
 	|            _wfes.CloseDropDown();
 	|        }
 	|
@@ -23055,31 +22682,34 @@
 	ТекстДокХХХ.Записать("C:\444\ВыгрузкаДизайнера\MyIcon.cs");
 	
 	СтрВыгрузки = 
-	"using System;
-	|using System.Collections;
-	|using System.Collections.Generic;
-	|using ScriptEngine.Machine.Contexts;
+	"using ScriptEngine.Machine.Contexts;
 	|using ScriptEngine.Machine;
+	|using System.Collections.Generic;
+	|using System.Collections;
+	|using System.ComponentModel.Design;
+	|using System.ComponentModel;
+	|using System.Drawing;
+	|using System.IO;
 	|using System.Reflection;
 	|using System.Runtime.InteropServices;
 	|using System.Threading;
-	|using System.ComponentModel;
-	|using System.ComponentModel.Design;
-	|using System.Drawing;
 	|using System.Windows.Forms;
-	|using System.IO;
+	|using System;
 	|
 	|namespace osfDesigner
 	|{
 	|    [ContextClass(""ДизайнерФормДляОдноСкрипта"", ""OneScriptFormsDesigner"")]
 	|    public class OneScriptFormsDesigner : AutoContext<OneScriptFormsDesigner>
 	|    {
-	|        public static Hashtable hashtable = new Hashtable(); // Хранит связь исходного объекта с его дублером.
-	|        public static Hashtable hashtableDesignerTabName = new Hashtable(); // Хранит имя вкладок дизайнера.
-	|        public static Hashtable hashtableDesignerTabRootComponent = new Hashtable(); // Хранит связь rootComponent и создаваемой для него вкладки дризайнера.
+	|        public static Dictionary<object, object> dictionary = new Dictionary<object, object>(); // Хранит связь исходного объекта с его дублером.
+	|        public static Dictionary<string, string> dictionaryDesignerTabName = new Dictionary<string, string>(); // Хранит имя вкладок дизайнера.
+	|        public static Dictionary<object, object> dictionaryDesignerTabRootComponent = new Dictionary<object, object>(); // Хранит связь rootComponent и создаваемой для него вкладки дризайнера.
+	|        public static Dictionary<DesignSurfaceExt2, string> dictionaryDesignSurfaceState = new Dictionary<DesignSurfaceExt2, string>(); // Хранит связь между поверхностью дизайнера и снимком свойств его компонентов.
+	|        public static Dictionary<System.Windows.Forms.TabPage, bool> dictionaryTabPageChanged = new Dictionary<System.Windows.Forms.TabPage, bool>(); // Хранит связь между вкладкой дизайнера и статусом его измененности.
 	|        public static string str1 = """";
 	|        public static int tic1 = 0; // Счетчик для правильной работы TabControl, пропуск двух шагов по созданию дизайнером двух вкладок по умолчанию.
 	|        public static bool block1 = false; // Тригер для блокировки выделения объекта на форме.
+	|        public static bool block2 = false; // Тригер для блокировки проверки измененности формы. Если true - не проверять.
 	|
 	|        [DllImport(""kernel32.dll"")]
 	|        static extern IntPtr GetConsoleWindow();
@@ -23176,7 +22806,7 @@
 	|                System.Windows.Forms.TreeNode TreeNode1 = TreeView.Nodes[i];
 	|                ArrayList.Add(TreeNode1.Name);
 	|
-	|                num = Int32.Parse(TreeNode1.Name.Replace(""Узел"", """"));
+	|                num = Int32.Parse(ParseBetween(TreeNode1.Name, ""Узел"", null));
 	|                if ((num + 1) > max)
 	|                {
 	|                    max = num + 1;
@@ -23197,7 +22827,7 @@
 	|                System.Windows.Forms.TreeNode TreeNode1 = treeNode.Nodes[i];
 	|                ArrayList.Add(TreeNode1.Name);
 	|
-	|                num = Int32.Parse(TreeNode1.Name.Replace(""Узел"", """"));
+	|                num = Int32.Parse(ParseBetween(TreeNode1.Name, ""Узел"", null));
 	|                if ((num + 1) > max)
 	|                {
 	|                    max = num + 1;
@@ -23212,7 +22842,7 @@
 	|
 	|        public static string RevertNodeName(System.Windows.Forms.TreeView p1)
 	|        {
-	|            string name = ""Узел"";
+	|            string name = p1.Name + ""Узел"";
 	|            int max = 0;
 	|            string newName = name + Convert.ToString(max);
 	|            ArrayList ArrayList1 = new ArrayList();
@@ -23231,14 +22861,14 @@
 	|
 	|        public static string RevertDesignerTabName(string p1)
 	|        {
-	|            string p2 = ""Вкладка"" + (hashtableDesignerTabName.Count).ToString() + ""("" + p1 + "")"";
-	|            hashtableDesignerTabName.Add(p2, p1);
+	|            string p2 = ""Вкладка"" + (dictionaryDesignerTabName.Count).ToString() + ""("" + p1 + "")"";
+	|            dictionaryDesignerTabName.Add(p2, p1);
 	|            return p2;
 	|        }
 	|	
 	|        public static string RevertStatusBarPanelName(StatusBar p1)
 	|        {
-	|            string name = ""ПанельСтрокиСостояния"";
+	|            string name = p1.Name + ""Панель"";
 	|            int max = 0;
 	|            int num = 0;
 	|            string newName = name + Convert.ToString(max);
@@ -23251,7 +22881,7 @@
 	|                    if (NameItem != """")
 	|                    {
 	|                        ArrayList1.Add(NameItem);
-	|                        num = Int32.Parse(NameItem.Replace(""ПанельСтрокиСостояния"", """"));
+	|                        num = Int32.Parse(ParseBetween(NameItem, ""Панель"", null));
 	|                        if ((num + 1) > max)
 	|                        {
 	|                            max = num + 1;
@@ -23273,7 +22903,7 @@
 	|
 	|        public static string RevertColumnHeaderName(ListView p1)
 	|        {
-	|            string name = ""Колонка"";
+	|            string name = p1.Name + ""Колонка"";
 	|            int max = 0;
 	|            int num = 0;
 	|            string newName = name + Convert.ToString(max);
@@ -23286,7 +22916,7 @@
 	|                    if (NameItem != """")
 	|                    {
 	|                        ArrayList1.Add(NameItem);
-	|                        num = Int32.Parse(NameItem.Replace(""Колонка"", """"));
+	|                        num = Int32.Parse(ParseBetween(NameItem, ""Колонка"", null));
 	|                        if ((num + 1) > max)
 	|                        {
 	|                            max = num + 1;
@@ -23308,7 +22938,7 @@
 	|
 	|        public static string RevertListViewItemName(ListView p1)
 	|        {
-	|            string name = ""Элемент"";
+	|            string name = p1.Name + ""Элемент"";
 	|            int max = 0;
 	|            int num = 0;
 	|            string newName = name + Convert.ToString(max);
@@ -23321,7 +22951,8 @@
 	|                    if (NameItem != """")
 	|                    {
 	|                        ArrayList1.Add(NameItem);
-	|                        num = Int32.Parse(NameItem.Replace(""Элемент"", """"));
+	|                        string str1 = ParseBetween(NameItem, ""СписокЭлементов"", null);
+	|                        num = Int32.Parse(ParseBetween(str1, ""Элемент"", null));
 	|                        if ((num + 1) > max)
 	|                        {
 	|                            max = num + 1;
@@ -23343,7 +22974,7 @@
 	|
 	|        public static string RevertListViewSubItemName(ListViewItem p1)
 	|        {
-	|            string name = ""Подэлемент"";
+	|            string name = p1.Name + ""Подэлемент"";
 	|            int max = 0;
 	|            int num = 0;
 	|            string newName = name + Convert.ToString(max);
@@ -23353,10 +22984,10 @@
 	|                string NameItem = p1.SubItems[i].Name;
 	|                if (NameItem != null)
 	|                {
-	|                    if (NameItem != """" && !NameItem.Contains(""Элемент""))
+	|                    if (NameItem != """" && NameItem.Contains(""Подэлемент""))
 	|                    {
 	|                        ArrayList1.Add(NameItem);
-	|                        num = Int32.Parse(NameItem.Replace(""Подэлемент"", """"));
+	|                        num = Int32.Parse(ParseBetween(NameItem, ""Подэлемент"", null));
 	|                        if ((num + 1) > max)
 	|                        {
 	|                            max = num + 1;
@@ -23383,11 +23014,12 @@
 	|                int num = 0;
 	|                Menu CurrentMenuItem1 = (Menu)Menu1.MenuItems[i];
 	|                string Name = CurrentMenuItem1.Name;
+	|                string fragment = Name.Replace(""ГлавноеМеню"", ""флажок"");
 	|
-	|                if (Name != """" && !Name.Contains(""Меню""))
+	|                if (Name != """" && !fragment.Contains(""Меню""))
 	|                {
 	|                    ArrayList.Add(CurrentMenuItem1.Name);
-	|                    num = Int32.Parse(CurrentMenuItem1.Name.Replace(""Сепаратор"", """"));
+	|                    num = Int32.Parse(ParseBetween(CurrentMenuItem1.Name, ""Сепаратор"", null));
 	|                    if ((num + 1) > max)
 	|                    {
 	|                        max = num + 1;
@@ -23412,7 +23044,7 @@
 	|                if (Name != """" && !Name.Contains(""Сепаратор""))
 	|                {
 	|                    ArrayList.Add(CurrentMenuItem1.Name);
-	|                    num = Int32.Parse(CurrentMenuItem1.Name.Replace(""Меню"", """"));
+	|                    num = Int32.Parse(ParseBetween(CurrentMenuItem1.Name.Replace(""ГлавноеМеню"", """"), ""Меню"", null));
 	|                    if ((num + 1) > max)
 	|                    {
 	|                        max = num + 1;
@@ -23428,7 +23060,7 @@
 	|
 	|        public static string RevertMenuName(MainMenu p1)
 	|        {
-	|            string name = ""Меню"";
+	|            string name = p1.Name + ""Меню"";
 	|            int max = 0;
 	|            string newName = name + Convert.ToString(max);
 	|            ArrayList ArrayList1 = new ArrayList();
@@ -23447,7 +23079,7 @@
 	|
 	|        public static string RevertSeparatorName(MainMenu p1)
 	|        {
-	|            string name = ""Сепаратор"";
+	|            string name = p1.Name + ""Сепаратор"";
 	|            int max = 0;
 	|            string newName = name + Convert.ToString(max);
 	|            ArrayList ArrayList1 = new ArrayList();
@@ -23466,7 +23098,7 @@
 	|
 	|        public static string RevertToolBarButtonName(ToolBar p1)
 	|        {
-	|            string name = ""Кн"";
+	|            string name = p1.Name + ""Кн"";
 	|            int max = 0;
 	|            int num = 0;
 	|            string newName = name + Convert.ToString(max);
@@ -23479,7 +23111,8 @@
 	|                    if (Name != """")
 	|                    {
 	|                        ArrayList1.Add(Name);
-	|                        num = Int32.Parse(Name.Replace(""Кн"", """"));
+	|
+	|                        num = Int32.Parse(ParseBetween(Name, ""Кн"", null));
 	|                        if ((num + 1) > max)
 	|                        {
 	|                            max = num + 1;
@@ -23501,7 +23134,7 @@
 	|
 	|        public static string RevertDataGridTableStyleName(DataGrid p1)
 	|        {
-	|            string name = ""Стиль"";
+	|            string name = p1.Name + ""Стиль"";
 	|            int max = 0;
 	|            int num = 0;
 	|            string newName = name + Convert.ToString(max);
@@ -23512,7 +23145,7 @@
 	|                if (NameStyle != null)
 	|                {
 	|                    ArrayList1.Add(NameStyle);
-	|                    num = Int32.Parse(NameStyle.Replace(""Стиль"", """"));
+	|                    num = Int32.Parse(ParseBetween(NameStyle, ""Стиль"", null));
 	|                    if ((num + 1) > max)
 	|                    {
 	|                        max = num + 1;
@@ -23537,12 +23170,12 @@
 	|            // p2 - стиль колонки сетки данных.
 	|            if (p2.GetType() == typeof(osfDesigner.DataGridBoolColumn))
 	|            {
-	|                string name = ""СтильКолонкиБулево"";
+	|                osfDesigner.DataGridTableStyle DataGridTableStyle1 = RevertSimilarObj(p1);
+	|                string name = DataGridTableStyle1.NameStyle + p2.NameStyle + ""СтильКолонкиБулево"";
 	|                int max = 0;
 	|                int num = 0;
 	|                string newName = name + Convert.ToString(max);
 	|                ArrayList ArrayList1 = new ArrayList();
-	|                osfDesigner.DataGridTableStyle DataGridTableStyle1 = RevertSimilarObj(p1);
 	|                for (int i = 0; i < DataGridTableStyle1.GridColumnStyles.Count; i++)
 	|                {
 	|                    string NameStyle = ((dynamic)DataGridTableStyle1.GridColumnStyles[i]).NameStyle;
@@ -23551,7 +23184,7 @@
 	|                        if (NameStyle.Contains(""СтильКолонкиБулево""))
 	|                        {
 	|                            ArrayList1.Add(NameStyle);
-	|                            num = Int32.Parse(NameStyle.Replace(""СтильКолонкиБулево"", """"));
+	|                            num = Int32.Parse(ParseBetween(NameStyle, ""СтильКолонкиБулево"", null));
 	|                            if ((num + 1) > max)
 	|                            {
 	|                                max = num + 1;
@@ -23572,12 +23205,12 @@
 	|            }
 	|            else if (p2.GetType() == typeof(osfDesigner.DataGridTextBoxColumn))
 	|            {
-	|                string name = ""СтильКолонкиПолеВвода"";
+	|                osfDesigner.DataGridTableStyle DataGridTableStyle1 = RevertSimilarObj(p1);
+	|                string name = DataGridTableStyle1.NameStyle + p2.NameStyle + ""СтильКолонкиПолеВвода"";
 	|                int max = 0;
 	|                int num = 0;
 	|                string newName = name + Convert.ToString(max);
 	|                ArrayList ArrayList1 = new ArrayList();
-	|                osfDesigner.DataGridTableStyle DataGridTableStyle1 = RevertSimilarObj(p1);
 	|                for (int i = 0; i < DataGridTableStyle1.GridColumnStyles.Count; i++)
 	|                {
 	|                    string NameStyle = ((dynamic)DataGridTableStyle1.GridColumnStyles[i]).NameStyle;
@@ -23586,7 +23219,7 @@
 	|                        if (NameStyle.Contains(""СтильКолонкиПолеВвода""))
 	|                        {
 	|                            ArrayList1.Add(NameStyle);
-	|                            num = Int32.Parse(NameStyle.Replace(""СтильКолонкиПолеВвода"", """"));
+	|                            num = Int32.Parse(ParseBetween(NameStyle, ""СтильКолонкиПолеВвода"", null));
 	|                            if ((num + 1) > max)
 	|                            {
 	|                                max = num + 1;
@@ -23607,12 +23240,12 @@
 	|            }
 	|            else if (p2.GetType() == typeof(osfDesigner.DataGridComboBoxColumnStyle))
 	|            {
-	|                string name = ""СтильКолонкиПолеВыбора"";
+	|                osfDesigner.DataGridTableStyle DataGridTableStyle1 = RevertSimilarObj(p1);
+	|                string name = DataGridTableStyle1.NameStyle + p2.NameStyle + ""СтильКолонкиПолеВыбора"";
 	|                int max = 0;
 	|                int num = 0;
 	|                string newName = name + Convert.ToString(max);
 	|                ArrayList ArrayList1 = new ArrayList();
-	|                osfDesigner.DataGridTableStyle DataGridTableStyle1 = RevertSimilarObj(p1);
 	|                for (int i = 0; i < DataGridTableStyle1.GridColumnStyles.Count; i++)
 	|                {
 	|                    string NameStyle = ((dynamic)DataGridTableStyle1.GridColumnStyles[i]).NameStyle;
@@ -23621,7 +23254,7 @@
 	|                        if (NameStyle.Contains(""СтильКолонкиПолеВыбора""))
 	|                        {
 	|                            ArrayList1.Add(NameStyle);
-	|                            num = Int32.Parse(NameStyle.Replace(""СтильКолонкиПолеВыбора"", """"));
+	|                            num = Int32.Parse(ParseBetween(NameStyle, ""СтильКолонкиПолеВыбора"", null));
 	|                            if ((num + 1) > max)
 	|                            {
 	|                                max = num + 1;
@@ -23643,57 +23276,57 @@
 	|            return null;
 	|        }
 	|
-	|        public static void AddToHashtable(dynamic p1, dynamic p2)
+	|        public static void AddToDictionary(dynamic p1, dynamic p2)
 	|        {
 	|            // p1 - исходный объект (OriginalObj).
 	|            // p2 - дублёр исходного объекта (SimilarObj), для отображения свойств в сетке свойств.
-	|            if (!hashtable.ContainsKey(p1))
+	|            if (!dictionary.ContainsKey(p1))
 	|            {
-	|                hashtable.Add(p1, p2);
+	|                dictionary.Add(p1, p2);
 	|            }
 	|        }
 	|
-	|        public static void AddToHashtableDesignerTabRootComponent(dynamic p1, dynamic p2)
+	|        public static void AddToDictionaryDesignerTabRootComponent(dynamic p1, dynamic p2)
 	|        {
 	|            // p1 - RootComponent, форма.
 	|            // p2 - DesignerTab, вкладка дизайнера для этой формы.
-	|            if (!hashtableDesignerTabRootComponent.ContainsKey(p1))
+	|            if (!dictionaryDesignerTabRootComponent.ContainsKey(p1))
 	|            {
-	|                hashtableDesignerTabRootComponent.Add(p1, p2);
+	|                dictionaryDesignerTabRootComponent.Add(p1, p2);
 	|            }
 	|        }
 	|
 	|        public static dynamic RevertDesignerTab(dynamic rootComponent)
 	|        {
-	|            foreach (DictionaryEntry de in hashtableDesignerTabRootComponent)
+	|            try
 	|            {
-	|                if (de.Key.Equals(rootComponent))
-	|                {
-	|                    return de.Value;
-	|                }
+	|                return dictionaryDesignerTabRootComponent[rootComponent];
 	|            }
-	|            return null;
+	|            catch
+	|            {
+	|                return null;
+	|            }
 	|        }
 	|
 	|        public static dynamic RevertSimilarObj(dynamic OriginalObj)
 	|        {
-	|            foreach (DictionaryEntry de in hashtable)
+	|            try
 	|            {
-	|                if (de.Key.Equals(OriginalObj))
-	|                {
-	|                    return de.Value;
-	|                }
+	|                return dictionary[OriginalObj];
 	|            }
-	|            return null;
+	|            catch
+	|            {
+	|                return null;
+	|            }
 	|        }
 	|
 	|        public static dynamic RevertOriginalObj(dynamic SimilarObj)
 	|        {
-	|            foreach (DictionaryEntry de in hashtable)
+	|            foreach (KeyValuePair<object, object> keyValue in dictionary)
 	|            {
-	|                if (de.Value.Equals(SimilarObj))
+	|                if (keyValue.Value.Equals(SimilarObj))
 	|                {
-	|                    return de.Key;
+	|                    return keyValue.Key;
 	|                }
 	|            }
 	|            return null;
@@ -24488,7 +24121,7 @@
 	|            // p1 - исходная строка.
 	|            // p2 - подстрока поиска от которой ведем поиск.
 	|            // p3 - подстрока поиска до которой ведем поиск.
-	|            // Возвращает строку, ограниченную p2 и p3.
+	|            // Возвращает строку, ограниченную подстроками p2 и p3.
 	|            string str1 = p1;
 	|            int Position1;
 	|            if (p2 != null && p3 == null)
@@ -24590,6 +24223,392 @@
 	|        public Form GetRootComponent()
 	|        {
 	|            return (Form)pDesigner.DSME.ActiveDesignSurface.GetIDesignerHost().Container.Components[0];
+	|        }
+	|
+	|        public static string GetDefaultValues(dynamic comp, System.Windows.Forms.PropertyGrid propertyGrid)
+	|        {
+	|            // Заполним для компонента начальные свойства. Они нужны будут при создании скрипта.
+	|            if (comp.DefaultValues == null)
+	|            {
+	|                string DefaultValues1 = """";
+	|                object view1 = typeof(System.Windows.Forms.PropertyGrid).GetField(""gridView"", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(propertyGrid);
+	|                GridItemCollection GridItemCollection1 = (GridItemCollection)view1.GetType().InvokeMember(""GetAllGridEntries"", BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Instance, null, view1, null);
+	|                if (GridItemCollection1 != null)
+	|                {
+	|                    foreach (GridItem GridItem in GridItemCollection1)
+	|                    {
+	|                        if (GridItem.PropertyDescriptor == null)  // Исключим из обхода категории.
+	|                        {
+	|                            continue;
+	|                        }
+	|                        if (GridItem.Label == ""Locked"")  // Исключим из обхода ненужные свойства.
+	|                        {
+	|                            continue;
+	|                        }
+	|                        if (GridItem.PropertyDescriptor.Category != GridItem.Label)
+	|                        {
+	|                            string str7 = """";
+	|                            string strTab = ""            "";
+	|                            str7 = str7 + ObjectConvertToString(GridItem.Value);
+	|                            if (GridItem.GridItems.Count > 0)
+	|                            {
+	|                                strTab = strTab + ""\t\t"";
+	|                                str7 = str7 + Environment.NewLine;
+	|                                str7 = str7 + GetGridSubEntries(GridItem.GridItems, """", strTab);
+	|                                DefaultValues1 = DefaultValues1 + """" + GridItem.Label + "" == "" + str7 + Environment.NewLine;
+	|                                strTab = ""\t\t"";
+	|                            }
+	|                            else
+	|                            {
+	|                                DefaultValues1 = DefaultValues1 + """" + GridItem.Label + "" == "" + str7 + Environment.NewLine;
+	|                            }
+	|                        }
+	|                    }
+	|                    return DefaultValues1;
+	|                }
+	|            }
+	|            return null;
+	|        }
+	|
+	|        public static string GetGridSubEntries(GridItemCollection gridItems, string str, string strTab)
+	|        {
+	|            foreach (var item in gridItems)
+	|            {
+	|                GridItem _item = (GridItem)item;
+	|                str = str + strTab + _item.Label + "" = "" + _item.Value + Environment.NewLine;
+	|                if (_item.GridItems.Count > 0)
+	|                {
+	|                    strTab = strTab + ""\t\t"";
+	|                    str = GetGridSubEntries(_item.GridItems, str, strTab);
+	|                    strTab = ""\t\t"";
+	|                }
+	|            }
+	|            return str;
+	|        }
+	|
+	|        private static void GetState(dynamic obj, ref string state)
+	|        {
+	|            dynamic myobj;
+	|            if (obj.GetType() == typeof(System.Windows.Forms.MainMenu))
+	|            {
+	|                myobj = RevertSimilarObj(obj);
+	|                osfDesigner.MainMenu mainMenu = myobj;
+	|                state = state + obj.Name + "" = "" + myobj + Environment.NewLine;
+	|            }
+	|            myobj = obj;
+	|            Type type = myobj.GetType();
+	|            PropertyInfo[] PropertyInfo = type.GetProperties();
+	|            for (int i2 = 0; i2 < PropertyInfo.Length; i2++)
+	|            {
+	|                string propName = PropertyInfo[i2].Name;
+	|                if (GetDisplayName(myobj, propName) != """")
+	|                {
+	|                    dynamic propValue = null;
+	|                    try
+	|                    {
+	|                        propValue = type.GetProperty(propName).GetValue(myobj);
+	|                    }
+	|                    catch
+	|                    {
+	|                        propValue = type.BaseType.GetProperty(propName).GetValue(myobj);
+	|                    }
+	|                    if (propValue != null)
+	|                    {
+	|                        if (Convert.ToString(propValue) != """")
+	|                        {
+	|                            if (propName == ""Icon"")
+	|                            {
+	|                                try
+	|                                {
+	|                                    state = state + propName + "" = "" + ((dynamic)myobj).Icon.Path + Environment.NewLine;
+	|                                }
+	|                                catch
+	|                                {
+	|                                    state = state + propName + "" = "" + Convert.ToString(propValue) + Environment.NewLine;
+	|                                }
+	|                            }
+	|                            else
+	|                            {
+	|                                state = state + propName + "" = "" + Convert.ToString(propValue) + Environment.NewLine;
+	|                            }
+	|                        }
+	|                    }
+	|                }
+	|            }
+	|        }
+	|
+	|        private static void GetNodes3(dynamic treeView_treeNode, ref ArrayList ArrayList)
+	|        {
+	|            for (int i = 0; i < treeView_treeNode.Nodes.Count; i++)
+	|            {
+	|                System.Windows.Forms.TreeNode TreeNode1 = treeView_treeNode.Nodes[i];
+	|                ArrayList.Add(TreeNode1);
+	|
+	|                if (TreeNode1.Nodes.Count > 0)
+	|                {
+	|                    GetNodes3(TreeNode1, ref ArrayList);
+	|                }
+	|            }
+	|        }
+	|
+	|        public static void BypassMainMenu3(Menu Menu1, ref ArrayList ArrayList)
+	|        {
+	|            for (int i = 0; i < Menu1.MenuItems.Count; i++)
+	|            {
+	|                Menu CurrentMenuItem1 = (Menu)Menu1.MenuItems[i];
+	|                ArrayList.Add(CurrentMenuItem1);
+	|
+	|                if (CurrentMenuItem1.MenuItems.Count > 0)
+	|                {
+	|                    BypassMainMenu3(CurrentMenuItem1, ref ArrayList);
+	|                }
+	|            }
+	|        }
+	|
+	|        public static string DesignSurfaceState(bool overwrite)
+	|        {
+	|            // Делает снимок свойств всех компонентов на переданной в параметре поверхности дизайнера
+	|            // и фиксирует его в dictionaryDesignSurfaceState.
+	|            if (!block2)
+	|            {
+	|                string state = """";
+	|                DesignSurfaceExt2 surface = pDesigner.DSME.ActiveDesignSurface;
+	|                ComponentCollection ctrlsExisting = surface.ComponentContainer.Components;
+	|                for (int i = 0; i < ctrlsExisting.Count; i++)
+	|                {
+	|                    Component component = (Component)ctrlsExisting[i];
+	|                    GetState(component, ref state);
+	|
+	|                    if (component.GetType() == typeof(osfDesigner.TreeView))
+	|                    {
+	|                        ArrayList ArrayList1 = new ArrayList();
+	|                        GetNodes3((osfDesigner.TreeView)component, ref ArrayList1);
+	|                        for (int i1 = 0; i1 < ArrayList1.Count; i1++)
+	|                        {
+	|                            osfDesigner.MyTreeNode treeNode = (osfDesigner.MyTreeNode)ArrayList1[i1];
+	|                            GetState(treeNode, ref state);
+	|                        }
+	|                    }
+	|                    if (component.GetType() == typeof(osfDesigner.StatusBar))
+	|                    {
+	|                        StatusBar statusBar = (osfDesigner.StatusBar)component;
+	|                        for (int i1 = 0; i1 < statusBar.Panels.Count; i1++)
+	|                        {
+	|                            GetState(statusBar.Panels[i1], ref state);
+	|                        }
+	|                    }
+	|                    if (component.GetType() == typeof(osfDesigner.ListView))
+	|                    {
+	|                        ListView listView = (osfDesigner.ListView)component;
+	|                        for (int i1 = 0; i1 < listView.Columns.Count; i1++)
+	|                        {
+	|                            GetState(listView.Columns[i1], ref state);
+	|                        }
+	|                        for (int i1 = 0; i1 < listView.Items.Count; i1++)
+	|                        {
+	|                            ListViewItem listViewItem = (osfDesigner.ListViewItem)listView.Items[i1];
+	|                            GetState(listViewItem, ref state);
+	|                            if (listViewItem.SubItems.Count > 0)
+	|                            {
+	|                                for (int i2 = 1; i2 < listViewItem.SubItems.Count; i2++)
+	|                                {
+	|                                    ListViewSubItem listViewSubItem = (osfDesigner.ListViewSubItem)listViewItem.SubItems[i2];
+	|                                    GetState(listViewSubItem, ref state);
+	|                                }
+	|                            }
+	|                        }
+	|                    }
+	|                    if (component.GetType() == typeof(System.Windows.Forms.MainMenu))
+	|                    {
+	|                        ArrayList ArrayList1 = new ArrayList();
+	|                        MainMenu mainMenu = RevertSimilarObj((System.Windows.Forms.MainMenu)component);
+	|                        BypassMainMenu3(mainMenu, ref ArrayList1);
+	|                        for (int i1 = 0; i1 < ArrayList1.Count; i1++)
+	|                        {
+	|                            MenuItemEntry menuItemEntry = RevertSimilarObj(ArrayList1[i1]);
+	|                            GetState(menuItemEntry, ref state);
+	|                        }
+	|                    }
+	|                    if (component.GetType() == typeof(osfDesigner.ToolBar))
+	|                    {
+	|                        ToolBar toolBar = (osfDesigner.ToolBar)component;
+	|                        for (int i1 = 0; i1 < toolBar.Buttons.Count; i1++)
+	|                        {
+	|                            System.Windows.Forms.ToolBarButton OriginalObj = toolBar.Buttons[i1];
+	|                            osfDesigner.ToolBarButton SimilarObj = new osfDesigner.ToolBarButton();
+	|                            PassProperties(OriginalObj, SimilarObj); // Передадим свойства.
+	|                            SimilarObj.OriginalObj = OriginalObj;
+	|                            SimilarObj.Parent = OriginalObj.Parent;
+	|                            SimilarObj.Style = (osfDesigner.ToolBarButtonStyle)OriginalObj.Style;
+	|
+	|                            state = state + ""Enabled = "" + Convert.ToString(SimilarObj.Enabled_osf) + Environment.NewLine;
+	|                            state = state + ""ImageIndex = "" + Convert.ToString(SimilarObj.ImageIndex) + Environment.NewLine;
+	|                            state = state + ""Pushed = "" + Convert.ToString(SimilarObj.Pushed) + Environment.NewLine;
+	|                            state = state + ""Visible = "" + Convert.ToString(SimilarObj.Visible_osf) + Environment.NewLine;
+	|                            state = state + ""Rectangle = "" + Convert.ToString(SimilarObj.Rectangle) + Environment.NewLine;
+	|                            state = state + ""Style = "" + Convert.ToString(SimilarObj.Style) + Environment.NewLine;
+	|                            state = state + ""Text = "" + Convert.ToString(SimilarObj.Text) + Environment.NewLine;
+	|                            state = state + ""ToolTipText = "" + Convert.ToString(SimilarObj.ToolTipText) + Environment.NewLine;
+	|                            state = state + ""Name = "" + Convert.ToString(SimilarObj.Name) + Environment.NewLine;
+	|                        }
+	|                    }
+	|                    if (component.GetType() == typeof(osfDesigner.DataGrid))
+	|                    {
+	|                        DataGrid dataGrid = (osfDesigner.DataGrid)component;
+	|                        for (int i1 = 0; i1 < dataGrid.TableStyles.Count; i1++)
+	|                        {
+	|                            System.Windows.Forms.DataGridTableStyle dataGridTableStyle = dataGrid.TableStyles[i1];
+	|                            dynamic SimilarObj = RevertSimilarObj(dataGridTableStyle);
+	|                            GetState(SimilarObj, ref state);
+	|                            for (int i2 = 0; i2 < dataGridTableStyle.GridColumnStyles.Count; i2++)
+	|                            {
+	|                                GetState(dataGridTableStyle.GridColumnStyles[i2], ref state);
+	|                            }
+	|                        }
+	|                    }
+	|                    if (component.GetType() == typeof(osfDesigner.TabControl))
+	|                    {
+	|                        TabControl tabControl = (osfDesigner.TabControl)component;
+	|                        for (int i1 = 0; i1 < tabControl.TabPages.Count; i1++)
+	|                        {
+	|                            osfDesigner.TabPage tabPage = OneScriptFormsDesigner.RevertSimilarObj(tabControl.TabPages[i1]);
+	|                            GetState(tabPage, ref state);
+	|                        }
+	|                    }
+	|                    if (component.GetType() == typeof(osfDesigner.ListBox))
+	|                    {
+	|                        ListBox listBox = (osfDesigner.ListBox)component;
+	|                        for (int i1 = 0; i1 < listBox.Items.Count; i1++)
+	|                        {
+	|                            ListItemListBox item = (osfDesigner.ListItemListBox)listBox.Items[i1];
+	|                            state = state + ""ValueType = "" + Convert.ToString(item.ValueType) + Environment.NewLine;
+	|                            state = state + ""Text = "" + Convert.ToString(item.Text) + Environment.NewLine;
+	|                            try
+	|                            {
+	|                                state = state + ""ValueBool = "" + Convert.ToString(item.ValueBool) + Environment.NewLine;
+	|                            }
+	|                            catch { }
+	|                            try
+	|                            {
+	|                                state = state + ""ValueDateTime = "" + Convert.ToString(item.ValueDateTime) + Environment.NewLine;
+	|                            }
+	|                            catch { }
+	|                            try
+	|                            {
+	|                                state = state + ""ValueString = "" + Convert.ToString(item.ValueString) + Environment.NewLine;
+	|                            }
+	|                            catch { }
+	|                            try
+	|                            {
+	|                                state = state + ""ValueNumber = "" + Convert.ToString(item.ValueNumber) + Environment.NewLine;
+	|                            }
+	|                            catch { }
+	|                        }
+	|                    }
+	|                    if (component.GetType() == typeof(System.Windows.Forms.ImageList))
+	|                    {
+	|                        ImageList imageList = RevertSimilarObj((System.Windows.Forms.ImageList)component);
+	|                        GetState(imageList, ref state);
+	|                        MyList myList = imageList.Images;
+	|                        for (int i1 = 0; i1 < myList.Count; i1++)
+	|                        {
+	|                            ImageEntry imageEntry = myList[i1];
+	|                            GetState(imageEntry, ref state);
+	|                        }
+	|                    }
+	|                    if (component.GetType() == typeof(osfDesigner.MonthCalendar))
+	|                    {
+	|                        MonthCalendar monthCalendar = (osfDesigner.MonthCalendar)component;
+	|                        osfDesigner.MyBoldedDatesList myBoldedDatesList = monthCalendar.BoldedDates_osf;
+	|                        for (int i1 = 0; i1 < myBoldedDatesList.Count; i1++)
+	|                        {
+	|                            DateEntry dateEntry = myBoldedDatesList[i1];
+	|                            state = state + ""dateEntry = "" + Convert.ToString(dateEntry) + Environment.NewLine;
+	|                        }
+	|                        osfDesigner.MyAnnuallyBoldedDatesList myAnnuallyBoldedDatesList = monthCalendar.AnnuallyBoldedDates_osf;
+	|                        for (int i1 = 0; i1 < myAnnuallyBoldedDatesList.Count; i1++)
+	|                        {
+	|                            DateEntry dateEntry = myAnnuallyBoldedDatesList[i1];
+	|                            state = state + ""dateEntry = "" + Convert.ToString(dateEntry) + Environment.NewLine;
+	|                        }
+	|                        osfDesigner.MyMonthlyBoldedDatesList myMonthlyBoldedDatesList = monthCalendar.MonthlyBoldedDates_osf;
+	|                        for (int i1 = 0; i1 < myMonthlyBoldedDatesList.Count; i1++)
+	|                        {
+	|                            DateEntry dateEntry = myMonthlyBoldedDatesList[i1];
+	|                            state = state + ""dateEntry = "" + Convert.ToString(dateEntry) + Environment.NewLine;
+	|                        }
+	|                    }
+	|                    if (component.GetType() == typeof(osfDesigner.ComboBox))
+	|                    {
+	|                        ComboBox comboBox = (osfDesigner.ComboBox)component;
+	|                        for (int i1 = 0; i1 < comboBox.Items.Count; i1++)
+	|                        {
+	|                            ListItemComboBox item = (osfDesigner.ListItemComboBox)comboBox.Items[i1];
+	|                            state = state + ""ValueType = "" + Convert.ToString(item.ValueType) + Environment.NewLine;
+	|                            state = state + ""Text = "" + Convert.ToString(item.Text) + Environment.NewLine;
+	|                            try
+	|                            {
+	|                                state = state + ""ValueBool = "" + Convert.ToString(item.ValueBool) + Environment.NewLine;
+	|                            }
+	|                            catch { }
+	|                            try
+	|                            {
+	|                                state = state + ""ValueDateTime = "" + Convert.ToString(item.ValueDateTime) + Environment.NewLine;
+	|                            }
+	|                            catch { }
+	|                            try
+	|                            {
+	|                                state = state + ""ValueString = "" + Convert.ToString(item.ValueString) + Environment.NewLine;
+	|                            }
+	|                            catch { }
+	|                            try
+	|                            {
+	|                                state = state + ""ValueNumber = "" + Convert.ToString(item.ValueNumber) + Environment.NewLine;
+	|                            }
+	|                            catch { }
+	|                        }
+	|                    }
+	|
+	|                }
+	|                state = state.Trim();
+	|                if (!dictionaryDesignSurfaceState.ContainsKey(surface))
+	|                {
+	|                    dictionaryDesignSurfaceState.Add(surface, state);
+	|                    dictionaryTabPageChanged[pDesigner.TabControl.SelectedTab] = false;
+	|                }
+	|                else
+	|                {
+	|                    if (overwrite)
+	|                    {
+	|                        dictionaryDesignSurfaceState[surface] = state;
+	|                        dictionaryTabPageChanged[pDesigner.TabControl.SelectedTab] = false;
+	|                    }
+	|                }
+	|                pDesigner.TabControl.Refresh();
+	|                return state;
+	|            }
+	|            return """";
+	|        }
+	|
+	|        public static void SetDesignSurfaceState()
+	|        {
+	|            string state = DesignSurfaceState(false);
+	|            if (state != """")
+	|            {
+	|                try
+	|                {
+	|                    if (state != dictionaryDesignSurfaceState[pDesigner.DSME.ActiveDesignSurface])
+	|                    {
+	|                        dictionaryTabPageChanged[pDesigner.TabControl.SelectedTab] = true;
+	|                    }
+	|                    else
+	|                    {
+	|                        dictionaryTabPageChanged[pDesigner.TabControl.SelectedTab] = false;
+	|                    }
+	|                }
+	|                catch { }
+	|                pDesigner.TabControl.Refresh();
+	|            }
 	|        }
 	|    }
 	|}
@@ -24811,14 +24830,14 @@
 	ТекстДокХХХ.Записать("C:\444\ВыгрузкаДизайнера\ImageEntry.cs");
 	
 	СтрВыгрузки = 
-	"using System;
-	|using System.Drawing;
-	|using System.Drawing.Design;
-	|using System.Windows.Forms;
+	"using System.ComponentModel.Design;
 	|using System.ComponentModel;
-	|using System.ComponentModel.Design;
-	|using System.Reflection;
+	|using System.Drawing.Design;
+	|using System.Drawing;
 	|using System.Globalization;
+	|using System.Reflection;
+	|using System.Windows.Forms;
+	|using System;
 	|
 	|namespace osfDesigner
 	|{
@@ -24852,6 +24871,7 @@
 	|            collectionForm = base.CreateCollectionForm();
 	|            collectionForm.Text = ""Редактор коллекции Изображения"";
 	|            collectionForm.Shown += CollectionForm_Shown;
+	|            collectionForm.FormClosed += CollectionForm_FormClosed;
 	|
 	|            frmCollectionEditorForm = (System.Windows.Forms.Form)collectionForm;
 	|            TableLayoutPanel1 = (System.Windows.Forms.TableLayoutPanel)frmCollectionEditorForm.Controls[0];
@@ -24945,6 +24965,11 @@
 	|            return collectionForm;
 	|        }
 	|
+	|        private void CollectionForm_FormClosed(object sender, FormClosedEventArgs e)
+	|        {
+	|            OneScriptFormsDesigner.SetDesignSurfaceState();
+	|        }
+	|
 	|        private void CollectionForm_Shown(object sender, EventArgs e)
 	|        {
 	|            PropertiesLabel1.Text = ""Свойства:"";
@@ -25002,11 +25027,6 @@
 	|
 	|        void PropertyGrid1_PropertyValueChanged(object sender, PropertyValueChangedEventArgs e)
 	|        {
-	|        }
-	|
-	|        private void PropertyGrid_SelectedObjectsChanged(object sender, EventArgs e)
-	|        {
-	|            PropertiesLabel1.Text = ""Свойства:"";
 	|        }
 	|
 	|        private void ButtonAdd1_Click(object sender, EventArgs e)
@@ -27128,7 +27148,14 @@
 	//индивидуально для отдельных классов
 	Если ИмяКонтекстКлассаАнгл = "Form" Тогда
 		Стр = Стр + 
-		"        [Browsable(false)]
+		"        [DisplayName(""Путь"")]
+		|        [Description(""Путь до файла osd этой формы."")]
+		|        [Browsable(true)]
+		|        [DefaultValue(typeof(String), null)]
+		|        [ReadOnly(true)]
+		|        public string Path { get; set; }
+		|		
+		|        [Browsable(false)]
 		|        [ReadOnly(true)]
 		|        public new string AccessibleDescription { get; set; }
 		|
@@ -28042,6 +28069,11 @@
 		|        [Browsable(true)]
 		|        [ReadOnly(true)]
 		|        public string NameStyle { get; set; }
+		|		
+		|        [DisplayName(""Текст"")]
+		|        [Category(""Прочее"")]
+		|        [Browsable(true)]
+		|        public string Text { get; set; }
 		|";
 	ИначеЕсли ИмяКонтекстКлассаАнгл = "DataGridBoolColumn" Тогда
 		Стр = Стр + 
@@ -28070,6 +28102,11 @@
 		|        [Browsable(true)]
 		|        [ReadOnly(true)]
 		|        public string NameStyle { get; set; }
+		|		
+		|        [DisplayName(""Текст"")]
+		|        [Category(""Прочее"")]
+		|        [Browsable(true)]
+		|        public string Text { get; set; }
 		|";
 	ИначеЕсли ИмяКонтекстКлассаАнгл = "DataGridTextBoxColumn" Тогда
 		СтрРазделОбъявленияПеременных = СтрРазделОбъявленияПеременных + Символы.ПС +
@@ -28098,6 +28135,11 @@
 		|        [Browsable(true)]
 		|        [ReadOnly(true)]
 		|        public string NameStyle { get; set; }
+		|		
+		|        [DisplayName(""Текст"")]
+		|        [Category(""Прочее"")]
+		|        [Browsable(true)]
+		|        public string Text { get; set; }
 		|";
 	ИначеЕсли ИмяКонтекстКлассаАнгл = "ColumnHeader" Тогда
 		Стр = Стр + 

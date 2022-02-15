@@ -40,6 +40,7 @@ namespace osfDesigner
             DataGrid1 = (DataGrid)this.Context.Instance;
             collectionForm.Text = "Редактор коллекции СтилиТаблицыСеткиДанных";
             collectionForm.Shown += CollectionForm_Shown;
+            collectionForm.FormClosed += CollectionForm_FormClosed;
 
             frmCollectionEditorForm = (System.Windows.Forms.Form)collectionForm;
             TableLayoutPanel1 = (System.Windows.Forms.TableLayoutPanel)frmCollectionEditorForm.Controls[0];
@@ -131,65 +132,12 @@ namespace osfDesigner
 
             return collectionForm;
         }
-	
-        private void GetDefaultValues()
+
+        private void CollectionForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            // Заполним для компонента начальные свойства. Они нужны будут при создании скрипта.
-            string DefaultValues1 = "";
-            object pg = PropertyGrid1;
-            dynamic comp = ((System.Windows.Forms.PropertyGrid)pg).SelectedObject;
-            object view1 = typeof(System.Windows.Forms.PropertyGrid).GetField("gridView", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(pg);
-            GridItemCollection GridItemCollection1 = (GridItemCollection)view1.GetType().InvokeMember("GetAllGridEntries", BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Instance, null, view1, null);
-            foreach (GridItem GridItem in GridItemCollection1)
-            {
-                if (GridItem.PropertyDescriptor == null) // Исключим из обхода категории.
-                {
-                    continue;
-                }
-                if (GridItem.Label == "Locked") // Исключим из обхода ненужные свойства.
-                {
-                    continue;
-                }
-                if (GridItem.PropertyDescriptor.Category != GridItem.Label)
-                {
-                    string str7 = "";
-                    string strTab = "            ";
-                    str7 = str7 + OneScriptFormsDesigner.ObjectConvertToString(GridItem.Value);
-                    if (GridItem.GridItems.Count > 0)
-                    {
-                        strTab = strTab + "\t\t";
-                        str7 = str7 + Environment.NewLine;
-                        str7 = str7 + GetGridSubEntries(GridItem.GridItems, "", strTab);
-
-                        DefaultValues1 = DefaultValues1 + "" + GridItem.Label + " == " + str7 + Environment.NewLine;
-
-                        strTab = "\t\t";
-                    }
-                    else
-                    {
-                        DefaultValues1 = DefaultValues1 + "" + GridItem.Label + " == " + str7 + Environment.NewLine;
-                    }
-                }
-            }
-            comp.DefaultValues = DefaultValues1;
+            OneScriptFormsDesigner.SetDesignSurfaceState();
         }
 
-        public string GetGridSubEntries(GridItemCollection gridItems, string str, string strTab)
-        {
-            foreach (var item in gridItems)
-            {
-                GridItem _item = (GridItem)item;
-                str = str + strTab + _item.Label + " = " + _item.Value + Environment.NewLine;
-                if (_item.GridItems.Count > 0)
-                {
-                    strTab = strTab + "\t\t";
-                    str = GetGridSubEntries(_item.GridItems, str, strTab);
-                    strTab = "\t\t";
-                }
-            }
-            return str;
-        }
-	
         private void UpdateListBox1()
         {
             int index = ListBox1.SelectedIndex;
@@ -208,10 +156,11 @@ namespace osfDesigner
         {
             osfDesigner.DataGridTableStyle SimilarObj = (osfDesigner.DataGridTableStyle)PropertyGrid1.SelectedObject;
             SimilarObj.NameStyle = OneScriptFormsDesigner.RevertDataGridTableStyleName(DataGrid1);
+            SimilarObj.Text = "Стиль" + OneScriptFormsDesigner.ParseBetween(SimilarObj.NameStyle, "Стиль", null);
             ListBox1.Refresh();
             PropertyGrid1.SelectedObject = SimilarObj;
 	
-            GetDefaultValues();
+            SimilarObj.DefaultValues = OneScriptFormsDesigner.GetDefaultValues(SimilarObj, PropertyGrid1);
         }
 
         private void PropertyGrid1_SelectedGridItemChanged(object sender, SelectedGridItemChangedEventArgs e)
@@ -231,7 +180,7 @@ namespace osfDesigner
                     {
                         SimilarObj = new osfDesigner.DataGridTableStyle();
                         ((osfDesigner.DataGridTableStyle)SimilarObj).OriginalObj = OriginalObj;
-                        OneScriptFormsDesigner.AddToHashtable(OriginalObj, SimilarObj);
+                        OneScriptFormsDesigner.AddToDictionary(OriginalObj, SimilarObj);
                         OneScriptFormsDesigner.PassProperties(OriginalObj, SimilarObj); // Передадим свойства.
                         PropertyGrid1.SelectedObject = SimilarObj;
                         PropertiesLabel1.Text = "Свойства:";
@@ -276,7 +225,7 @@ namespace osfDesigner
                     dynamic OriginalObj = DataGridTableStyle1;
                     dynamic SimilarObj = OneScriptFormsDesigner.RevertSimilarObj(OriginalObj);
                     ListItem1.Value = DataGridTableStyle1;
-                    ListItem1Text = ((DataGridTableStyle)SimilarObj).NameStyle;
+                    ListItem1Text = ((DataGridTableStyle)SimilarObj).Text;
                 }
                 catch { }
                 Graphics Graphics1 = e.Graphics;

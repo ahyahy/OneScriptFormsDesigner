@@ -962,7 +962,7 @@ namespace osfDesigner
                     ////  для comp1 уже создан дублер, получим его
                     //osfDesigner.TabPage SimilarObj = OneScriptFormsDesigner.RevertSimilarObj(comp1);
                     //SimilarObj.OriginalObj = (System.Windows.Forms.TabPage)comp1;
-                    ////////////////////////OneScriptFormsDesigner.AddToHashtable(comp1, SimilarObj);
+                    ////////////////////////OneScriptFormsDesigner.AddToDictionary(comp1, SimilarObj);
                     //// присвоим дублёру значения всех свойств исходного объекта
                     //OneScriptFormsDesigner.PassProperties(comp1, SimilarObj);//без этой строки компонент глючит
                     //dictComponents[componentName] = comp1;

@@ -59,6 +59,7 @@ namespace osfDesigner
                 PropertiesLabel1.Text = "Свойства:";
                 TopLevelPropertyGrid1 = pDesigner.DSME.PropertyGridHost.PropertyGrid;
             };
+            collectionForm.FormClosed += CollectionForm_FormClosed;
 
             frmCollectionEditorForm = (System.Windows.Forms.Form)collectionForm;
             TableLayoutPanel1 = (System.Windows.Forms.TableLayoutPanel)frmCollectionEditorForm.Controls[0];
@@ -134,7 +135,7 @@ namespace osfDesigner
                             else if (item.Text == "DataGridTextBoxColumn")
                             {
                                 item.Text = "СтильКолонкиПолеВвода";
-                                item.Click += Item_BoolColumn_Click;
+                                item.Click += Item_TextBoxColumn_Click;
                             }
                             else if (item.Text == "DataGridComboBoxColumnStyle")
                             {
@@ -171,102 +172,49 @@ namespace osfDesigner
             return collectionForm;
         }
 
+        private void CollectionForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            OneScriptFormsDesigner.SetDesignSurfaceState();
+        }
+
         private void Item_ComboBoxColumn_Click(object sender, EventArgs e)
         {
             dynamic ColumnStyle1 = PropertyGrid1.SelectedObject;
             ColumnStyle1.NameStyle = OneScriptFormsDesigner.RevertDataGridColumnStyleName(DataGridTableStyle1, ColumnStyle1);
+            ColumnStyle1.Text = "СтильКолонкиПолеВыбора" + OneScriptFormsDesigner.ParseBetween(ColumnStyle1.NameStyle, "СтильКолонкиПолеВыбора", null);
             ListBox1.Refresh();
             PropertyGrid1.SelectedObject = ColumnStyle1;
-            GetDefaultValues();
+            ColumnStyle1.DefaultValues = OneScriptFormsDesigner.GetDefaultValues(ColumnStyle1, PropertyGrid1);
         }
 
         private void Item_TextBoxColumn_Click(object sender, EventArgs e)
         {
             dynamic ColumnStyle1 = PropertyGrid1.SelectedObject;
             ColumnStyle1.NameStyle = OneScriptFormsDesigner.RevertDataGridColumnStyleName(DataGridTableStyle1, ColumnStyle1);
+            ColumnStyle1.Text = "СтильКолонкиПолеВвода" + OneScriptFormsDesigner.ParseBetween(ColumnStyle1.NameStyle, "СтильКолонкиПолеВвода", null);
             ListBox1.Refresh();
             PropertyGrid1.SelectedObject = ColumnStyle1;
-            GetDefaultValues();
+            ColumnStyle1.DefaultValues = OneScriptFormsDesigner.GetDefaultValues(ColumnStyle1, PropertyGrid1);
         }
 
         private void Item_BoolColumn_Click(object sender, EventArgs e)
         {
             dynamic ColumnStyle1 = PropertyGrid1.SelectedObject;
             ColumnStyle1.NameStyle = OneScriptFormsDesigner.RevertDataGridColumnStyleName(DataGridTableStyle1, ColumnStyle1);
+            ColumnStyle1.Text = "СтильКолонкиБулево" + OneScriptFormsDesigner.ParseBetween(ColumnStyle1.NameStyle, "СтильКолонкиБулево", null);
             ListBox1.Refresh();
             PropertyGrid1.SelectedObject = ColumnStyle1;
-            GetDefaultValues();
+            ColumnStyle1.DefaultValues = OneScriptFormsDesigner.GetDefaultValues(ColumnStyle1, PropertyGrid1);
         }
 
         private void ButtonAdd1_Click(object sender, EventArgs e)
         {
             dynamic ColumnStyle1 = PropertyGrid1.SelectedObject;
             ColumnStyle1.NameStyle = OneScriptFormsDesigner.RevertDataGridColumnStyleName(DataGridTableStyle1, ColumnStyle1);
+            ColumnStyle1.Text = "СтильКолонкиПолеВвода" + OneScriptFormsDesigner.ParseBetween(ColumnStyle1.NameStyle, "СтильКолонкиПолеВвода", null);
             ListBox1.Refresh();
             PropertyGrid1.SelectedObject = ColumnStyle1;
-            GetDefaultValues();
-        }
-
-        private void GetDefaultValues()
-        {
-            // Заполним для компонента начальные свойства. Они нужны будут при создании скрипта.
-            dynamic comp = PropertyGrid1.SelectedObject;
-            if (comp.DefaultValues != null)
-            {
-                return;
-            }
-            string DefaultValues1 = "";
-            object pg = PropertyGrid1;
-            object view1 = typeof(System.Windows.Forms.PropertyGrid).GetField("gridView", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(pg);
-            dynamic GridItemCollection1 = (dynamic)view1.GetType().InvokeMember("GetAllGridEntries", BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Instance, null, view1, null);
-            foreach (GridItem GridItem in GridItemCollection1)
-            {
-                if (GridItem.PropertyDescriptor == null) // Исключим из обхода категории.
-                {
-                    continue;
-                }
-                if (GridItem.Label == "Locked") // Исключим из обхода ненужные свойства.
-                {
-                    continue;
-                }
-                if (GridItem.PropertyDescriptor.Category != GridItem.Label)
-                {
-                    string str7 = "";
-                    string strTab = "            ";
-                    str7 = str7 + OneScriptFormsDesigner.ObjectConvertToString(GridItem.Value);
-                    if (GridItem.GridItems.Count > 0)
-                    {
-                        strTab = strTab + "\t\t";
-                        str7 = str7 + Environment.NewLine;
-                        str7 = str7 + GetGridSubEntries(GridItem.GridItems, "", strTab);
-
-                        DefaultValues1 = DefaultValues1 + "" + GridItem.Label + " == " + str7 + Environment.NewLine;
-
-                        strTab = "\t\t";
-                    }
-                    else
-                    {
-                        DefaultValues1 = DefaultValues1 + "" + GridItem.Label + " == " + str7 + Environment.NewLine;
-                    }
-                }
-            }
-            comp.DefaultValues = DefaultValues1;
-        }
-
-        public string GetGridSubEntries(GridItemCollection gridItems, string str, string strTab)
-        {
-            foreach (var item in gridItems)
-            {
-                GridItem _item = (GridItem)item;
-                str = str + strTab + _item.Label + " = " + _item.Value + Environment.NewLine;
-                if (_item.GridItems.Count > 0)
-                {
-                    strTab = strTab + "\t\t";
-                    str = GetGridSubEntries(_item.GridItems, str, strTab);
-                    strTab = "\t\t";
-                }
-            }
-            return str;
+            ColumnStyle1.DefaultValues = OneScriptFormsDesigner.GetDefaultValues(ColumnStyle1, PropertyGrid1);
         }
 
         private void UpdateListBox1()
@@ -317,7 +265,7 @@ namespace osfDesigner
                 try
                 {
                     dynamic ColumnStyle1 = DataGridTableStyle1.GridColumnStyles[e.Index];
-                    ListItem1Text = ColumnStyle1.NameStyle;
+                    ListItem1Text = ColumnStyle1.Text;
                 }
                 catch { }
                 Graphics Graphics1 = e.Graphics;

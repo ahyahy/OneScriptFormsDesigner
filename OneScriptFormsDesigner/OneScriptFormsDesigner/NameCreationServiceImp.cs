@@ -119,6 +119,12 @@ namespace osfDesigner
                 return false;
             }
 
+            // Не допустим пробелы.
+            if (name.Contains(" "))
+            {
+                return false;
+            }
+
             // Хорошо, это допустимое имя.
             return true;
         }

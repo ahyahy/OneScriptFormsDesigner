@@ -113,6 +113,7 @@ namespace osfDesigner
                         }
                     }
                 }
+                OneScriptFormsDesigner.SetDesignSurfaceState();
             };
 
             frmCollectionEditorForm = (System.Windows.Forms.Form)collectionForm;

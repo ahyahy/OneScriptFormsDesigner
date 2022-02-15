@@ -278,48 +278,6 @@ namespace osfDesigner
             }
         }
 
-        public string GetDefaultValues(MyTreeNode comp)
-        {
-            // Заполним для компонента начальные свойства. Они нужны будут при создании скрипта.
-            string DefaultValues1 = "";
-            object pg = PropertyGrid1;
-            ((System.Windows.Forms.PropertyGrid)pg).SelectedObject = comp;
-            object view1 = pg.GetType().GetField("gridView", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(pg);
-            GridItemCollection GridItemCollection1 = (GridItemCollection)view1.GetType().InvokeMember("GetAllGridEntries", BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Instance, null, view1, null);
-            foreach (GridItem GridItem in GridItemCollection1)
-            {
-                if (GridItem.PropertyDescriptor == null) // Исключим из обхода категории.
-                {
-                    continue;
-                }
-                if (GridItem.Label == "Locked") // Исключим из обхода ненужные свойства.
-                {
-                    continue;
-                }
-                if (GridItem.PropertyDescriptor.Category != GridItem.Label)
-                {
-                    string str7 = "";
-                    string strTab = "            ";
-                    str7 = str7 + OneScriptFormsDesigner.ObjectConvertToString(GridItem.Value);
-                    if (GridItem.GridItems.Count > 0)
-                    {
-                        strTab = strTab + "\t\t";
-                        str7 = str7 + Environment.NewLine;
-                        str7 = str7 + GetGridSubEntries(GridItem.GridItems, "", strTab);
-
-                        DefaultValues1 = DefaultValues1 + "" + GridItem.Label + " == " + str7 + Environment.NewLine;
-
-                        strTab = "\t\t";
-                    }
-                    else
-                    {
-                        DefaultValues1 = DefaultValues1 + "" + GridItem.Label + " == " + str7 + Environment.NewLine;
-                    }
-                }
-            }
-            return DefaultValues1;
-        }
-
         private void ButtonMoveDown_Click(object sender, EventArgs e)
         {
             TreeNode TreeNode1 = TreeView1.SelectedNode;
@@ -425,22 +383,6 @@ namespace osfDesigner
             UpdateTreeViewOriginal();
         }
 
-        public string GetGridSubEntries(GridItemCollection gridItems, string str, string strTab)
-        {
-            foreach (var item in gridItems)
-            {
-                GridItem _item = (GridItem)item;
-                str = str + strTab + _item.Label + " = " + _item.Value + Environment.NewLine;
-                if (_item.GridItems.Count > 0)
-                {
-                    strTab = strTab + "\t\t";
-                    str = GetGridSubEntries(_item.GridItems, str, strTab);
-                    strTab = "\t\t";
-                }
-            }
-            return str;
-        }
-
         private void PropertyGrid1_SelectedObjectsChanged(object sender, EventArgs e)
         {
             MyTreeNode SelectedObject1 = (MyTreeNode)((System.Windows.Forms.PropertyGrid)sender).SelectedObject;
@@ -524,9 +466,10 @@ namespace osfDesigner
             MyTreeNode TreeNode1 = new MyTreeNode();
             TreeNode1.TreeView = TreeView1;
             TreeNode1.Name = OneScriptFormsDesigner.RevertNodeName(TreeViewOriginal);
-            TreeNode1.Text = TreeNode1.Name;
+            TreeNode1.Text = "Узел" + OneScriptFormsDesigner.ParseBetween(TreeNode1.Name, "Узел", null);
             TreeView1.Nodes.Add(TreeNode1);
-            TreeNode1.DefaultValues = GetDefaultValues(TreeNode1);
+            PropertyGrid1.SelectedObject = TreeNode1;
+            TreeNode1.DefaultValues = OneScriptFormsDesigner.GetDefaultValues(TreeNode1, PropertyGrid1);
             UpdateTreeViewOriginal();
             TreeView1.SelectedNode = TreeNode1;
             ButtonDelete.Enabled = true;
@@ -539,10 +482,11 @@ namespace osfDesigner
             MyTreeNode TreeNode1 = new MyTreeNode();
             TreeNode1.TreeView = TreeView1;
             TreeNode1.Name = OneScriptFormsDesigner.RevertNodeName(TreeViewOriginal);
-            TreeNode1.Text = TreeNode1.Name;
+            TreeNode1.Text = "Узел" + OneScriptFormsDesigner.ParseBetween(TreeNode1.Name, "Узел", null);
             TreeView1.SelectedNode.Nodes.Add(TreeNode1);
             TreeView1.SelectedNode.Expand();
-            TreeNode1.DefaultValues = GetDefaultValues(TreeNode1);
+            PropertyGrid1.SelectedObject = TreeNode1;
+            TreeNode1.DefaultValues = OneScriptFormsDesigner.GetDefaultValues(TreeNode1, PropertyGrid1);
             UpdateTreeViewOriginal();
             TreeView1.Focus();
         }
@@ -589,6 +533,7 @@ namespace osfDesigner
 
         private void frmNodes_Closed(object sender, EventArgs e)
         {
+            OneScriptFormsDesigner.SetDesignSurfaceState();
             _wfes.CloseDropDown();
         }
 

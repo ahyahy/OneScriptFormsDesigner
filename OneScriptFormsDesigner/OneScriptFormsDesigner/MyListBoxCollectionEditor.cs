@@ -45,6 +45,7 @@ namespace osfDesigner
             MyListBox1 = (osfDesigner.ListBox)this.Context.Instance;
             collectionForm.Text = "Редактор элементов ПолеСписка";
             collectionForm.Shown += CollectionForm_Shown;
+            collectionForm.FormClosed += CollectionForm_FormClosed;
 
             frmCollectionEditorForm = (System.Windows.Forms.Form)collectionForm;
             TableLayoutPanel1 = (System.Windows.Forms.TableLayoutPanel)frmCollectionEditorForm.Controls[0];
@@ -136,6 +137,11 @@ namespace osfDesigner
             }
 
             return collectionForm;
+        }
+
+        private void CollectionForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            OneScriptFormsDesigner.SetDesignSurfaceState();
         }
 
         private void CollectionForm_Shown(object sender, EventArgs e)

@@ -257,7 +257,9 @@ namespace osfDesigner
             {
                 string strCurrent = result[i1];
 
-                if (strCurrent.Contains(@"// блок КонецКонструкторы") || strCurrent.Contains(@"// конец Перем") || strCurrent.Contains(@"// блок Форма"))
+                if (strCurrent.Contains(@"// блок КонецКонструкторы") || 
+                    strCurrent.Contains(@"// конец Перем") || 
+                    (strCurrent.Contains(@"// блок Форма") && strCurrent.Trim().Replace(@"// блок Форма", "").Length == 0))
                 {
                 }
                 else if (strCurrent.Contains(@"// блок"))
@@ -516,7 +518,11 @@ namespace osfDesigner
             {
                 return;
             }
-            if (val.GetType() == typeof(osfDesigner.MenuItemEntry) && (valueName == "Текст"))
+            if ((val.GetType() == typeof(osfDesigner.MenuItemEntry) ||
+                val.GetType() == typeof(osfDesigner.DataGridTableStyle) ||
+                val.GetType() == typeof(osfDesigner.DataGridTextBoxColumn) ||
+                val.GetType() == typeof(osfDesigner.DataGridComboBoxColumnStyle) ||
+                val.GetType() == typeof(osfDesigner.DataGridBoolColumn)) && (valueName == "Текст"))
             {
                 return;
             }
@@ -540,7 +546,6 @@ namespace osfDesigner
             {
                 return;
             }
-	
             if (val.GetType() == typeof(osfDesigner.Form) && (valueName == "Стыковка"))
             {
                 return;
@@ -549,7 +554,7 @@ namespace osfDesigner
             {
                 return;
             }
-            // закончили пропуск свойств
+            // Закончили пропуск свойств.
 
             if (compValue == "Ложь" || compValue == "Истина")
             {
@@ -569,7 +574,12 @@ namespace osfDesigner
                             MenuItemEntry1 = OneScriptFormsDesigner.RevertSimilarObj(MenuItemCollection1[i]);
                             string strName = MenuItemEntry1.Name.Contains("Сепаратор") ? "-" : MenuItemEntry1.Text;
                             AddToScript(MenuItemEntry1.Name + " = " + compName + ".ЭлементыМеню.Добавить(Ф.ЭлементМеню(\u0022" + strName + "\u0022));");
+
+                            string hide = MenuItemEntry1.Hide;
+                            MenuItemEntry1.Hide = "Показать";
                             PropComponent(MenuItemEntry1);
+                            MenuItemEntry1.Hide = hide;
+
                             if (MenuItemEntry1.MenuItems.Count > 0)
                             {
                                 GetMenuItems((MenuItemEntry)MenuItemEntry1);
@@ -1203,7 +1213,6 @@ namespace osfDesigner
 ";
                 if (OneScriptFormsDesigner.ParseBetween(Template1, null, strProc) == null)
                 {
-                    //Template1 = Template1.Replace("Процедура ПодготовкаКомпонентов()", strProc + Environment.NewLine + "Процедура ПодготовкаКомпонентов()");
                     Template1 = Template1.Replace(@"#Область КонструкторФорм_Инициализация", strProc + Environment.NewLine + @"#Область КонструкторФорм_Инициализация");
                 }
                 strNameProc = "Ф.Действие(ЭтотОбъект, \u0022" + strNameProc + "\u0022);";
@@ -1602,7 +1611,12 @@ namespace osfDesigner
 
                 string strName = MenuItemEntry1.Name.Contains("Сепаратор") ? "-" : MenuItemEntry1.Text;
                 AddToScript(MenuItemEntry1.Name + " = " + strParent + ".ЭлементыМеню.Добавить(Ф.ЭлементМеню(\u0022" + strName + "\u0022));");
+
+                string hide = MenuItemEntry1.Hide;
+                MenuItemEntry1.Hide = "Показать";
                 PropComponent(MenuItemEntry1);
+                MenuItemEntry1.Hide = hide;
+
                 if (MenuItemEntry1.MenuItems.Count > 0)
                 {
                     GetMenuItems(MenuItemEntry1);
@@ -1612,27 +1626,31 @@ namespace osfDesigner
 
         private static void PropComponent(dynamic comp)
         {
+            string comp_Name;
+            if (comp.GetType() == typeof(osfDesigner.DataGridTableStyle) ||
+                comp.GetType() == typeof(osfDesigner.DataGridBoolColumn) ||
+                comp.GetType() == typeof(osfDesigner.DataGridTextBoxColumn) ||
+                comp.GetType() == typeof(osfDesigner.DataGridComboBoxColumnStyle))
+            {
+                comp_Name = comp.NameStyle;
+            }
+            else
+            {
+                comp_Name = comp.Name;
+            }
+
             PropertyInfo[] myPropertyInfo = comp.GetType().GetProperties();
             for (int i = 0; i < myPropertyInfo.Length; i++)
             {
-                string valueName = OneScriptFormsDesigner.GetDisplayName(comp, myPropertyInfo[i].Name);
+                string propName = myPropertyInfo[i].Name;
+                string valueName = OneScriptFormsDesigner.GetDisplayName(comp, propName);
                 if (valueName != "" && !((valueName == "(Name)") || (valueName == "Прямоугольник")))
                 {
-                    PropertyDescriptor pd = TypeDescriptor.GetProperties(comp)[myPropertyInfo[i].Name];
+                    PropertyDescriptor pd = TypeDescriptor.GetProperties(comp)[propName];
                     try
                     {
                         string compValue = OneScriptFormsDesigner.ObjectConvertToString(pd.GetValue(comp));
-                        if (comp.GetType() == typeof(osfDesigner.DataGridTableStyle) ||
-                            comp.GetType() == typeof(osfDesigner.DataGridBoolColumn) ||
-                            comp.GetType() == typeof(osfDesigner.DataGridTextBoxColumn) ||
-                            comp.GetType() == typeof(osfDesigner.DataGridComboBoxColumnStyle))
-                        {
-                            RequiredDefaultValuesValues(comp, comp.NameStyle, valueName, compValue);
-                        }
-                        else
-                        {
-                            RequiredDefaultValuesValues(comp, comp.Name, valueName, compValue);
-                        }
+                        RequiredDefaultValuesValues(comp, comp_Name, valueName, compValue);
                     }
                     catch { }
                 }

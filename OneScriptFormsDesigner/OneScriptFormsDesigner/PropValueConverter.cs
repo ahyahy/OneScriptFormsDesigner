@@ -176,7 +176,6 @@ namespace osfDesigner
                     {
                         try
                         {
-
                             FontSize = Single.Parse(result[1].Trim());
                         }
                         catch
@@ -786,7 +785,6 @@ namespace osfDesigner
                 pi.SetValue(control, cursor);
                 return;
             }
-
             // Если это Перечисление.
             if (displayName == "АвтоРазмер" ||
                 displayName == "Активация" ||
@@ -851,6 +849,10 @@ namespace osfDesigner
                     PropertyInfo pi = component.GetType().BaseType.GetProperty(propertyName);
                     pi.SetValue(component, rez);
                 }
+                if (component.GetType() == typeof(osfDesigner.ToolBarButton))
+                {
+                    ((osfDesigner.ToolBarButton)component).Style = (osfDesigner.ToolBarButtonStyle)rez;
+                }
                 if ((displayName == "Стыковка" && component.GetType() != typeof(osfDesigner.ToolBar)) ||
                     (displayName == "Стыковка" && component.GetType() != typeof(osfDesigner.Splitter)) ||
                     (displayName == "Стыковка" && component.GetType() != typeof(osfDesigner.StatusBar)))
@@ -882,6 +884,10 @@ namespace osfDesigner
                     {
                         ((osfDesigner.NotifyIcon)control).Icon = MyIcon1;
                     }
+                }
+                else if (control.GetType() == typeof(osfDesigner.StatusBarPanel))
+                {
+                    ((osfDesigner.StatusBarPanel)control).Icon = MyIcon1;
                 }
                 return;
             }
@@ -949,33 +955,6 @@ namespace osfDesigner
                 if (treeNode.Nodes.Count > 0)
                 {
                     NodeSearch(treeView, nameNodeParent, ref node, treeNode.Nodes);
-                }
-            }
-        }
-
-        public static void SelectedNodeSearch(System.Windows.Forms.TreeView treeView, string nameNodeParent, ref System.Windows.Forms.TreeNode node, System.Windows.Forms.TreeNodeCollection treeNodes = null)
-        {
-            System.Windows.Forms.TreeNodeCollection _treeNodes;
-            if (treeNodes == null)
-            {
-                _treeNodes = treeView.Nodes;
-            }
-            else
-            {
-                _treeNodes = treeNodes;
-            }
-            System.Windows.Forms.TreeNode treeNode = null;
-            for (int i = 0; i < _treeNodes.Count; i++)
-            {
-                treeNode = (System.Windows.Forms.TreeNode)_treeNodes[i];
-                if (((MenuItemEntry)treeNode.Tag).Name == nameNodeParent)
-                {
-                    node = treeNode;
-                    break;
-                }
-                if (treeNode.Nodes.Count > 0)
-                {
-                    SelectedNodeSearch(treeView, nameNodeParent, ref node, treeNode.Nodes);
                 }
             }
         }

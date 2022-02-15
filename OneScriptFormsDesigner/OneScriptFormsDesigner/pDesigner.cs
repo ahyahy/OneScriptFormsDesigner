@@ -1,7 +1,7 @@
-﻿using System.ComponentModel.Design;
+﻿using System.ComponentModel.Design.Serialization;
+using System.ComponentModel.Design;
 using System.ComponentModel;
 using System.Drawing;
-using System.Reflection;
 using System.Windows.Forms;
 using System;
 
@@ -20,6 +20,11 @@ namespace osfDesigner
         public static System.Windows.Forms.TabControl TabControl;
         public static DesignSurfaceManagerExt DSME = null;
         private System.Windows.Forms.Form form;
+        private Image closeImage;
+        private Image closeImageBlack;
+        private Image saveYesImage;
+        private Image saveNoImage;
+        private System.Windows.Forms.TextBox textBox;
 
         public pDesigner()
         {
@@ -64,6 +69,17 @@ namespace osfDesigner
             this.tbCtrlpDesigner.Size = new Size(439, 305);
             this.tbCtrlpDesigner.TabIndex = 0;
             this.tbCtrlpDesigner.SelectedIndexChanged += new EventHandler(this.tbCtrlpDesigner_SelectedIndexChanged);
+            this.tbCtrlpDesigner.DrawMode = TabDrawMode.OwnerDrawFixed;
+            this.tbCtrlpDesigner.DrawItem += tbCtrlpDesigner_DrawItem;
+            this.tbCtrlpDesigner.MouseDown += tbCtrlpDesigner_MouseDown;
+            string str_Close = "iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAASUlEQVR42mNkoBAwUtuA/0QYiqKGEU2CkMsw1DASUkBIDptN2BTiNJgYp+JVjy/A/hOjlmYGUOQFigKRomikWkIiOymTBSg2AAD6ABQR9GDqGgAAAABJRU5ErkJggg==";
+            closeImage = OneScriptFormsDesigner.Base64ToImage(str_Close);
+            string str_CloseBlack = "iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAU0lEQVR42mNkoBAwUtWAefPm/U9KSsJrKLoaRmQJGBuXIdjUMBJSQEiOkRhb8BlM0KnIAJvXcAYYuiG4woU2BlDkBYoCkaJopFpCIjspkwsoNgAA24ZQEaHwYTIAAAAASUVORK5CYII=";
+            closeImageBlack = OneScriptFormsDesigner.Base64ToImage(str_CloseBlack);
+            string str_SaveYes = "iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAUUlEQVR42mNkgID/DOQBRkaY5v9tbQyMVVVgQRyK/4PUwHVC1IIVwyVIMQCmniYG4AQEDSA5BIehAYQCEQaQ1ZMSjXD9owZgGgAWJCr4MQEjAF/ZYAN2oSypAAAAAElFTkSuQmCC";
+            saveYesImage = OneScriptFormsDesigner.Base64ToImage(str_SaveYes);
+            string str_SaveNo = "iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAUElEQVR42u2RQQoAIAgE9Wc+3Z8ZWRtBRBl0ieZo0xyUqWB0BjM+qyqJiA8nsmUHVNfl9hAJwL8SmLIMRHkxsFoi6P3IGYH9wBjw4db6RzgBtFFgA13ClvoAAAAASUVORK5CYII=";
+            saveNoImage = OneScriptFormsDesigner.Base64ToImage(str_SaveNo);
             //
             // pDesigner
             //
@@ -90,6 +106,76 @@ namespace osfDesigner
             TabControl = tbCtrlpDesigner;
         }
 
+        private void tbCtrlpDesigner_MouseDown(object sender, MouseEventArgs e)
+        {
+            for (var i = 0; i < tbCtrlpDesigner.TabPages.Count; i++)
+            {
+                var tabRect = tbCtrlpDesigner.GetTabRect(i);
+                tabRect.Inflate(-2, -2);
+
+                var imageRect = new Rectangle(
+                    (tabRect.Right - closeImage.Width),
+                    tabRect.Top + (tabRect.Height - closeImage.Height) / 2,
+                    closeImage.Width,
+                    closeImage.Height);
+                if (imageRect.Contains(e.Location))
+                {
+                    if (tbCtrlpDesigner.TabPages.Count <= 1)
+                    {
+                        System.Windows.Forms.MessageBox.Show(
+                            "Удалить единственную форму не допускается.",
+                            "",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Exclamation,
+                            MessageBoxDefaultButton.Button1
+                            );
+                    }
+                    else
+                    {
+                        System.Windows.Forms.DialogResult res1 = System.Windows.Forms.MessageBox.Show(
+                            "Действительно удалить форму " + tbCtrlpDesigner.TabPages[i].Text.Trim() + "?",
+                            "",
+                            MessageBoxButtons.YesNoCancel,
+                            MessageBoxIcon.Exclamation,
+                            MessageBoxDefaultButton.Button2
+                           );
+                        if (res1 == System.Windows.Forms.DialogResult.OK || res1 == System.Windows.Forms.DialogResult.Yes)
+                        {
+                            OneScriptFormsDesigner.dictionaryTabPageChanged.Remove(TabControl.SelectedTab);
+                            RemoveDesignSurface(pDesigner.DSME.ActiveDesignSurface);
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+        private void tbCtrlpDesigner_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            var tabPage = tbCtrlpDesigner.TabPages[e.Index];
+            var tabRect = tbCtrlpDesigner.GetTabRect(e.Index);
+            tabRect.Inflate(-2, -2);
+            
+            if (OneScriptFormsDesigner.dictionaryTabPageChanged[tabPage])
+            {
+                e.Graphics.DrawImage(saveYesImage, (tabRect.Left + 1), tabRect.Top + (tabRect.Height - saveYesImage.Height) / 2);
+            }
+            else
+            {
+                e.Graphics.DrawImage(saveNoImage, (tabRect.Left + 1), tabRect.Top + (tabRect.Height - saveNoImage.Height) / 2);
+            }
+
+            if (e.State == DrawItemState.Selected)
+            {
+                e.Graphics.DrawImage(closeImage, (tabRect.Right - closeImage.Width), tabRect.Top + (tabRect.Height - closeImage.Height) / 2);
+                e.Graphics.DrawString(tabPage.Text, new Font(tabPage.Font, FontStyle.Bold), new SolidBrush(Color.Black), e.Bounds.X + 4, e.Bounds.Y + 2);
+            }
+            else
+            {
+                e.Graphics.DrawImage(closeImageBlack, (tabRect.Right - closeImageBlack.Width), tabRect.Top + (tabRect.Height - closeImageBlack.Height) / 2);
+                e.Graphics.DrawString(tabPage.Text, tabPage.Font, new SolidBrush(tabPage.ForeColor), e.Bounds.X + 4, e.Bounds.Y + 2);
+            }
+        }
+
         // Очистите все используемые ресурсы.
         protected override void Dispose(bool disposing)
         {
@@ -113,8 +199,7 @@ namespace osfDesigner
 
         private void tbCtrlpDesigner_SelectedIndexChanged(object sender, EventArgs e)
         {
-            System.Windows.Forms.TabControl tabCtrl = sender as System.Windows.Forms.TabControl;
-            int index = this.tbCtrlpDesigner.SelectedIndex;
+            int index = tbCtrlpDesigner.SelectedIndex;
             if (index >= 0)
             {
                 DesignSurfaceManager.ActiveDesignSurface = (DesignSurfaceExt2)DesignSurfaceManager.DesignSurfaces[index];
@@ -132,7 +217,7 @@ namespace osfDesigner
 
         public System.Windows.Forms.TabControl TabControlHostingDesignSurfaces
         {
-            get { return this.tbCtrlpDesigner; }
+            get { return tbCtrlpDesigner; }
         }
 
         public PropertyGridHost PropertyGridHost
@@ -164,6 +249,9 @@ namespace osfDesigner
             }
             // Создание области дизайнера (DesignSurface).
             DesignSurfaceExt2 surface = DesignSurfaceManager.CreateDesignSurfaceExt2();
+
+            OneScriptFormsDesigner.dictionaryDesignSurfaceState.Add(surface, "");
+
             this.DesignSurfaceManager.ActiveDesignSurface = surface;
             // Выбор режима выравнивания.
             switch (alignmentMode)
@@ -215,7 +303,7 @@ namespace osfDesigner
                 form.MinimizeBox = false;
                 form.ShowInTaskbar = false;
 
-                System.Windows.Forms.TextBox textBox = new System.Windows.Forms.TextBox();
+                textBox = new System.Windows.Forms.TextBox();
                 form.Controls.Add(textBox);
                 textBox.Bounds = new Rectangle(10, 10, 350, 28);
                 textBox.Anchor = System.Windows.Forms.AnchorStyles.Right | System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left;
@@ -265,7 +353,7 @@ namespace osfDesigner
                             OneScriptFormsDesigner.PassProperties(OriginalObj, SimilarObj); // Передадим свойства.
                             SimilarObj.OriginalObj = OriginalObj;
                             OriginalObj.Tag = SimilarObj;
-                            OneScriptFormsDesigner.AddToHashtable(OriginalObj, SimilarObj);
+                            OneScriptFormsDesigner.AddToDictionary(OriginalObj, SimilarObj);
                         }
                         DesignSurfaceManager.PropertyGridHost.PropertyGrid.SelectedObject = SimilarObj;
                     }
@@ -276,6 +364,8 @@ namespace osfDesigner
 
                     PropertyGridHost.ReloadTreeView();
                     PropertyGridHost.ChangeSelectNode((Component)e.Component);
+
+                    OneScriptFormsDesigner.SetDesignSurfaceState();
                 };
                 componentChangeService.ComponentAdded += (Object sender, ComponentEventArgs e) =>
                 {
@@ -286,7 +376,14 @@ namespace osfDesigner
                         OneScriptFormsDesigner.PassProperties(OriginalObj, SimilarObj); // Передадим свойства.
                         SimilarObj.OriginalObj = OriginalObj;
                         OriginalObj.Tag = SimilarObj;
-                        OneScriptFormsDesigner.AddToHashtable(OriginalObj, SimilarObj);
+                        OneScriptFormsDesigner.AddToDictionary(OriginalObj, SimilarObj);
+                    }
+	
+                    if (OriginalObj.GetType().ToString() == "osfDesigner.ToolBar")
+                    {
+                        // Избежим некорректного сохранения-восстановления панели инструментов.
+                        osfDesigner.ToolBar toolBar = (osfDesigner.ToolBar)OriginalObj;
+                        toolBar.ButtonSize = new Size(toolBar.ButtonSize.Width, toolBar.ButtonSize.Height);
                     }
 
                     if (OriginalObj.GetType().ToString() == "System.Windows.Forms.ImageList" || 
@@ -322,17 +419,24 @@ namespace osfDesigner
                     DesignSurfaceManager.UpdatePropertyGridHost(surface);
 
                     // Получим начальные значения свойств для компонента, они нужны для создания скрипта
-                    if (OriginalObj.GetType().ToString() == "System.Windows.Forms.TabPage")
+                    if (OriginalObj.GetType().ToString() == "System.Windows.Forms.TabPage" ||
+                        OriginalObj.GetType().ToString() == "System.Windows.Forms.ImageList" ||
+                        OriginalObj.GetType().ToString() == "System.Windows.Forms.MainMenu")
                     {
-                        GetDefaultValues(OneScriptFormsDesigner.RevertSimilarObj(OriginalObj));
+                        dynamic SimilarObj = OneScriptFormsDesigner.RevertSimilarObj(OriginalObj);
+                        DesignSurfaceManager.PropertyGridHost.PropertyGrid.SelectedObject = SimilarObj;
+                        SimilarObj.DefaultValues = OneScriptFormsDesigner.GetDefaultValues(SimilarObj, DesignSurfaceManager.PropertyGridHost.PropertyGrid);
                     }
                     else
                     {
-                        GetDefaultValues(OriginalObj);
+                        DesignSurfaceManager.PropertyGridHost.PropertyGrid.SelectedObject = OriginalObj;
+                        OriginalObj.DefaultValues = OneScriptFormsDesigner.GetDefaultValues(OriginalObj, DesignSurfaceManager.PropertyGridHost.PropertyGrid);
                     }
 
                     PropertyGridHost.ReloadTreeView();
                     PropertyGridHost.ChangeSelectNode((Component)e.Component);
+
+                    OneScriptFormsDesigner.SetDesignSurfaceState();
                 };
 
                 componentChangeService.ComponentRemoving += (Object sender, ComponentEventArgs e) =>
@@ -343,6 +447,8 @@ namespace osfDesigner
                 {
                     DesignSurfaceManager.UpdatePropertyGridHost(surface);
                     PropertyGridHost.ReloadTreeView();
+
+                    OneScriptFormsDesigner.SetDesignSurfaceState();
                 };
             }
             // Теперь установим свойство "Форма.Текст", потому что это будет пустая строка если мы не установим его.
@@ -360,104 +466,49 @@ namespace osfDesigner
             }
             // Отобразим область дизайнера (DesignSurface).
             System.Windows.Forms.TabPage newPage = new System.Windows.Forms.TabPage();
+            OneScriptFormsDesigner.dictionaryTabPageChanged.Add(newPage, false);
             string sTabPageText = OneScriptFormsDesigner.RevertDesignerTabName(rootComponent.Site.Name);
             // Свяжем rootComponent и создаваемую для него вкладку дризайнера, чтобы потом при удалении формы корректно удалить и вкладку.
-            OneScriptFormsDesigner.AddToHashtableDesignerTabRootComponent(rootComponent, newPage);
-            newPage.Text = sTabPageText;
+            OneScriptFormsDesigner.AddToDictionaryDesignerTabRootComponent(rootComponent, newPage);
+            newPage.Text = "     " + sTabPageText + "       ";
             newPage.Name = sTabPageText;
             newPage.SuspendLayout();
             view.Dock = System.Windows.Forms.DockStyle.Fill;
             view.Parent = newPage;
-            this.tbCtrlpDesigner.TabPages.Add(newPage);
+            tbCtrlpDesigner.TabPages.Add(newPage);
             newPage.ResumeLayout();
             // Выберите созданную вкладку (TabPage).
-            this.tbCtrlpDesigner.SelectedIndex = this.tbCtrlpDesigner.TabPages.Count - 1;
+            tbCtrlpDesigner.SelectedIndex = tbCtrlpDesigner.TabPages.Count - 1;
             this.PropertyGridHost.ReloadComboBox();
 
             // Получим начальные значения свойств формы, они нужны для создания скрипта.
-            GetDefaultValues(rootComponent);
+            ((dynamic)rootComponent).DefaultValues = OneScriptFormsDesigner.GetDefaultValues(rootComponent, DesignSurfaceManager.PropertyGridHost.PropertyGrid);
 
             //* 18.12.2021 perfolenta 
             surface.Dirty = false;
             //***
 
-            // Наконец, возвратим созданную область дизайнера, чтобы она снова изменялась пользователем.
+            // Запомним начальное состояние дизайнера с этой формой.
+            OneScriptFormsDesigner.DesignSurfaceState(true);
+            OneScriptFormsDesigner.dictionaryTabPageChanged[pDesigner.TabControl.SelectedTab] = true;
+
+            // Возвратим созданную область дизайнера.
             return surface;
         }
 
         private void ButtonOK_Click(object sender, EventArgs e)
         {
-            form.DialogResult = System.Windows.Forms.DialogResult.OK;
-        }
-
-        public void GetDefaultValues(dynamic comp)
-        {
-            // Заполним для компонента начальные свойства. Они нужны будут при создании скрипта.
-            string DefaultValues1 = "";
-            object pg = DesignSurfaceManager.PropertyGridHost.PropertyGrid;
-            ((System.Windows.Forms.PropertyGrid)pg).SelectedObject = comp;
-            object view1 = pg.GetType().GetField("gridView", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(pg);
-            GridItemCollection GridItemCollection1 = (GridItemCollection)view1.GetType().InvokeMember("GetAllGridEntries", BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Instance, null, view1, null);
-            if (GridItemCollection1 == null)
+            INameCreationService iName = DSME.ActiveDesignSurface.GetIDesignerHost().GetService(typeof(INameCreationService)) as INameCreationService;
+            if (!iName.IsValidName(textBox.Text))
             {
+                System.Windows.Forms.MessageBox.Show("Имя не должно быть пустым, должно начинаться с буквы, не должно содержать пробелы.");
+                textBox.Focus();
                 return;
-            }
-            foreach (GridItem GridItem in GridItemCollection1)
-            {
-                if (GridItem.PropertyDescriptor == null)  // Исключим из обхода категории.
-                {
-                    continue;
-                }
-                if (GridItem.Label == "Locked")  // Исключим из обхода ненужные свойства.
-                {
-                    continue;
-                }
-                if (GridItem.PropertyDescriptor.Category != GridItem.Label)
-                {
-                    string str7 = "";
-                    string strTab = "            ";
-                    str7 = str7 + OneScriptFormsDesigner.ObjectConvertToString(GridItem.Value);
-                    if (GridItem.GridItems.Count > 0)
-                    {
-                        strTab = strTab + "\t\t";
-                        str7 = str7 + Environment.NewLine;
-                        str7 = str7 + GetGridSubEntries(GridItem.GridItems, "", strTab);
-
-                        DefaultValues1 = DefaultValues1 + "" + GridItem.Label + " == " + str7 + Environment.NewLine;
-
-                        strTab = "\t\t";
-                    }
-                    else
-                    {
-                        DefaultValues1 = DefaultValues1 + "" + GridItem.Label + " == " + str7 + Environment.NewLine;
-                    }
-                }
-            }
-            if (comp.GetType() == typeof(System.Windows.Forms.ImageList) ||
-                comp.GetType() == typeof(System.Windows.Forms.MainMenu))
-            {
-                OneScriptFormsDesigner.RevertSimilarObj(comp).DefaultValues = DefaultValues1;
             }
             else
             {
-                comp.DefaultValues = DefaultValues1;
+                form.DialogResult = System.Windows.Forms.DialogResult.OK;
             }
-        }
-
-        public string GetGridSubEntries(GridItemCollection gridItems, string str, string strTab)
-        {
-            foreach (var item in gridItems)
-            {
-                GridItem _item = (GridItem)item;
-                str = str + strTab + _item.Label + " = " + _item.Value + Environment.NewLine;
-                if (_item.GridItems.Count > 0)
-                {
-                    strTab = strTab + "\t\t";
-                    str = GetGridSubEntries(_item.GridItems, str, strTab);
-                    strTab = "\t\t";
-                }
-            }
-            return str;
         }
 
         public void RemoveDesignSurface(DesignSurfaceExt2 surfaceToErase)
@@ -471,7 +522,7 @@ namespace osfDesigner
                 //     что созданных поверхностей Designsurfaces, чтобы избежать конфликта имен.
                 System.Windows.Forms.TabPage TabPage1 = OneScriptFormsDesigner.RevertDesignerTab(surfaceToErase.GetIDesignerHost().RootComponent);
                 System.Windows.Forms.TabPage tpToRemove = null;
-                foreach (System.Windows.Forms.TabPage tp in this.tbCtrlpDesigner.TabPages)
+                foreach (System.Windows.Forms.TabPage tp in tbCtrlpDesigner.TabPages)
                 {
                     if (tp.Equals(TabPage1))
                     {
@@ -481,7 +532,7 @@ namespace osfDesigner
                 }
                 if (null != tpToRemove)
                 {
-                    this.tbCtrlpDesigner.TabPages.Remove(tpToRemove);
+                    tbCtrlpDesigner.TabPages.Remove(tpToRemove);
                 }
 
                 // Теперь удалите поверхность дизайнера.
@@ -489,7 +540,7 @@ namespace osfDesigner
 
                 // Наконец, диспетчер DesignSurfaceManager удалит поверхность DesignSurface и установит в качестве активной 
                 // поверхности дизайна последнюю, поэтому мы устанавливаем в качестве активной последнюю страницу вкладки.
-                this.tbCtrlpDesigner.SelectedIndex = this.tbCtrlpDesigner.TabPages.Count - 1;
+                tbCtrlpDesigner.SelectedIndex = tbCtrlpDesigner.TabPages.Count - 1;
             }
             catch { }
         }

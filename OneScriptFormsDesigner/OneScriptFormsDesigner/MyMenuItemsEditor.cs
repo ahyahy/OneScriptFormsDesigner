@@ -2,7 +2,6 @@
 using System.Drawing.Design;
 using System.Drawing;
 using System.IO;
-using System.Reflection;
 using System.Windows.Forms.Design;
 using System.Windows.Forms;
 using System;
@@ -17,12 +16,16 @@ namespace osfDesigner
 
             if (wfes != null)
             {
-                frmMenuItems _frmMenuItems = new frmMenuItems(context, value);
-                _frmMenuItems._wfes = wfes;
-
-                if (wfes.ShowDialog(_frmMenuItems) == System.Windows.Forms.DialogResult.OK)
+                osfDesigner.MainMenu mainMenu = (osfDesigner.MainMenu)context.Instance;
+                if (mainMenu.FrmMenuItems == null)
+                {
+                    mainMenu.FrmMenuItems = new frmMenuItems(mainMenu);
+                }
+                mainMenu.FrmMenuItems._wfes = wfes;
+                if (wfes.ShowDialog(mainMenu.FrmMenuItems) == System.Windows.Forms.DialogResult.OK)
                 {
                 }
+
             }
             return null;
         }
@@ -37,16 +40,14 @@ namespace osfDesigner
     {
         private System.Windows.Forms.Label Label1;
         private System.Windows.Forms.Label Label2;
-        private osfDesigner.MainMenu MainMenu1;
+        public osfDesigner.MainMenu MainMenu;
         public System.Windows.Forms.TreeView TreeView1;
         private System.Windows.Forms.Button ButtonAddRoot;
         private System.Windows.Forms.Button ButtonAddChild;
         private System.Windows.Forms.Button ButtonAddSeparator;
         private System.Windows.Forms.Button ButtonDelete;
-
         private System.Windows.Forms.Button ButtonMoveUp;
         private System.Windows.Forms.Button ButtonMoveDown;
-
         private System.Windows.Forms.Button ButtonCollapse;
         private System.Windows.Forms.Button ButtonExpand;
         private System.Windows.Forms.Button ButtonOK;
@@ -65,16 +66,11 @@ namespace osfDesigner
         private System.Windows.Forms.Panel Panel12;
         private System.Windows.Forms.Panel Panel13;
         private System.Windows.Forms.Panel Panel14;
-        private Container components = null;
-        private ITypeDescriptorContext _context;
-        private object _value;
         public IWindowsFormsEditorService _wfes;
 
-        public frmMenuItems(ITypeDescriptorContext context, object value)
+        public frmMenuItems(osfDesigner.MainMenu mainMenu)
         {
-            _context = context;
-            _value = value;
-            MainMenu1 = (osfDesigner.MainMenu)_context.Instance;
+            MainMenu = mainMenu;
             this.Size = new Size(864, 485);
             this.Text = "Редактор коллекции ЭлементыМеню";
             this.ControlBox = true;
@@ -193,7 +189,7 @@ namespace osfDesigner
             Label1.Bounds = new Rectangle(1, 16, 276, 20);
             Label1.Text = "Выберите меню для правки:";
 
-            TreeView1 = MainMenu1.TreeView;
+            TreeView1 = MainMenu.TreeView;
             TreeView1.Parent = Panel6;
             TreeView1.Dock = System.Windows.Forms.DockStyle.Fill;
             TreeView1.HideSelection = false;
@@ -268,82 +264,6 @@ namespace osfDesigner
             TopLevel = true;
         }
 
-        public string GetDefaultValues(MenuItemEntry comp)
-        {
-            // Заполним для компонента начальные свойства. Они нужны будут при создании скрипта.
-            string DefaultValues1 = "";
-            PropertyGrid1.SelectedObject = comp;
-            PropertyGrid1.Refresh();
-            object view1 = PropertyGrid1.GetType().GetField("gridView", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(PropertyGrid1);
-            GridItemCollection GridItemCollection1 = (GridItemCollection)view1.GetType().InvokeMember("GetAllGridEntries", BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Instance, null, view1, null);
-            foreach (GridItem GridItem in GridItemCollection1)
-            {
-                if (GridItem.PropertyDescriptor == null) // Исключим из обхода категории.
-                {
-                    continue;
-                }
-                if (GridItem.Label == "Locked") // Исключим из обхода ненужные свойства.
-                {
-                    continue;
-                }
-                if (GridItem.PropertyDescriptor.Category != GridItem.Label)
-                {
-                    string str7 = "";
-                    string strTab = "            ";
-                    str7 = str7 + OneScriptFormsDesigner.ObjectConvertToString(GridItem.Value);
-                    if (GridItem.GridItems.Count > 0)
-                    {
-                        strTab = strTab + "\t\t";
-                        str7 = str7 + Environment.NewLine;
-                        str7 = str7 + GetGridSubEntries(GridItem.GridItems, "", strTab);
-
-                        DefaultValues1 = DefaultValues1 + "" + GridItem.Label + " == " + str7 + Environment.NewLine;
-
-                        strTab = "\t\t";
-                    }
-                    else
-                    {
-                        DefaultValues1 = DefaultValues1 + "" + GridItem.Label + " == " + str7 + Environment.NewLine;
-                    }
-                }
-            }
-            return DefaultValues1;
-        }
-
-        public string GetGridSubEntries(GridItemCollection gridItems, string str, string strTab)
-        {
-            foreach (var item in gridItems)
-            {
-                GridItem _item = (GridItem)item;
-                str = str + strTab + _item.Label + " = " + _item.Value + Environment.NewLine;
-                if (_item.GridItems.Count > 0)
-                {
-                    strTab = strTab + "\t\t";
-                    str = GetGridSubEntries(_item.GridItems, str, strTab);
-                    strTab = "\t\t";
-                }
-            }
-            return str;
-        }
-
-        public void BypassMainMenuForDelete(Menu Menu1, Menu MenuForDelete, System.Windows.Forms.TreeNode NodeForDelete)
-        {
-            for (int i = 0; i < Menu1.MenuItems.Count; i++)
-            {
-                Menu CurrentMenuItem1 = (Menu)Menu1.MenuItems[i];
-                if (CurrentMenuItem1.Equals(MenuForDelete))
-                {
-                    ((System.Windows.Forms.Menu.MenuItemCollection)Menu1.MenuItems).Remove((System.Windows.Forms.MenuItem)MenuForDelete);
-                    NodeForDelete.Parent.Nodes.Remove(NodeForDelete);
-                    break;
-                }
-                if (CurrentMenuItem1.MenuItems.Count > 0)
-                {
-                    BypassMainMenuForDelete(CurrentMenuItem1, MenuForDelete, NodeForDelete);
-                }
-            }
-        }
-
         private void ButtonDelete_Click(object sender, EventArgs e)
         {
             System.Windows.Forms.TreeNode DeletedTreeNode = TreeView1.SelectedNode;
@@ -387,7 +307,7 @@ namespace osfDesigner
                     else
                     {
                         TreeView1.Nodes.Insert(Parent.Index + 1, TreeNode1);
-                        MainMenu1.MenuItems.Add(Parent.Index + 1, MenuItem1.M_MenuItem);
+                        MainMenu.MenuItems.Add(Parent.Index + 1, MenuItem1.M_MenuItem);
                     }
                 }
                 else
@@ -401,7 +321,7 @@ namespace osfDesigner
             else
             {
                 TreeView1.Nodes.Remove(TreeNode1);
-                MainMenu1.MenuItems.Remove(MenuItem1.M_MenuItem);
+                MainMenu.MenuItems.Remove(MenuItem1.M_MenuItem);
                 TreeNode Next = TreeView1.Nodes[Index1];
                 Next.Nodes.Insert(0, TreeNode1);
                 MenuItemEntry MenuItem1Next = (MenuItemEntry)Next.Tag;
@@ -440,14 +360,14 @@ namespace osfDesigner
                     else
                     {
                         TreeView1.Nodes.Insert(Parent.Index, TreeNode1);
-                        MainMenu1.MenuItems.Add(Parent.Index - 1, MenuItem1.M_MenuItem);
+                        MainMenu.MenuItems.Add(Parent.Index - 1, MenuItem1.M_MenuItem);
                     }
                 }
             }
             else
             {
                 TreeView1.Nodes.Remove(TreeNode1);
-                MainMenu1.MenuItems.Remove(MenuItem1.M_MenuItem);
+                MainMenu.MenuItems.Remove(MenuItem1.M_MenuItem);
                 TreeNode Previos = TreeView1.Nodes[Index1 - 1];
                 Previos.Nodes.Add(TreeNode1);
                 MenuItemEntry MenuItem1Previos = (MenuItemEntry)Previos.Tag;
@@ -494,6 +414,7 @@ namespace osfDesigner
         private void TreeView1_AfterSelect(object sender, TreeViewEventArgs e)
         {
             MenuItemEntry CurrentMenuItem1 = (MenuItemEntry)e.Node.Tag;
+
             if (e.Node.Text.Contains("Сепаратор"))
             {
                 CurrentMenuItem1.Hide = "Скрыть";
@@ -519,10 +440,10 @@ namespace osfDesigner
         private void ButtonAddRoot_Click(object sender, EventArgs e)
         {
             MenuItemEntry MenuItemEntry1 = new MenuItemEntry();
-            MenuItemEntry1.Text = OneScriptFormsDesigner.RevertMenuName(MainMenu1);
-            MenuItemEntry1.Name = MenuItemEntry1.Text;
-            MainMenu1.MenuItems.Add(MenuItemEntry1.M_MenuItem);
-            OneScriptFormsDesigner.AddToHashtable(MenuItemEntry1.M_MenuItem, MenuItemEntry1);
+            MenuItemEntry1.Name = OneScriptFormsDesigner.RevertMenuName(MainMenu);
+            MenuItemEntry1.Text = "Меню" + OneScriptFormsDesigner.ParseBetween(MenuItemEntry1.Name.Replace("ГлавноеМеню", ""), "Меню", null);
+            MainMenu.MenuItems.Add(MenuItemEntry1.M_MenuItem);
+            OneScriptFormsDesigner.AddToDictionary(MenuItemEntry1.M_MenuItem, MenuItemEntry1);
             System.Windows.Forms.TreeNode TreeNode1 = new System.Windows.Forms.TreeNode();
             TreeNode1.Tag = MenuItemEntry1;
             TreeNode1.Text = MenuItemEntry1.Text;
@@ -535,18 +456,20 @@ namespace osfDesigner
             ButtonAddSeparator.Enabled = false;
             TreeView1.SelectedNode = TreeNode1;
             UpdateButtonsState();
-            MenuItemEntry1.DefaultValues = GetDefaultValues(MenuItemEntry1);
+            PropertyGrid1.SelectedObject = MenuItemEntry1;
+            PropertyGrid1.Refresh();
+            MenuItemEntry1.DefaultValues = OneScriptFormsDesigner.GetDefaultValues(MenuItemEntry1, PropertyGrid1);
             TreeView1.Focus();
         }
 
         private void ButtonAddChild_Click(object sender, EventArgs e)
         {
             MenuItemEntry MenuItemEntry1 = new MenuItemEntry();
-            MenuItemEntry1.Text = OneScriptFormsDesigner.RevertMenuName(MainMenu1);
-            MenuItemEntry1.Name = MenuItemEntry1.Text;
+            MenuItemEntry1.Name = OneScriptFormsDesigner.RevertMenuName(MainMenu);
+            MenuItemEntry1.Text = "Меню" + OneScriptFormsDesigner.ParseBetween(MenuItemEntry1.Name.Replace("ГлавноеМеню", ""), "Меню", null);
             MenuItemEntry MenuItemParent = (MenuItemEntry)TreeView1.SelectedNode.Tag;
             MenuItemParent.MenuItems.Add(MenuItemEntry1.M_MenuItem);
-            OneScriptFormsDesigner.AddToHashtable(MenuItemEntry1.M_MenuItem, MenuItemEntry1);
+            OneScriptFormsDesigner.AddToDictionary(MenuItemEntry1.M_MenuItem, MenuItemEntry1);
             System.Windows.Forms.TreeNode TreeNode1 = new System.Windows.Forms.TreeNode();
             TreeNode1.Tag = MenuItemEntry1;
             TreeNode1.Text = MenuItemEntry1.Text;
@@ -561,7 +484,9 @@ namespace osfDesigner
             TreeView1.SelectedNode.Expand();
             UpdateButtonsState();
             MenuItemEntry1.Hide = "Показать";
-            MenuItemEntry1.DefaultValues = GetDefaultValues(MenuItemEntry1);
+            PropertyGrid1.SelectedObject = MenuItemEntry1;
+            PropertyGrid1.Refresh();
+            MenuItemEntry1.DefaultValues = OneScriptFormsDesigner.GetDefaultValues(MenuItemEntry1, PropertyGrid1);
             MenuItemEntry1.Hide = "Скрыть";
             PropertyGrid1.SelectedObject = TreeView1.SelectedNode.Tag;
             TreeView1.Focus();
@@ -570,18 +495,16 @@ namespace osfDesigner
         private void ButtonAddSeparator_Click(object sender, EventArgs e)
         {
             MenuItemEntry MenuItemEntry1 = new MenuItemEntry();
-            MenuItemEntry1.Name = OneScriptFormsDesigner.RevertSeparatorName(MainMenu1);
-
+            MenuItemEntry1.Name = OneScriptFormsDesigner.RevertSeparatorName(MainMenu);
             // Имя в виде тире не присваивать, заменять на тире только во время формирования сценария.
-
-            MenuItemEntry1.Text = MenuItemEntry1.Name;
+            MenuItemEntry1.Text = "Сепаратор" + OneScriptFormsDesigner.ParseBetween(MenuItemEntry1.Name.Replace("ГлавноеМеню", ""), "Сепаратор", null);
             MenuItemEntry MenuItemParent = (MenuItemEntry)TreeView1.SelectedNode.Tag;
             MenuItemParent.MenuItems.Add(MenuItemEntry1.M_MenuItem);
-            OneScriptFormsDesigner.AddToHashtable(MenuItemEntry1.M_MenuItem, MenuItemEntry1);
+            OneScriptFormsDesigner.AddToDictionary(MenuItemEntry1.M_MenuItem, MenuItemEntry1);
 
             System.Windows.Forms.TreeNode TreeNode1 = new System.Windows.Forms.TreeNode();
             TreeNode1.Tag = MenuItemEntry1;
-            TreeNode1.Text = MenuItemEntry1.Name;
+            TreeNode1.Text = MenuItemEntry1.Text;
             TreeView1.SelectedNode.Nodes.Add(TreeNode1);
 
             // Свойство Checked у родителя нужно установить в false.
@@ -592,7 +515,9 @@ namespace osfDesigner
 
             TreeView1.SelectedNode.Expand();
             UpdateButtonsState();
-            MenuItemEntry1.DefaultValues = GetDefaultValues(MenuItemEntry1);
+            PropertyGrid1.SelectedObject = MenuItemEntry1;
+            PropertyGrid1.Refresh();
+            MenuItemEntry1.DefaultValues = OneScriptFormsDesigner.GetDefaultValues(MenuItemEntry1, PropertyGrid1);
             PropertyGrid1.SelectedObject = TreeView1.SelectedNode.Tag;
             TreeView1.Focus();
         }
@@ -667,19 +592,8 @@ namespace osfDesigner
 
         private void FrmMenuItems_Closed(object sender, EventArgs e)
         {
+            OneScriptFormsDesigner.SetDesignSurfaceState();
             _wfes.CloseDropDown();
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                if (components != null)
-                {
-                    components.Dispose();
-                }
-            }
-            base.Dispose(disposing);
         }
     }
 }

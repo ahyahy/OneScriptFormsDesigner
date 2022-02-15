@@ -73,7 +73,6 @@ namespace osfDesigner
             this.pgrdTreeView.Size = new Size(150, 200);
             this.pgrdTreeView.NodeMouseClick += PgrdTreeView_NodeMouseClick;
             this.pgrdTreeView.TabIndex = 5;
-
             // 
             // buttonSort
             // 
@@ -85,7 +84,6 @@ namespace osfDesigner
             this.buttonSort.ImageIndex = 0;
             this.buttonSort.Name = "buttonSort";
             this.buttonSort.Pushed = true;
-
             // 
             // pgrdToolBar
             // 
@@ -97,7 +95,6 @@ namespace osfDesigner
             this.pgrdToolBar.Buttons.Add(buttonSort);
             this.pgrdToolBar.ImageList = ImageList1;
             this.pgrdToolBar.ButtonClick += PgrdToolBar_ButtonClick;
-
             // 
             // PropertyGridHost
             // 
@@ -110,7 +107,6 @@ namespace osfDesigner
             this.Controls.Add(this.pgrdToolBar);
             this.Name = "PropertyGridHost";
             this.ResumeLayout(false);
-
             this.Dock = System.Windows.Forms.DockStyle.Fill;
 
             // Диспетчер поверхности строго связан с PropertyGridHost.
@@ -128,13 +124,13 @@ namespace osfDesigner
             // событие PropertyGridHost.SelectedObjectsChanged вызывает метод ReloadComboBox().
             pgrdPropertyGrid.SelectedObjectsChanged += (object sender, EventArgs e) =>
             {
-                // !!!здесь делаем подмену исходного компонента, указанного в свойстве pgrdPropertyGrid.SelectedObject на 
+                // Здесь делаем подмену исходного компонента, указанного в свойстве pgrdPropertyGrid.SelectedObject на 
                 // наш компонент - двойник (similar). Связь между ними через OneScriptFormsDesigner.hashtable.
                 System.Windows.Forms.PropertyGrid propertyGrid = (System.Windows.Forms.PropertyGrid)sender;
                 dynamic OriginalObj = propertyGrid.SelectedObject;
                 dynamic SimilarObj = OneScriptFormsDesigner.RevertSimilarObj(OriginalObj);
 
-                // !!!делаем невидимыми свойства, которые хотим скрыть.
+                // Сделаем невидимыми свойства, которые хотим скрыть.
                 // Компонент System.Windows.Forms.ImageList и System.Windows.Forms.MainMenu используем от Майкрософт для помещения на форму, а 
                 // в сетке свойств показываем свойства нашего osfDesigner.ImageList и osfDesigner.MainMenu.
                 if (SimilarObj == null)
@@ -143,14 +139,14 @@ namespace osfDesigner
                     {
                         SimilarObj = new osfDesigner.ImageList();
                         ((osfDesigner.ImageList)SimilarObj).OriginalObj = OriginalObj;
-                        OneScriptFormsDesigner.AddToHashtable(OriginalObj, SimilarObj);
+                        OneScriptFormsDesigner.AddToDictionary(OriginalObj, SimilarObj);
                         OneScriptFormsDesigner.PassProperties(OriginalObj, SimilarObj); // Передадим свойства.
                         propertyGrid.SelectedObject = SimilarObj;
                     }
                     else if (OriginalObj.GetType().ToString() == "System.Windows.Forms.MainMenu")
                     {
                         SimilarObj = new osfDesigner.MainMenu();
-                        OneScriptFormsDesigner.AddToHashtable(OriginalObj, SimilarObj);
+                        OneScriptFormsDesigner.AddToDictionary(OriginalObj, SimilarObj);
                         OneScriptFormsDesigner.PassProperties(OriginalObj, SimilarObj); // Передадим свойства.
                         propertyGrid.SelectedObject = SimilarObj;
                     }
@@ -578,7 +574,6 @@ namespace osfDesigner
                     {
                         TreeView.Nodes.Add(TreeNode1);
                     }
-
                 }
             }
             else
