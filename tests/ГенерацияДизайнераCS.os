@@ -7667,6 +7667,10 @@
 	|            {
 	|                return;
 	|            }
+	|            if (val.GetType() == typeof(osfDesigner.Form) && (valueName == ""Путь""))
+	|            {
+	|                return;
+	|            }
 	|            if (val.GetType() == typeof(osfDesigner.MyTreeNode) && (valueName == ""ПолныйПуть""))
 	|            {
 	|                return;
