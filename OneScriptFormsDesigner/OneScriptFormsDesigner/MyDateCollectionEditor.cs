@@ -11,15 +11,15 @@ namespace osfDesigner
 {
     public class MyDateCollectionEditor : CollectionEditor
     {
-        private System.ComponentModel.Design.CollectionEditor.CollectionForm collectionForm;
+        private CollectionForm collectionForm;
         private System.Windows.Forms.Form frmCollectionEditorForm;
-        private System.Windows.Forms.TableLayoutPanel TableLayoutPanel1;
-        private System.Windows.Forms.TableLayoutPanel AddRemoveTableLayoutPanel1;
+        private TableLayoutPanel TableLayoutPanel1;
+        private TableLayoutPanel AddRemoveTableLayoutPanel1;
         private System.Windows.Forms.Label PropertiesLabel1 = null;
         private System.Windows.Forms.Label MembersLabel1 = null;
         private System.Windows.Forms.ListBox ListBox1;
         private System.Windows.Forms.PropertyGrid PropertyGrid1;
-        private System.Windows.Forms.TableLayoutPanel OkCancelTableLayoutPanel1;
+        private TableLayoutPanel OkCancelTableLayoutPanel1;
         private System.Windows.Forms.Button ButtonOk1 = null;
         private System.Windows.Forms.Button ButtonCancel1 = null;
         private System.Windows.Forms.Button ButtonAdd1 = null;
@@ -32,92 +32,38 @@ namespace osfDesigner
         private MonthCalendar MonthCalendar1;
         private DateTime[] DateTimeForCancel;
 
-        // Унаследуйте конструктор по умолчанию из стандартного редактора коллекций.
         public MyDateCollectionEditor(Type type) : base(type)
         {
             MyDateListType = type;
         }
 
-        // Переопределите этот метод, чтобы получить доступ к форме редактора коллекции.
         protected override CollectionForm CreateCollectionForm()
         {
-            // Получение макета редактора коллекции по умолчанию.
             collectionForm = base.CreateCollectionForm();
-            MonthCalendar1 = (MonthCalendar)this.Context.Instance;
-            if (MyDateListType.ToString() == "osfDesigner.MyBoldedDatesList")
+            collectionForm.Shown += CollectionForm_Shown;
+            collectionForm.FormClosed += CollectionForm_FormClosed;
+            MonthCalendar1 = (MonthCalendar)Context.Instance;
+            if (MyDateListType == typeof(MyBoldedDatesList))
             {
                 MyDateList = MonthCalendar1.BoldedDates_osf;
-                MyDateListForCancel = new osfDesigner.MyBoldedDatesList();
+                MyDateListForCancel = new MyBoldedDatesList();
                 collectionForm.Text = "Редактор коллекции ВыделенныеДаты";
             }
-            else if (MyDateListType.ToString() == "osfDesigner.MyAnnuallyBoldedDatesList")
+            else if (MyDateListType == typeof(MyAnnuallyBoldedDatesList))
             {
                 MyDateList = MonthCalendar1.AnnuallyBoldedDates_osf;
-                MyDateListForCancel = new osfDesigner.MyAnnuallyBoldedDatesList();
+                MyDateListForCancel = new MyAnnuallyBoldedDatesList();
                 collectionForm.Text = "Редактор коллекции ЕжегодныеДаты";
             }
-            else if (MyDateListType.ToString() == "osfDesigner.MyMonthlyBoldedDatesList")
+            else if (MyDateListType == typeof(MyMonthlyBoldedDatesList))
             {
                 MyDateList = MonthCalendar1.MonthlyBoldedDates_osf;
-                MyDateListForCancel = new osfDesigner.MyMonthlyBoldedDatesList();
+                MyDateListForCancel = new MyMonthlyBoldedDatesList();
                 collectionForm.Text = "Редактор коллекции ЕжемесячныеДаты";
             }
-	
-            collectionForm.Shown += delegate (object sender, EventArgs e)
-            {
-                int count1 = MyDateList.Count;
-                DateTimeForCancel = new DateTime[count1];
-                for (int i = 0; i < MyDateList.Count; i++)
-                {
-                    DateTimeForCancel[i] = MyDateList[i].Value;
-                }
 
-                for (int i = 0; i < MyDateList.Count; i++)
-                {
-                    MyDateListForCancel.Add(new DateEntry(MyDateList[i].Value));
-                }
-            };
-
-            collectionForm.FormClosed += delegate (object sender, FormClosedEventArgs e)
-            {
-                if (collectionForm.DialogResult != System.Windows.Forms.DialogResult.OK)
-                {
-                    if (MyDateListType.ToString() == "osfDesigner.MyBoldedDatesList")
-                    {
-                        MonthCalendar1.BoldedDates = DateTimeForCancel;
-
-                        MonthCalendar1.BoldedDates_osf.Clear();
-                        for (int i = 0; i < MyDateListForCancel.Count; i++)
-                        {
-                            MonthCalendar1.BoldedDates_osf.Add(new DateEntry(MyDateListForCancel[i].Value));
-                        }
-                    }
-                    else if (MyDateListType.ToString() == "osfDesigner.MyAnnuallyBoldedDatesList")
-                    {
-                        MonthCalendar1.AnnuallyBoldedDates = DateTimeForCancel;
-
-                        MonthCalendar1.AnnuallyBoldedDates_osf.Clear();
-                        for (int i = 0; i < MyDateListForCancel.Count; i++)
-                        {
-                            MonthCalendar1.AnnuallyBoldedDates_osf.Add(new DateEntry(MyDateListForCancel[i].Value));
-                        }
-                    }
-                    else if (MyDateListType.ToString() == "osfDesigner.MyMonthlyBoldedDatesList")
-                    {
-                        MonthCalendar1.MonthlyBoldedDates = DateTimeForCancel;
-
-                        MonthCalendar1.MonthlyBoldedDates_osf.Clear();
-                        for (int i = 0; i < MyDateListForCancel.Count; i++)
-                        {
-                            MonthCalendar1.MonthlyBoldedDates_osf.Add(new DateEntry(MyDateListForCancel[i].Value));
-                        }
-                    }
-                }
-                OneScriptFormsDesigner.SetDesignSurfaceState();
-            };
-
-            frmCollectionEditorForm = (System.Windows.Forms.Form)collectionForm;
-            TableLayoutPanel1 = (System.Windows.Forms.TableLayoutPanel)frmCollectionEditorForm.Controls[0];
+            frmCollectionEditorForm = collectionForm;
+            TableLayoutPanel1 = (TableLayoutPanel)frmCollectionEditorForm.Controls[0];
             if (TableLayoutPanel1 != null)
             {
                 for (int i = 0; i < TableLayoutPanel1.Controls.Count; i++)
@@ -129,7 +75,7 @@ namespace osfDesigner
                     }
                     if (i == 1)
                     {
-                        AddRemoveTableLayoutPanel1 = (System.Windows.Forms.TableLayoutPanel)TableLayoutPanel1.Controls[1];
+                        AddRemoveTableLayoutPanel1 = (TableLayoutPanel)TableLayoutPanel1.Controls[1];
                     }
                     if (i == 2)
                     {
@@ -141,28 +87,24 @@ namespace osfDesigner
                         MembersLabel1 = (System.Windows.Forms.Label)TableLayoutPanel1.Controls[3];
                         MembersLabel1.Text = "Члены:";
                     }
-
                     if (i == 4)
                     {
                         ListBox1 = (System.Windows.Forms.ListBox)TableLayoutPanel1.Controls[4];
                         ListBox1.DrawItem += ListBox1_DrawItem;
                         ListBox1.SelectedIndexChanged += ListBox1_SelectedIndexChanged;
                     }
-                    // Получите ссылку на внутреннюю сетку свойств и подключите к ней обработчик событий.
                     if (i == 5)
                     {
                         PropertyGrid1 = (System.Windows.Forms.PropertyGrid)TableLayoutPanel1.Controls[5];
                         PropertyGrid1.SelectedGridItemChanged += PropertyGrid1_SelectedGridItemChanged;
                         PropertyGrid1.PropertyValueChanged += PropertyGrid1_PropertyValueChanged;
                         PropertyGrid1.SelectedObjectsChanged += PropertyGrid1_SelectedObjectsChanged;
-
-                        // Также сделайте доступным окно с подсказками по параметрам в нижней части.
                         PropertyGrid1.HelpVisible = true;
                         PropertyGrid1.HelpBackColor = SystemColors.Info;
                     }
                     if (i == 6)
                     {
-                        OkCancelTableLayoutPanel1 = (System.Windows.Forms.TableLayoutPanel)TableLayoutPanel1.Controls[6];
+                        OkCancelTableLayoutPanel1 = (TableLayoutPanel)TableLayoutPanel1.Controls[6];
                     }
                     if (i == 7)
                     {
@@ -205,8 +147,60 @@ namespace osfDesigner
                     }
                 }
             }
-
             return collectionForm;
+        }
+
+        private void CollectionForm_Shown(object sender, EventArgs e)
+        {
+            int count1 = MyDateList.Count;
+            DateTimeForCancel = new DateTime[count1];
+            for (int i = 0; i < MyDateList.Count; i++)
+            {
+                DateTimeForCancel[i] = MyDateList[i].Value;
+            }
+
+            for (int i = 0; i < MyDateList.Count; i++)
+            {
+                MyDateListForCancel.Add(new DateEntry(MyDateList[i].Value));
+            }
+        }
+
+        private void CollectionForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            if (collectionForm.DialogResult != System.Windows.Forms.DialogResult.OK)
+            {
+                if (MyDateListType == typeof(MyBoldedDatesList))
+                {
+                    MonthCalendar1.BoldedDates = DateTimeForCancel;
+
+                    MonthCalendar1.BoldedDates_osf.Clear();
+                    for (int i = 0; i < MyDateListForCancel.Count; i++)
+                    {
+                        MonthCalendar1.BoldedDates_osf.Add(new DateEntry(MyDateListForCancel[i].Value));
+                    }
+                }
+                else if (MyDateListType == typeof(MyAnnuallyBoldedDatesList))
+                {
+                    MonthCalendar1.AnnuallyBoldedDates = DateTimeForCancel;
+
+                    MonthCalendar1.AnnuallyBoldedDates_osf.Clear();
+                    for (int i = 0; i < MyDateListForCancel.Count; i++)
+                    {
+                        MonthCalendar1.AnnuallyBoldedDates_osf.Add(new DateEntry(MyDateListForCancel[i].Value));
+                    }
+                }
+                else if (MyDateListType == typeof(MyMonthlyBoldedDatesList))
+                {
+                    MonthCalendar1.MonthlyBoldedDates = DateTimeForCancel;
+
+                    MonthCalendar1.MonthlyBoldedDates_osf.Clear();
+                    for (int i = 0; i < MyDateListForCancel.Count; i++)
+                    {
+                        MonthCalendar1.MonthlyBoldedDates_osf.Add(new DateEntry(MyDateListForCancel[i].Value));
+                    }
+                }
+            }
+            OneScriptFormsDesigner.SetDesignSurfaceState();
         }
 
         private void PropertyGrid1_SelectedGridItemChanged(object sender, SelectedGridItemChangedEventArgs e)
@@ -222,21 +216,21 @@ namespace osfDesigner
             {
                 DateTime1[i] = MyDateList[i].Value;
             }
-            if (MyDateListType.ToString() == "osfDesigner.MyBoldedDatesList")
+            if (MyDateListType == typeof(MyBoldedDatesList))
             {
                 MonthCalendar1.BoldedDates = DateTime1;
             }
-            else if (MyDateListType.ToString() == "osfDesigner.MyAnnuallyBoldedDatesList")
+            else if (MyDateListType == typeof(MyAnnuallyBoldedDatesList))
             {
                 MonthCalendar1.AnnuallyBoldedDates = DateTime1;
             }
-            else if (MyDateListType.ToString() == "osfDesigner.MyMonthlyBoldedDatesList")
+            else if (MyDateListType == typeof(MyMonthlyBoldedDatesList))
             {
                 MonthCalendar1.MonthlyBoldedDates = DateTime1;
             }
         }
 
-        private void PropertyGrid1_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)
+        private void PropertyGrid1_PropertyValueChanged(object sender, PropertyValueChangedEventArgs e)
         {
             PropertiesLabel1.Text = "Свойства:";
             UpdateOriginalObj();
@@ -307,14 +301,10 @@ namespace osfDesigner
                 Graphics Graphics1 = e.Graphics;
 
                 int Count1 = ListBox1.Items.Count;
-                int maxCount1;
+                int maxCount1 = Count1;
                 if (Count1 > 1)
                 {
                     maxCount1 = Count1 - 1;
-                }
-                else
-                {
-                    maxCount1 = Count1;
                 }
                 SizeF sizeW = Graphics1.MeasureString(maxCount1.ToString(CultureInfo.CurrentCulture), ListBox1.Font);
 
@@ -348,7 +338,7 @@ namespace osfDesigner
 
                 offset += 2;
 
-                if (this != null && this.GetPaintValueSupported())
+                if (this != null && GetPaintValueSupported())
                 {
                     Rectangle Rectangle2 = new Rectangle(e.Bounds.X + offset, e.Bounds.Y + 1, 20, e.Bounds.Height - 3);
                     Graphics1.DrawRectangle(SystemPens.ControlText,
@@ -358,8 +348,8 @@ namespace osfDesigner
                         Rectangle2.Height - 1);
                     Rectangle2.Inflate(-1, -1);
 
-                    PaintValueEventArgs PaintValueEventArgs1 = new PaintValueEventArgs(this.Context, ListItem1.Value, Graphics1, Rectangle2);
-                    this.PaintValue(PaintValueEventArgs1);
+                    PaintValueEventArgs PaintValueEventArgs1 = new PaintValueEventArgs(Context, ListItem1.Value, Graphics1, Rectangle2);
+                    PaintValue(PaintValueEventArgs1);
                     offset += 26 + 1;
                 }
 
@@ -379,14 +369,10 @@ namespace osfDesigner
                 }
 
                 Brush textBrush = new SolidBrush(textColor);
-                string itemText;
+                string itemText = DateEntryText;
                 if (DateEntry1.Value == DateTime.MinValue)
                 {
                     itemText = "Дата";
-                }
-                else
-                {
-                    itemText = DateEntryText;
                 }
 
                 Graphics1.DrawString(itemText, ListBox1.Font, textBrush, new Rectangle(e.Bounds.X + offset, e.Bounds.Y, e.Bounds.Width - offset, e.Bounds.Height));

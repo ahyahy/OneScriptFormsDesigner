@@ -2,7 +2,6 @@
 using System.Drawing.Design;
 using System.Drawing;
 using System.IO;
-using System.Reflection;
 using System.Windows.Forms.Design;
 using System.Windows.Forms;
 using System;
@@ -19,10 +18,7 @@ namespace osfDesigner
             {
                 frmNodes _frmNodes = new frmNodes(context, value);
                 _frmNodes._wfes = wfes;
-
-                if (wfes.ShowDialog(_frmNodes) == System.Windows.Forms.DialogResult.OK)
-                {
-                }
+                wfes.ShowDialog(_frmNodes);
             }
             return null;
         }
@@ -73,21 +69,21 @@ namespace osfDesigner
         {
             _context = context;
             _value = value;
-            this.Size = new Size(864, 485);
-            this.Text = "Редактор узлов дерева";
-            this.ControlBox = true;
-            this.HelpButton = true;
-            this.ShowIcon = false;
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Sizable;
-            this.SizeGripStyle = SizeGripStyle.Auto;
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.Name = "frmNodes";
-            this.ShowInTaskbar = false;
-            this.MinimumSize = new Size(797, 485);
-            this.Closed += frmNodes_Closed;
-            this.Load += FrmNodes_Load;
-            this.CenterToScreen();
+            Size = new Size(864, 485);
+            Text = "Редактор узлов дерева";
+            ControlBox = true;
+            HelpButton = true;
+            ShowIcon = false;
+            FormBorderStyle = System.Windows.Forms.FormBorderStyle.Sizable;
+            SizeGripStyle = SizeGripStyle.Auto;
+            MaximizeBox = false;
+            MinimizeBox = false;
+            Name = "frmNodes";
+            ShowInTaskbar = false;
+            MinimumSize = new Size(797, 485);
+            Closed += frmNodes_Closed;
+            Load += FrmNodes_Load;
+            CenterToScreen();
 
             // Правая панель с сеткой свойств PropertyGrid1, надписью Label2 и кнопками ButtonOK и ButtonCancel.
             Panel2 = new System.Windows.Forms.Panel();
@@ -378,7 +374,7 @@ namespace osfDesigner
             UpdateTreeViewOriginal();
         }
 
-        private void PropertyGrid1_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)
+        private void PropertyGrid1_PropertyValueChanged(object sender, PropertyValueChangedEventArgs e)
         {
             UpdateTreeViewOriginal();
         }
@@ -431,8 +427,8 @@ namespace osfDesigner
             TreeViewOld = new TreeView();
             TreeView1.CheckBoxes = TreeViewOriginal.CheckBoxes;
             TreeView1.Nodes.Clear();
-            this.CopyTree(TreeViewOriginal, TreeView1);
-            this.CopyTree(TreeViewOriginal, TreeViewOld);
+            CopyTree(TreeViewOriginal, TreeView1);
+            CopyTree(TreeViewOriginal, TreeViewOld);
 
             if (TreeView1.Nodes.Count > 0)
             {
@@ -452,13 +448,13 @@ namespace osfDesigner
         private void ButtonCancel_Click(object sender, EventArgs e)
         {
             TreeViewOriginal.Nodes.Clear();
-            this.CopyTree(this.TreeViewOld, TreeViewOriginal);
-            this.Close();
+            CopyTree(TreeViewOld, TreeViewOriginal);
+            Close();
         }
 
         private void ButtonOK_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
 
         private void ButtonAddRoot_Click(object sender, EventArgs e)
@@ -494,10 +490,10 @@ namespace osfDesigner
         public void UpdateTreeViewOriginal()
         {
             TreeViewOriginal.Nodes.Clear();
-            this.CopyTree(TreeView1, TreeViewOriginal);
+            CopyTree(TreeView1, TreeViewOriginal);
         }
 
-        public void CopyNode(MyTreeNode node, System.Windows.Forms.TreeNodeCollection dest)
+        public void CopyNode(MyTreeNode node, TreeNodeCollection dest)
         {
             MyTreeNode copy = new MyTreeNode();
             copy.TreeView = TreeView1;

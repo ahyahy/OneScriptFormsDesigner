@@ -1,6 +1,8 @@
 ﻿using System.ComponentModel.Design;
 using System.ComponentModel;
+using System.Drawing.Text;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
@@ -60,6 +62,7 @@ namespace osfDesigner
                 string propertyName = OneScriptFormsDesigner.GetPropName(control, displayName);
                 PropertyInfo pi = control.GetType().GetProperty(propertyName);
                 pi.SetValue(control, rez);
+                return;
             }
             if (valProp == "Ложь")
             {
@@ -68,6 +71,7 @@ namespace osfDesigner
                 string propertyName = OneScriptFormsDesigner.GetPropName(control, displayName);
                 PropertyInfo pi = control.GetType().GetProperty(propertyName);
                 pi.SetValue(control, rez);
+                return;
             }
             if (displayName.Contains("ToolTip на"))
             {
@@ -99,7 +103,7 @@ namespace osfDesigner
                     string nameNodeParent = OneScriptFormsDesigner.ParseBetween(valProp, "=", ".");
                     if (nameNodeParent == control.Name)
                     {
-                        osfDesigner.MyTreeNode MyTreeNode1 = new MyTreeNode();
+                        MyTreeNode MyTreeNode1 = new MyTreeNode();
                         MyTreeNode1.DefaultValues = @"Текст == 
 ШрифтУзла == 
 Индекс == 0
@@ -114,9 +118,9 @@ namespace osfDesigner
                     }
                     else
                     {
-                        osfDesigner.MyTreeNode MyTreeNode2 = null;
+                        MyTreeNode MyTreeNode2 = null;
                         NodeSearch(((osfDesigner.TreeView)control), nameNodeParent, ref MyTreeNode2, null);
-                        osfDesigner.MyTreeNode MyTreeNode1 = new MyTreeNode();
+                        MyTreeNode MyTreeNode1 = new MyTreeNode();
                         MyTreeNode1.DefaultValues = @"Текст == 
 ШрифтУзла == 
 Индекс == 0
@@ -134,7 +138,7 @@ namespace osfDesigner
                 {
                     // Найдем узел и установим для него свойство.
                     string nameNode2 = OneScriptFormsDesigner.ParseBetween(valProp, null, ".");
-                    osfDesigner.MyTreeNode MyTreeNode3 = null;
+                    MyTreeNode MyTreeNode3 = null;
                     NodeSearch(((osfDesigner.TreeView)control), nameNode2, ref MyTreeNode3, null);
 
                     string nodeDisplayName = OneScriptFormsDesigner.ParseBetween(valProp, ".", "=");
@@ -144,70 +148,76 @@ namespace osfDesigner
                 }
                 return;
             }
-            if (displayName == "Шрифт" || displayName == "ШрифтУзла" || displayName == "ШрифтЗаголовков")
+            if (displayName == "Шрифт" || displayName == "ШрифтЗаголовков")
             {
+                Font parentFont;
+                try
+                {
+                    parentFont = (Font)control.Parent.Font;
+                }
+                catch
+                {
+                    parentFont = OneScriptFormsDesigner.RootComponent.Font;
+                }
+                string fontName = parentFont.Name;
+                float fontSize = parentFont.Size;
+                FontStyle fontStyle = FontStyle.Regular;
+
                 string[] result = valProp.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
 
-                string FontName;
-                float FontSize;
                 if (control.GetType() == typeof(osfDesigner.ListViewItem) || control.GetType() == typeof(osfDesigner.ListViewSubItem))
                 {
-                    FontName = "";
-                    FontSize = float.Parse("10,2");
+                    fontName = "";
+                    fontSize = float.Parse("10,2");
                 }
-                else
-                {
-                    FontName = control.Parent.Font.Name;
-                    FontSize = control.Parent.Font.Size;
-                }
-                int Style1 = 0;
 
                 for (int i = 0; i < result.Length; i++)
                 {
                     if (i == 0)
                     {
-                        try
+                        string myFontName = OneScriptFormsDesigner.ParseBetween(result[0], "\u0022", null).Replace("\u0022", "").Trim();
+                        InstalledFontCollection ifc = new InstalledFontCollection();
+                        for (int i1 = 0; i1 < ifc.Families.Length; i1++)
                         {
-                            FontName = OneScriptFormsDesigner.ParseBetween(result[0], "\u0022", null).Replace("\u0022", "").Trim();
+                            string systemFontName = ifc.Families[i1].Name;
+                            if (systemFontName.Replace(" ", "") == myFontName)
+                            {
+                                fontName = systemFontName;
+                            }
                         }
-                        catch { }
                     }
                     if (i == 1)
                     {
-                        try
-                        {
-                            FontSize = Single.Parse(result[1].Trim());
-                        }
-                        catch
-                        {
-                            try
-                            {
-                                FontSize = Single.Parse(result[1].Trim().Replace(".", ","));
-                            }
-                            catch { }
-                        }
+                        fontSize = Single.Parse(result[1].Replace(".", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator));
                     }
                     if (i == 2)
                     {
                         if (result[2].Contains("Жирный"))
                         {
-                            Style1 = Style1 + (int)FontStyle.Bold;
+                            fontStyle = fontStyle + (int)FontStyle.Bold;
                         }
                         if (result[2].Contains("Зачеркнутый"))
                         {
-                            Style1 = Style1 + (int)FontStyle.Strikeout;
+                            fontStyle = fontStyle + (int)FontStyle.Strikeout;
                         }
                         if (result[2].Contains("Курсив"))
                         {
-                            Style1 = Style1 + (int)FontStyle.Italic;
+                            fontStyle = fontStyle + (int)FontStyle.Italic;
                         }
                         if (result[2].Contains("Подчеркнутый"))
                         {
-                            Style1 = Style1 + (int)FontStyle.Underline;
+                            fontStyle = fontStyle + (int)FontStyle.Underline;
                         }
                     }
                 }
-                control.Font = new Font(FontName, FontSize, (FontStyle)Style1);
+                if (displayName == "Шрифт")
+                {
+                    control.Font = new Font(fontName, fontSize, fontStyle);
+                }
+                else if (displayName == "ШрифтЗаголовков")
+                {
+                    ((osfDesigner.DataGridTableStyle)control).HeaderFont = new Font(fontName, fontSize, fontStyle);
+                }
                 return;
             }
             if (displayName == "ВыделенныеДаты")
@@ -243,7 +253,7 @@ namespace osfDesigner
                     }
                 }
 
-                osfDesigner.MyBoldedDatesList MyBoldedDatesList1 = MonthCalendar1.BoldedDates_osf;
+                MyBoldedDatesList MyBoldedDatesList1 = MonthCalendar1.BoldedDates_osf;
                 MyBoldedDatesList1.Add(new DateEntry(rez));
 
                 int count1 = MyBoldedDatesList1.Count;
@@ -288,7 +298,7 @@ namespace osfDesigner
                     }
                 }
 
-                osfDesigner.MyAnnuallyBoldedDatesList MyAnnuallyBoldedDatesList1 = MonthCalendar1.AnnuallyBoldedDates_osf;
+                MyAnnuallyBoldedDatesList MyAnnuallyBoldedDatesList1 = MonthCalendar1.AnnuallyBoldedDates_osf;
                 MyAnnuallyBoldedDatesList1.Add(new DateEntry(rez));
 
                 int count1 = MyAnnuallyBoldedDatesList1.Count;
@@ -333,7 +343,7 @@ namespace osfDesigner
                     }
                 }
 
-                osfDesigner.MyMonthlyBoldedDatesList MyMonthlyBoldedDatesList1 = MonthCalendar1.MonthlyBoldedDates_osf;
+                MyMonthlyBoldedDatesList MyMonthlyBoldedDatesList1 = MonthCalendar1.MonthlyBoldedDates_osf;
                 MyMonthlyBoldedDatesList1.Add(new DateEntry(rez));
 
                 int count1 = MyMonthlyBoldedDatesList1.Count;
@@ -360,13 +370,13 @@ namespace osfDesigner
                 }
                 else
                 {
-                    System.Windows.Forms.MessageBox.Show("Не найден файл " + valProp);
+                    MessageBox.Show("Не найден файл " + valProp);
                 }
                 return;
             }
             if (displayName == "СписокИзображений" || displayName == "СписокБольшихИзображений" || displayName == "СписокМаленькихИзображений")
             {
-                IDesignerHost host = pDesigner.DSME.ActiveDesignSurface.GetIDesignerHost();
+                IDesignerHost host = OneScriptFormsDesigner.DesignerHost;
                 ComponentCollection ctrlsExisting = host.Container.Components;
 
                 System.Windows.Forms.ImageList ImageList1 = null;
@@ -420,7 +430,7 @@ namespace osfDesigner
                 }
                 else
                 {
-                    System.Windows.Forms.MessageBox.Show("Не найден файл " + rez);
+                    MessageBox.Show("Не найден файл " + rez);
                 }
                 return;
             }
@@ -537,7 +547,7 @@ namespace osfDesigner
             if (displayName == "КнопкаОтмена" ||
                 displayName == "КнопкаПринять")
             {
-                IDesignerHost host = pDesigner.DSME.ActiveDesignSurface.GetIDesignerHost();
+                IDesignerHost host = OneScriptFormsDesigner.DesignerHost;
                 ComponentCollection ctrlsExisting = host.Container.Components;
 
                 IButtonControl IButtonControl1 = null;
@@ -561,7 +571,7 @@ namespace osfDesigner
             // Если это ВыбранныйОбъект для сетки свойств.
             if (displayName == "ВыбранныйОбъект")
             {
-                IDesignerHost host = pDesigner.DSME.ActiveDesignSurface.GetIDesignerHost();
+                IDesignerHost host = OneScriptFormsDesigner.DesignerHost;
                 ComponentCollection ctrlsExisting = host.Container.Components;
 
                 Control Control1 = null;
@@ -719,7 +729,7 @@ namespace osfDesigner
                 string propertyName = OneScriptFormsDesigner.GetPropName(control, displayName);
                 try
                 {
-                    control.GetType().GetProperty(propertyName).SetValue(control, Decimal.Parse(valProp.Replace(".", ",")));
+                    control.GetType().GetProperty(propertyName).SetValue(control, Decimal.Parse(valProp.Replace(".", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator)));
                 }
                 catch
                 {
@@ -864,12 +874,12 @@ namespace osfDesigner
             if (displayName == "Значок")
             {
                 string rez = null;
-                osfDesigner.MyIcon MyIcon1 = null;
+                MyIcon MyIcon1 = null;
                 rez = valProp.Replace("\u0022", "");
                 rez = OneScriptFormsDesigner.ParseBetween(rez, "(", ")");
                 try
                 {
-                    MyIcon1 = new osfDesigner.MyIcon(rez);
+                    MyIcon1 = new MyIcon(rez);
                     MyIcon1.Path = rez;
                 }
                 catch { }
@@ -932,9 +942,9 @@ namespace osfDesigner
             }
         }
 
-        public static void NodeSearch(osfDesigner.TreeView treeView, string nameNodeParent, ref osfDesigner.MyTreeNode node, System.Windows.Forms.TreeNodeCollection treeNodes = null)
+        public static void NodeSearch(osfDesigner.TreeView treeView, string nameNodeParent, ref MyTreeNode node, TreeNodeCollection treeNodes = null)
         {
-            System.Windows.Forms.TreeNodeCollection _treeNodes;
+            TreeNodeCollection _treeNodes;
             if (treeNodes == null)
             {
                 _treeNodes = treeView.Nodes;
@@ -943,10 +953,10 @@ namespace osfDesigner
             {
                 _treeNodes = treeNodes;
             }
-            osfDesigner.MyTreeNode treeNode = null;
+            MyTreeNode treeNode = null;
             for (int i = 0; i < _treeNodes.Count; i++)
             {
-                treeNode = (osfDesigner.MyTreeNode)_treeNodes[i];
+                treeNode = (MyTreeNode)_treeNodes[i];
                 if (treeNode.Name == nameNodeParent)
                 {
                     node = treeNode;
@@ -959,7 +969,7 @@ namespace osfDesigner
             }
         }
 
-        public static void SetNodePropValue(osfDesigner.MyTreeNode control, string displayName, string valProp)
+        public static void SetNodePropValue(MyTreeNode control, string displayName, string valProp)
         {
             if (displayName == "Помечен")
             {

@@ -45,8 +45,6 @@ namespace osfDesigner
             set { M_Value = value; }
         }
 
-        //Методы============================================================
-
         public override string ToString()
         {
             return Text;

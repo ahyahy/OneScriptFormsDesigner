@@ -13,7 +13,7 @@ namespace osfDesigner
 
         public MenuCommandServiceExt(IServiceProvider serviceProvider)
         {
-            this._serviceProvider = serviceProvider;
+            _serviceProvider = serviceProvider;
             _menuCommandService = new MenuCommandService(serviceProvider);
         }
         
@@ -70,7 +70,7 @@ namespace osfDesigner
                 MenuCommand command = menuItem.Tag as MenuCommand;
                 if (command.CommandID.ID == 17)
                 {
-                    System.Windows.Forms.DialogResult res1 = System.Windows.Forms.MessageBox.Show(
+                    System.Windows.Forms.DialogResult fact = MessageBox.Show(
                         "Действительно удалить выбранные компоненты?",
                         "",
                         MessageBoxButtons.YesNoCancel,
@@ -78,7 +78,7 @@ namespace osfDesigner
                         MessageBoxDefaultButton.Button2
                        );
 
-                    if (res1 == System.Windows.Forms.DialogResult.OK || res1 == System.Windows.Forms.DialogResult.Yes)
+                    if (fact == System.Windows.Forms.DialogResult.OK || fact == System.Windows.Forms.DialogResult.Yes)
                     {
                         command.Invoke();
                     }

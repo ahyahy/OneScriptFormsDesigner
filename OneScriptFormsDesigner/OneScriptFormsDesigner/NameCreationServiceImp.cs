@@ -131,7 +131,7 @@ namespace osfDesigner
 
         public void ValidateName(string name)
         {
-            //  Используем этот метод для проверки, если он завершится неудачей, создадим исключение
+            // Используем этот метод для проверки, если он завершится неудачей, создадим исключение.
             if (!(IsValidName(name)))
             {
                 throw new ArgumentException(@"NameCreationServiceImp::ValidateName() - Исключение: Неверное имя: " + name);

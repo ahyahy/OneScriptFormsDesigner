@@ -11,7 +11,7 @@ namespace osfDesigner
 
         public DesignerSerializationServiceImpl(IServiceProvider serviceProvider)
         {
-            this._serviceProvider = serviceProvider;
+            _serviceProvider = serviceProvider;
         }
 
         public ICollection Deserialize(object serializationData)

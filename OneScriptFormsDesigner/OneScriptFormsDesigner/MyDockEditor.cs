@@ -21,7 +21,7 @@ namespace osfDesigner
             var dockUiField = typeof(DockEditor).GetField("dockUI", BindingFlags.Instance | BindingFlags.NonPublic);
             var dockUiObject = dockUiConstructor.Invoke(new[] { editor }) as Control;
             dockUiField.SetValue(editor, dockUiObject);
-            System.Windows.Forms.Control ContainerPlaceholder = dockUiObject.Controls[0];
+            Control ContainerPlaceholder = dockUiObject.Controls[0];
             System.Windows.Forms.CheckBox CheckBox0 = (System.Windows.Forms.CheckBox)dockUiObject.Controls[1];
             System.Windows.Forms.CheckBox CheckBox1 = (System.Windows.Forms.CheckBox)ContainerPlaceholder.Controls[3];
             System.Windows.Forms.CheckBox CheckBox2 = (System.Windows.Forms.CheckBox)ContainerPlaceholder.Controls[4];

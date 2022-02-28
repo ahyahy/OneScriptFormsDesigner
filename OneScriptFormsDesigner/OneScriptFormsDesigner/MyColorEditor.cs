@@ -23,14 +23,14 @@ namespace osfDesigner
             var colorUiObject = colorUiConstructor.Invoke(new[] { editor }) as Control;
             colorUiField.SetValue(editor, colorUiObject);
             var container = colorUiObject.Controls[0];
-            var tab1 = container.Controls[0]; // System.Windows.Forms.TabPage
+            var tab1 = container.Controls[0];
             tab1.Text = "Пользовательский";
-            var tab2 = container.Controls[1]; // System.Windows.Forms.TabPage
+            var tab2 = container.Controls[1];
             tab2.Text = "Интернет";
-            var tab3 = container.Controls[2]; // System.Windows.Forms.TabPage
+            var tab3 = container.Controls[2];
             tab3.Text = "Системный";
-            container.Controls.Add(new System.Windows.Forms.TabPage()); // System.Windows.Forms.TabPage
-            var tab4 = container.Controls[3]; // System.Windows.Forms.TabPage
+            container.Controls.Add(new System.Windows.Forms.TabPage());
+            var tab4 = container.Controls[3];
             tab4.Text = "Свойства";
             System.Windows.Forms.ListView ListView1 = new System.Windows.Forms.ListView();
             tab4.Controls.Add(ListView1);
@@ -131,9 +131,9 @@ namespace osfDesigner
             SubItems9.Add(Color1.R.ToString());
             Items1.Add(ListViewItem9);
 
-            Control Control1 = tab1.Controls[0]; // System.Drawing.Design.ColorEditor+ColorPalette
-            Control Control2 = tab2.Controls[0]; // System.Drawing.Design.ColorEditor+ColorUI+ColorEditorListBox
-            Control Control3 = tab3.Controls[0]; // System.Drawing.Design.ColorEditor+ColorUI+ColorEditorListBox
+            Control Control1 = tab1.Controls[0];
+            Control Control2 = tab2.Controls[0];
+            Control Control3 = tab3.Controls[0];
 
             System.Windows.Forms.ListBox ListBox1 = (System.Windows.Forms.ListBox)Control2;
             ListBox1.DrawItem += ListBox1_DrawItem;

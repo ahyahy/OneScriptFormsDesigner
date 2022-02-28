@@ -22,8 +22,7 @@ namespace osfDesigner
         public static Dictionary<object, object> dictionaryDesignerTabRootComponent = new Dictionary<object, object>(); // Хранит связь rootComponent и создаваемой для него вкладки дризайнера.
         public static Dictionary<DesignSurfaceExt2, string> dictionaryDesignSurfaceState = new Dictionary<DesignSurfaceExt2, string>(); // Хранит связь между поверхностью дизайнера и снимком свойств его компонентов.
         public static Dictionary<System.Windows.Forms.TabPage, bool> dictionaryTabPageChanged = new Dictionary<System.Windows.Forms.TabPage, bool>(); // Хранит связь между вкладкой дизайнера и статусом его измененности.
-        public static string str1 = "";
-        public static int tic1 = 0; // Счетчик для правильной работы TabControl, пропуск двух шагов по созданию дизайнером двух вкладок по умолчанию.
+        public static int tic = 0; // Счетчик для правильной работы TabControl, пропуск двух шагов по созданию дизайнером двух вкладок по умолчанию.
         public static bool block1 = false; // Тригер для блокировки выделения объекта на форме.
         public static bool block2 = false; // Тригер для блокировки проверки измененности формы. Если true - не проверять.
 
@@ -68,15 +67,14 @@ namespace osfDesigner
 	
         public static void PassProperties(dynamic p1, dynamic p2)
         {
-            // p1 - исходный объект (OriginalObj)
+            // p1 - исходный объект (OriginalObj).
             // p2 - дублёр исходного объекта (SimilarObj), для отображения свойств в сетке свойств.
-            string str1 = "";
             PropertyInfo[] PropertyInfo = p2.GetType().GetProperties();
             for (int i = 0; i < PropertyInfo.Length; i++)
             {
                 try
                 {
-                    if (p1.GetType().ToString() == "System.Windows.Forms.TabPage")
+                    if (p1.GetType() == typeof(System.Windows.Forms.TabPage))
                     {
                         if (PropertyInfo[i].Name !=  "Parent")
                         {
@@ -88,18 +86,14 @@ namespace osfDesigner
                         p2.GetType().GetProperty(PropertyInfo[i].Name).SetValue(p2, p1.GetType().GetProperty(PropertyInfo[i].Name).GetValue(p1));
                     }
                 }
-                catch
-                {
-                    str1 = str1 + Environment.NewLine + "действие - Не удалось передать свойство " + p1.GetType().ToString() + " - " + PropertyInfo[i].Name;
-                }
+                catch { }
             }
         }
 
         public static void ReturnProperties(dynamic p1, dynamic p2)
         {
-            // p1 - исходный объект (OriginalObj)
+            // p1 - исходный объект (OriginalObj).
             // p2 - дублёр исходного объекта (SimilarObj), для отображения свойств в сетке свойств.
-            string str1 = "";
             PropertyInfo[] PropertyInfo = p1.GetType().GetProperties();
             for (int i = 0; i < PropertyInfo.Length; i++)
             {
@@ -107,10 +101,7 @@ namespace osfDesigner
                 {
                     p1.GetType().GetProperty(PropertyInfo[i].Name).SetValue(p1, p2.GetType().GetProperty(PropertyInfo[i].Name).GetValue(p2));
                 }
-                catch
-                {
-                    str1 = str1 + Environment.NewLine + "действие - Не удалось вернуть свойство " + p2.GetType().ToString() + " - " + PropertyInfo[i].Name;
-                }
+                catch { }
             }
         }
 
@@ -119,7 +110,7 @@ namespace osfDesigner
             int num = 0;
             for (int i = 0; i < TreeView.Nodes.Count; i++)
             {
-                System.Windows.Forms.TreeNode TreeNode1 = TreeView.Nodes[i];
+                TreeNode TreeNode1 = TreeView.Nodes[i];
                 ArrayList.Add(TreeNode1.Name);
 
                 num = Int32.Parse(ParseBetween(TreeNode1.Name, "Узел", null));
@@ -135,12 +126,12 @@ namespace osfDesigner
             }
         }
 
-        private static void GetNodes2(System.Windows.Forms.TreeNode treeNode, ref ArrayList ArrayList, ref int max)
+        private static void GetNodes2(TreeNode treeNode, ref ArrayList ArrayList, ref int max)
         {
             int num = 0;
             for (int i = 0; i < treeNode.Nodes.Count; i++)
             {
-                System.Windows.Forms.TreeNode TreeNode1 = treeNode.Nodes[i];
+                TreeNode TreeNode1 = treeNode.Nodes[i];
                 ArrayList.Add(TreeNode1.Name);
 
                 num = Int32.Parse(ParseBetween(TreeNode1.Name, "Узел", null));
@@ -331,7 +322,6 @@ namespace osfDesigner
                 Menu CurrentMenuItem1 = (Menu)Menu1.MenuItems[i];
                 string Name = CurrentMenuItem1.Name;
                 string fragment = Name.Replace("ГлавноеМеню", "флажок");
-
                 if (Name != "" && !fragment.Contains("Меню"))
                 {
                     ArrayList.Add(CurrentMenuItem1.Name);
@@ -715,16 +705,12 @@ namespace osfDesigner
                 {
                     return Converter1.ConvertToString((Bitmap)obj) + " (" + ((Bitmap)obj).Tag + ")";
                 }
-                else if (objType == typeof(osfDesigner.MyIcon))
+                else if (objType == typeof(MyIcon))
                 {
                     return MyIconConverter.ConvertToString(obj);
                 }
-                else
-                {
-                    return Converter1.ConvertToString(obj);
-                }
+                return Converter1.ConvertToString(obj);
             }
-
             return "";
         }
 
@@ -1277,6 +1263,7 @@ namespace osfDesigner
                 {"ФлагиМыши", "MouseFlags"},
                 {"ФорматированноеПолеВводаПоиск", "RichTextBoxFinds"},
                 {"ФорматированноеПолеВводаТипыПотоков", "RichTextBoxStreamType"},
+                {"ФорматПоляКалендаря", "FormatDateTimePicker"},
                 {"ФорматПикселей", "PixelFormat"}
             };
 
@@ -1491,26 +1478,21 @@ namespace osfDesigner
         public static Component HighlightedComponent()
         {
             // Возвращает выделенный в настоящее время компонент.
-            IDesignerHost host = pDesigner.DSME.ActiveDesignSurface.GetIDesignerHost();
-            ISelectionService iSel = host.GetService(typeof(ISelectionService)) as ISelectionService;
-            Component comp = null;
+            ISelectionService iSel = (ISelectionService)DesignerHost.GetService(typeof(ISelectionService));
             if (iSel != null)
             {
                 return (Component)iSel.PrimarySelection;
             }
-            return comp;
+            return null;
         }
 
         public static Component GetComponentByName(string name)
         {
             // Возвращает компонент найденный по имени.
-            Component comp = null;
-
-            IDesignerHost host = pDesigner.DSME.ActiveDesignSurface.GetIDesignerHost();
-            ISelectionService iSel = host.GetService(typeof(ISelectionService)) as ISelectionService;
+            ISelectionService iSel = (ISelectionService)DesignerHost.GetService(typeof(ISelectionService));
             if (iSel != null)
             {
-                ComponentCollection ctrlsExisting = host.Container.Components;
+                ComponentCollection ctrlsExisting = DesignerHost.Container.Components;
                 for (int i = 0; i < ctrlsExisting.Count; i++)
                 {
                     if (ctrlsExisting[i].Site.Name == name)
@@ -1519,7 +1501,7 @@ namespace osfDesigner
                     }
                 }
             }
-            return comp;
+            return null;
         }
 
         public static string GetNameByComponent(Component comp)
@@ -1527,18 +1509,13 @@ namespace osfDesigner
             // Возвращает имя для компонента.
             Component comp1 = comp;
 
-            if (comp.GetType().ToString() == "System.Windows.Forms.TabPage" || 
-                comp.GetType().ToString() == "System.Windows.Forms.ImageList" || 
-                comp.GetType().ToString() == "System.Windows.Forms.MainMenu")
+            if (comp.GetType() == typeof(System.Windows.Forms.TabPage) || 
+                comp.GetType() == typeof(System.Windows.Forms.ImageList) || 
+                comp.GetType() == typeof(System.Windows.Forms.MainMenu))
             {
                 comp1 = RevertSimilarObj(comp);
             }
             return comp1.Site.Name;
-        }
-
-        public Form GetRootComponent()
-        {
-            return (Form)pDesigner.DSME.ActiveDesignSurface.GetIDesignerHost().Container.Components[0];
         }
 
         public static string GetDefaultValues(dynamic comp, System.Windows.Forms.PropertyGrid propertyGrid)
@@ -1657,7 +1634,7 @@ namespace osfDesigner
         {
             for (int i = 0; i < treeView_treeNode.Nodes.Count; i++)
             {
-                System.Windows.Forms.TreeNode TreeNode1 = treeView_treeNode.Nodes[i];
+                TreeNode TreeNode1 = treeView_treeNode.Nodes[i];
                 ArrayList.Add(TreeNode1);
 
                 if (TreeNode1.Nodes.Count > 0)
@@ -1688,7 +1665,7 @@ namespace osfDesigner
             if (!block2)
             {
                 string state = "";
-                DesignSurfaceExt2 surface = pDesigner.DSME.ActiveDesignSurface;
+                DesignSurfaceExt2 surface = ActiveDesignSurface;
                 ComponentCollection ctrlsExisting = surface.ComponentContainer.Components;
                 for (int i = 0; i < ctrlsExisting.Count; i++)
                 {
@@ -1701,7 +1678,7 @@ namespace osfDesigner
                         GetNodes3((osfDesigner.TreeView)component, ref ArrayList1);
                         for (int i1 = 0; i1 < ArrayList1.Count; i1++)
                         {
-                            osfDesigner.MyTreeNode treeNode = (osfDesigner.MyTreeNode)ArrayList1[i1];
+                            MyTreeNode treeNode = (MyTreeNode)ArrayList1[i1];
                             GetState(treeNode, ref state);
                         }
                     }
@@ -1787,7 +1764,7 @@ namespace osfDesigner
                         TabControl tabControl = (osfDesigner.TabControl)component;
                         for (int i1 = 0; i1 < tabControl.TabPages.Count; i1++)
                         {
-                            osfDesigner.TabPage tabPage = OneScriptFormsDesigner.RevertSimilarObj(tabControl.TabPages[i1]);
+                            osfDesigner.TabPage tabPage = RevertSimilarObj(tabControl.TabPages[i1]);
                             GetState(tabPage, ref state);
                         }
                     }
@@ -1835,19 +1812,19 @@ namespace osfDesigner
                     if (component.GetType() == typeof(osfDesigner.MonthCalendar))
                     {
                         MonthCalendar monthCalendar = (osfDesigner.MonthCalendar)component;
-                        osfDesigner.MyBoldedDatesList myBoldedDatesList = monthCalendar.BoldedDates_osf;
+                        MyBoldedDatesList myBoldedDatesList = monthCalendar.BoldedDates_osf;
                         for (int i1 = 0; i1 < myBoldedDatesList.Count; i1++)
                         {
                             DateEntry dateEntry = myBoldedDatesList[i1];
                             state = state + "dateEntry = " + Convert.ToString(dateEntry) + Environment.NewLine;
                         }
-                        osfDesigner.MyAnnuallyBoldedDatesList myAnnuallyBoldedDatesList = monthCalendar.AnnuallyBoldedDates_osf;
+                        MyAnnuallyBoldedDatesList myAnnuallyBoldedDatesList = monthCalendar.AnnuallyBoldedDates_osf;
                         for (int i1 = 0; i1 < myAnnuallyBoldedDatesList.Count; i1++)
                         {
                             DateEntry dateEntry = myAnnuallyBoldedDatesList[i1];
                             state = state + "dateEntry = " + Convert.ToString(dateEntry) + Environment.NewLine;
                         }
-                        osfDesigner.MyMonthlyBoldedDatesList myMonthlyBoldedDatesList = monthCalendar.MonthlyBoldedDates_osf;
+                        MyMonthlyBoldedDatesList myMonthlyBoldedDatesList = monthCalendar.MonthlyBoldedDates_osf;
                         for (int i1 = 0; i1 < myMonthlyBoldedDatesList.Count; i1++)
                         {
                             DateEntry dateEntry = myMonthlyBoldedDatesList[i1];
@@ -1913,7 +1890,7 @@ namespace osfDesigner
             {
                 try
                 {
-                    if (state != dictionaryDesignSurfaceState[pDesigner.DSME.ActiveDesignSurface])
+                    if (state != dictionaryDesignSurfaceState[ActiveDesignSurface])
                     {
                         dictionaryTabPageChanged[pDesigner.TabControl.SelectedTab] = true;
                     }
@@ -1925,6 +1902,31 @@ namespace osfDesigner
                 catch { }
                 pDesigner.TabControl.Refresh();
             }
+        }
+	
+        public static DesignSurfaceExt2 ActiveDesignSurface
+        {
+            get { return pDesigner.DSME.ActiveDesignSurface; }
+        }
+
+        public static IDesignerHost DesignerHost
+        {
+            get { return ActiveDesignSurface.GetIDesignerHost(); }
+        }
+
+        public static Form RootComponent
+        {
+            get { return (Form)DesignerHost.RootComponent; }
+        }
+
+        public static PropertyGridHost PropertyGridHost
+        {
+            get { return pDesigner.DSME.PropertyGridHost; }
+        }
+	
+        public static System.Windows.Forms.PropertyGrid PropertyGrid
+        {
+            get { return PropertyGridHost.PropertyGrid; }
         }
     }
 }

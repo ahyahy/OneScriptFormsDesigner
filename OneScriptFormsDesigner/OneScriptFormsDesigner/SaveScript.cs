@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections;
 using System.ComponentModel.Design;
 using System.ComponentModel;
+using System.Globalization;
 using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
@@ -12,8 +13,8 @@ namespace osfDesigner
 {
     public class SaveScript
     {
-        public static System.Windows.Forms.TreeView TreeView1 = pDesigner.DSME.PropertyGridHost.TreeView;
-        public static System.Windows.Forms.ToolBarButton ButtonSort1 = pDesigner.DSME.PropertyGridHost.ButtonSort;
+        public static System.Windows.Forms.TreeView TreeView1 = OneScriptFormsDesigner.PropertyGridHost.TreeView;
+        public static System.Windows.Forms.ToolBarButton ButtonSort1 = OneScriptFormsDesigner.PropertyGridHost.ButtonSort;
 
         public static Dictionary<string, Component> comps = new Dictionary<string, Component>();
         private static string Template1;
@@ -55,8 +56,7 @@ namespace osfDesigner
 
             comps.Clear();
             Template1 = TemplateOriginal;
-            DesignSurfaceManagerExt DesignSurfaceManagerExt = pDesigner.DSME;
-            IDesignerEventService des = (IDesignerEventService)DesignSurfaceManagerExt.GetService(typeof(IDesignerEventService));
+            IDesignerEventService des = (IDesignerEventService)pDesigner.DSME.GetService(typeof(IDesignerEventService));
             if (des != null)
             {
                 string compName = "";
@@ -116,10 +116,10 @@ namespace osfDesigner
                 bool stateSort = ButtonSort1.Pushed;
                 ButtonSort1.Pushed = false;
                 Component comp2 = OneScriptFormsDesigner.HighlightedComponent();
-                pDesigner.DSME.PropertyGridHost.ReloadTreeView();
+                OneScriptFormsDesigner.PropertyGridHost.ReloadTreeView();
                 if (comp2 != null)
                 {
-                    pDesigner.DSME.PropertyGridHost.ChangeSelectNode(comp2);
+                    OneScriptFormsDesigner.PropertyGridHost.ChangeSelectNode(comp2);
                 }
 
                 ArrayList objArrayList2 = new ArrayList(); // Содержит имена компонентов.
@@ -128,42 +128,29 @@ namespace osfDesigner
                 for (int i = 0; i < objArrayList2.Count; i++)
                 {
                     Component comp = comps[(string)objArrayList2[i]];
-                    Component comp1 = null;
                     if (comp.GetType() == typeof(System.Windows.Forms.TabPage))
                     {
                         try
                         {
-                            comp1 = (Component)OneScriptFormsDesigner.RevertSimilarObj(comp);
+                            comp = (Component)OneScriptFormsDesigner.RevertSimilarObj(comp);
                         }
                         catch { }
-                        if (comp1 != null)
-                        {
-                            comp = comp1;
-                        }
                     }
                     else if (comp.GetType() == typeof(System.Windows.Forms.ImageList))
                     {
                         try
                         {
-                            comp1 = (Component)OneScriptFormsDesigner.RevertSimilarObj(comp);
+                            comp = (Component)OneScriptFormsDesigner.RevertSimilarObj(comp);
                         }
                         catch { }
-                        if (comp1 != null)
-                        {
-                            comp = comp1;
-                        }
                     }
                     else if (comp.GetType() == typeof(System.Windows.Forms.MainMenu))
                     {
                         try
                         {
-                            comp1 = (Component)OneScriptFormsDesigner.RevertSimilarObj(comp);
+                            comp = (Component)OneScriptFormsDesigner.RevertSimilarObj(comp);
                         }
                         catch { }
-                        if (comp1 != null)
-                        {
-                            comp = comp1;
-                        }
                     }
                     compName = comp.Site.Name;
                     Template1 = Template1.Replace("// блок КонецСвойства", "// блок " + compName + "." + Environment.NewLine + "    // блок КонецСвойства");
@@ -243,10 +230,10 @@ namespace osfDesigner
                 }
                 ButtonSort1.Pushed = stateSort;
                 Component comp3 = OneScriptFormsDesigner.HighlightedComponent();
-                pDesigner.DSME.PropertyGridHost.ReloadTreeView();
+                OneScriptFormsDesigner.PropertyGridHost.ReloadTreeView();
                 if (comp3 != null)
                 {
-                    pDesigner.DSME.PropertyGridHost.ChangeSelectNode(comp3);
+                    OneScriptFormsDesigner.PropertyGridHost.ChangeSelectNode(comp3);
                 }
             }
 
@@ -388,7 +375,7 @@ namespace osfDesigner
                     string strCurrent = result[i1];
                     if (!strCurrent.Contains(@"// блок"))
                     {
-                        strBefore = strBefore + strCurrent + System.Environment.NewLine;
+                        strBefore = strBefore + strCurrent + Environment.NewLine;
                         if (!repeats.Contains(strCurrent))
                         {
                             repeats.Add(strCurrent);
@@ -397,7 +384,7 @@ namespace osfDesigner
                 }
                 for (int i2 = 0; i2 < repeats.Count; i2++)
                 {
-                    strAfter = strAfter + repeats[i2] + System.Environment.NewLine;
+                    strAfter = strAfter + repeats[i2] + Environment.NewLine;
                 }
                 if (strBefore != strAfter && strBefore.Length != 0)
                 {
@@ -501,7 +488,7 @@ namespace osfDesigner
                     }
                     catch
                     {
-                        System.Windows.Forms.MessageBox.Show("Не обработано: на компоненте = " + compName + " valueName=" + valueName + " compValue=" + compValue);
+                        MessageBox.Show("Не обработано: на компоненте = " + compName + " valueName=" + valueName + " compValue=" + compValue);
                     }
                 }
             }
@@ -530,7 +517,7 @@ namespace osfDesigner
             {
                 return;
             }
-            if (val.GetType() == typeof(osfDesigner.MyTreeNode) && (valueName == "ПолныйПуть"))
+            if (val.GetType() == typeof(MyTreeNode) && (valueName == "ПолныйПуть"))
             {
                 return;
             }
@@ -569,7 +556,7 @@ namespace osfDesigner
             {
                 if (val != null)
                 {
-                    System.Windows.Forms.Menu.MenuItemCollection MenuItemCollection1 = (System.Windows.Forms.Menu.MenuItemCollection)val.MenuItems;
+                    Menu.MenuItemCollection MenuItemCollection1 = (Menu.MenuItemCollection)val.MenuItems;
                     if (MenuItemCollection1.Count > 0)
                     {
                         MenuItemEntry MenuItemEntry1;
@@ -642,11 +629,11 @@ namespace osfDesigner
                             for (int i = 0; i < ComboBoxObjectCollection1.Count; i++)
                             {
                                 ListItemComboBox1 = (osfDesigner.ListItemComboBox)ComboBoxObjectCollection1[i];
-                                if (ListItemComboBox1.ValueType == osfDesigner.DataType.Строка)
+                                if (ListItemComboBox1.ValueType == DataType.Строка)
                                 {
                                     strValue = strValue + "    " + compName + ".Элементы.Добавить(Ф.ЭлементСписка(\u0022" + ListItemComboBox1.Text + "\u0022, \u0022" + ListItemComboBox1.Text + "\u0022));";
                                 }
-                                else if (ListItemComboBox1.ValueType == osfDesigner.DataType.Дата)
+                                else if (ListItemComboBox1.ValueType == DataType.Дата)
                                 {
                                     DateTime DateTime1 = ListItemComboBox1.ValueDateTime;
                                     strValue = strValue + "    " + compName + ".Элементы.Добавить(Ф.ЭлементСписка(\u0022" + ListItemComboBox1.Text + "\u0022, " +
@@ -658,11 +645,11 @@ namespace osfDesigner
                                         DateTime1.ToString("mm") + ", " +
                                         DateTime1.ToString("ss") + ")" + "));";
                                 }
-                                else if (ListItemComboBox1.ValueType == osfDesigner.DataType.Булево)
+                                else if (ListItemComboBox1.ValueType == DataType.Булево)
                                 {
                                     strValue = strValue + "    " + compName + ".Элементы.Добавить(Ф.ЭлементСписка(\u0022" + ListItemComboBox1.Text + "\u0022, " + ListItemComboBox1.Text + "));";
                                 }
-                                else if (ListItemComboBox1.ValueType == osfDesigner.DataType.Число)
+                                else if (ListItemComboBox1.ValueType == DataType.Число)
                                 {
                                     strValue = strValue + "    " + compName + ".Элементы.Добавить(Ф.ЭлементСписка(\u0022" + ListItemComboBox1.Text + "\u0022, " + ListItemComboBox1.Text + "));";
                                 }
@@ -688,11 +675,11 @@ namespace osfDesigner
                             for (int i = 0; i < ListBoxObjectCollection1.Count; i++)
                             {
                                 ListItemListBox1 = (osfDesigner.ListItemListBox)ListBoxObjectCollection1[i];
-                                if (ListItemListBox1.ValueType == osfDesigner.DataType.Строка)
+                                if (ListItemListBox1.ValueType == DataType.Строка)
                                 {
                                     strValue = strValue + "    " + compName + ".Элементы.Добавить(Ф.ЭлементСписка(\u0022" + ListItemListBox1.Text + "\u0022, \u0022" + ListItemListBox1.Text + "\u0022));";
                                 }
-                                else if (ListItemListBox1.ValueType == osfDesigner.DataType.Дата)
+                                else if (ListItemListBox1.ValueType == DataType.Дата)
                                 {
                                     DateTime DateTime1 = ListItemListBox1.ValueDateTime;
                                     strValue = strValue + "    " + compName + ".Элементы.Добавить(Ф.ЭлементСписка(\u0022" + ListItemListBox1.Text + "\u0022, " +
@@ -704,11 +691,11 @@ namespace osfDesigner
                                         DateTime1.ToString("mm") + ", " +
                                         DateTime1.ToString("ss") + ")" + "));";
                                 }
-                                else if (ListItemListBox1.ValueType == osfDesigner.DataType.Булево)
+                                else if (ListItemListBox1.ValueType == DataType.Булево)
                                 {
                                     strValue = strValue + "    " + compName + ".Элементы.Добавить(Ф.ЭлементСписка(\u0022" + ListItemListBox1.Text + "\u0022, " + ListItemListBox1.Text + "));";
                                 }
-                                else if (ListItemListBox1.ValueType == osfDesigner.DataType.Число)
+                                else if (ListItemListBox1.ValueType == DataType.Число)
                                 {
                                     strValue = strValue + "    " + compName + ".Элементы.Добавить(Ф.ЭлементСписка(\u0022" + ListItemListBox1.Text + "\u0022, " + ListItemListBox1.Text + "));";
                                 }
@@ -862,13 +849,13 @@ namespace osfDesigner
             {
                 if (val != null)
                 {
-                    System.Windows.Forms.TreeNodeCollection TreeNodeCollection1 = (System.Windows.Forms.TreeNodeCollection)val.Nodes;
+                    TreeNodeCollection TreeNodeCollection1 = (TreeNodeCollection)val.Nodes;
                     if (TreeNodeCollection1.Count > 0)
                     {
-                        osfDesigner.MyTreeNode MyTreeNode1;
+                        MyTreeNode MyTreeNode1;
                         for (int i = 0; i < TreeNodeCollection1.Count; i++)
                         {
-                            MyTreeNode1 = (osfDesigner.MyTreeNode)TreeNodeCollection1[i];
+                            MyTreeNode1 = (MyTreeNode)TreeNodeCollection1[i];
                             AddToScript(MyTreeNode1.Name + " = " + compName + ".Узлы.Добавить(\u0022" + MyTreeNode1.Name + "\u0022);");
                             PropComponent(MyTreeNode1);
                             if (MyTreeNode1.Nodes.Count > 0)
@@ -886,8 +873,15 @@ namespace osfDesigner
                 string FontSize = "";
                 string FontStyle = "";
 
-                string[] separators = new string[] { ";" };
-                string[] result = compValue.Split(separators, StringSplitOptions.RemoveEmptyEntries);
+                string fontNameAndSize = OneScriptFormsDesigner.ParseBetween(compValue, null, "pt");
+                fontNameAndSize = fontNameAndSize.Replace(CultureInfo.CurrentCulture.TextInfo.ListSeparator, "~~~")
+                                                 .Replace(CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator, ".");
+                string fontStyles = "стиль" + OneScriptFormsDesigner.ParseBetween(compValue, "стиль", null);
+                fontStyles = fontStyles.Replace(CultureInfo.CurrentCulture.TextInfo.ListSeparator, ",")
+                                       .Replace(" ", "");
+
+                string[] separators = new string[] { "~~~" };
+                string[] result = fontNameAndSize.Split(separators, StringSplitOptions.RemoveEmptyEntries);
                 for (int i = 0; i < result.Length; i++)
                 {
                     if (i == 0)
@@ -896,17 +890,12 @@ namespace osfDesigner
                     }
                     if (i == 1)
                     {
-                        FontSize = result[1].TrimStart(' ');
-                        FontSize = FontSize.Replace("pt", "");
-                        FontSize = FontSize.Replace(",", ".");
-                    }
-                    if (i == 2)
-                    {
-                        FontStyle = result[2].Trim(' ');
-                        FontStyle = FontStyle.Replace("стиль=", "Ф.СтильШрифта.");
-                        FontStyle = FontStyle.Replace(", ", " + Ф.СтильШрифта.");
+                        FontSize = result[1].Replace(" ", "");
                     }
                 }
+                FontStyle = fontStyles.Replace("стиль=", "Ф.СтильШрифта.")
+                                      .Replace(",", " + Ф.СтильШрифта.")
+                                      .Replace("стиль", "");
                 AddToScript(compName + "." + valueName + " = Ф.Шрифт(\u0022" + FontName + "\u0022, " + FontSize + ", " + FontStyle + ");");
                 return;
             }
@@ -1018,9 +1007,9 @@ namespace osfDesigner
                             {
                                 string newFileName = MyList1[i1].Path.Substring(MyList1[i1].Path.LastIndexOf('\\') + 1);
                                 newPath = path + newFileName;
-                                if (!System.IO.File.Exists(newPath))
+                                if (!File.Exists(newPath))
                                 {
-                                    System.IO.File.Copy(MyList1[i1].Path, newPath);
+                                    File.Copy(MyList1[i1].Path, newPath);
                                 }
                             }
 
@@ -1071,7 +1060,7 @@ namespace osfDesigner
             }
             if (valueName == "Изображение" || valueName == "ФоновоеИзображение")
             {
-                if (compValue != "Bitmap ()")
+                if (compValue != "System.Drawing.Bitmap ()")
                 {
                     string FileName = OneScriptFormsDesigner.ParseBetween(compValue, "(", ")");
                     string newFileName = FileName.Substring(FileName.LastIndexOf('\\') + 1);
@@ -1129,7 +1118,7 @@ namespace osfDesigner
                     {
                         str1 = compName + "." + valueName + " = Ф.Цвет(0, 0, 0);";
                     }
-                    else if (compValue.Contains(";"))
+                    else if (compValue.Contains(";") || compValue.Contains(","))
                     {
                         str1 = compName + "." + valueName + " = Ф.Цвет(" + compValue.Replace(";", ",") + ");";
                     }
@@ -1210,7 +1199,11 @@ namespace osfDesigner
                 valueName == "ЭлементПомечен" ||
                 valueName == "ЭлементУдален")
             {
-                string strNameProc = compValue.Replace("(", "").Replace(")", "");
+                string strNameProc = compValue.Replace("(", "").Replace(")", "").Replace(" ", "").Trim();
+                if (strNameProc == "")
+                {
+                    return;
+                }
                 string strProc = @"Процедура " + strNameProc + @"() Экспорт
     Сообщить(" + "\u0022" + strNameProc + "()\u0022" + @");
 КонецПроцедуры
@@ -1258,7 +1251,7 @@ namespace osfDesigner
                 (valueName == "Значение" && val.GetType() == typeof(osfDesigner.HScrollBar)) ||
                 (valueName == "Значение" && val.GetType() == typeof(osfDesigner.VScrollBar)) ||
                 (valueName == "Значение" && val.GetType() == typeof(osfDesigner.NumericUpDown)) ||
-                (valueName == "Индекс" && val.GetType() != typeof(osfDesigner.MyTreeNode)) ||
+                (valueName == "Индекс" && val.GetType() != typeof(MyTreeNode)) ||
                 valueName == "ИндексВыбранногоИзображения" ||
                 valueName == "ИндексИзображения" ||
                 valueName == "ИндексФильтра" ||
@@ -1287,7 +1280,7 @@ namespace osfDesigner
                 valueName == "ШиринаЗаголовковСтрок" ||
                 valueName == "ШиринаКолонки")
             {
-                AddToScript(compName + "." + valueName + " = " + compValue.Replace(",", ".") + ";");
+                AddToScript(compName + "." + valueName + " = " + compValue.Replace(CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator, ".") + ";");
                 return;
             }
             // Если это Размер.
@@ -1539,14 +1532,21 @@ namespace osfDesigner
             }
             if (valueName == "Значок")
             {
-                AddToScript(compName + "." + valueName + " = " + "Ф.Значок(\u0022" + compValue + "\u0022);");
+                string FileName = compValue;
+                string newFileName = FileName.Substring(FileName.LastIndexOf('\\') + 1);
+                string newPath = path + newFileName;
+                if (!File.Exists(newPath))
+                {
+                    File.Copy(FileName, newPath);
+                }
+                AddToScript(compName + "." + valueName + " = " + "Ф.Значок(\u0022" + newPath + "\u0022);");
                 return;
             }
             if (valueName == "МаксимальнаяДата" ||
                 valueName == "МинимальнаяДата" ||
                 valueName == "ТекущаяДата")
             {
-                DateTime DateTime1 = System.DateTime.Parse(compValue);
+                DateTime DateTime1 = DateTime.Parse(compValue);
                 AddToScript(compName + "." + valueName + " = " + "Дата(" +
                     DateTime1.ToString("yyyy") + ", " +
                     DateTime1.ToString("MM") + ", " +
@@ -1563,12 +1563,12 @@ namespace osfDesigner
             Template1 = Template1.Replace("// блок КонецСвойства", str + Environment.NewLine + "    // блок КонецСвойства");
         }
 
-        private static void GetNodes(osfDesigner.MyTreeNode treeNode)
+        private static void GetNodes(MyTreeNode treeNode)
         {
-            osfDesigner.MyTreeNode MyTreeNode1;
+            MyTreeNode MyTreeNode1;
             for (int i = 0; i < treeNode.Nodes.Count; i++)
             {
-                MyTreeNode1 = (osfDesigner.MyTreeNode)treeNode.Nodes[i];
+                MyTreeNode1 = (MyTreeNode)treeNode.Nodes[i];
                 AddToScript(MyTreeNode1.Name + " = " + treeNode.Name + ".Узлы.Добавить(\u0022" + MyTreeNode1.Name + "\u0022);");
                 PropComponent(MyTreeNode1);
                 if (MyTreeNode1.Nodes.Count > 0)
@@ -1582,7 +1582,7 @@ namespace osfDesigner
         {
             for (int i = 0; i < TreeView.Nodes.Count; i++)
             {
-                System.Windows.Forms.TreeNode TreeNode1 = TreeView.Nodes[i];
+                TreeNode TreeNode1 = TreeView.Nodes[i];
                 objArrayList2.Add(TreeNode1.Name);
                 if (TreeNode1.Nodes.Count > 0)
                 {
@@ -1591,11 +1591,11 @@ namespace osfDesigner
             }
         }
 
-        private static void GetNodes2(System.Windows.Forms.TreeNode treeNode, ref ArrayList objArrayList2)
+        private static void GetNodes2(TreeNode treeNode, ref ArrayList objArrayList2)
         {
             for (int i = 0; i < treeNode.Nodes.Count; i++)
             {
-                System.Windows.Forms.TreeNode TreeNode1 = treeNode.Nodes[i];
+                TreeNode TreeNode1 = treeNode.Nodes[i];
                 objArrayList2.Add(TreeNode1.Name);
                 if (TreeNode1.Nodes.Count > 0)
                 {

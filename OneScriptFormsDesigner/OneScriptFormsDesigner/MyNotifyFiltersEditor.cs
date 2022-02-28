@@ -62,7 +62,7 @@ namespace osfDesigner
                     int index = Items.Add(names[i]);
                     if (_strvalue.Contains(names[i]))
                     {
-                        this.SetSelected(index, true);
+                        SetSelected(index, true);
                     }
                 }
             }
@@ -78,7 +78,7 @@ namespace osfDesigner
             protected override void OnClick(EventArgs e)
             {
                 int num = 0;
-                System.Windows.Forms.ListBox.SelectedObjectCollection SelectedObjectCollection1 = this.SelectedItems;
+                System.Windows.Forms.ListBox.SelectedObjectCollection SelectedObjectCollection1 = SelectedItems;
                 for (int i = 0; i < SelectedObjectCollection1.Count; i++)
                 {
                     string str = (string)SelectedObjectCollection1[i];

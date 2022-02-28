@@ -11,7 +11,7 @@ namespace osfDesigner
     [Docking(DockingBehavior.Never)]
     public class ListView : System.Windows.Forms.ListView
     {
-        private int tic1 = 0; // Счетчик для правильной работы смарт-тэгов.
+        private int tic = 0; // Счетчик для правильной работы смарт-тэгов.
         private string _DoubleClick_osf;
         private string _SelectedIndexChanged_osf;
         private string _KeyUp_osf;
@@ -118,7 +118,6 @@ namespace osfDesigner
         [TypeConverter(typeof(MyBooleanConverter))]
         public bool Enabled_osf { get; set; }
 				
-        // Скроем унаследованное свойство, для того чтобы оно не мешало нашему замещающему свойству использовать свой эдитор и конвертер.
         [Browsable(false)]
         public new bool Enabled { get; set; }
 
@@ -266,7 +265,6 @@ namespace osfDesigner
         [TypeConverter(typeof(MyBooleanConverter))]
         public bool Visible_osf { get; set; }
 				
-        // Скроем унаследованное свойство, для того чтобы оно не мешало нашему замещающему свойству использовать свой эдитор и конвертер.
         [Browsable(false)]
         public new bool Visible { get; set; }
 
@@ -303,7 +301,6 @@ namespace osfDesigner
             set { base.Location = value; }
         }
 				
-        // Скроем унаследованное свойство, для того чтобы оно не мешало нашему замещающему свойству использовать свой эдитор и конвертер.
         [Browsable(false)]
         public new Point Location { get; set; }
 
@@ -904,17 +901,17 @@ namespace osfDesigner
             base.OnHandleCreated(e);
             if (DesignMode)
             {
-                IDesignerHost designerHost = pDesigner.DSME.ActiveDesignSurface.GetIDesignerHost();
+                IDesignerHost designerHost = OneScriptFormsDesigner.DesignerHost;
                 if (designerHost != null)
                 {
                     ControlDesigner designer = (ControlDesigner)designerHost.GetDesigner(this);
                     if (designer != null)
                     {
-                        if (tic1 < 1)
+                        if (tic < 1)
                         {
                             designer.ActionLists.Clear();
                             designer.ActionLists.Add(new ListViewActionList(designer));
-                            tic1 = tic1 + 1;
+                            tic = tic + 1;
                         }
                     }
                 }
@@ -929,7 +926,7 @@ namespace osfDesigner
             public ListViewActionList(ControlDesigner designer) : base(designer.Component)
             {
                 _control = (ListView)designer.Component;
-                this.designerActionUISvc = GetService(typeof(DesignerActionUIService)) as DesignerActionUIService;
+                designerActionUISvc = GetService(typeof(DesignerActionUIService)) as DesignerActionUIService;
             }
 
             private PropertyDescriptor GetPropertyByName(String propName)
@@ -942,8 +939,8 @@ namespace osfDesigner
                 get { return _control.View_osf; }
                 set
                 {
-                    this.GetPropertyByName("View_osf").SetValue(_control, value);
-                    this.designerActionUISvc.Refresh(this.Component);
+                    GetPropertyByName("View_osf").SetValue(_control, value);
+                    designerActionUISvc.Refresh(Component);
                 }
             }
 
@@ -953,8 +950,8 @@ namespace osfDesigner
                 get { return _control.SmallImageList; }
                 set
                 {
-                    this.GetPropertyByName("SmallImageList").SetValue(_control, value);
-                    this.designerActionUISvc.Refresh(this.Component);
+                    GetPropertyByName("SmallImageList").SetValue(_control, value);
+                    designerActionUISvc.Refresh(Component);
                 }
             }
 
@@ -964,8 +961,8 @@ namespace osfDesigner
                 get { return _control.LargeImageList; }
                 set
                 {
-                    this.GetPropertyByName("LargeImageList").SetValue(_control, value);
-                    this.designerActionUISvc.Refresh(this.Component);
+                    GetPropertyByName("LargeImageList").SetValue(_control, value);
+                    designerActionUISvc.Refresh(Component);
                 }
             }
 
@@ -974,9 +971,9 @@ namespace osfDesigner
                 PropertyDescriptor pd = TypeDescriptor.GetProperties(_control)["Items"];
                 UITypeEditor editor = (UITypeEditor)pd.GetEditor(typeof(UITypeEditor));
                 MyRuntimeServiceProvider serviceProvider = new MyRuntimeServiceProvider(_control);
-                object res1 = editor.EditValue(serviceProvider, serviceProvider, _control.Items);
-                this.GetPropertyByName("Items").SetValue(_control, res1);
-                this.designerActionUISvc.Refresh(this.Component);
+                object fact = editor.EditValue(serviceProvider, serviceProvider, _control.Items);
+                GetPropertyByName("Items").SetValue(_control, fact);
+                designerActionUISvc.Refresh(Component);
             }
 
             private void EditColumns()
@@ -984,9 +981,9 @@ namespace osfDesigner
                 PropertyDescriptor pd = TypeDescriptor.GetProperties(_control)["Columns"];
                 UITypeEditor editor = (UITypeEditor)pd.GetEditor(typeof(UITypeEditor));
                 MyRuntimeServiceProvider serviceProvider = new MyRuntimeServiceProvider(_control);
-                object res1 = editor.EditValue(serviceProvider, serviceProvider, _control.Columns);
-                this.GetPropertyByName("Columns").SetValue(_control, res1);
-                this.designerActionUISvc.Refresh(this.Component);
+                object fact = editor.EditValue(serviceProvider, serviceProvider, _control.Columns);
+                GetPropertyByName("Columns").SetValue(_control, fact);
+                designerActionUISvc.Refresh(Component);
             }
 
             public override DesignerActionItemCollection GetSortedActionItems()

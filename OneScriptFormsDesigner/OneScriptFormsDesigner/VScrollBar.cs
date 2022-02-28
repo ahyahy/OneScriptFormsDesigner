@@ -15,7 +15,6 @@ namespace osfDesigner
         private string _KeyPress_osf;
         private string _MouseEnter_osf;
         private string _MouseLeave_osf;
-        private string _Click_osf;
         private string _LocationChanged_osf;
         private string _Enter_osf;
         private string _MouseHover_osf;
@@ -65,7 +64,6 @@ namespace osfDesigner
         [TypeConverter(typeof(MyBooleanConverter))]
         public bool Enabled_osf { get; set; }
 				
-        // Скроем унаследованное свойство, для того чтобы оно не мешало нашему замещающему свойству использовать свой эдитор и конвертер.
         [Browsable(false)]
         public new bool Enabled { get; set; }
 
@@ -192,16 +190,6 @@ namespace osfDesigner
             set { _MouseLeave_osf = value; }
         }
 
-        [DisplayName("Нажатие")]
-        [Description("Возвращает или задает код для выполнения при нажатии элемента управления.")]
-        [Category("Прочее")]
-        [Browsable(true)]
-        public  string Click_osf
-        {
-            get { return _Click_osf; }
-            set { _Click_osf = value; }
-        }
-
         [DisplayName("Отображать")]
         [Description("Возвращает или задает значение, указывающее, отображаются ли элемент управления и все его дочерние элементы управления. Истина, если элемент управления отображается; в противном случае - Ложь.")]
         [Category("Поведение")]
@@ -209,7 +197,6 @@ namespace osfDesigner
         [TypeConverter(typeof(MyBooleanConverter))]
         public bool Visible_osf { get; set; }
 				
-        // Скроем унаследованное свойство, для того чтобы оно не мешало нашему замещающему свойству использовать свой эдитор и конвертер.
         [Browsable(false)]
         public new bool Visible { get; set; }
 
@@ -225,7 +212,6 @@ namespace osfDesigner
             set { base.Location = value; }
         }
 				
-        // Скроем унаследованное свойство, для того чтобы оно не мешало нашему замещающему свойству использовать свой эдитор и конвертер.
         [Browsable(false)]
         public new Point Location { get; set; }
 

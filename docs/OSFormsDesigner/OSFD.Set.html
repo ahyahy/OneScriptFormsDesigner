@@ -1,0 +1,35 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD><TITLE>Установка</TITLE>
+<META content="text/html; charset=Windows-1252" http-equiv="Content-Type">
+<LINK rel="stylesheet" type="text/css" href="mainstyle.css"></HEAD>
+<BODY id=bodyID class=dtBODY>
+<DIV id=nsbanner>
+<DIV id=bannerrow1>
+<TABLE class=bannerparthead cellSpacing=0>
+  <TBODY>
+  <TR id=hdr>
+    <TD class=runninghead></TD>
+    <TD class=product></TD></TR></TBODY></TABLE></DIV>
+<DIV id=TitleRow>
+<H1 class=dtH1>Установка и запуск</H1></DIV></DIV>
+<DIV id=nstext>
+<P></P>
+<P>Рекомендую ознакомиться со статьей на ресурсе infostart.ru - 
+<A href="https://infostart.ru/public/327581/index.php?ID=327581%3Flogout%3Dyes" target="_blank"><B>Как решать повседневные задачи с помощью OneScript</B></A></P>
+<P>Скачайте и установите <A href="http://oscript.io/" target="_blank"><B>1Script - язык сценариев для специалистов по 1С</B></A></P>
+<P>Дизайнер запускается следующим кодом:</P>
+<PRE class="code">
+ПодключитьВнешнююКомпоненту("ВашКаталогНаДиске\OneScriptFormsDesigner.dll");
+ДФ = Новый ДизайнерФормДляОдноСкрипта();
+ДФ.Дизайнер();
+</PRE>
+<P>Сохраните этот код в файл с расширением <B>.os</B> в кодировке UTF-8.</P>
+<P></P>
+<P>Запуск можно произвести в трёх режимах. С отображением окна консоли, минимизацией или скрытием окна консоли. Укажите для нужного варианта параметр запуска в текстовом формате.</P>
+<P></P>
+<PRE class="code">
+ДФ.Дизайнер("ВосстановитьКонсоль"); // окно консоли развёрнуто
+ДФ.Дизайнер("СкрытьКонсоль"); // окно консоли скрыто
+ДФ.Дизайнер(); // окно консоли минимизировано
+</PRE>
+</DIV></BODY></HTML>

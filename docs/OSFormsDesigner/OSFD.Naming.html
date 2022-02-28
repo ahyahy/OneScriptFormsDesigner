@@ -1,0 +1,86 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD><TITLE>Имена компонентов</TITLE>
+<META content="text/html; charset=Windows-1252" http-equiv="Content-Type">
+<LINK rel="stylesheet" type="text/css" href="mainstyle.css"></HEAD>
+<BODY id=bodyID class=dtBODY>
+<DIV id=nsbanner>
+<DIV id=bannerrow1>
+<TABLE class=bannerparthead cellSpacing=0>
+  <TBODY>
+  <TR id=hdr>
+    <TD class=runninghead></TD>
+    <TD class=product></TD></TR></TBODY></TABLE></DIV>
+<DIV id=TitleRow>
+<H1 class=dtH1>Имена компонентов</H1></DIV></DIV>
+<DIV id=nstext>
+<P>Именование объектов производится по определенному алгоритму и не разрешено редактировать. Имеется в виду именно свойство объекта "Name". 
+Свойство "Текст" можно изменять.</P>
+<P>Исключением является имя формы, так как мы форму можем загрузить сохраненную из предыдущего сеанса работы.</P>
+<P></P>
+<figure class="pic">
+	<img id="myImg01" src="Naming.png" alt="Имя формы"><figcaption>Имя формы</figcaption>
+	<div id="myModal01" class="modal">
+	  <span id="close01" class="close">×</span>
+	  <img id="img01" class="modal-content">
+	  <div id="caption">Имя формы</div>
+	</div>
+</figure>
+<figure class="pic">
+	<img id="myImg02" src="Naming2.png" alt="Имя кнопки"><figcaption>Имя кнопки</figcaption>
+	<div id="myModal02" class="modal">
+	  <span id="close02" class="close">×</span>
+	  <img id="img02" class="modal-content">
+	  <div id="caption">Имя кнопки</div>
+	</div>
+</figure>
+<P></P>
+<P>При открытии сохраненной формы есть возможность до открытия задать новое имя для формы.</P>
+<P></P>
+<figure class="pic">
+	<img id="myImg03" src="Naming3.png" alt="Имя загружаемой формы"><figcaption>Имя загружаемой формы</figcaption>
+	<div id="myModal03" class="modal">
+	  <span id="close03" class="close">×</span>
+	  <img id="img03" class="modal-content">
+	  <div id="caption">Имя загружаемой формы</div>
+	</div>
+</figure>
+<P></P>
+<P>Для имен объектов соблюдайте те же правила, что и при именовании переменных в языке OneScript.</P>
+<script>
+var img01 = document.getElementById('myImg01');
+var modal01 = document.getElementById('myModal01');
+var modalImg01 = document.getElementById("img01");
+img01.onclick = function(){
+    modal01.style.display = "block";
+    modalImg01.src = img01.src;
+}
+var span01 = document.getElementById("close01");
+span01.onclick = function(){ 
+    modal01.style.display = "none";
+}
+
+var img02 = document.getElementById('myImg02');
+var modal02 = document.getElementById('myModal02');
+var modalImg02 = document.getElementById("img02");
+img02.onclick = function(){
+    modal02.style.display = "block";
+    modalImg02.src = img02.src;
+}
+var span02 = document.getElementById("close02");
+span02.onclick = function(){ 
+    modal02.style.display = "none";
+}
+
+var img03 = document.getElementById('myImg03');
+var modal03 = document.getElementById('myModal03');
+var modalImg03 = document.getElementById("img03");
+img03.onclick = function(){
+    modal03.style.display = "block";
+    modalImg03.src = img03.src;
+}
+var span03 = document.getElementById("close03");
+span03.onclick = function(){ 
+    modal03.style.display = "none";
+}
+</script>
+</DIV></BODY></HTML>

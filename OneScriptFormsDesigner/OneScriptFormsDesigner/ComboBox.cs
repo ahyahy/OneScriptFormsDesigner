@@ -11,7 +11,7 @@ namespace osfDesigner
 {
     public class ComboBox : System.Windows.Forms.ComboBox
     {
-        private int tic1 = 0; // Счетчик для правильной работы смарт-тэгов.
+        private int tic = 0; // Счетчик для правильной работы смарт-тэгов.
         private string _DoubleClick_osf;
         private string _SelectedIndexChanged_osf;
         private string _KeyUp_osf;
@@ -46,37 +46,37 @@ namespace osfDesigner
             e.DrawFocusRectangle();
             dynamic item = base.Items[e.Index];
             Type type = item.GetType();
-            Color color1 = base.ForeColor;
+            Color foreColor = base.ForeColor;
             PropertyInfo propertyForeColor = type.GetProperty("ForeColor");
             Color colorForeColor = Color.Empty;
             if (propertyForeColor != null)
             {
                 try
                 {
-                    colorForeColor = (Color)propertyForeColor.GetValue(Items[e.Index], (object[])null);
+                    colorForeColor = (Color)propertyForeColor.GetValue(Items[e.Index], null);
                 }
                 catch
                 {
-                    colorForeColor = (Color)propertyForeColor.GetValue(Items[e.Index], (object[])null);
+                    colorForeColor = (Color)propertyForeColor.GetValue(Items[e.Index], null);
                 }
             }
-            if ((e.State & System.Windows.Forms.DrawItemState.Disabled) == System.Windows.Forms.DrawItemState.Disabled)
+            if ((e.State & DrawItemState.Disabled) == DrawItemState.Disabled)
             {
                 try
                 {
                     if (!colorForeColor.IsEmpty)
                     {
-                        color1 = colorForeColor;
+                        foreColor = colorForeColor;
                     }
                 }
                 catch
                 {
-                    color1 = SystemColors.GrayText;
+                    foreColor = SystemColors.GrayText;
                 }
             }
-            else if ((e.State & System.Windows.Forms.DrawItemState.Selected) == System.Windows.Forms.DrawItemState.Selected)
+            else if ((e.State & DrawItemState.Selected) == DrawItemState.Selected)
             {
-                color1 = SystemColors.HighlightText;
+                foreColor = SystemColors.HighlightText;
             }
             else
             {
@@ -84,14 +84,14 @@ namespace osfDesigner
                 {
                     if (!colorForeColor.IsEmpty)
                     {
-                        color1 = colorForeColor;
+                        foreColor = colorForeColor;
                     }
                 }
                 catch { }
             }
             string s = "";
             s = ((osfDesigner.ListItemComboBox)SelectedItem).Text;
-            e.Graphics.DrawString(s, base.Font, (System.Drawing.Brush)new System.Drawing.SolidBrush(color1), (float)e.Bounds.X, (float)e.Bounds.Y);
+            e.Graphics.DrawString(s, base.Font, new SolidBrush(foreColor), (float)e.Bounds.X, (float)e.Bounds.Y);
         }
         
         public ComboBox()
@@ -129,7 +129,6 @@ namespace osfDesigner
         [TypeConverter(typeof(MyBooleanConverter))]
         public bool Enabled_osf { get; set; }
 				
-        // Скроем унаследованное свойство, для того чтобы оно не мешало нашему замещающему свойству использовать свой эдитор и конвертер.
         [Browsable(false)]
         public new bool Enabled { get; set; }
 
@@ -265,7 +264,6 @@ namespace osfDesigner
         [TypeConverter(typeof(MyBooleanConverter))]
         public bool Visible_osf { get; set; }
 				
-        // Скроем унаследованное свойство, для того чтобы оно не мешало нашему замещающему свойству использовать свой эдитор и конвертер.
         [Browsable(false)]
         public new bool Visible { get; set; }
 
@@ -303,7 +301,6 @@ namespace osfDesigner
             set { base.Location = value; }
         }
 				
-        // Скроем унаследованное свойство, для того чтобы оно не мешало нашему замещающему свойству использовать свой эдитор и конвертер.
         [Browsable(false)]
         public new Point Location { get; set; }
 
@@ -750,17 +747,17 @@ namespace osfDesigner
             base.OnHandleCreated(e);
             if (DesignMode)
             {
-                IDesignerHost designerHost = pDesigner.DSME.ActiveDesignSurface.GetIDesignerHost();
+                IDesignerHost designerHost = OneScriptFormsDesigner.DesignerHost;
                 if (designerHost != null)
                 {
                     ControlDesigner designer = (ControlDesigner)designerHost.GetDesigner(this);
                     if (designer != null)
                     {
-                        if (tic1 < 1)
+                        if (tic < 1)
                         {
                             designer.ActionLists.Clear();
                             designer.ActionLists.Add(new ComboBoxActionList(designer));
-                            tic1 = tic1 + 1;
+                            tic = tic + 1;
                         }
                     }
                 }
@@ -775,7 +772,7 @@ namespace osfDesigner
             public ComboBoxActionList(ControlDesigner designer) : base(designer.Component)
             {
                 _control = (ComboBox)designer.Component;
-                this.designerActionUISvc = GetService(typeof(DesignerActionUIService)) as DesignerActionUIService;
+                designerActionUISvc = GetService(typeof(DesignerActionUIService)) as DesignerActionUIService;
             }
 
             private PropertyDescriptor GetPropertyByName(String propName)
@@ -788,9 +785,9 @@ namespace osfDesigner
                 PropertyDescriptor pd = TypeDescriptor.GetProperties(_control)["Items"];
                 UITypeEditor editor = (UITypeEditor)pd.GetEditor(typeof(UITypeEditor));
                 MyRuntimeServiceProvider serviceProvider = new MyRuntimeServiceProvider(_control);
-                object res1 = editor.EditValue(serviceProvider, serviceProvider, _control.Items);
-                this.GetPropertyByName("Items").SetValue(_control, res1);
-                this.designerActionUISvc.Refresh(this.Component);
+                object fact = editor.EditValue(serviceProvider, serviceProvider, _control.Items);
+                GetPropertyByName("Items").SetValue(_control, fact);
+                designerActionUISvc.Refresh(Component);
             }
 
             public override DesignerActionItemCollection GetSortedActionItems()

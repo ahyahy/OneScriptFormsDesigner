@@ -11,8 +11,8 @@ namespace osfDesigner
         public MainMenu()
         {
             _menuItems = base.MenuItems;
-            this.Tag = new System.Windows.Forms.TreeView();
-            treeView = (System.Windows.Forms.TreeView)this.Tag;
+            Tag = new System.Windows.Forms.TreeView();
+            treeView = (System.Windows.Forms.TreeView)Tag;
         }
 
         [Browsable(false)]

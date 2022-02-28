@@ -42,10 +42,8 @@ namespace osfDesigner
                         property.SetValue(LinkLabel1, text);
                     }
                 }
-
                 frmLinkArea.End();
             }
-
             return value;
         }
 
@@ -66,13 +64,13 @@ namespace osfDesigner
         private System.Windows.Forms.TextBox TextBox1 = null;
         private System.Windows.Forms.Button OkButton1 = null;
         private System.Windows.Forms.Button CancelButton1 = null;
-        private System.Windows.Forms.TableLayoutPanel OkCancelTableLayoutPanel;
+        private TableLayoutPanel OkCancelTableLayoutPanel;
 
         public frmLinkArea(ITypeDescriptorContext context, System.Windows.Forms.LinkLabel linkLabel)
         {
             _context = context;
             LinkLabel1 = linkLabel;
-            this.FormClosed += FrmLinkArea_FormClosed;
+            FormClosed += FrmLinkArea_FormClosed;
 
             PropertyDescriptor pd = TypeDescriptor.GetProperties(LinkLabel1)["LinkArea"];
             _editor = (dynamic)pd.GetEditor(typeof(UITypeEditor));
@@ -83,12 +81,12 @@ namespace osfDesigner
             OkButton1 = new System.Windows.Forms.Button();
             OkButton1.Click += OkButton1_Click;
             CancelButton1 = new System.Windows.Forms.Button();
-            OkCancelTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
+            OkCancelTableLayoutPanel = new TableLayoutPanel();
             OkCancelTableLayoutPanel.SuspendLayout();
-            this.SuspendLayout();
+            SuspendLayout();
 
             resources.ApplyResources(Label1, "caption");
-            Label1.Margin = new System.Windows.Forms.Padding(3, 1, 3, 0);
+            Label1.Margin = new Padding(3, 1, 3, 0);
             Label1.Text = "Выберите часть текста для преобразования в ссылку:";
 
             resources.ApplyResources(TextBox1, "sampleEdit");
@@ -100,41 +98,41 @@ namespace osfDesigner
 
             resources.ApplyResources(OkButton1, "okButton");
             OkButton1.DialogResult = System.Windows.Forms.DialogResult.OK;
-            OkButton1.Margin = new System.Windows.Forms.Padding(0, 0, 2, 0);
+            OkButton1.Margin = new Padding(0, 0, 2, 0);
             OkButton1.Text = "ОК";
 
             resources.ApplyResources(CancelButton1, "cancelButton");
             CancelButton1.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            CancelButton1.Margin = new System.Windows.Forms.Padding(3, 0, 0, 0);
+            CancelButton1.Margin = new Padding(3, 0, 0, 0);
             CancelButton1.Text = "Отмена";
 
             resources.ApplyResources(OkCancelTableLayoutPanel, "okCancelTableLayoutPanel");
             OkCancelTableLayoutPanel.ColumnCount = 2;
-            OkCancelTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(SizeType.Percent, 50F));
-            OkCancelTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(SizeType.Percent, 50F));
+            OkCancelTableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            OkCancelTableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             OkCancelTableLayoutPanel.Controls.Add(OkButton1, 0, 0);
             OkCancelTableLayoutPanel.Controls.Add(CancelButton1, 1, 0);
-            OkCancelTableLayoutPanel.Margin = new System.Windows.Forms.Padding(3, 1, 3, 3);
+            OkCancelTableLayoutPanel.Margin = new Padding(3, 1, 3, 3);
             OkCancelTableLayoutPanel.RowCount = 1;
-            OkCancelTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            OkCancelTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            OkCancelTableLayoutPanel.RowStyles.Add(new RowStyle());
+            OkCancelTableLayoutPanel.RowStyles.Add(new RowStyle());
 
             resources.ApplyResources(this, "$this");
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.CancelButton = CancelButton1;
-            this.Controls.Add(OkCancelTableLayoutPanel);
-            this.Controls.Add(TextBox1);
-            this.Controls.Add(Label1);
-            this.HelpButton = true;
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.ShowIcon = false;
-            this.ShowInTaskbar = false;
-            this.OkCancelTableLayoutPanel.ResumeLayout(false);
-            this.OkCancelTableLayoutPanel.PerformLayout();
-            this.ResumeLayout(false);
-            this.PerformLayout();
-            this.Text = "Редактор ОбластьСсылки";
+            AutoScaleMode = AutoScaleMode.Font;
+            CancelButton = CancelButton1;
+            Controls.Add(OkCancelTableLayoutPanel);
+            Controls.Add(TextBox1);
+            Controls.Add(Label1);
+            HelpButton = true;
+            MaximizeBox = false;
+            MinimizeBox = false;
+            ShowIcon = false;
+            ShowInTaskbar = false;
+            OkCancelTableLayoutPanel.ResumeLayout(false);
+            OkCancelTableLayoutPanel.PerformLayout();
+            ResumeLayout(false);
+            PerformLayout();
+            Text = "Редактор ОбластьСсылки";
         }
 
         public string SampleText

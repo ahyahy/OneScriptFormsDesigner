@@ -51,16 +51,16 @@ namespace osfDesigner
 
     public class ExpandableDatesCollectionPropertyDescriptor : PropertyDescriptor
     {
-        private System.DateTime[] collection;
+        private DateTime[] collection;
         private readonly int _index;
 
-        public ExpandableDatesCollectionPropertyDescriptor(System.DateTime[] coll, int idx) : base(GetDisplayName(coll, idx), null)
+        public ExpandableDatesCollectionPropertyDescriptor(DateTime[] coll, int idx) : base(GetDisplayName(coll, idx), null)
         {
             collection = coll;
             _index = idx;
         }
 
-        private static string GetDisplayName(System.DateTime[] list, int index)
+        private static string GetDisplayName(DateTime[] list, int index)
         {
             return "[" + index + "]";
         }
@@ -75,8 +75,7 @@ namespace osfDesigner
             }
             sb.Append(name.Substring(0, name.IndexOf('`')));
             sb.Append("<");
-            sb.Append(string.Join(", ", type.GetGenericArguments()
-                                            .Select(CSharpName)));
+            sb.Append(string.Join(", ", type.GetGenericArguments().Select(CSharpName)));
             sb.Append(">");
             return sb.ToString();
         }
@@ -88,7 +87,7 @@ namespace osfDesigner
 
         public override Type ComponentType
         {
-            get { return this.collection.GetType(); }
+            get { return collection.GetType(); }
         }
 
         public override object GetValue(object component)

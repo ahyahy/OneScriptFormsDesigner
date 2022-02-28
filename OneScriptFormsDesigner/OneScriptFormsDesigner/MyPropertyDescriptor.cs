@@ -5,7 +5,7 @@ namespace osfDesigner
 {
     // Один из вариантов показать в сетке свойств расширяемое свойство.
     // Так можно вывести русские названия свойств. Тип раскрываемого свойства должен соответствовать унаследованному классу, если 
-    // их нужно будет редактировать тут же в раскытом списке. На расскытые свойства возможно нужно будет повесить свой редактор.
+    // их нужно будет редактировать тут же в раскытом списке. На расскытые свойства возможно нужно будет указать свой редактор.
     // Вызывается в конвертере примерно так:
     ////public override PropertyDescriptorCollection GetProperties(ITypeDescriptorContext context, object value, Attribute[] attributes)
     ////{
@@ -70,10 +70,7 @@ namespace osfDesigner
             {
                 return "Игрек";
             }
-            else
-            {
-                return inner.Name;
-            }
+            return inner.Name;
         }
 
         public override object GetValue(object component)

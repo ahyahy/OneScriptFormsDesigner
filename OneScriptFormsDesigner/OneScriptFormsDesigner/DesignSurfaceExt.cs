@@ -69,7 +69,7 @@ namespace osfDesigner
 
         public void UseSnapLines()
         {
-            IServiceContainer serviceProvider = this.GetService(typeof(IServiceContainer)) as IServiceContainer;
+            IServiceContainer serviceProvider = GetService(typeof(IServiceContainer)) as IServiceContainer;
             DesignerOptionService opsService = serviceProvider.GetService(typeof(DesignerOptionService)) as DesignerOptionService;
             if (null != opsService)
             {
@@ -81,7 +81,7 @@ namespace osfDesigner
 
         public void UseGrid(Size gridSize)
         {
-            IServiceContainer serviceProvider = this.GetService(typeof(IServiceContainer)) as IServiceContainer;
+            IServiceContainer serviceProvider = GetService(typeof(IServiceContainer)) as IServiceContainer;
             DesignerOptionService opsService = serviceProvider.GetService(typeof(DesignerOptionService)) as DesignerOptionService;
             if (null != opsService)
             {
@@ -93,7 +93,7 @@ namespace osfDesigner
 
         public void UseGridWithoutSnapping(Size gridSize)
         {
-            IServiceContainer serviceProvider = this.GetService(typeof(IServiceContainer)) as IServiceContainer;
+            IServiceContainer serviceProvider = GetService(typeof(IServiceContainer)) as IServiceContainer;
             DesignerOptionService opsService = serviceProvider.GetService(typeof(DesignerOptionService)) as DesignerOptionService;
             if (null != opsService)
             {
@@ -105,7 +105,7 @@ namespace osfDesigner
 
         public void UseNoGuides()
         {
-            IServiceContainer serviceProvider = this.GetService(typeof(IServiceContainer)) as IServiceContainer;
+            IServiceContainer serviceProvider = GetService(typeof(IServiceContainer)) as IServiceContainer;
             DesignerOptionService opsService = serviceProvider.GetService(typeof(DesignerOptionService)) as DesignerOptionService;
             if (null != opsService)
             {
@@ -117,7 +117,7 @@ namespace osfDesigner
 
         public UndoEngineExt GetUndoEngineExt()
         {
-            return this._undoEngine;
+            return _undoEngine;
         }
 
         private IComponent CreateRootComponentCore(Type controlType, Size controlSize, DesignerLoader loader)
@@ -136,11 +136,11 @@ namespace osfDesigner
                     return null;
                 }
                 // Создайте новый корневой компонент и инициализируйте его с помощью конструктора.
-                // Если компонент не имеет конструктора - откат, иначе выполните инициализацию
+                // Если компонент не имеет конструктора - откат, иначе выполните инициализацию.
                 if (null != loader)
                 {
-                    this.BeginLoad(loader);
-                    if (this.LoadErrors.Count > 0)
+                    BeginLoad(loader);
+                    if (LoadErrors.Count > 0)
                     {
                         throw new Exception(@"DesignSurfaceExt::CreateRootComponentCore() - Исключение: сбой в BeginLoad(loader)!");
                     }
@@ -149,8 +149,8 @@ namespace osfDesigner
                 {
                     if (controlType != null)
                     {
-                        this.BeginLoad(controlType);
-                        if (this.LoadErrors.Count > 0)
+                        BeginLoad(controlType);
+                        if (LoadErrors.Count > 0)
                         {
                             throw new Exception(@"DesignSurfaceExt::CreateRootComponentCore() - Исключение: сбой в BeginLoad(Type)! Некоторая ошибка во время " + controlType.ToString() + " загрузки");
                         }
@@ -162,7 +162,7 @@ namespace osfDesigner
                 Control ctrl = null;
                 if (host.RootComponent is Form)
                 {
-                    ctrl = this.View as Control;
+                    ctrl = View as Control;
                     ctrl.BackColor = Color.LightGray;
                     // Установите размер.
                     PropertyDescriptorCollection pdc = TypeDescriptor.GetProperties(ctrl);
@@ -175,7 +175,7 @@ namespace osfDesigner
                 }
                 else if (host.RootComponent is UserControl)
                 {
-                    ctrl = this.View as Control;
+                    ctrl = View as Control;
                     ctrl.BackColor = SystemColors.ControlDarkDark;
                     // Установите размер.
                     PropertyDescriptorCollection pdc = TypeDescriptor.GetProperties(ctrl);
@@ -188,7 +188,7 @@ namespace osfDesigner
                 }
                 else if (host.RootComponent is Control)
                 {
-                    ctrl = this.View as Control;
+                    ctrl = View as Control;
                     ctrl.BackColor = Color.LightGray;
                     // Установите размер.
                     PropertyDescriptorCollection pdc = TypeDescriptor.GetProperties(ctrl);
@@ -201,14 +201,14 @@ namespace osfDesigner
                 }
                 else if (host.RootComponent is Component)
                 {
-                    ctrl = this.View as Control;
+                    ctrl = View as Control;
                     ctrl.BackColor = Color.White;
                     // Не устанавливайте размер.
                 }
                 else
                 {
-                    // Тип Хоста не определен
-                    ctrl = this.View as Control;
+                    // Тип Хоста не определен.
+                    ctrl = View as Control;
                     ctrl.BackColor = Color.Red;
                 }
                 return ihost.RootComponent;
@@ -265,7 +265,7 @@ namespace osfDesigner
                 {
                     ((IComponentInitializer)designer).InitializeNewComponent(null);
                 }
-                // Попробуйте изменить размер/расположение только что созданного объекта
+                // Попробуйте изменить размер/расположение только что созданного объекта.
                 PropertyDescriptorCollection pdc = TypeDescriptor.GetProperties(newComp);
                 // Задайте свойство через PropertyDescriptor.
                 PropertyDescriptor pdS = pdc.Find("Size", false);
@@ -296,12 +296,12 @@ namespace osfDesigner
 
         public IDesignerHost GetIDesignerHost()
         {
-            return (IDesignerHost)(this.GetService(typeof(IDesignerHost)));
+            return (IDesignerHost)(GetService(typeof(IDesignerHost)));
         }
 
         public Control GetView()
         {
-            Control ctrl = this.View as Control;
+            Control ctrl = View as Control;
             if (null == ctrl)
             {
                 return null;
@@ -330,13 +330,13 @@ namespace osfDesigner
 
         public void InvokeTabOrder()
         {
-            TabOrder.HookTabOrder(this.GetIDesignerHost());
+            TabOrder.HookTabOrder(GetIDesignerHost());
             _tabOrderMode = true;
         }
 
         public void DisposeTabOrder()
         {
-            TabOrder.HookTabOrder(this.GetIDesignerHost());
+            TabOrder.HookTabOrder(GetIDesignerHost());
             _tabOrderMode = false;
         }
 
@@ -353,38 +353,38 @@ namespace osfDesigner
             _nameCreationService = new NameCreationServiceImp();
             if (_nameCreationService != null)
             {
-                this.ServiceContainer.RemoveService(typeof(INameCreationService), false);
-                this.ServiceContainer.AddService(typeof(INameCreationService), _nameCreationService);
+                ServiceContainer.RemoveService(typeof(INameCreationService), false);
+                ServiceContainer.AddService(typeof(INameCreationService), _nameCreationService);
             }
             // 2. CodeDomComponentSerializationService
-            _codeDomComponentSerializationService = new CodeDomComponentSerializationService(this.ServiceContainer);
+            _codeDomComponentSerializationService = new CodeDomComponentSerializationService(ServiceContainer);
             if (_codeDomComponentSerializationService != null)
             {
-                this.ServiceContainer.RemoveService(typeof(ComponentSerializationService), false);
-                this.ServiceContainer.AddService(typeof(ComponentSerializationService), _codeDomComponentSerializationService);
+                ServiceContainer.RemoveService(typeof(ComponentSerializationService), false);
+                ServiceContainer.AddService(typeof(ComponentSerializationService), _codeDomComponentSerializationService);
             }
             // 3. IDesignerSerializationService
-            _designerSerializationService = new DesignerSerializationServiceImpl(this.ServiceContainer);
+            _designerSerializationService = new DesignerSerializationServiceImpl(ServiceContainer);
             if (_designerSerializationService != null)
             {
-                this.ServiceContainer.RemoveService(typeof(IDesignerSerializationService), false);
-                this.ServiceContainer.AddService(typeof(IDesignerSerializationService), _designerSerializationService);
+                ServiceContainer.RemoveService(typeof(IDesignerSerializationService), false);
+                ServiceContainer.AddService(typeof(IDesignerSerializationService), _designerSerializationService);
             }
             // 4. UndoEngine
-            _undoEngine = new UndoEngineExt(this.ServiceContainer);
+            _undoEngine = new UndoEngineExt(ServiceContainer);
             // Отключим UndoEngine.
             _undoEngine.Enabled = false;
             if (_undoEngine != null)
             {
-                this.ServiceContainer.RemoveService(typeof(UndoEngine), false);
-                this.ServiceContainer.AddService(typeof(UndoEngine), _undoEngine);
+                ServiceContainer.RemoveService(typeof(UndoEngine), false);
+                ServiceContainer.AddService(typeof(UndoEngine), _undoEngine);
             }
             // 5. IMenuCommandService
-            this.ServiceContainer.AddService(typeof(IMenuCommandService), new MenuCommandService(this));
+            ServiceContainer.AddService(typeof(IMenuCommandService), new MenuCommandService(this));
 
             //* 18.12.2021 perfolenta
             // 6.
-            IComponentChangeService cs = this.ServiceContainer.GetService(typeof(IComponentChangeService)) as IComponentChangeService;
+            IComponentChangeService cs = ServiceContainer.GetService(typeof(IComponentChangeService)) as IComponentChangeService;
 
                 if (!(cs == null)){
                 cs.ComponentChanged += new ComponentChangedEventHandler(OnComponentChanged);
@@ -418,7 +418,7 @@ namespace osfDesigner
                 return;
             }
 
-            IMenuCommandService ims = this.GetService(typeof(IMenuCommandService)) as IMenuCommandService;
+            IMenuCommandService ims = GetService(typeof(IMenuCommandService)) as IMenuCommandService;
             if (null == ims)
             {
                 return;
@@ -441,7 +441,7 @@ namespace osfDesigner
                         ims.GlobalInvoke(StandardCommands.Delete);
                         break;
                     default:
-                        // do nothing;
+                        // Ничего не делаем;
                         break;
                 }
             }

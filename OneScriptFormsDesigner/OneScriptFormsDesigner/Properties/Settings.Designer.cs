@@ -58,5 +58,29 @@ namespace osfDesigner.Properties {
                 this["styleScript"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool visualSyleDesigner {
+            get {
+                return ((bool)(this["visualSyleDesigner"]));
+            }
+            set {
+                this["visualSyleDesigner"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool visualSyleForms {
+            get {
+                return ((bool)(this["visualSyleForms"]));
+            }
+            set {
+                this["visualSyleForms"] = value;
+            }
+        }
     }
 }

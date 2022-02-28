@@ -47,14 +47,14 @@ namespace osfDesigner
 
         public frmSelectionRange()
         {
-            this.ClientSize = new Size(192, 70);
-            this.ControlBox = false;
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.Name = "frmSelectionRange";
-            this.ShowInTaskbar = false;
-            this.Closed += FrmSelectionRange_Closed;
+            ClientSize = new Size(192, 70);
+            ControlBox = false;
+            FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            MaximizeBox = false;
+            MinimizeBox = false;
+            Name = "frmSelectionRange";
+            ShowInTaskbar = false;
+            Closed += FrmSelectionRange_Closed;
 
             label1 = new System.Windows.Forms.Label();
             label1.Parent = this;

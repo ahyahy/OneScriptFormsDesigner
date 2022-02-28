@@ -40,7 +40,6 @@ namespace osfDesigner
                     Debug.WriteLine(_Name_ + ex.Message);
                 }
             }
-            else { }
         }
 
         public void Redo()
@@ -58,7 +57,6 @@ namespace osfDesigner
                     Debug.WriteLine(_Name_ + ex.Message);
                 }
             }
-            else { }
         }
 
         protected override void AddUndoUnit (UndoEngine.UndoUnit unit)

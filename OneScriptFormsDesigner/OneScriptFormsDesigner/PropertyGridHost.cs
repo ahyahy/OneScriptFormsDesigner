@@ -15,7 +15,6 @@ namespace osfDesigner
         private IContainer components = null;
         protected System.Windows.Forms.PropertyGrid pgrdPropertyGrid;
         protected System.Windows.Forms.ComboBox pgrdComboBox;
-
         protected System.Windows.Forms.Splitter pgrdsplitter;
         protected System.Windows.Forms.TreeView pgrdTreeView;
         protected System.Windows.Forms.ToolBar pgrdToolBar;
@@ -27,52 +26,52 @@ namespace osfDesigner
 
         public PropertyGridHost(DesignSurfaceManagerExt surfaceManager)
         {
-            this.pgrdPropertyGrid = new System.Windows.Forms.PropertyGrid();
-            this.pgrdComboBox = new System.Windows.Forms.ComboBox();
-            this.pgrdsplitter = new System.Windows.Forms.Splitter();
-            this.pgrdTreeView = new System.Windows.Forms.TreeView();
-            this.pgrdToolBar = new System.Windows.Forms.ToolBar();
-            this.buttonSort = new System.Windows.Forms.ToolBarButton();
-            this.SuspendLayout();
+            pgrdPropertyGrid = new System.Windows.Forms.PropertyGrid();
+            pgrdComboBox = new System.Windows.Forms.ComboBox();
+            pgrdsplitter = new System.Windows.Forms.Splitter();
+            pgrdTreeView = new System.Windows.Forms.TreeView();
+            pgrdToolBar = new System.Windows.Forms.ToolBar();
+            buttonSort = new System.Windows.Forms.ToolBarButton();
+            SuspendLayout();
             // 
             // pgrdPropertyGrid
             // 
-            this.pgrdPropertyGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pgrdPropertyGrid.Location = new Point(0, 229);
-            this.pgrdPropertyGrid.Name = "pgrdPropertyGrid";
-            this.pgrdPropertyGrid.Size = new Size(150, 0);
-            this.pgrdPropertyGrid.TabIndex = 3;
+            pgrdPropertyGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            pgrdPropertyGrid.Location = new Point(0, 229);
+            pgrdPropertyGrid.Name = "pgrdPropertyGrid";
+            pgrdPropertyGrid.Size = new Size(150, 0);
+            pgrdPropertyGrid.TabIndex = 3;
             // 
             // pgrdComboBox
             // 
-            this.pgrdComboBox.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pgrdComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.pgrdComboBox.FormattingEnabled = true;
-            this.pgrdComboBox.Location = new Point(0, 205);
-            this.pgrdComboBox.Name = "pgrdComboBox";
-            this.pgrdComboBox.Size = new Size(150, 24);
-            this.pgrdComboBox.Sorted = true;
-            this.pgrdComboBox.TabIndex = 2;
+            pgrdComboBox.Dock = System.Windows.Forms.DockStyle.Top;
+            pgrdComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            pgrdComboBox.FormattingEnabled = true;
+            pgrdComboBox.Location = new Point(0, 205);
+            pgrdComboBox.Name = "pgrdComboBox";
+            pgrdComboBox.Size = new Size(150, 24);
+            pgrdComboBox.Sorted = true;
+            pgrdComboBox.TabIndex = 2;
             // 
             // pgrdsplitter
             // 
-            this.pgrdsplitter.BackColor = Color.LightSteelBlue;
-            this.pgrdsplitter.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pgrdsplitter.Location = new Point(0, 200);
-            this.pgrdsplitter.Name = "pgrdsplitter";
-            this.pgrdsplitter.Size = new Size(150, 5);
-            this.pgrdsplitter.TabIndex = 4;
-            this.pgrdsplitter.TabStop = false;
+            pgrdsplitter.BackColor = Color.LightSteelBlue;
+            pgrdsplitter.Dock = System.Windows.Forms.DockStyle.Top;
+            pgrdsplitter.Location = new Point(0, 200);
+            pgrdsplitter.Name = "pgrdsplitter";
+            pgrdsplitter.Size = new Size(150, 5);
+            pgrdsplitter.TabIndex = 4;
+            pgrdsplitter.TabStop = false;
             // 
             // pgrdTreeView
             // 
-            this.pgrdTreeView.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pgrdTreeView.HideSelection = false;
-            this.pgrdTreeView.Location = new Point(0, 0);
-            this.pgrdTreeView.Name = "pgrdTreeView";
-            this.pgrdTreeView.Size = new Size(150, 200);
-            this.pgrdTreeView.NodeMouseClick += PgrdTreeView_NodeMouseClick;
-            this.pgrdTreeView.TabIndex = 5;
+            pgrdTreeView.Dock = System.Windows.Forms.DockStyle.Top;
+            pgrdTreeView.HideSelection = false;
+            pgrdTreeView.Location = new Point(0, 0);
+            pgrdTreeView.Name = "pgrdTreeView";
+            pgrdTreeView.Size = new Size(150, 200);
+            pgrdTreeView.NodeMouseClick += PgrdTreeView_NodeMouseClick;
+            pgrdTreeView.TabIndex = 5;
             // 
             // buttonSort
             // 
@@ -80,34 +79,34 @@ namespace osfDesigner
             Image Image1 = OneScriptFormsDesigner.Base64ToImage(str_sort);
             System.Windows.Forms.ImageList ImageList1 = new System.Windows.Forms.ImageList();
             ImageList1.Images.Add(Image1);
-            this.buttonSort.Style = System.Windows.Forms.ToolBarButtonStyle.ToggleButton;
-            this.buttonSort.ImageIndex = 0;
-            this.buttonSort.Name = "buttonSort";
-            this.buttonSort.Pushed = true;
+            buttonSort.Style = System.Windows.Forms.ToolBarButtonStyle.ToggleButton;
+            buttonSort.ImageIndex = 0;
+            buttonSort.Name = "buttonSort";
+            buttonSort.Pushed = true;
             // 
             // pgrdToolBar
             // 
-            this.pgrdToolBar.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pgrdToolBar.Location = new Point(0, 0);
-            this.pgrdToolBar.Name = "pgrdToolBar";
-            this.pgrdToolBar.Size = new Size(150, 24);
-            this.pgrdToolBar.BackColor = pgrdPropertyGrid.BackColor;
-            this.pgrdToolBar.Buttons.Add(buttonSort);
-            this.pgrdToolBar.ImageList = ImageList1;
-            this.pgrdToolBar.ButtonClick += PgrdToolBar_ButtonClick;
+            pgrdToolBar.Dock = System.Windows.Forms.DockStyle.Top;
+            pgrdToolBar.Location = new Point(0, 0);
+            pgrdToolBar.Name = "pgrdToolBar";
+            pgrdToolBar.Size = new Size(150, 24);
+            pgrdToolBar.BackColor = pgrdPropertyGrid.BackColor;
+            pgrdToolBar.Buttons.Add(buttonSort);
+            pgrdToolBar.ImageList = ImageList1;
+            pgrdToolBar.ButtonClick += PgrdToolBar_ButtonClick;
             // 
             // PropertyGridHost
             // 
-            this.AutoScaleDimensions = new SizeF(8F, 16F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.pgrdPropertyGrid);
-            this.Controls.Add(this.pgrdComboBox);
-            this.Controls.Add(this.pgrdsplitter);
-            this.Controls.Add(this.pgrdTreeView);
-            this.Controls.Add(this.pgrdToolBar);
-            this.Name = "PropertyGridHost";
-            this.ResumeLayout(false);
-            this.Dock = System.Windows.Forms.DockStyle.Fill;
+            AutoScaleDimensions = new SizeF(8F, 16F);
+            AutoScaleMode = AutoScaleMode.Font;
+            Controls.Add(pgrdPropertyGrid);
+            Controls.Add(pgrdComboBox);
+            Controls.Add(pgrdsplitter);
+            Controls.Add(pgrdTreeView);
+            Controls.Add(pgrdToolBar);
+            Name = "PropertyGridHost";
+            ResumeLayout(false);
+            Dock = System.Windows.Forms.DockStyle.Fill;
 
             // Диспетчер поверхности строго связан с PropertyGridHost.
             if (null == surfaceManager)
@@ -119,15 +118,13 @@ namespace osfDesigner
             pgrdPropertyGrid.ToolbarVisible = true;
             pgrdPropertyGrid.HelpVisible = true;
 
-            // ComboBox - СЛЕДИТ за событием PropertyGridHost: SelectedObjectsChanged.
             // Каждый раз, когда кто-либо выбирает новый объект внутри PropertyGridHost
             // событие PropertyGridHost.SelectedObjectsChanged вызывает метод ReloadComboBox().
             pgrdPropertyGrid.SelectedObjectsChanged += (object sender, EventArgs e) =>
             {
                 // Здесь делаем подмену исходного компонента, указанного в свойстве pgrdPropertyGrid.SelectedObject на 
                 // наш компонент - двойник (similar). Связь между ними через OneScriptFormsDesigner.hashtable.
-                System.Windows.Forms.PropertyGrid propertyGrid = (System.Windows.Forms.PropertyGrid)sender;
-                dynamic OriginalObj = propertyGrid.SelectedObject;
+                dynamic OriginalObj = SelectedObject;
                 dynamic SimilarObj = OneScriptFormsDesigner.RevertSimilarObj(OriginalObj);
 
                 // Сделаем невидимыми свойства, которые хотим скрыть.
@@ -135,55 +132,52 @@ namespace osfDesigner
                 // в сетке свойств показываем свойства нашего osfDesigner.ImageList и osfDesigner.MainMenu.
                 if (SimilarObj == null)
                 {
-                    if (OriginalObj.GetType().ToString() == "System.Windows.Forms.ImageList")
+                    if (OriginalObj.GetType() == typeof(System.Windows.Forms.ImageList))
                     {
                         SimilarObj = new osfDesigner.ImageList();
                         ((osfDesigner.ImageList)SimilarObj).OriginalObj = OriginalObj;
                         OneScriptFormsDesigner.AddToDictionary(OriginalObj, SimilarObj);
                         OneScriptFormsDesigner.PassProperties(OriginalObj, SimilarObj); // Передадим свойства.
-                        propertyGrid.SelectedObject = SimilarObj;
+                        SelectedObject = SimilarObj;
                     }
-                    else if (OriginalObj.GetType().ToString() == "System.Windows.Forms.MainMenu")
+                    else if (OriginalObj.GetType() == typeof(System.Windows.Forms.MainMenu))
                     {
                         SimilarObj = new osfDesigner.MainMenu();
                         OneScriptFormsDesigner.AddToDictionary(OriginalObj, SimilarObj);
                         OneScriptFormsDesigner.PassProperties(OriginalObj, SimilarObj); // Передадим свойства.
-                        propertyGrid.SelectedObject = SimilarObj;
+                        SelectedObject = SimilarObj;
                     }
                 }
                 else
                 {
-                    propertyGrid.SelectedObject = SimilarObj;
+                    SelectedObject = SimilarObj;
                 }
 
-                if (OriginalObj.GetType().ToString() == "System.Windows.Forms.TabPage")
+                if (OriginalObj.GetType() == typeof(System.Windows.Forms.TabPage))
                 {
                     SimilarObj = OneScriptFormsDesigner.RevertSimilarObj(OriginalObj);
-                    if (OneScriptFormsDesigner.tic1 > 1)
+                    if (OneScriptFormsDesigner.tic > 1)
                     {
-                        propertyGrid.SelectedObject = SimilarObj;
+                        SelectedObject = SimilarObj;
                     }
                     else
                     {
-                        OneScriptFormsDesigner.tic1 = OneScriptFormsDesigner.tic1 + 1;
+                        OneScriptFormsDesigner.tic = OneScriptFormsDesigner.tic + 1;
                     }
                 }
                 ReloadComboBox();
                 ChangeSelectNode(OriginalObj);
             };
 
-            pgrdPropertyGrid.SelectedGridItemChanged += (object s, SelectedGridItemChangedEventArgs e) =>
+            pgrdPropertyGrid.SelectedGridItemChanged += (object sender, SelectedGridItemChangedEventArgs e) =>
             {
-                object comp = pgrdPropertyGrid;
-                Type compType = comp.GetType();
-                object view = compType.GetField("gridView", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(comp);
+                object view = pgrdPropertyGrid.GetType().GetField("gridView", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(pgrdPropertyGrid);
                 GridItemCollection GridItemCollection1 = (GridItemCollection)view.GetType().InvokeMember("GetAllGridEntries", BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Instance, null, view, null);
                 foreach (GridItem GridItem in GridItemCollection1)
                 {
                     if (GridItem.Label == "СписокИзображений" || 
                     GridItem.Label == "СписокБольшихИзображений" || 
-                    GridItem.Label == "СписокМаленькихИзображений" || 
-                    GridItem.Label == "DoubleBuffered")
+                    GridItem.Label == "СписокМаленькихИзображений")
                     {
                         GridItem.Expanded = false;
                     }
@@ -194,13 +188,12 @@ namespace osfDesigner
                 // иначе не синхронно обновляется сетка свойств, поле выбора над ним, и выделенный на форме объект.
                 if (!OneScriptFormsDesigner.block1)
                 {
-                    IDesignerHost host = pDesigner.DSME.ActiveDesignSurface.GetIDesignerHost();
-                    ISelectionService iSel = host.GetService(typeof(ISelectionService)) as ISelectionService;
+                    ISelectionService iSel = (ISelectionService)OneScriptFormsDesigner.DesignerHost.GetService(typeof(ISelectionService));
                     if (iSel != null)
                     {
                         if (iSel.GetSelectedComponents().Count == 1)
                         {
-                            ComponentCollection ctrlsExisting = host.Container.Components;
+                            ComponentCollection ctrlsExisting = OneScriptFormsDesigner.DesignerHost.Container.Components;
                             for (int i = 0; i < ctrlsExisting.Count; i++)
                             {
                                 if (ctrlsExisting[i].Site.Name == ((Component)pgrdPropertyGrid.SelectedObject).Site.Name)
@@ -213,83 +206,70 @@ namespace osfDesigner
                         }
                     }
                 }
-
-                if (pgrdPropertyGrid.SelectedObject is System.Windows.Forms.Form)
-                {
-
-                }
             };
 
-            pgrdPropertyGrid.PropertyValueChanged += (object s, PropertyValueChangedEventArgs e) =>
+            pgrdPropertyGrid.PropertyValueChanged += (object sender, PropertyValueChangedEventArgs e) =>
             {
-                System.Windows.Forms.PropertyGrid PropertyGrid1 = (System.Windows.Forms.PropertyGrid)s;
-                dynamic SelectedObject1 = PropertyGrid1.SelectedObject;
-                string Label1 = PropertyGrid1.SelectedGridItem.Label;
+                dynamic selectedObject = SelectedObject;
+                string Label1 = pgrdPropertyGrid.SelectedGridItem.Label;
                 if (Label1 == "СписокИзображений")
                 {
                     if (e.ChangedItem.Value != e.OldValue)
                     {
                         try
                         {
-                            SelectedObject1.ImageIndex = -1;
+                            selectedObject.ImageIndex = -1;
                         }
                         catch { }
                     }
-                }
-                if (Label1 == "Значок")
-                {
                 }
                 if (Label1 == "Стыковка")
                 {
                     PropertyGrid.TopLevelControl.Refresh();
                 }
 
-                object comp = pgrdPropertyGrid;
-                Type compType = comp.GetType();
-                object view = compType.GetField("gridView", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(comp);
+                object view = pgrdPropertyGrid.GetType().GetField("gridView", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(pgrdPropertyGrid);
                 GridItemCollection GridItemCollection1 = (GridItemCollection)view.GetType().InvokeMember("GetAllGridEntries", BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Instance, null, view, null);
                 foreach (GridItem GridItem in GridItemCollection1)
                 {
                     if (GridItem.Label == "СписокИзображений" || 
                     GridItem.Label == "СписокБольшихИзображений" || 
-                    GridItem.Label == "СписокМаленькихИзображений" || 
-                    GridItem.Label == "DoubleBuffered")
+                    GridItem.Label == "СписокМаленькихИзображений")
                     {
                         GridItem.Expanded = false;
                     }
                 }
 	
-                if (Label1 == "(Name)" && SelectedObject1.GetType() != typeof(Form))
+                if (Label1 == "(Name)" && selectedObject.GetType() != typeof(Form))
                 {
-                    System.Windows.Forms.MessageBox.Show(
+                    MessageBox.Show(
                         "Для правильного формирования файла сценария не допускается изменять имя компонента.",
                         "",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Exclamation,
                         MessageBoxDefaultButton.Button1
                         );
-                    if (SelectedObject1.GetType().ToString() == "osfDesigner.TabPage")
+                    if (selectedObject.GetType() == typeof(osfDesigner.TabPage))
                     {
-                        PropertyDescriptor pd = TypeDescriptor.GetProperties(SelectedObject1.M_TabPage)["Name"];
-                        pd.SetValue(SelectedObject1.M_TabPage, (string)e.OldValue);
+                        PropertyDescriptor pd = TypeDescriptor.GetProperties(selectedObject.M_TabPage)["Name"];
+                        pd.SetValue(selectedObject.M_TabPage, (string)e.OldValue);
                     }
                     else
                     {
-                        PropertyDescriptor pd = TypeDescriptor.GetProperties(SelectedObject1)["Name"];
-                        pd.SetValue(SelectedObject1, (string)e.OldValue);
+                        PropertyDescriptor pd = TypeDescriptor.GetProperties(selectedObject)["Name"];
+                        pd.SetValue(selectedObject, (string)e.OldValue);
                     }
                 }
                 if (Label1.Contains("ToolTip"))
                 {
-                    if ((string)PropertyGrid1.SelectedGridItem.Value != (string)e.OldValue)
+                    if ((string)pgrdPropertyGrid.SelectedGridItem.Value != (string)e.OldValue)
                     {
                         string nameToolTip = Label1.Substring(Label1.LastIndexOf(' ') + 1);
-                        SelectedObject1.ToolTip[nameToolTip] = (string)PropertyGrid1.SelectedGridItem.Value;
+                        selectedObject.ToolTip[nameToolTip] = (string)pgrdPropertyGrid.SelectedGridItem.Value;
                     }
                 }
             };
 
-            // PropertyGridHost - СЛЕДИТ за событием ComboBox: SelectedIndexChanged.
             // Каждый раз, когда кто-либо выбирает новый объект внутри ComboBox
             // событие ComboBox.SelectedIndexChanged вызывает метод OrientPropertyGridTowardsObject().
             pgrdComboBox.SelectedIndexChanged += (object sender, EventArgs e) =>
@@ -325,14 +305,14 @@ namespace osfDesigner
             }
         }
 
-        public void ChangeSelectNode(Component comp, System.Windows.Forms.TreeNodeCollection treeNodes = null)
+        public void ChangeSelectNode(Component comp, TreeNodeCollection treeNodes = null)
         {
             if (_bSuppressEvents2)
             {
                 return;
             }
 
-            System.Windows.Forms.TreeNodeCollection _treeNodes;
+            TreeNodeCollection _treeNodes;
             if (treeNodes == null)
             {
                 _treeNodes = TreeView.Nodes;
@@ -342,46 +322,48 @@ namespace osfDesigner
                 _treeNodes = treeNodes;
             }
 
-            ISelectionService iSel = (ISelectionService)(pDesigner.DSME.ActiveDesignSurface.GetService(typeof(ISelectionService)));
-            ICollection collection1 = iSel.GetSelectedComponents();
-            Component[] arr = new Component[collection1.Count];
-            collection1.CopyTo(arr, 0);
-            Component comp1 = null;
-            try
+            ISelectionService iSel = (ISelectionService)(OneScriptFormsDesigner.DesignerHost.GetService(typeof(ISelectionService)));
+            if (iSel != null)
             {
-                comp1 = arr[0];
-            }
-            catch { }
-            if (comp1 != null)
-            {
+                ICollection collection = iSel.GetSelectedComponents();
+                Component[] arr = new Component[collection.Count];
+                collection.CopyTo(arr, 0);
+                Component comp1 = null;
                 try
                 {
-                    string _nodeKey = comp1.Site.Name;
-                    System.Windows.Forms.TreeNode treeNode;
-                    for (int i = 0; i < _treeNodes.Count; i++)
-                    {
-                        treeNode = _treeNodes[i];
-                        if (treeNode.Name == _nodeKey)
-                        {
-                            TreeView.SelectedNode = treeNode;
-                            return;
-                        }
-                        if (treeNode.Nodes.Count > 0)
-                        {
-                            ChangeSelectNode(comp, treeNode.Nodes);
-                        }
-                    }
+                    comp1 = arr[0];
                 }
                 catch { }
+                if (comp1 != null)
+                {
+                    try
+                    {
+                        string _nodeKey = comp1.Site.Name;
+                        TreeNode treeNode;
+                        for (int i = 0; i < _treeNodes.Count; i++)
+                        {
+                            treeNode = _treeNodes[i];
+                            if (treeNode.Name == _nodeKey)
+                            {
+                                TreeView.SelectedNode = treeNode;
+                                return;
+                            }
+                            if (treeNode.Nodes.Count > 0)
+                            {
+                                ChangeSelectNode(comp, treeNode.Nodes);
+                            }
+                        }
+                    }
+                    catch { }
+                }
             }
-            else { }
         }
 
         private void PgrdTreeView_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
             _bSuppressEvents2 = true;
-            IDesignerHost host = pDesigner.DSME.ActiveDesignSurface.GetIDesignerHost();
-            ISelectionService iSel = host.GetService(typeof(ISelectionService)) as ISelectionService;
+            IDesignerHost host = OneScriptFormsDesigner.DesignerHost;
+            ISelectionService iSel = (ISelectionService)host.GetService(typeof(ISelectionService));
             if (iSel != null)
             {
                 ComponentCollection ctrlsExisting = host.Container.Components;
@@ -398,7 +380,6 @@ namespace osfDesigner
             _bSuppressEvents2 = false;
         }
 
-        // Метод очистки всех используемых ресурсов.
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -443,9 +424,8 @@ namespace osfDesigner
             if (null != des)
             {
                 IDesignerHost host = des.ActiveDesigner;
-
                 // Получим ISelectionService из активной поверхности дизайнера.
-                ISelectionService iSel = host.GetService(typeof(ISelectionService)) as ISelectionService;
+                ISelectionService iSel = (ISelectionService)host.GetService(typeof(ISelectionService));
                 if (iSel != null)
                 {
                     // Получим имя элемента управления, выбранного в comboBox.
@@ -475,7 +455,7 @@ namespace osfDesigner
             Form Form1 = null;
             try
             {
-                Form1 = (Form)pDesigner.DSME.ActiveDesignSurface.GetIDesignerHost().Container.Components[0];
+                Form1 = (Form)OneScriptFormsDesigner.DesignerHost.Container.Components[0];
             }
             catch { }
             if (Form1 == null)
@@ -534,7 +514,7 @@ namespace osfDesigner
                     }
                     comps.Add(sName, (IComponent)ctrlsExisting[i]);
                 }
-                Dictionary<string, System.Windows.Forms.TreeNode> comps2 = new Dictionary<string, System.Windows.Forms.TreeNode>();
+                Dictionary<string, TreeNode> comps2 = new Dictionary<string, TreeNode>();
                 foreach (KeyValuePair<string, IComponent> keyValue in comps)
                 {
                     string parentName = "";
@@ -557,17 +537,17 @@ namespace osfDesigner
                         }
                     }
 
-                    System.Windows.Forms.TreeNode TreeNode1 = new System.Windows.Forms.TreeNode((string)keyValue.Key);
+                    TreeNode TreeNode1 = new TreeNode(keyValue.Key);
                     TreeNode1.Tag = parentName;
-                    TreeNode1.Name = (string)keyValue.Key;
+                    TreeNode1.Name = keyValue.Key;
                     comps2.Add(keyValue.Key, TreeNode1);
                 }
                 foreach (KeyValuePair<string, IComponent> keyValue in comps)
                 {
-                    System.Windows.Forms.TreeNode TreeNode1 = (System.Windows.Forms.TreeNode)comps2[(string)keyValue.Key];
+                    TreeNode TreeNode1 = comps2[keyValue.Key];
                     if ((string)TreeNode1.Tag != "")
                     {
-                        System.Windows.Forms.TreeNode NodeParent = (System.Windows.Forms.TreeNode)comps2[(string)TreeNode1.Tag];
+                        TreeNode NodeParent = comps2[(string)TreeNode1.Tag];
                         NodeParent.Nodes.Add(TreeNode1);
                     }
                     else
@@ -627,17 +607,17 @@ namespace osfDesigner
                         }
                     }
 
-                    System.Windows.Forms.TreeNode TreeNode1 = new System.Windows.Forms.TreeNode((string)de.Key);
+                    TreeNode TreeNode1 = new TreeNode((string)de.Key);
                     TreeNode1.Tag = parentName;
                     TreeNode1.Name = (string)de.Key;
                     SortedList2.Add(de.Key, TreeNode1);
                 }
                 foreach (DictionaryEntry de in SortedList1)
                 {
-                    System.Windows.Forms.TreeNode TreeNode1 = (System.Windows.Forms.TreeNode)SortedList2[(string)de.Key];
+                    TreeNode TreeNode1 = (TreeNode)SortedList2[(string)de.Key];
                     if ((string)TreeNode1.Tag != "")
                     {
-                        System.Windows.Forms.TreeNode NodeParent = (System.Windows.Forms.TreeNode)SortedList2[TreeNode1.Tag];
+                        TreeNode NodeParent = (TreeNode)SortedList2[TreeNode1.Tag];
                         NodeParent.Nodes.Add(TreeNode1);
                     }
                     else
@@ -726,14 +706,16 @@ namespace osfDesigner
         private GridItem CollapseExpandGridItem(string sGridItemLabel, bool bExpanded)
         {
             // Получим корневой элемент GridItem.
-            GridItem root = this.PropertyGrid.SelectedGridItem;
+            GridItem root = PropertyGrid.SelectedGridItem;
             if (null == root)
             {
                 return null;
             }
 
             while (null != root.Parent)
+            {
                 root = root.Parent;
+            }
 
             if (null == root)
             {

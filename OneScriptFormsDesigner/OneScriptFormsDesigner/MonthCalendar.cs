@@ -48,7 +48,7 @@ namespace osfDesigner
         [TypeConverter(typeof(MyDateCollectionConverter))]
         [Editor(typeof(MyDateCollectionEditor), typeof(UITypeEditor))]
         [RefreshProperties(RefreshProperties.All)]
-        public osfDesigner.MyBoldedDatesList BoldedDates_osf
+        public MyBoldedDatesList BoldedDates_osf
         {
             get { return _boldedDates; }
         }
@@ -109,7 +109,6 @@ namespace osfDesigner
         [TypeConverter(typeof(MyBooleanConverter))]
         public bool Enabled_osf { get; set; }
 				
-        // Скроем унаследованное свойство, для того чтобы оно не мешало нашему замещающему свойству использовать свой эдитор и конвертер.
         [Browsable(false)]
         public new bool Enabled { get; set; }
 
@@ -120,7 +119,7 @@ namespace osfDesigner
         [TypeConverter(typeof(MyDateCollectionConverter))]
         [Editor(typeof(MyDateCollectionEditor), typeof(UITypeEditor))]
         [RefreshProperties(RefreshProperties.All)]
-        public osfDesigner.MyAnnuallyBoldedDatesList AnnuallyBoldedDates_osf
+        public MyAnnuallyBoldedDatesList AnnuallyBoldedDates_osf
         {
             get { return _annuallyBoldedDates; }
         }
@@ -139,7 +138,7 @@ namespace osfDesigner
         [TypeConverter(typeof(MyDateCollectionConverter))]
         [Editor(typeof(MyDateCollectionEditor), typeof(UITypeEditor))]
         [RefreshProperties(RefreshProperties.All)]
-        public osfDesigner.MyMonthlyBoldedDatesList MonthlyBoldedDates_osf
+        public MyMonthlyBoldedDatesList MonthlyBoldedDates_osf
         {
             get { return _monthlyBoldedDates; }
         }
@@ -294,7 +293,6 @@ namespace osfDesigner
         [TypeConverter(typeof(MyBooleanConverter))]
         public bool Visible_osf { get; set; }
 				
-        // Скроем унаследованное свойство, для того чтобы оно не мешало нашему замещающему свойству использовать свой эдитор и конвертер.
         [Browsable(false)]
         public new bool Visible { get; set; }
 
@@ -331,7 +329,6 @@ namespace osfDesigner
             set { base.Location = value; }
         }
 				
-        // Скроем унаследованное свойство, для того чтобы оно не мешало нашему замещающему свойству использовать свой эдитор и конвертер.
         [Browsable(false)]
         public new Point Location { get; set; }
 

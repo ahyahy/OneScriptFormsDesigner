@@ -18,8 +18,8 @@ namespace osfDesigner
             DesignerOptions ops = new DesignerOptions();
             ops.UseSnapLines = true;
             ops.UseSmartTags = true;
-            DesignerOptionCollection wfd = this.CreateOptionCollection(options, "WindowsFormsDesigner", null);
-            this.CreateOptionCollection(wfd, "General", ops);
+            DesignerOptionCollection wfd = CreateOptionCollection(options, "WindowsFormsDesigner", null);
+            CreateOptionCollection(wfd, "General", ops);
         }
     }
 
@@ -42,8 +42,8 @@ namespace osfDesigner
             ops.ShowGrid = true;
             ops.UseSnapLines = false;
             ops.UseSmartTags = true;
-            DesignerOptionCollection wfd = this.CreateOptionCollection(options, "WindowsFormsDesigner", null);
-            this.CreateOptionCollection(wfd, "General", ops);
+            DesignerOptionCollection wfd = CreateOptionCollection(options, "WindowsFormsDesigner", null);
+            CreateOptionCollection(wfd, "General", ops);
         }
     }
 
@@ -66,8 +66,8 @@ namespace osfDesigner
             ops.ShowGrid = true;
             ops.UseSnapLines = false;
             ops.UseSmartTags = true;
-            DesignerOptionCollection wfd = this.CreateOptionCollection(options, "WindowsFormsDesigner", null);
-            this.CreateOptionCollection(wfd, "General", ops);
+            DesignerOptionCollection wfd = CreateOptionCollection(options, "WindowsFormsDesigner", null);
+            CreateOptionCollection(wfd, "General", ops);
         }
     }
 
@@ -88,8 +88,8 @@ namespace osfDesigner
             ops.ShowGrid = false;
             ops.UseSnapLines = false;
             ops.UseSmartTags = true;
-            DesignerOptionCollection wfd = this.CreateOptionCollection(options, "WindowsFormsDesigner", null);
-            this.CreateOptionCollection(wfd, "General", ops);
+            DesignerOptionCollection wfd = CreateOptionCollection(options, "WindowsFormsDesigner", null);
+            CreateOptionCollection(wfd, "General", ops);
         }
     }
 }

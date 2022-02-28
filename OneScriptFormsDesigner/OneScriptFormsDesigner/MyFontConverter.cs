@@ -26,42 +26,43 @@ namespace osfDesigner
                 return base.ConvertFrom(context, culture, value);
             }
 
-            string str3 = ((string)value).Replace("стиль=", "style=");
-            str3 = ((string)str3).Replace("Жирный", "Bold");
-            str3 = ((string)str3).Replace("Зачеркнутый", "Strikeout");
-            str3 = ((string)str3).Replace("Курсив", "Italic");
-            str3 = ((string)str3).Replace("Подчеркнутый", "Underline");
-            str3 = ((string)str3).Replace("Стандартный", "Regular");
-            return base.ConvertFrom(context, culture, (object)str3);
+            string str = ((string)value)
+                .Replace("стиль=", "style=")
+                .Replace("Жирный", "Bold")
+                .Replace("Зачеркнутый", "Strikeout")
+                .Replace("Курсив", "Italic")
+                .Replace("Подчеркнутый", "Underline")
+                .Replace("Стандартный", "Regular");
+            return base.ConvertFrom(context, culture, str);
         }
 
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
         {
-            object str2 = base.ConvertTo(context, culture, value, destinationType);
+            string str = (string)base.ConvertTo(context, culture, value, destinationType);
 
-            if ((string)str2 == "(none)")
+            if (str == "(none)")
             {
                 return "(отсутствует)";
             }
 
-            string str3 = ((string)str2).Replace("style=", "стиль=");
-            str3 = ((string)str3).Replace("Bold", "Жирный");
-            str3 = ((string)str3).Replace("Strikeout", "Зачеркнутый");
-            str3 = ((string)str3).Replace("Italic", "Курсив");
-            str3 = ((string)str3).Replace("Underline", "Подчеркнутый");
-            str3 = ((string)str3).Replace("Regular", "Стандартный");
-            return str3;
+            return str
+                .Replace("style=", "стиль=")
+                .Replace("Bold", "Жирный")
+                .Replace("Strikeout", "Зачеркнутый")
+                .Replace("Italic", "Курсив")
+                .Replace("Underline", "Подчеркнутый")
+                .Replace("Regular", "Стандартный");
         }
 
         public new static string ConvertToString(object value)
         {
-            string str3 = value.ToString().Replace("style=", "стиль=");
-            str3 = ((string)str3).Replace("Bold", "Жирный");
-            str3 = ((string)str3).Replace("Strikeout", "Зачеркнутый");
-            str3 = ((string)str3).Replace("Italic", "Курсив");
-            str3 = ((string)str3).Replace("Underline", "Подчеркнутый");
-            str3 = ((string)str3).Replace("Regular", "Стандартный");
-            return str3;
+            return value.ToString()
+                .Replace("style=", "стиль=")
+                .Replace("Bold", "Жирный")
+                .Replace("Strikeout", "Зачеркнутый")
+                .Replace("Italic", "Курсив")
+                .Replace("Underline", "Подчеркнутый")
+                .Replace("Regular", "Стандартный");
         }
 
         public override bool GetPropertiesSupported(ITypeDescriptorContext context)
@@ -90,48 +91,45 @@ namespace osfDesigner
             _pd = pd;
         }
 
-        private static string GetDisplayName(string p1)
+        private static string GetDisplayName(string str)
         {
-            if (p1 == "Bold")
+            if (str == "Bold")
             {
                 return "Жирный";
             }
-            else if (p1 == "Italic")
+            else if (str == "Italic")
             {
                 return "Курсив";
             }
-            else if (p1 == "Underline")
+            else if (str == "Underline")
             {
                 return "Подчеркнутый";
             }
-            else if (p1 == "Strikeout")
+            else if (str == "Strikeout")
             {
                 return "Зачеркнутый";
             }
-            else if (p1 == "Size")
+            else if (str == "Size")
             {
                 return "Размер";
             }
-            else if (p1 == "Name")
+            else if (str == "Name")
             {
                 return "Имя";
             }
-            else if (p1 == "Unit")
+            else if (str == "Unit")
             {
                 return "Размерность";
             }
-            else if (p1 == "GdiVerticalFont")
+            else if (str == "GdiVerticalFont")
             {
                 return "Производный от вертикального GDI";
             }
-            else if (p1 == "GdiCharSet")
+            else if (str == "GdiCharSet")
             {
                 return "Набор знаков GDI";
             }
-            else
-            {
-                return p1;
-            }
+            return str;
         }
 
         private static string CSharpName(Type type)
@@ -144,8 +142,7 @@ namespace osfDesigner
             }
             sb.Append(name.Substring(0, name.IndexOf('`')));
             sb.Append("<");
-            sb.Append(string.Join(", ", type.GetGenericArguments()
-                                            .Select(CSharpName)));
+            sb.Append(string.Join(", ", type.GetGenericArguments().Select(CSharpName)));
             sb.Append(">");
             return sb.ToString();
         }
@@ -162,47 +159,44 @@ namespace osfDesigner
 
         public override object GetValue(object component)
         {
-            string var1 = _pd.GetValue(component).ToString();
-            if (var1 == false.ToString())
+            string str = _pd.GetValue(component).ToString();
+            if (str == false.ToString())
             {
                 return "Ложь";
             }
-            else if (var1 == true.ToString())
+            else if (str == true.ToString())
             {
                 return "Истина";
             }
-            else if (var1 == GraphicsUnit.Display.ToString())
+            else if (str == GraphicsUnit.Display.ToString())
             {
                 return "дисплей (пиксель для дисплеев)";
             }
-            else if (var1 == GraphicsUnit.Document.ToString())
+            else if (str == GraphicsUnit.Document.ToString())
             {
                 return "документ (1/300 дюйма)";
             }
-            else if (var1 == GraphicsUnit.Inch.ToString())
+            else if (str == GraphicsUnit.Inch.ToString())
             {
                 return "дюйм";
             }
-            else if (var1 == GraphicsUnit.Millimeter.ToString())
+            else if (str == GraphicsUnit.Millimeter.ToString())
             {
                 return "миллиметр";
             }
-            else if (var1 == GraphicsUnit.Pixel.ToString())
+            else if (str == GraphicsUnit.Pixel.ToString())
             {
                 return "пиксель";
             }
-            else if (var1 == GraphicsUnit.Point.ToString())
+            else if (str == GraphicsUnit.Point.ToString())
             {
                 return "пункт (1/72 дюйма)";
             }
-            else if (var1 == GraphicsUnit.World.ToString())
+            else if (str == GraphicsUnit.World.ToString())
             {
                 return "мировая";
             }
-            else
-            {
-                return _pd.GetValue(component);
-            }
+            return _pd.GetValue(component);
         }
 
         public override bool IsReadOnly

@@ -63,8 +63,7 @@ namespace osfDesigner
             }
             sb.Append(name.Substring(0, name.IndexOf('`')));
             sb.Append("<");
-            sb.Append(string.Join(", ", type.GetGenericArguments()
-                                            .Select(CSharpName)));
+            sb.Append(string.Join(", ", type.GetGenericArguments().Select(CSharpName)));
             sb.Append(">");
             return sb.ToString();
         }

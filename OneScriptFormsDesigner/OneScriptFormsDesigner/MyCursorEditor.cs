@@ -64,7 +64,7 @@ namespace osfDesigner
             public frmCursor()
             {
                 Height = 310;
-                ItemHeight = (int)Math.Max(4 + Cursors.Default.Size.Height, Font.Height);
+                ItemHeight = Math.Max(4 + Cursors.Default.Size.Height, Font.Height);
                 DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
                 BorderStyle = System.Windows.Forms.BorderStyle.None;
 

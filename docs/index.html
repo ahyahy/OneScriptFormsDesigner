@@ -1,0 +1,94 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+	<head>
+		<meta content="text/html; charset=Windows-1251" http-equiv="content-type">
+		<title>Главная</title>
+		<link href="theme.css" rel="StyleSheet">
+	</head>
+<body>
+
+<table style="text-align: left; width: 1000px; height: 816px; margin-left: auto; margin-right: auto; background-color: white;" border="0" cellpadding="2" cellspacing="2">
+	<tbody>
+    <tr>
+		<td style="vertical-align: top; font-weight: bold; text-align: center; font-style: italic; color: rgb(51, 51, 153);"><big><big><big>Дизайнер форм<br><small><small>для сценарного языка</small></small> OneScript </big></big></big></td>
+		<td style="width: 70px; text-align: center; color: rgb(51, 51, 51); vertical-align: top;"><a href="index.html"><button type="button">Главная</button></a><small><br></small></td>
+		<td style="width: 90px; text-align: center; color: rgb(51, 51, 51); vertical-align: top;"><a href="screenshot.html"><button type="button">Скриншоты</button></a><br></td>
+		<td style="width: 130px; text-align: center; color: rgb(51, 51, 51); vertical-align: top;"><a href="howworks.html"><button type="button">Как это работает</button></a><small><br></small></td>
+		<td style="width: 110px; text-align: center; color: rgb(51, 51, 51); vertical-align: top;"><a href="doc.html"><button type="button">Документация</button></a><small><br></small></td>
+		<td style="width: 75px; text-align: center; color: rgb(51, 51, 51); vertical-align: top;"><a href="down.html"><button type="button">Скачать</button></a><small><br></small></td>
+		<th style="width: 75px; text-align: center; color: rgb(51, 51, 51); vertical-align: top; font-weight: normal;"><a href="kont.html"><button type="button">Контакты</button></a><small><br></small></th>
+    </tr>
+    <tr>
+		<td colspan="7" rowspan="1" style="vertical-align: top; height: 747px; background-color: white;">
+		<hr style="border-color: lightgray;">
+		<p style="margin-left: 40px;">&nbsp;&nbsp;&nbsp; На этом сайте представлен дизайнер форм для скриптового языка OneScript. В нём можно быстро спроектировать экранную форму
+		    приложения просто разместив элементы управления с помощью мыши на форме, просмотреть и задать для них значения свойств, определить методы обработки событий. Результатом работы 
+			будет сгенерированный код сценария, который можно будет исполнить виртуальной машиной OneScript.
+			<br>
+			<br>&nbsp;&nbsp;&nbsp;Дизайнер создан в дополнение к библиотеке <b>OneScriptForms.dll</b>, которая собственно и создает экранные формы и управляет их поведением. 
+			Сам дизайнер тоже реализован в виде библиотеки <b>(OneScriptFormsDesigner.dll)</b>, запускается через OneScript и выглядит примерно так.
+		</p>
+		<figure>
+				<img id="myImg01" src="OneScriptFormsDesigner2.png" alt="Дизайнер">
+				<div id="myModal01" class="modal">
+				  <span id="close01" class="close">×</span>
+				  <img id="img01" class="modal-content">
+				  <div id="caption">Дизайнер, вид - Форма</div>
+				</div>
+				<img id="myImg02" src="OneScriptFormsDesigner3.png" alt="Дизайнер">
+				<div id="myModal02" class="modal">
+				  <span id="close02" class="close">×</span>
+				  <img id="img02" class="modal-content">
+				  <div id="caption">Дизайнер, вид - Сценарий</div>
+				</div>
+		</figure>
+		<p></p>
+		<p style="margin-left: 40px;">&nbsp;&nbsp;&nbsp; Вы можете работать одновременно с несколькими формами, открыв их во вкладках. Сохранять форму в файл с расширением *.osd. Восстанавливать 
+			из сохраненного файла для продолжения работы. Запускать на исполнение для просмотра получившегося результата тут же из дизайнера.
+			<br>&nbsp;&nbsp;&nbsp; Набор доступных контролов позволяет создать полноценное приложение. Приложение может состоять из множества форм, в том числе модальных, 
+			диалоговых, форм выбора каталога, файла, цвета, шрифта и т.п. Имеется набор не визуальных компонентов, таких как <b>Таймер&nbsp;(Timer)</b>, 
+			<b>НаблюдательФайловойСистемы&nbsp;(FileSystemWatcher)</b> и др.
+			<br>
+			<br>&nbsp;&nbsp;&nbsp; Редакторы коллекций и свойства представлены на русском языке. Это ставилось главной задачей при разработке дизайнера.
+			<br>
+			<br>&nbsp;&nbsp;&nbsp; О способах установки/изменения/сброса значений свойств читайте в разделе <a href="doc.html" target="_blank">Документация</a>.
+			<br>&nbsp;&nbsp;&nbsp; Привожу ссылку на библиотеку с формами <a href="https://github.com/ahyahy/OneScriptForms" target="_blank">OneScriptForms.dll</a>.
+			<br>&nbsp;&nbsp;&nbsp; А так же на виртуальную машину <a href="https://oscript.io/" target="_blank">OneScript</a>.
+		</p>
+		<p style="margin-left: 40px;">&nbsp;&nbsp;&nbsp;Огромную помощь оказал пример работы с дизайнером 
+			<a href="https://www.codeproject.com/Articles/60175/The-DesignSurface-Extended-Class-is-Back-Together" target="_blank">picoFormDesigner</a> 
+			(coded by Paolo Foti) под лицензией (<a href="https://www.codeproject.com/info/cpol10.aspx" target="_blank">CPOL</a>).
+		</p>
+		<p style="margin-left: 40px;">&nbsp;&nbsp;&nbsp;Высказывайте замечания, идеи, отзывы, сообщения о найденных ошибках. Формы можно расширить, добавить новые элементы. Дизайнер можно сделать удобнее. Подключайтесь.</p>
+		</td>
+    </tr>
+	</tbody>
+</table>
+<br>
+<br>
+<script>
+var img01 = document.getElementById('myImg01');
+var modal01 = document.getElementById('myModal01');
+var modalImg01 = document.getElementById("img01");
+img01.onclick = function(){
+    modal01.style.display = "block";
+    modalImg01.src = img01.src;
+}
+var span01 = document.getElementById("close01");
+span01.onclick = function(){ 
+    modal01.style.display = "none";
+}
+
+var img02 = document.getElementById('myImg02');
+var modal02 = document.getElementById('myModal02');
+var modalImg02 = document.getElementById("img02");
+img02.onclick = function(){
+    modal02.style.display = "block";
+    modalImg02.src = img02.src;
+}
+var span02 = document.getElementById("close02");
+span02.onclick = function(){ 
+    modal02.style.display = "none";
+}
+</script>
+</body></html>

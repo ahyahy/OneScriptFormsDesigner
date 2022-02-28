@@ -46,14 +46,14 @@ namespace osfDesigner
 
         public frmWidthHeight()
         {
-            this.ClientSize = new Size(192, 70);
-            this.ControlBox = false;
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.Name = "frmWidthHeight";
-            this.ShowInTaskbar = false;
-            this.Closed += FrmWidthHeight_Closed;
+            ClientSize = new Size(192, 70);
+            ControlBox = false;
+            FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            MaximizeBox = false;
+            MinimizeBox = false;
+            Name = "frmWidthHeight";
+            ShowInTaskbar = false;
+            Closed += FrmWidthHeight_Closed;
 
             label1 = new System.Windows.Forms.Label();
             label1.Parent = this;

@@ -30,9 +30,9 @@ namespace osfDesigner
         DesignSurfaceExt2 ActiveDesignSurface { get; }
         // Создайте DesignSurface и rootComponent (элемент управления .NET) используя IDesignSurfaceExt.CreateRootComponent()
         // Если режим выравнивания не использует СЕТКУ, то параметр размера сетки игнорируется.
-        // Note:
+        // Примечание:
         //     Общие параметры используются для определения типа элемента управления, который следует использовать в качестве корневого компонента.
-        //     TT запрашивается как производное от Control класса .NET
+        //     TT запрашивается как производное от Control класса .NET.
 
         DesignSurfaceExt2 AddDesignSurface<TT>(
             int startingFormWidth, int startingFormHeight,
@@ -53,6 +53,5 @@ namespace osfDesigner
         //* 17.12.2021 perfolenta
         bool Dirty { get; }
         //***
-
     }
 }

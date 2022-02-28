@@ -80,10 +80,7 @@ namespace osfDesigner
                         return "" + ((Image)value).Tag;
                     }
                 }
-                else
-                {
-                    return "(отсутствует)";
-                }
+                return "(отсутствует)";
             }
             else if (destinationType == typeof(byte[]))
             {
@@ -122,15 +119,9 @@ namespace osfDesigner
                     {
                         return MemoryStream1.ToArray();
                     }
-                    else
-                    {
-                        return null;
-                    }
+                    return null;
                 }
-                else
-                {
-                    return new byte[0];
-                }
+                return new byte[0];
             }
 
             return base.ConvertTo(context, culture, value, destinationType);

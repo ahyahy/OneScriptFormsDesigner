@@ -97,7 +97,6 @@ namespace osfDesigner
         [TypeConverter(typeof(MyBooleanConverter))]
         public bool Enabled_osf { get; set; }
 				
-        // Скроем унаследованное свойство, для того чтобы оно не мешало нашему замещающему свойству использовать свой эдитор и конвертер.
         [Browsable(false)]
         public new bool Enabled { get; set; }
 
@@ -227,7 +226,6 @@ namespace osfDesigner
         [TypeConverter(typeof(MyBooleanConverter))]
         public bool Visible_osf { get; set; }
 				
-        // Скроем унаследованное свойство, для того чтобы оно не мешало нашему замещающему свойству использовать свой эдитор и конвертер.
         [Browsable(false)]
         public new bool Visible { get; set; }
 
@@ -263,7 +261,6 @@ namespace osfDesigner
             set { base.Location = value; }
         }
 				
-        // Скроем унаследованное свойство, для того чтобы оно не мешало нашему замещающему свойству использовать свой эдитор и конвертер.
         [Browsable(false)]
         public new Point Location { get; set; }
 

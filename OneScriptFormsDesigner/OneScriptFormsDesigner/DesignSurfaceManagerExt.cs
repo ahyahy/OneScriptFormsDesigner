@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections;
 using System.ComponentModel.Design;
+using System.ComponentModel;
 using System;
 
 namespace osfDesigner
@@ -29,10 +30,10 @@ namespace osfDesigner
 
     public class DesignSurfaceManagerExt : DesignSurfaceManager
     {
-        // Список List<> необходим для удаления ранее созданных поверхностей проектирования
-        // Note: 
-        // Свойство DesignSurfaceManager.DesignSurfaces - это набор поверхностей проектирования,
-        // которые в настоящее время размещены в DesignSurfaceManager, но доступны только для чтения.
+        // Список List<> необходим для удаления ранее созданных поверхностей проектирования.
+        // Примечание: 
+        //     Свойство DesignSurfaceManager.DesignSurfaces - это набор поверхностей проектирования,
+        //     которые в настоящее время размещены в DesignSurfaceManager, но доступны только для чтения.
         private List<DesignSurfaceExt2> DesignSurfaceExt2Collection = new List<DesignSurfaceExt2>();
 
         public DesignSurfaceManagerExt() : base()
@@ -52,40 +53,43 @@ namespace osfDesigner
 
         private void Init()
         {
-            this.PropertyGridHost = new PropertyGridHost(this);
+            PropertyGridHost = new PropertyGridHost(this);
             // Добавьте PropertyGridHost и ComboBox в качестве служб, чтобы они были доступны для каждой поверхности дизайна.
             // (DesignSurface нуждается в PropertyGridHost/ComboBox, а не в размещающем их UserControl, поэтому
             // мы предоставляем PropertyGridHost/ComboBox, встроенный в наш UserControl PropertyGridExt).
-            this.ServiceContainer.AddService(typeof(System.Windows.Forms.PropertyGrid), PropertyGridHost.PropertyGrid);
-            this.ServiceContainer.AddService(typeof(System.Windows.Forms.ComboBox), PropertyGridHost.ComboBox);
-            this.ActiveDesignSurfaceChanged += (object sender, ActiveDesignSurfaceChangedEventArgs e) =>
+            ServiceContainer.AddService(typeof(System.Windows.Forms.PropertyGrid), PropertyGridHost.PropertyGrid);
+            ServiceContainer.AddService(typeof(System.Windows.Forms.ComboBox), PropertyGridHost.ComboBox);
+            ActiveDesignSurfaceChanged += (object sender, ActiveDesignSurfaceChangedEventArgs e) =>
             {
-                // Меняем изображение на менюшке <Порядок обхода>.
-                Program.pDesignerMainForm1.ChangeImage(pDesigner.DSME.ActiveDesignSurface.TabOrder._tabOrder != null);
-
                 DesignSurfaceExt2 surface = e.NewSurface as DesignSurfaceExt2;
                 if (null == surface)
                 {
                     return;
                 }
+	
+                // Меняем изображение на менюшке <Порядок обхода>.
+                Program.pDesignerMainForm1.ChangeImage(surface.TabOrder._tabOrder != null);
 
                 UpdatePropertyGridHost(surface);
 
                 ISelectionService iSel = (ISelectionService)(surface.GetService(typeof(ISelectionService)));
-                ICollection collection1 = iSel.GetSelectedComponents();
-                System.ComponentModel.Component[] arr = new System.ComponentModel.Component[collection1.Count];
-                collection1.CopyTo(arr, 0);
-                System.ComponentModel.Component comp = null;
-                try
+                if (iSel != null)
                 {
-                    comp = arr[0];
-                }
-                catch { }
+                    ICollection collection = iSel.GetSelectedComponents();
+                    Component[] arr = new Component[collection.Count];
+                    collection.CopyTo(arr, 0);
+                    Component comp = null;
+                    try
+                    {
+                        comp = arr[0];
+                    }
+                    catch { }
 
-                PropertyGridHost.ReloadTreeView();
-                if (comp != null)
-                {
-                    PropertyGridHost.ChangeSelectNode(comp);
+                    PropertyGridHost.ReloadTreeView();
+                    if (comp != null)
+                    {
+                        PropertyGridHost.ChangeSelectNode(comp);
+                    }
                 }
             };
         }
@@ -103,15 +107,15 @@ namespace osfDesigner
             }
 
             // Синхронизируем с PropertyGridHost.
-            this.PropertyGridHost.SelectedObject = host.RootComponent;
-            this.PropertyGridHost.ReloadComboBox();
+            PropertyGridHost.SelectedObject = host.RootComponent;
+            PropertyGridHost.ReloadComboBox();
         }
 
         // Метод CreateDesignSurfaceCore вызывается обоими методами CreateDesignSurface.
         // Это реализация, которая фактически создает поверхность проектирования.
         // Реализация по умолчанию просто возвращает новую поверхность дизайна, мы переопределяем
-        // этот метод, чтобы предоставить пользовательский объект, производный от класса DesignSurface
-        // т. е. новый экземпляр DesignSurfaceExt2.
+        // этот метод, чтобы предоставить пользовательский объект, производный от класса DesignSurface,
+        // то есть новый экземпляр DesignSurfaceExt2.
         protected override DesignSurface CreateDesignSurfaceCore(IServiceProvider parentProvider)
         {
             return new DesignSurfaceExt2(parentProvider);
@@ -125,19 +129,19 @@ namespace osfDesigner
             // Этот параметр позволяет каждой созданной поверхности дизайнера использовать сервисы DesignSurfaceManager.
             // Будет создан новый объединенный поставщик услуг, который сначала запросит у этого поставщика услугу, а затем делегирует любые сбои 
             // к объекту диспетчера поверхности проектирования.
-            // Note:
+            // Примечание:
             //     Следующая строка кода создает совершенно новую поверхность дизайна, которая добавляется
-            //     в коллекцию Designsurfeces, т.е. свойство "this.DesignSurfaces"(.Count увеличится на единицу)
-            DesignSurfaceExt2 surface = (DesignSurfaceExt2)(this.CreateDesignSurface(this.ServiceContainer));
+            //     в коллекцию Designsurfeces, то есть свойство "DesignSurfaces"(.Count увеличится на единицу).
+            DesignSurfaceExt2 surface = (DesignSurfaceExt2)(CreateDesignSurface(ServiceContainer));
 
             // Каждый раз, когда создается совершенно новая поверхность дизайна, подписывайте наш обработчик на
-            //  его SelectionService.SelectionChanged событие для синхронизации PropertyGridHost.
+            // его SelectionService.SelectionChanged событие для синхронизации PropertyGridHost.
             ISelectionService selectionService = (ISelectionService)(surface.GetService(typeof(ISelectionService)));
             if (null != selectionService)
             {
                 selectionService.SelectionChanged += (object sender, EventArgs e) =>
                 {
-                    ISelectionService selectService = sender as ISelectionService;
+                    ISelectionService selectService = (ISelectionService)sender;
                     if (null == selectService)
                     {
                         return;
@@ -147,7 +151,7 @@ namespace osfDesigner
                         return;
                     }
                     // Синхронизация с PropertyGridHost.
-                    System.Windows.Forms.PropertyGrid propertyGrid = (System.Windows.Forms.PropertyGrid)this.GetService(typeof(System.Windows.Forms.PropertyGrid));
+                    System.Windows.Forms.PropertyGrid propertyGrid = (System.Windows.Forms.PropertyGrid)GetService(typeof(System.Windows.Forms.PropertyGrid));
                     if (null == propertyGrid)
                     {
                         return;
@@ -159,7 +163,7 @@ namespace osfDesigner
                 };
             }
             DesignSurfaceExt2Collection.Add(surface);
-            this.ActiveDesignSurface = surface;
+            ActiveDesignSurface = surface;
 
             // И вернем поверхность дизайнера (чтобы можно было вызвать её метод BeginLoad()).
             return surface;
@@ -242,6 +246,5 @@ namespace osfDesigner
             return DesignSurfaceExt2Collection;
         }
         //***
-
     }
 }

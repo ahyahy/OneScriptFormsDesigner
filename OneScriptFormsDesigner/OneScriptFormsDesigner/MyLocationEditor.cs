@@ -46,14 +46,14 @@ namespace osfDesigner
 
         public frmXY()
         {
-            this.ClientSize = new Size(192, 70);
-            this.ControlBox = false;
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.Name = "frmXY";
-            this.ShowInTaskbar = false;
-            this.Closed += frmXY_Closed;
+            ClientSize = new Size(192, 70);
+            ControlBox = false;
+            FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            MaximizeBox = false;
+            MinimizeBox = false;
+            Name = "frmXY";
+            ShowInTaskbar = false;
+            Closed += frmXY_Closed;
 
             label1 = new System.Windows.Forms.Label();
             label1.Parent = this;

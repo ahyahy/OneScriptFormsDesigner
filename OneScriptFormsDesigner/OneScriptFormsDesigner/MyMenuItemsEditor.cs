@@ -22,10 +22,7 @@ namespace osfDesigner
                     mainMenu.FrmMenuItems = new frmMenuItems(mainMenu);
                 }
                 mainMenu.FrmMenuItems._wfes = wfes;
-                if (wfes.ShowDialog(mainMenu.FrmMenuItems) == System.Windows.Forms.DialogResult.OK)
-                {
-                }
-
+                wfes.ShowDialog(mainMenu.FrmMenuItems);
             }
             return null;
         }
@@ -71,21 +68,21 @@ namespace osfDesigner
         public frmMenuItems(osfDesigner.MainMenu mainMenu)
         {
             MainMenu = mainMenu;
-            this.Size = new Size(864, 485);
-            this.Text = "Редактор коллекции ЭлементыМеню";
-            this.ControlBox = true;
-            this.HelpButton = true;
-            this.ShowIcon = false;
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Sizable;
-            this.SizeGripStyle = SizeGripStyle.Auto;
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.Name = "frmMenuItems";
-            this.ShowInTaskbar = false;
-            this.MinimumSize = new Size(797, 485);
-            this.Closed += FrmMenuItems_Closed;
-            this.Load += FrmMenuItems_Load;
-            this.CenterToScreen();
+            Size = new Size(864, 485);
+            Text = "Редактор коллекции ЭлементыМеню";
+            ControlBox = true;
+            HelpButton = true;
+            ShowIcon = false;
+            FormBorderStyle = System.Windows.Forms.FormBorderStyle.Sizable;
+            SizeGripStyle = SizeGripStyle.Auto;
+            MaximizeBox = false;
+            MinimizeBox = false;
+            Name = "frmMenuItems";
+            ShowInTaskbar = false;
+            MinimumSize = new Size(797, 485);
+            Closed += FrmMenuItems_Closed;
+            Load += FrmMenuItems_Load;
+            CenterToScreen();
 
             // Правая панель с сеткой свойств PropertyGrid1, надписью Label2 и кнопками ButtonOK и ButtonCancel.
             Panel2 = new System.Windows.Forms.Panel();
@@ -266,7 +263,7 @@ namespace osfDesigner
 
         private void ButtonDelete_Click(object sender, EventArgs e)
         {
-            System.Windows.Forms.TreeNode DeletedTreeNode = TreeView1.SelectedNode;
+            TreeNode DeletedTreeNode = TreeView1.SelectedNode;
             MenuItemEntry CurrentMenuItem1 = (MenuItemEntry)DeletedTreeNode.Tag;
             Menu CurrentMenuItem1Parent = CurrentMenuItem1.Parent;
             CurrentMenuItem1Parent.MenuItems.Remove(CurrentMenuItem1.M_MenuItem);
@@ -390,9 +387,9 @@ namespace osfDesigner
             TreeView1.SelectedNode = TreeView1.Nodes[0];
         }
 
-        private void PropertyGrid1_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)
+        private void PropertyGrid1_PropertyValueChanged(object sender, PropertyValueChangedEventArgs e)
         {
-            MenuItemEntry MenuItemEntry1 = (MenuItemEntry)((System.Windows.Forms.PropertyGrid)s).SelectedObject;
+            MenuItemEntry MenuItemEntry1 = (MenuItemEntry)((System.Windows.Forms.PropertyGrid)sender).SelectedObject;
             if (e.ChangedItem.Label == "Текст")
             {
                 TreeView1.SelectedNode.Text = MenuItemEntry1.Text;
@@ -403,7 +400,7 @@ namespace osfDesigner
                 {
                     if (MenuItemEntry1.Parent.GetType() == typeof(osfDesigner.MainMenu) || MenuItemEntry1.M_MenuItem.IsParent)
                     {
-                        System.Windows.Forms.MessageBox.Show("Значение Истина допустимо только для элемента меню, не имеющего дочерних элементов и не принадлежащего к верхнему уровню.");
+                        MessageBox.Show("Значение Истина допустимо только для элемента меню, не имеющего дочерних элементов и не принадлежащего к верхнему уровню.");
                         PropertyDescriptor pd = TypeDescriptor.GetProperties(MenuItemEntry1)["Checked"];
                         pd.SetValue(MenuItemEntry1, (bool)e.OldValue);
                     }
@@ -434,7 +431,7 @@ namespace osfDesigner
 
         private void ButtonOK_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
 
         private void ButtonAddRoot_Click(object sender, EventArgs e)
@@ -444,7 +441,7 @@ namespace osfDesigner
             MenuItemEntry1.Text = "Меню" + OneScriptFormsDesigner.ParseBetween(MenuItemEntry1.Name.Replace("ГлавноеМеню", ""), "Меню", null);
             MainMenu.MenuItems.Add(MenuItemEntry1.M_MenuItem);
             OneScriptFormsDesigner.AddToDictionary(MenuItemEntry1.M_MenuItem, MenuItemEntry1);
-            System.Windows.Forms.TreeNode TreeNode1 = new System.Windows.Forms.TreeNode();
+            TreeNode TreeNode1 = new TreeNode();
             TreeNode1.Tag = MenuItemEntry1;
             TreeNode1.Text = MenuItemEntry1.Text;
             TreeView1.Nodes.Add(TreeNode1);
@@ -470,7 +467,7 @@ namespace osfDesigner
             MenuItemEntry MenuItemParent = (MenuItemEntry)TreeView1.SelectedNode.Tag;
             MenuItemParent.MenuItems.Add(MenuItemEntry1.M_MenuItem);
             OneScriptFormsDesigner.AddToDictionary(MenuItemEntry1.M_MenuItem, MenuItemEntry1);
-            System.Windows.Forms.TreeNode TreeNode1 = new System.Windows.Forms.TreeNode();
+            TreeNode TreeNode1 = new TreeNode();
             TreeNode1.Tag = MenuItemEntry1;
             TreeNode1.Text = MenuItemEntry1.Text;
             TreeView1.SelectedNode.Nodes.Add(TreeNode1);
@@ -502,7 +499,7 @@ namespace osfDesigner
             MenuItemParent.MenuItems.Add(MenuItemEntry1.M_MenuItem);
             OneScriptFormsDesigner.AddToDictionary(MenuItemEntry1.M_MenuItem, MenuItemEntry1);
 
-            System.Windows.Forms.TreeNode TreeNode1 = new System.Windows.Forms.TreeNode();
+            TreeNode TreeNode1 = new TreeNode();
             TreeNode1.Tag = MenuItemEntry1;
             TreeNode1.Text = MenuItemEntry1.Text;
             TreeView1.SelectedNode.Nodes.Add(TreeNode1);

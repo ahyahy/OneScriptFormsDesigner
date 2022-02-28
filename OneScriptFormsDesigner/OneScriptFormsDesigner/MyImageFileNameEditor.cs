@@ -36,15 +36,12 @@ namespace osfDesigner
                         Imag1.Tag = _openFileDialog.FileName;
                         return Imag1;
                     }
-                    else
-                    {
-                        return null;
-                    }
+                    return null;
                 }
                 else
                 {
-                    System.Windows.Forms.DialogResult res1 = _frmImageFileName.ShowDialog();
-                    if (res1 == System.Windows.Forms.DialogResult.OK)
+                    System.Windows.Forms.DialogResult fact = _frmImageFileName.ShowDialog();
+                    if (fact == System.Windows.Forms.DialogResult.OK)
                     {
                         if (_openFileDialog == null)
                         {
@@ -61,19 +58,13 @@ namespace osfDesigner
                             Imag1.Tag = _openFileDialog.FileName;
                             return Imag1;
                         }
-                        else
-                        {
-                            return value;
-                        }
+                        return value;
                     }
-                    else if (res1 == System.Windows.Forms.DialogResult.No)
+                    else if (fact == System.Windows.Forms.DialogResult.No)
                     {
                         return null;
                     }
-                    else
-                    {
-                        return value;
-                    }
+                    return value;
                 }
             }
             return null;
@@ -138,17 +129,17 @@ namespace osfDesigner
 
         public frmImageFileName(object value, System.Windows.Forms.Control mainForm)
         {
-            this.Text = "Текущее изображение";
-            this.Name = "frmImageFileName";
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.ShowInTaskbar = false;
-            this.Closed += frmImageFileName_Closed;
-            this.MinimumSize = new Size(300, 150);
-            this.Width = 700;
-            this.Height = 200;
-            this.Location = new Point(mainForm.Left + ((mainForm.Width / 2) - (700 / 2)), mainForm.Top + ((mainForm.Height / 2) - (200 / 2)));
-            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
+            Text = "Текущее изображение";
+            Name = "frmImageFileName";
+            MaximizeBox = false;
+            MinimizeBox = false;
+            ShowInTaskbar = false;
+            Closed += frmImageFileName_Closed;
+            MinimumSize = new Size(300, 150);
+            Width = 700;
+            Height = 200;
+            Location = new Point(mainForm.Left + ((mainForm.Width / 2) - (700 / 2)), mainForm.Top + ((mainForm.Height / 2) - (200 / 2)));
+            StartPosition = System.Windows.Forms.FormStartPosition.Manual;
 
             // Панель с ListView1.
             Panel1 = new System.Windows.Forms.Panel();
@@ -254,13 +245,13 @@ namespace osfDesigner
 
         private void ButtonDel_Click(object sender, EventArgs e)
         {
-            this.DialogResult = System.Windows.Forms.DialogResult.No;
+            DialogResult = System.Windows.Forms.DialogResult.No;
             Close();
         }
 
         private void ButtonChange_Click(object sender, EventArgs e)
         {
-            this.DialogResult = System.Windows.Forms.DialogResult.OK;
+            DialogResult = System.Windows.Forms.DialogResult.OK;
             Close();
         }
 

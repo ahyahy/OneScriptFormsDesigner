@@ -6,7 +6,7 @@ using System;
 namespace osfDesigner
 {
     // Этот класс добавляет в экземпляр DesignSurfaceExt следующие средства:
-    //     * Toolbox механизм (Контейнер ToolBox должен быть предоставлен пользователем)
+    //     * Toolbox механизм
     //     * ContextMenu on DesignSurface с командами Cut/Copy/Paste/Delete
     //
     // DesignSurfaceExt2
@@ -49,13 +49,13 @@ namespace osfDesigner
 
         public ToolboxServiceImp GetIToolboxService()
         {
-            return (ToolboxServiceImp) this.GetService(typeof(IToolboxService));
+            return (ToolboxServiceImp) GetService(typeof(IToolboxService));
         }
 
         public void EnableDragandDrop()
         {
             // Для управления перетаскиванием элементов.
-            Control ctrl = this.GetView();
+            Control ctrl = GetView();
             if (null == ctrl)
             {
                 return;
@@ -64,7 +64,7 @@ namespace osfDesigner
             ctrl.DragDrop += new DragEventHandler(OnDragDrop);
 
             // Включить захват элемента внутри нашей панели инструментов.
-            ToolboxServiceImp tbs = this.GetIToolboxService();
+            ToolboxServiceImp tbs = GetIToolboxService();
             if (null == tbs)
             {
                 return;
@@ -79,7 +79,7 @@ namespace osfDesigner
         // Управление Drag&Drop для элементов, содержащихся внутри Toolbox.
         private void OnListboxMouseDown(object sender, MouseEventArgs e)
         {
-            ToolboxServiceImp tbs = this.GetIToolboxService();
+            ToolboxServiceImp tbs = GetIToolboxService();
             if (null == tbs)
             {
                 return;
@@ -107,7 +107,7 @@ namespace osfDesigner
             // Теперь извлеките узел данных.
             ToolboxItem item = e.Data.GetData(typeof(ToolboxItem)) as ToolboxItem;
             e.Effect = DragDropEffects.Copy;
-            item.CreateComponents(this.GetIDesignerHost());
+            item.CreateComponents(GetIDesignerHost());
         }
 
         // Класс DesignSurface автоматически предоставляет несколько услуг во время проектирования.
@@ -122,16 +122,16 @@ namespace osfDesigner
             if (_menuCommandService != null)
             {
                 // Удалите старую службу, т. е. службу DesignsurfaceExt.
-                this.ServiceContainer.RemoveService(typeof(IMenuCommandService), false);
+                ServiceContainer.RemoveService(typeof(IMenuCommandService), false);
                 // Добавьте новую IMenuCommandService.
-                this.ServiceContainer.AddService(typeof(IMenuCommandService), _menuCommandService);
+                ServiceContainer.AddService(typeof(IMenuCommandService), _menuCommandService);
             }
-            // IToolboxService
-            _toolboxService = new ToolboxServiceImp(this.GetIDesignerHost());
+            // IToolboxService.
+            _toolboxService = new ToolboxServiceImp(GetIDesignerHost());
             if (_toolboxService != null)
             {
-                this.ServiceContainer.RemoveService(typeof(IToolboxService), false);
-                this.ServiceContainer.AddService(typeof(IToolboxService), _toolboxService);
+                ServiceContainer.RemoveService(typeof(IToolboxService), false);
+                ServiceContainer.AddService(typeof(IToolboxService), _toolboxService);
             }
         }
     }

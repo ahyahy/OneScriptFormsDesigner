@@ -1,0 +1,66 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD><TITLE>О дизайнере</TITLE>
+<META content="text/html; charset=Windows-1252" http-equiv="Content-Type">
+<LINK rel="stylesheet" type="text/css" href="mainstyle.css"></HEAD>
+<BODY id=bodyID class=dtBODY>
+<DIV id=nsbanner>
+<DIV id=bannerrow1>
+<TABLE class=bannerparthead cellSpacing=0>
+  <TBODY>
+  <TR id=hdr>
+    <TD class=runninghead></TD>
+    <TD class=product></TD></TR></TBODY></TABLE></DIV>
+<DIV id=TitleRow>
+<H1 class=dtH1>Дизайнер форм для сценарного языка OneScript</H1></DIV></DIV>
+<DIV id=nstext>
+<P></P>
+<P>Дизайнер форм написан в дополнение к <A href="https://github.com/ahyahy/OneScriptForms" target="_blank"><B>графическому&nbsp;интерфейсу</B></A> для сценарного языка OneScript. 
+В нём можно быстро спроектировать экранную форму приложения просто разместив элементы управления с помощью мыши на форме, просмотреть и задать для них значения свойств, 
+определить методы обработки событий. Результатом работы будет сгенерированный код сценария, который можно будет исполнить
+<A href="https://oscript.io/" target="_blank"><B>виртуальной&nbsp;машиной&nbsp;OneScript</B>.</A></P>
+<P></P>
+<P>Дизайнер реализован в виде библиотеки <A href="https://github.com/ahyahy/OneScriptFormsDesigner" target="_blank"><B>(OneScriptFormsDesigner.dll)</B></A>, запускается через 
+<A href="https://oscript.io/" target="_blank"><B>OneScript</B></A> и выглядит примерно так. Дизайнер поддерживает визуальные стили и вид его окна зависит от темы, 
+выбранной пользователем.</P>
+<figure class="pic">
+	<img id="myImg01" src="OneScriptFormsDesigner2.png" alt="Дизайнер"><figcaption>Дизайнер, вид - Форма</figcaption>
+	<div id="myModal01" class="modal">
+	  <span id="close01" class="close">×</span>
+	  <img id="img01" class="modal-content">
+	  <div id="caption">Дизайнер, вид - Форма</div>
+	</div>
+	<img id="myImg02" src="OneScriptFormsDesigner3.png" alt="Дизайнер"><figcaption>Дизайнер, вид - Сценарий</figcaption>
+	<div id="myModal02" class="modal">
+	  <span id="close02" class="close">×</span>
+	  <img id="img02" class="modal-content">
+	  <div id="caption">Дизайнер, вид - Сценарий</div>
+	</div>
+</figure>
+<P>Дизайнер работает только с русскоязычным синтаксисом.</P>
+<P></P>
+<script>
+var img01 = document.getElementById('myImg01');
+var modal01 = document.getElementById('myModal01');
+var modalImg01 = document.getElementById("img01");
+img01.onclick = function(){
+    modal01.style.display = "block";
+    modalImg01.src = img01.src;
+}
+var span01 = document.getElementById("close01");
+span01.onclick = function(){ 
+    modal01.style.display = "none";
+}
+
+var img02 = document.getElementById('myImg02');
+var modal02 = document.getElementById('myModal02');
+var modalImg02 = document.getElementById("img02");
+img02.onclick = function(){
+    modal02.style.display = "block";
+    modalImg02.src = img02.src;
+}
+var span02 = document.getElementById("close02");
+span02.onclick = function(){ 
+    modal02.style.display = "none";
+}
+</script>
+</DIV></BODY></HTML>

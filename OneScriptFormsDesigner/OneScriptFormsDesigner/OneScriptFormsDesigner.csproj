@@ -223,6 +223,9 @@
     <Compile Include="MySelectedObjectConverter.cs" />
     <Compile Include="MySelectionRangeConverter.cs" />
     <Compile Include="MySelectionRangeEditor.cs" />
+    <Compile Include="MySettingsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="MySizeConverter.cs" />
     <Compile Include="MySizeEditor.cs" />
     <Compile Include="MyStatusBarPanelCollectionEditor.cs" />

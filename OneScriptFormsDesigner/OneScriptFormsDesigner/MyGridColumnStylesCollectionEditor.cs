@@ -10,15 +10,15 @@ namespace osfDesigner
 {
     public class MyGridColumnStylesCollectionEditor : CollectionEditor
     {
-        private System.ComponentModel.Design.CollectionEditor.CollectionForm collectionForm;
+        private CollectionForm collectionForm;
         private System.Windows.Forms.Form frmCollectionEditorForm;
-        private System.Windows.Forms.TableLayoutPanel TableLayoutPanel1;
-        private System.Windows.Forms.TableLayoutPanel AddRemoveTableLayoutPanel1;
+        private TableLayoutPanel TableLayoutPanel1;
+        private TableLayoutPanel AddRemoveTableLayoutPanel1;
         private System.Windows.Forms.Label PropertiesLabel1 = null;
         private System.Windows.Forms.Label MembersLabel1 = null;
         private System.Windows.Forms.ListBox ListBox1;
         private System.Windows.Forms.PropertyGrid PropertyGrid1;
-        private System.Windows.Forms.TableLayoutPanel OkCancelTableLayoutPanel1;
+        private TableLayoutPanel OkCancelTableLayoutPanel1;
         private System.Windows.Forms.Button ButtonOk1 = null;
         private System.Windows.Forms.Button ButtonCancel1 = null;
         private System.Windows.Forms.Button ButtonAdd1 = null;
@@ -28,7 +28,6 @@ namespace osfDesigner
         private System.Windows.Forms.PropertyGrid TopLevelPropertyGrid1;
         private System.Windows.Forms.DataGridTableStyle DataGridTableStyle1;
 
-        // Унаследуйте конструктор по умолчанию из стандартного редактора коллекций.
         public MyGridColumnStylesCollectionEditor(Type type) : base(type)
         {
         }
@@ -46,23 +45,16 @@ namespace osfDesigner
             return Type1;
         }
 
-        // Переопределите этот метод, чтобы получить доступ к форме редактора коллекции. 
         protected override CollectionForm CreateCollectionForm()
         {
-            // Получение макета редактора коллекции по умолчанию.
             collectionForm = base.CreateCollectionForm();
-            DataGridTableStyle1 = OneScriptFormsDesigner.RevertOriginalObj((osfDesigner.DataGridTableStyle)this.Context.Instance);
+            DataGridTableStyle1 = OneScriptFormsDesigner.RevertOriginalObj((osfDesigner.DataGridTableStyle)Context.Instance);
             collectionForm.Text = "Редактор коллекции СтилиКолонкиСеткиДанных";
-
-            collectionForm.Shown += delegate (object sender, EventArgs e)
-            {
-                PropertiesLabel1.Text = "Свойства:";
-                TopLevelPropertyGrid1 = pDesigner.DSME.PropertyGridHost.PropertyGrid;
-            };
+            collectionForm.Shown += CollectionForm_Shown;
             collectionForm.FormClosed += CollectionForm_FormClosed;
 
-            frmCollectionEditorForm = (System.Windows.Forms.Form)collectionForm;
-            TableLayoutPanel1 = (System.Windows.Forms.TableLayoutPanel)frmCollectionEditorForm.Controls[0];
+            frmCollectionEditorForm = collectionForm;
+            TableLayoutPanel1 = (TableLayoutPanel)frmCollectionEditorForm.Controls[0];
             if (TableLayoutPanel1 != null)
             {
                 for (int i = 0; i < TableLayoutPanel1.Controls.Count; i++)
@@ -74,7 +66,7 @@ namespace osfDesigner
                     }
                     if (i == 1)
                     {
-                        AddRemoveTableLayoutPanel1 = (System.Windows.Forms.TableLayoutPanel)TableLayoutPanel1.Controls[1];
+                        AddRemoveTableLayoutPanel1 = (TableLayoutPanel)TableLayoutPanel1.Controls[1];
                     }
                     if (i == 2)
                     {
@@ -91,20 +83,17 @@ namespace osfDesigner
                         ListBox1 = (System.Windows.Forms.ListBox)TableLayoutPanel1.Controls[4];
                         ListBox1.DrawItem += ListBox1_DrawItem;
                     }
-                    // Получите ссылку на внутреннюю сетку свойств и подключите к ней обработчик событий.
                     if (i == 5)
                     {
                         PropertyGrid1 = (System.Windows.Forms.PropertyGrid)TableLayoutPanel1.Controls[5];
                         PropertyGrid1.SelectedGridItemChanged += PropertyGrid1_SelectedGridItemChanged;
                         PropertyGrid1.SelectedObjectsChanged += PropertyGrid1_SelectedObjectsChanged;
-
-                        // Также сделайте доступным окно с подсказками по параметрам в нижней части.
                         PropertyGrid1.HelpVisible = true;
                         PropertyGrid1.HelpBackColor = SystemColors.Info;
                     }
                     if (i == 6)
                     {
-                        OkCancelTableLayoutPanel1 = (System.Windows.Forms.TableLayoutPanel)TableLayoutPanel1.Controls[6];
+                        OkCancelTableLayoutPanel1 = (TableLayoutPanel)TableLayoutPanel1.Controls[6];
                     }
                     if (i == 7)
                     {
@@ -168,8 +157,13 @@ namespace osfDesigner
                     }
                 }
             }
-
             return collectionForm;
+        }
+
+        private void CollectionForm_Shown(object sender, EventArgs e)
+        {
+            PropertiesLabel1.Text = "Свойства:";
+            TopLevelPropertyGrid1 = OneScriptFormsDesigner.PropertyGrid;
         }
 
         private void CollectionForm_FormClosed(object sender, FormClosedEventArgs e)
@@ -271,14 +265,10 @@ namespace osfDesigner
                 Graphics Graphics1 = e.Graphics;
 
                 int Count1 = ListBox1.Items.Count;
-                int maxCount1;
+                int maxCount1 = Count1;
                 if (Count1 > 1)
                 {
                     maxCount1 = Count1 - 1;
-                }
-                else
-                {
-                    maxCount1 = Count1;
                 }
                 SizeF sizeW = Graphics1.MeasureString(maxCount1.ToString(CultureInfo.CurrentCulture), ListBox1.Font);
 
@@ -312,7 +302,7 @@ namespace osfDesigner
 
                 offset += 2;
 
-                if (this != null && this.GetPaintValueSupported())
+                if (this != null && GetPaintValueSupported())
                 {
                     Rectangle Rectangle2 = new Rectangle(e.Bounds.X + offset, e.Bounds.Y + 1, 20, e.Bounds.Height - 3);
                     Graphics1.DrawRectangle(SystemPens.ControlText,
@@ -322,8 +312,8 @@ namespace osfDesigner
                         Rectangle2.Height - 1);
                     Rectangle2.Inflate(-1, -1);
 
-                    PaintValueEventArgs PaintValueEventArgs1 = new PaintValueEventArgs(this.Context, ListItem1.Value, Graphics1, Rectangle2);
-                    this.PaintValue(PaintValueEventArgs1);
+                    PaintValueEventArgs PaintValueEventArgs1 = new PaintValueEventArgs(Context, ListItem1.Value, Graphics1, Rectangle2);
+                    PaintValue(PaintValueEventArgs1);
                     offset += 26 + 1;
                 }
 
