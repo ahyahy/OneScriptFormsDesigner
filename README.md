@@ -9,7 +9,7 @@
 
 ![Дизайнер](https://github.com/ahyahy/OneScriptFormsDesigner/blob/main/docs/OneScriptFormsDesigner.png)
 
-Огромную помощь в работе оказала разработка примера работы с дизайнером **picoFormDesigner** (coded by Paolo Foti <https://www.codeproject.com/Articles/60175/The-DesignSurface-Extended-Class-is-Back-Together?fid=1561636&df=90&mpp=25&sort=Position&spc=Relaxed&prof=True&view=Normal&fr=26#xx0xx> под лицензией (CPOL) <https://www.codeproject.com/info/cpol10.aspx>).
+Огромную помощь оказал пример работы с дизайнером [picoFormDesigner](https://www.codeproject.com/Articles/60175/The-DesignSurface-Extended-Class-is-Back-Together) (coded by Paolo Foti) под лицензией ([CPOL](https://www.codeproject.com/info/cpol10.aspx)).
 
 Предполагается, что OneScript на компьютере уже установлен. Дизайнер реализован в виде библиотеки и подключается к OneScript как внешняя компонента. Её найдете в каталоге /docs . Запустить можно так:
 ```bsl
