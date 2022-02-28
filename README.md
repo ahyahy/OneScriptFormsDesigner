@@ -15,7 +15,10 @@
 
 Огромную помощь оказал пример работы с дизайнером [picoFormDesigner](https://www.codeproject.com/Articles/60175/The-DesignSurface-Extended-Class-is-Back-Together) (coded by Paolo Foti) под лицензией ([CPOL](https://www.codeproject.com/info/cpol10.aspx)).
 
-Предполагается, что OneScript на компьютере уже установлен. Дизайнер реализован в виде библиотеки и подключается к OneScript как внешняя компонента. Её найдете в каталоге /docs . Запустить можно так:
+Предполагается, что OneScript на компьютере уже установлен. Дизайнер реализован в виде библиотеки и подключается к OneScript как внешняя компонента.
+Скачайте из каталога <https://github.com/ahyahy/OneScriptFormsDesigner/tree/main/docs> архив с именем формата OneScriptFormsDesignerх_х_х_х.zip. Скачайте последнюю версию. Поместите находящуюся в архиве библиотеку, в какой либо каталог на диске. Возможно будет необходимо правой кнопкой мыши вызвать свойства распакованного файла OneScriptFormsDesigner.dll и разблокировать его. 
+Запустить можно так:
+
 ```bsl
      ПодключитьВнешнююКомпоненту("ВашКаталогНаДиске\OneScriptFormsDesigner.dll");
      ДФ = Новый ДизайнерФормДляОдноСкрипта();
