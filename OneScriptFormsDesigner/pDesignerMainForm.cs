@@ -877,16 +877,48 @@ namespace osfDesigner
             {
                 return;
             }
-            string strOSD = File.ReadAllText(OpenFileDialog1.FileName);
-            //string strOSD = File.ReadAllText("C:\\444\\Форма1сохран\\Форма1сохран.osd");
+            string strFile = File.ReadAllText(OpenFileDialog1.FileName);
+            //string strOSDBefore = File.ReadAllText("C:\\444\\Форма1сохран\\Форма1сохран.osd");
 
             OneScriptFormsDesigner.block2 = true;
-            strOSD = strOSD.Replace(" ", "");
 
             string[] result = null;
             string[] stringSeparators = new string[] { Environment.NewLine };
             string ComponentBlok = null;
             string rootBlok = null;
+
+            string strOSD = "";
+            result = strFile.Split(stringSeparators, StringSplitOptions.RemoveEmptyEntries);
+            for (int i = 0; i < result.Length; i++)
+            {
+                string strres = result[i];
+                if (strres.Contains(".ВыбранныйПуть = \u0022") || 
+                    strres.Contains(".Заголовок = \u0022") || 
+                    strres.Contains(".ИмяФайла = \u0022") || 
+                    strres.Contains(".НачальныйКаталог = \u0022") || 
+                    strres.Contains(".Описание = \u0022") || 
+                    strres.Contains(".ПолныйПуть = \u0022") || 
+                    strres.Contains(".ПользовательскийФормат = \u0022") || 
+                    strres.Contains(".Путь = \u0022") || 
+                    strres.Contains(".РазделительПути = \u0022") || 
+                    strres.Contains(".Текст = \u0022") || 
+                    strres.Contains(".ТекстЗаголовка = \u0022") || 
+                    strres.Contains(".ТекстПодсказки = \u0022") || 
+                    strres.Contains(".Фильтр = \u0022")
+                    )
+                {
+                    string strBefore = OneScriptFormsDesigner.ParseBetween(strres, null, " = \u0022");
+                    string strAfter = OneScriptFormsDesigner.ParseBetween(strres, "= \u0022", null);
+                    strOSD = strOSD + strBefore.Replace(" ", "") + "=\u0022" + strAfter + Environment.NewLine;
+                }
+                else
+                {
+                    strOSD = strOSD + strres.Replace(" ", "") + Environment.NewLine;
+                }
+            }
+            result = null;
+
+            strOSD = strOSD.Trim();
 
             // Соберем из блока конструкторов имена компонентов в CompNames.
             List<string> CompNames = new List<string>();

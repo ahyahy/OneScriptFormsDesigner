@@ -675,6 +675,7 @@ namespace osfDesigner
                 {
                     valProp = valProp.Replace("\u0022", "");
                     valProp = valProp.Replace("+Ф.Окружение().НоваяСтрока+", Environment.NewLine);
+                    valProp = valProp.Replace(" + Ф.Окружение().НоваяСтрока + ", Environment.NewLine);
                 }
                 else
                 {
@@ -996,6 +997,7 @@ namespace osfDesigner
                 {
                     valProp = valProp.Replace("\u0022", "");
                     valProp = valProp.Replace("+Ф.Окружение().НоваяСтрока+", Environment.NewLine);
+                    valProp = valProp.Replace(" + Ф.Окружение().НоваяСтрока + ", Environment.NewLine);
                 }
                 else
                 {
