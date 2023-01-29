@@ -841,13 +841,12 @@ namespace osfDesigner
                 int rez = 0;
                 foreach (var name in names)
                 {
-                    if (valProp.Contains(name))
+                    string trimValProp = valProp.Substring(valProp.LastIndexOf('.') + 1);
+                    if (trimValProp == name)
                     {
                         rez = rez + (int)Enum.Parse(enumType, name);
                     }
-                    var num = (int)Enum.Parse(enumType, name);
                 }
-
                 try
                 {
                     string propertyName = OneScriptFormsDesigner.GetPropName(component, displayName);

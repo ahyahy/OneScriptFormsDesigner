@@ -1,4 +1,4 @@
-﻿// Скрипт читает файлы справки в C:\444\OneScriptFormsru\ и создает *.cs файлы в каталоге C:\444\ВыгрузкаДизайнера\
+﻿// Скрипт читает файлы справки в C:\444\OneScriptFormsruForDesigner\ и создает *.cs файлы в каталоге C:\444\ВыгрузкаДизайнера\
 // Из каталога C:\444\ВыгрузкаДизайнера\ файлы *.cs можно скопировать в каталог проекта.
 
 Перем СтрДирективы, СтрШапка, СтрРазделОбъявленияПеременных, СтрКонструктор, СтрСвойства, СтрМетоды, СтрПодвал, СтрВыгрузкиПеречислений;
@@ -584,7 +584,7 @@
 	СписокСтрПеречислений = Новый СписокЗначений;//перечисления взятые из OneScriptForms.html
 	
 	ТекстДок = Новый ТекстовыйДокумент;
-	ТекстДок.Прочитать("C:\444\OneScriptFormsru\OneScriptForms.html");
+	ТекстДок.Прочитать("C:\444\OneScriptFormsruForDesigner\OneScriptForms.html");
 	Стр = ТекстДок.ПолучитьТекст();
 	//находим текст таблицы
 	СтрТаблица = СтрНайтиМежду(Стр, "<H3 class=dtH3>Перечисления</H3>", "</TBODY></TABLE>", Ложь,);
@@ -620,7 +620,7 @@
 			СтрХ = М07[0];
 			СтрХ = СтрЗаменить(СтрХ, "&nbsp;", " ");
 			
-			ИмяФайлаСвойства = "C:\444\OneScriptFormsru\" + СтрНайтиМежду(СтрХ, "<A href=""", """>", ,)[0];
+			ИмяФайлаСвойства = "C:\444\OneScriptFormsruForDesigner\" + СтрНайтиМежду(СтрХ, "<A href=""", """>", ,)[0];
 			ТекстДокСвойства = Новый ТекстовыйДокумент;
 			ТекстДокСвойства.Прочитать(ИмяФайлаСвойства);
 			СтрТекстДокСвойства = ТекстДокСвойства.ПолучитьТекст();
@@ -785,7 +785,7 @@
 				Комментарий = "";
 				// если это перечисление, добавляем строки в РазделОбъявленияПеременных и в Конструктор
 				// узнаем класс это или перечисление
-				ИмяФайлаТипаВозвращаемогоЗначения = "C:\444\OneScriptFormsru\" + СтрНайтиМежду(СтрРаздела, "<A href=""", """>", ,)[0];
+				ИмяФайлаТипаВозвращаемогоЗначения = "C:\444\OneScriptFormsruForDesigner\" + СтрНайтиМежду(СтрРаздела, "<A href=""", """>", ,)[0];
 				
 				ТекстДок1 = Новый ТекстовыйДокумент;
 				ТекстДок1.Прочитать(ИмяФайлаТипаВозвращаемогоЗначения);
@@ -796,7 +796,7 @@
 				
 				ИначеЕсли СтрНайти(ИмяКлассаИлиПеречисления,"Перечисление") > 0 Тогда
 					ТипВозвращаемогоЗначенияЭтоПеречисление = Истина;
-					// Стр5 = СтрЗаменить(ИмяФайлаТипаВозвращаемогоЗначения, "C:\444\OneScriptFormsru\OneScriptForms.", "");
+					// Стр5 = СтрЗаменить(ИмяФайлаТипаВозвращаемогоЗначения, "C:\444\OneScriptFormsruForDesigner\OneScriptForms.", "");
 					// Стр5 = СтрЗаменить(Стр5, ".html", "");
 					// // // СтрРазделОбъявленияПеременных = СтрРазделОбъявленияПеременных + Символы.ПС +
 					// // // "        private osfDesigner." + Стр5 + " _" + СвойствоАнгл + ";";
@@ -1868,54 +1868,54 @@
 	
 	// Обработаем сначала перечисления
 	ВыбранныеФайлыП = Новый Массив;
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.AnchorStyles.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.Appearance.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.BorderStyle.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.CharacterCasing.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.CheckState.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.ColorDepth.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.ColumnHeaderStyle.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.ComboBoxStyle.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.ContentAlignment.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.DataType.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.Day.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.DialogResult.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.DockStyle.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.DrawMode.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.FlatStyle.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.FormatDateTimePicker.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.FormBorderStyle.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.FormStartPosition.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.FormWindowState.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.HorizontalAlignment.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.ImageLayout.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.ItemActivation.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.LeftRightAlignment.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.LinkLabelLinkBehavior.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.ListViewAlignment.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.MenuMerge.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.MouseButtons.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.NotifyFilters.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.PictureBoxSizeMode.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.PropertySort.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.ScrollBars.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.SelectionMode.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.Shortcut.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.SortOrder.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.SortType.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.SpecialFolder.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.StatusBarPanelAutoSize.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.StatusBarPanelBorderStyle.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.TabAlignment.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.TabAppearance.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.TabSizeMode.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.ToolBarAppearance.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.ToolBarButtonStyle.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.ToolBarTextAlign.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.View.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.AnchorStyles.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.Appearance.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.BorderStyle.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.CharacterCasing.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.CheckState.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.ColorDepth.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.ColumnHeaderStyle.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.ComboBoxStyle.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.ContentAlignment.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.DataType.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.Day.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.DialogResult.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.DockStyle.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.DrawMode.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.FlatStyle.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.FormatDateTimePicker.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.FormBorderStyle.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.FormStartPosition.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.FormWindowState.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.HorizontalAlignment.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.ImageLayout.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.ItemActivation.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.LeftRightAlignment.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.LinkLabelLinkBehavior.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.ListViewAlignment.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.MenuMerge.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.MouseButtons.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.NotifyFilters.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.PictureBoxSizeMode.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.PropertySort.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.ScrollBars.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.SelectionMode.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.Shortcut.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.SortOrder.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.SortType.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.SpecialFolder.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.StatusBarPanelAutoSize.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.StatusBarPanelBorderStyle.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.TabAlignment.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.TabAppearance.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.TabSizeMode.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.ToolBarAppearance.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.ToolBarButtonStyle.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.ToolBarTextAlign.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.View.html");
 	
 	Для А = 0 По ВыбранныеФайлыП.ВГраница() Цикл
-		КлассАнглП = СтрЗаменить(ВыбранныеФайлыП[А], "C:\444\OneScriptFormsru\OneScriptForms.", "");
+		КлассАнглП = СтрЗаменить(ВыбранныеФайлыП[А], "C:\444\OneScriptFormsruForDesigner\OneScriptForms.", "");
 		КлассАнглП = СтрЗаменить(КлассАнглП, ".html", "");
 		Сообщить("перечисление== " + КлассАнглП + " =========================================================================");
 		Перечисления1 = Новый СписокЗначений();
@@ -1936,10 +1936,10 @@
 		СтрВыгрузкиП = 
 		"namespace osfDesigner
 		|{";
-		Если ВыбранныеФайлыП[А] = "C:\444\OneScriptFormsru\OneScriptForms.AnchorStyles.html" или 
-			ВыбранныеФайлыП[А] = "C:\444\OneScriptFormsru\OneScriptForms.MouseButtons.html" или 
-			ВыбранныеФайлыП[А] = "C:\444\OneScriptFormsru\OneScriptForms.FormatDateTimePicker.html" или 
-			ВыбранныеФайлыП[А] = "C:\444\OneScriptFormsru\OneScriptForms.NotifyFilters.html" Тогда
+		Если ВыбранныеФайлыП[А] = "C:\444\OneScriptFormsruForDesigner\OneScriptForms.AnchorStyles.html" или 
+			ВыбранныеФайлыП[А] = "C:\444\OneScriptFormsruForDesigner\OneScriptForms.MouseButtons.html" или 
+			ВыбранныеФайлыП[А] = "C:\444\OneScriptFormsruForDesigner\OneScriptForms.FormatDateTimePicker.html" или 
+			ВыбранныеФайлыП[А] = "C:\444\OneScriptFormsruForDesigner\OneScriptForms.NotifyFilters.html" Тогда
 			СтрВыгрузкиП = СтрВыгрузкиП + Символы.ПС + 
 			"    [System.Flags]";
 		КонецЕсли;
@@ -1978,54 +1978,54 @@
 	СкрытыеСвойства = Новый СписокЗначений(); // это свойства исходного объекта, которые у него изначально скрыты для сетки свойств.
 	
 	ВыбранныеФайлы = Новый Массив;
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.Button.html");   
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.CheckBox.html");
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.ColorDialog.html");
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.ComboBox.html");
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.DataGrid.html");
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.DataGridTableStyle.html");
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.DataGridBoolColumn.html");
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.DataGridTextBoxColumn.html");
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.DateTimePicker.html");   
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.FileSystemWatcher.html");
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.FolderBrowserDialog.html");
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.FontDialog.html");
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.Form.html");
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.GroupBox.html");   
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.HScrollBar.html");  
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.ImageList.html");
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.Label.html");   
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.LinkLabel.html");
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.ListBox.html");
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.ListView.html");
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.ColumnHeader.html");
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.ListViewItem.html");
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.ListViewSubItem.html");
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.MainMenu.html");
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.MonthCalendar.html");
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.NotifyIcon.html");
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.NumericUpDown.html");   
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.OpenFileDialog.html");
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.Panel.html");
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.PictureBox.html");  
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.ProgressBar.html"); 
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.PropertyGrid.html");
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.RadioButton.html");
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.RichTextBox.html");  
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.SaveFileDialog.html");
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.Splitter.html");   
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.StatusBar.html");
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.StatusBarPanel.html");
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.TabControl.html");
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.TabPage.html");
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.TextBox.html");
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.Timer.html");
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.ToolBar.html");
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.ToolBarButton.html");
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.ToolTip.html");
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.TreeView.html");   
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.UserControl.html");
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.VScrollBar.html");
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.Button.html");   
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.CheckBox.html");
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.ColorDialog.html");
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.ComboBox.html");
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.DataGrid.html");
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.DataGridTableStyle.html");
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.DataGridBoolColumn.html");
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.DataGridTextBoxColumn.html");
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.DateTimePicker.html");   
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.FileSystemWatcher.html");
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.FolderBrowserDialog.html");
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.FontDialog.html");
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.Form.html");
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.GroupBox.html");   
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.HScrollBar.html");  
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.ImageList.html");
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.Label.html");   
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.LinkLabel.html");
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.ListBox.html");
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.ListView.html");
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.ColumnHeader.html");
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.ListViewItem.html");
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.ListViewSubItem.html");
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.MainMenu.html");
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.MonthCalendar.html");
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.NotifyIcon.html");
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.NumericUpDown.html");   
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.OpenFileDialog.html");
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.Panel.html");
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.PictureBox.html");  
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.ProgressBar.html"); 
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.PropertyGrid.html");
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.RadioButton.html");
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.RichTextBox.html");  
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.SaveFileDialog.html");
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.Splitter.html");   
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.StatusBar.html");
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.StatusBarPanel.html");
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.TabControl.html");
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.TabPage.html");
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.TextBox.html");
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.Timer.html");
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.ToolBar.html");
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.ToolBarButton.html");
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.ToolTip.html");
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.TreeView.html");   
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.UserControl.html");
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.VScrollBar.html");
 	
 	Для А = 0 По ВыбранныеФайлы.ВГраница() Цикл
 		
@@ -2107,7 +2107,7 @@
 		
 		ИмяКонтекстКлассаРус = М08[0];
 		// находим имя файла членов
-		ИмяФайлаЧленов = "C:\444\OneScriptFormsru\OneScriptForms." + М01[0] + "Members.html";
+		ИмяФайлаЧленов = "C:\444\OneScriptFormsruForDesigner\OneScriptForms." + М01[0] + "Members.html";
 		СтрДирективы = Директивы(ИмяКонтекстКлассаАнгл);
 		СтрШапка = Шапка(ИмяКонтекстКлассаАнгл, ИмяКонтекстКлассаРус);
 		СтрРазделОбъявленияПеременных = РазделОбъявленияПеременных(ИмяФайлаЧленов, М01[0]);
@@ -7100,6 +7100,7 @@
 	|                {
 	|                    valProp = valProp.Replace(""\u0022"", """");
 	|                    valProp = valProp.Replace(""+Ф.Окружение().НоваяСтрока+"", Environment.NewLine);
+	|                    valProp = valProp.Replace("" + Ф.Окружение().НоваяСтрока + "", Environment.NewLine);
 	|                }
 	|                else
 	|                {
@@ -7265,13 +7266,12 @@
 	|                int rez = 0;
 	|                foreach (var name in names)
 	|                {
-	|                    if (valProp.Contains(name))
+	|                    string trimValProp = valProp.Substring(valProp.LastIndexOf('.') + 1);
+	|                    if (trimValProp == name)
 	|                    {
 	|                        rez = rez + (int)Enum.Parse(enumType, name);
 	|                    }
-	|                    var num = (int)Enum.Parse(enumType, name);
 	|                }
-	|
 	|                try
 	|                {
 	|                    string propertyName = OneScriptFormsDesigner.GetPropName(component, displayName);
@@ -7421,6 +7421,7 @@
 	|                {
 	|                    valProp = valProp.Replace(""\u0022"", """");
 	|                    valProp = valProp.Replace(""+Ф.Окружение().НоваяСтрока+"", Environment.NewLine);
+	|                    valProp = valProp.Replace("" + Ф.Окружение().НоваяСтрока + "", Environment.NewLine);
 	|                }
 	|                else
 	|                {
@@ -12391,16 +12392,48 @@
 	|            {
 	|                return;
 	|            }
-	|            string strOSD = File.ReadAllText(OpenFileDialog1.FileName);
-	|            //string strOSD = File.ReadAllText(""C:\\444\\Форма1сохран\\Форма1сохран.osd"");
+	|            string strFile = File.ReadAllText(OpenFileDialog1.FileName);
+	|            //string strOSDBefore = File.ReadAllText(""C:\\444\\Форма1сохран\\Форма1сохран.osd"");
 	|
 	|            OneScriptFormsDesigner.block2 = true;
-	|            strOSD = strOSD.Replace("" "", """");
 	|
 	|            string[] result = null;
 	|            string[] stringSeparators = new string[] { Environment.NewLine };
 	|            string ComponentBlok = null;
 	|            string rootBlok = null;
+	|
+	|            string strOSD = """";
+	|            result = strFile.Split(stringSeparators, StringSplitOptions.RemoveEmptyEntries);
+	|            for (int i = 0; i < result.Length; i++)
+	|            {
+	|                string strres = result[i];
+	|                if (strres.Contains("".ВыбранныйПуть = \u0022"") || 
+	|                    strres.Contains("".Заголовок = \u0022"") || 
+	|                    strres.Contains("".ИмяФайла = \u0022"") || 
+	|                    strres.Contains("".НачальныйКаталог = \u0022"") || 
+	|                    strres.Contains("".Описание = \u0022"") || 
+	|                    strres.Contains("".ПолныйПуть = \u0022"") || 
+	|                    strres.Contains("".ПользовательскийФормат = \u0022"") || 
+	|                    strres.Contains("".Путь = \u0022"") || 
+	|                    strres.Contains("".РазделительПути = \u0022"") || 
+	|                    strres.Contains("".Текст = \u0022"") || 
+	|                    strres.Contains("".ТекстЗаголовка = \u0022"") || 
+	|                    strres.Contains("".ТекстПодсказки = \u0022"") || 
+	|                    strres.Contains("".Фильтр = \u0022"")
+	|                    )
+	|                {
+	|                    string strBefore = OneScriptFormsDesigner.ParseBetween(strres, null, "" = \u0022"");
+	|                    string strAfter = OneScriptFormsDesigner.ParseBetween(strres, ""= \u0022"", null);
+	|                    strOSD = strOSD + strBefore.Replace("" "", """") + ""=\u0022"" + strAfter + Environment.NewLine;
+	|                }
+	|                else
+	|                {
+	|                    strOSD = strOSD + strres.Replace("" "", """") + Environment.NewLine;
+	|                }
+	|            }
+	|            result = null;
+	|
+	|            strOSD = strOSD.Trim();
 	|
 	|            // Соберем из блока конструкторов имена компонентов в CompNames.
 	|            List<string> CompNames = new List<string>();
