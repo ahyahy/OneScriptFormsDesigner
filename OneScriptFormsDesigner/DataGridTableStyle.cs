@@ -55,7 +55,7 @@ namespace osfDesigner
         }
 
         [DisplayName("ОтображатьЗаголовкиСтолбцов")]
-        [Description("Возвращает или задает значение, показывающее, являются ли заголовки столбцов видимыми.")]
+        [Description("Возвращает или задает значение, показывающее, являются ли заголовки колонок видимыми.")]
         [Category("Показать")]
         [Browsable(true)]
         [TypeConverter(typeof(MyBooleanConverter))]
@@ -87,7 +87,7 @@ namespace osfDesigner
         }
 
         [DisplayName("ПредпочтительнаяШиринаСтолбцов")]
-        [Description("Возвращает или задает ширину, используемую для создания столбцов при отображении новой сетки.")]
+        [Description("Возвращает или задает ширину, используемую для создания колонок при отображении новой сетки.")]
         [Category("Макет")]
         [Browsable(true)]
         public new int PreferredColumnWidth
@@ -119,7 +119,7 @@ namespace osfDesigner
         }
 
         [DisplayName("ТолькоЧтение")]
-        [Description("Возвращает или задает значение, показывающее, разрешено ли редактирование столбцов.")]
+        [Description("Возвращает или задает значение, показывающее, разрешено ли редактирование колонок.")]
         [Category("Прочее")]
         [Browsable(true)]
         [TypeConverter(typeof(MyBooleanConverter))]

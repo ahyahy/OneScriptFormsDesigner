@@ -22,7 +22,7 @@ namespace osfDesigner
         }
 
         [DisplayName("ИмяОтображаемого")]
-        [Description("Возвращает или задает имя элемента данных, на который отображается стиль столбца.")]
+        [Description("Возвращает или задает имя элемента данных, на который отображается стиль колонки.")]
         [Category("Прочее")]
         [Browsable(true)]
         public new string MappingName
