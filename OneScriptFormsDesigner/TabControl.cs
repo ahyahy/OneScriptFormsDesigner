@@ -49,7 +49,7 @@ namespace osfDesigner
         }
 
         [DisplayName("Выравнивание")]
-        [Description("Получает или задает зоны контроля (например, вверху), по которым вкладки выравниваются.")]
+        [Description("Возвращает или задает зоны контроля (например, вверху), по которым вкладки выравниваются.")]
         [Category("Поведение")]
         [Browsable(true)]
         public new TabAlignment Alignment
@@ -624,6 +624,7 @@ namespace osfDesigner
                 return @"
 Положение ==
 ПорядокОбхода ==
+АвтоРазмер ==
 Размер ==
 ";
             }

@@ -155,7 +155,7 @@ namespace osfDesigner
         }
 
         [DisplayName("МногострочныйРежим")]
-        [Description("Получает или задает значение, указывающее, является ли это текстовое поле многострочным.")]
+        [Description("Возвращает или задает значение, указывающее, является ли это текстовое поле многострочным.")]
         [Category("Прочее")]
         [Browsable(true)]
         [TypeConverter(typeof(MyBooleanConverter))]

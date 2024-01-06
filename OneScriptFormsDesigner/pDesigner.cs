@@ -141,6 +141,13 @@ namespace osfDesigner
                            );
                         if (fact == System.Windows.Forms.DialogResult.OK || fact == System.Windows.Forms.DialogResult.Yes)
                         {
+                            ISelectionService iSel = (ISelectionService)OneScriptFormsDesigner.DesignerHost.GetService(typeof(ISelectionService));
+                            if (iSel != null)
+                            {
+                                ComponentCollection ctrlsExisting = OneScriptFormsDesigner.DesignerHost.Container.Components;
+                                iSel.SetSelectedComponents(ctrlsExisting);
+                                DeleteOnDesignSurfaceWithoutWarning();
+                            }
                             OneScriptFormsDesigner.dictionaryTabPageChanged.Remove(TabControl.SelectedTab);
                             RemoveDesignSurface(DesignSurfaceManager.ActiveDesignSurface);
                         }
@@ -287,7 +294,11 @@ namespace osfDesigner
             rootComponent = surface.CreateRootComponent(typeof(TT), new Size(startingFormWidth, startingFormHeight)) as Control;
             // Переименуем размещаемый компонент, потому что пользователь может добавить более одной формы
             // и каждая новая форма будет называться "Form1", если мы не зададим её имя (Name).
-            if (formName != null)
+            if (formName == "")
+            {
+                rootComponent.Site.Name = "Форма_0";
+            }
+            else if (formName != null)
             {
                 // Организуем вопрос об имени загружаемой формы.
                 form = new System.Windows.Forms.Form();
@@ -389,6 +400,7 @@ namespace osfDesigner
                     if (OriginalObj.GetType() == typeof(System.Windows.Forms.ImageList) || 
                     OriginalObj.GetType() == typeof(osfDesigner.TreeView) || 
                     OriginalObj.GetType() == typeof(osfDesigner.DataGrid) || 
+                    OriginalObj.GetType() == typeof(osfDesigner.DataGridView) || 
                     OriginalObj.GetType() == typeof(osfDesigner.RichTextBox))
                     {
                         IDesignerHost designerHost = DesignSurfaceManager.ActiveDesignSurface.GetIDesignerHost();
@@ -403,6 +415,8 @@ namespace osfDesigner
                     }
 
                     if (OriginalObj.GetType() == typeof(osfDesigner.DataGrid) ||
+                    OriginalObj.GetType() == typeof(osfDesigner.MaskedTextBox) ||
+                    OriginalObj.GetType() == typeof(osfDesigner.DataGridView) || 
                     OriginalObj.GetType() == typeof(osfDesigner.TabControl))
                     {
                         IDesignerHost designerHost = DesignSurfaceManager.ActiveDesignSurface.GetIDesignerHost();
@@ -426,11 +440,17 @@ namespace osfDesigner
                         dynamic SimilarObj = OneScriptFormsDesigner.RevertSimilarObj(OriginalObj);
                         DesignSurfaceManager.PropertyGridHost.PropertyGrid.SelectedObject = SimilarObj;
                         SimilarObj.DefaultValues = OneScriptFormsDesigner.GetDefaultValues(SimilarObj, DesignSurfaceManager.PropertyGridHost.PropertyGrid);
+
+                        //System.Windows.Forms.MessageBox.Show("OriginalObj.DefaultValues = " + SimilarObj.DefaultValues + "\r\n" + "");
+                        //System.Windows.Forms.Clipboard.SetText(SimilarObj.DefaultValues);
                     }
                     else
                     {
                         DesignSurfaceManager.PropertyGridHost.PropertyGrid.SelectedObject = OriginalObj;
                         OriginalObj.DefaultValues = OneScriptFormsDesigner.GetDefaultValues(OriginalObj, DesignSurfaceManager.PropertyGridHost.PropertyGrid);
+
+                        //System.Windows.Forms.MessageBox.Show("OriginalObj.DefaultValues = " + OriginalObj.DefaultValues + "\r\n" + "");
+                        //System.Windows.Forms.Clipboard.SetText(OriginalObj.DefaultValues);
                     }
 
                     PropertyGridHost.ReloadTreeView();
@@ -588,6 +608,24 @@ namespace osfDesigner
                 isurf.DoAction("Paste");
             }
         }
+	
+        public void DeleteOnDesignSurfaceWithoutWarning()
+        {
+            IDesignSurfaceExt isurf = DesignSurfaceManager.ActiveDesignSurface;
+            if (null != isurf)
+            {
+                try
+                {
+                    SplitContainer SplitContainer1 = (SplitContainer)ActiveControl;
+                    osfDesigner.PropertyGridHost PropertyGridHost1 = (osfDesigner.PropertyGridHost)SplitContainer1.ActiveControl;
+                    bool ToolbarVisible1 = PropertyGridHost1.PropertyGrid.ToolbarVisible;
+                }
+                catch
+                {
+                    isurf.DoAction("Delete");
+                }
+            }
+        }	
 
         public void DeleteOnDesignSurface()
         {

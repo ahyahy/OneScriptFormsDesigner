@@ -33,6 +33,7 @@ namespace osfDesigner
 
         public RadioButton()
         {
+            TabStop = true; // Для корректного тестирования свойства ТабФокус (TabStop).
             Enabled_osf = base.Enabled;
             Visible_osf = base.Visible;
         }

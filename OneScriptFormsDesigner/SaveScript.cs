@@ -13,6 +13,7 @@ namespace osfDesigner
 {
     public class SaveScript
     {
+        public static string Indent1 = "    ";
         public static System.Windows.Forms.TreeView TreeView1 = OneScriptFormsDesigner.PropertyGridHost.TreeView;
         public static System.Windows.Forms.ToolBarButton ButtonSort1 = OneScriptFormsDesigner.PropertyGridHost.ButtonSort;
 
@@ -47,7 +48,7 @@ namespace osfDesigner
         {
             // 1. Получить перечень текущих свойств формы и всех компонентов
             // 2. Выгрузить обязательные свойства согласно RequiredValues.
-            // 3. Сравнить текущие свойства с DefaultValues и измененные заполнить.
+            // 3. Сравнить текущие свойства с DefaultValues и измененные выгрузить.
 
             if (fileName != null)
             {
@@ -86,10 +87,10 @@ namespace osfDesigner
                     if (comp.GetType() == typeof(Form))
                     {
                         strForm = "// блок Форма" + Environment.NewLine +
-                                "    " + comp.Site.Name + " = Ф.Форма();" + Environment.NewLine +
-                                "    " + comp.Site.Name + ".Отображать = Истина;" + Environment.NewLine +
-                                "    " + comp.Site.Name + ".Показать();" + Environment.NewLine +
-                                "    " + comp.Site.Name + ".Активизировать();" + Environment.NewLine +
+                                Indent1 + comp.Site.Name + " = Ф.Форма();" + Environment.NewLine +
+                                Indent1 + comp.Site.Name + ".Отображать = Истина;" + Environment.NewLine +
+                                Indent1 + comp.Site.Name + ".Показать();" + Environment.NewLine +
+                                Indent1 + comp.Site.Name + ".Активизировать();" + Environment.NewLine +
                                 "    // блок конецФорма";
                     }
                     else
@@ -111,7 +112,7 @@ namespace osfDesigner
                         Template1 = Template1.Replace("// конец Перем", "Перем " + compName + ";" + Environment.NewLine + "// конец Перем");
                     }
                 }
-                // Запишем в скрипте свойства компонентов.
+                // Запишем свойства компонентов.
                 // Последовательность возмем из древовидной структуры TreeView при сортировке "В порядке создания".
                 bool stateSort = ButtonSort1.Pushed;
                 ButtonSort1.Pushed = false;
@@ -122,9 +123,8 @@ namespace osfDesigner
                     OneScriptFormsDesigner.PropertyGridHost.ChangeSelectNode(comp2);
                 }
 
-                ArrayList objArrayList2 = new ArrayList(); // Содержит имена компонентов.
+                ArrayList objArrayList2 = new ArrayList(); // Содержит имена компонентов в иерархии дерева компонентов.
                 GetNodes1(TreeView1, ref objArrayList2);
-
                 for (int i = 0; i < objArrayList2.Count; i++)
                 {
                     Component comp = comps[(string)objArrayList2[i]];
@@ -284,13 +284,11 @@ namespace osfDesigner
             return newScript;
         }
 
-        // Переформируем скрипт.
+        // Переформируем выгруженный код.
         private static string ReSort(string Template1)
         {
             string[] stringSeparators = new string[] { Environment.NewLine };
-
             string str1 = Template1;
-
             // Для удобочитаемости сделаем сортировку в разделе объявления переменных.
             string strPerem = (string)OneScriptFormsDesigner.StrFindBetween(str1, @"Перем Ф;", @"// конец Перем")[0];
             string[] peremArray = strPerem.Split(stringSeparators, StringSplitOptions.RemoveEmptyEntries);
@@ -401,50 +399,70 @@ namespace osfDesigner
 
                 string fragment2 = "";
                 SortedList SortedList1 = new SortedList();
-                SortedList1.Capacity = 1000;
+                SortedList1.Capacity = 10000;
                 string[] result = fragment1.Split(stringSeparators, StringSplitOptions.RemoveEmptyEntries);
+
+                decimal lastNumber = 0.00001M;
                 for (int i1 = 0; i1 < result.Length; i1++)
                 {
                     string strResult = result[i1];
                     if (i1 == 0)
                     {
-                        SortedList1.Add(i1, strResult);
+                        SortedList1.Add(0.0M, strResult);
                     }
                     else if (strResult.Contains(namecomp + "." + "Родитель ="))
                     {
-                        SortedList1.Add(1, strResult);
+                        SortedList1.Add(1.0M, strResult);
                     }
                     else if (strResult.Contains(namecomp + "." + "Стыковка ="))
                     {
-                        SortedList1.Add(2, strResult);
+                        SortedList1.Add(2.0M, strResult);
                     }
                     else if (strResult.Contains(namecomp + ".НаПереднийПлан();"))
                     {
-                        SortedList1.Add(3, strResult);
+                        SortedList1.Add(3.0M, strResult);
+                    }
+                    else if (strResult.Contains(namecomp + "." + "АвтоРазмер ="))
+                    {
+                        SortedList1.Add(4.0M, strResult);
                     }
                     else if (strResult.Contains(namecomp + "." + "Размер ="))
                     {
-                        SortedList1.Add(4, strResult);
+                        SortedList1.Add(5.0M, strResult);
                     }
                     else if (strResult.Contains(namecomp + "." + "ПорядокОбхода ="))
                     {
-                        SortedList1.Add(5, strResult);
+                        SortedList1.Add(6.0M, strResult);
                     }
                     else if (strResult.Contains(namecomp + "." + "Флажки ="))
                     {
-                        SortedList1.Add(6, strResult);
+                        SortedList1.Add(7.0M, strResult);
+                    }
+                    else if (strResult.Contains(namecomp + "." + "Путь ="))
+                    {
+                        SortedList1.Add(8.0M, strResult);
+                    }
+                    else if (strResult.Contains(namecomp + "." + "Элементы.Добавить(Ф.ЭлементСписка("))
+                    {
+                        // Элементов может быть больше одного.
+                        SortedList1.Add(9.0M + lastNumber, strResult);
+                        lastNumber = lastNumber + 0.00001M;
+                    }
+                    else if (strResult.Contains(namecomp + "." + "ГоризонтальнаяПрокрутка ="))
+                    {
+                        SortedList1.Add(10.0M, strResult);
                     }
                     else
                     {
-                        SortedList1.Add(i1 + 500, strResult);
+                        SortedList1.Add(Convert.ToDecimal(i1 + 500), strResult);
                     }
                 }
                 ArrayList ArrayList3 = new ArrayList();
-                for (int i1 = 0; i1 < SortedList1.Capacity; i1++)
+                for (int i1 = 0; i1 < SortedList1.Count; i1++)
                 {
-                    if (SortedList1[i1] != null)
+                    if (SortedList1[SortedList1.GetKey(i1)] != null)
                     {
-                        ArrayList3.Add(SortedList1[i1]);
+                        ArrayList3.Add(SortedList1[SortedList1.GetKey(i1)]);
                     }
                 }
                 for (int i4 = 0; i4 < ArrayList3.Count; i4++)
@@ -456,7 +474,7 @@ namespace osfDesigner
                     }
                     else
                     {
-                        fragment2 = fragment2 + Environment.NewLine + "    " + strArrayList;
+                        fragment2 = fragment2 + Environment.NewLine + Indent1 + strArrayList;
                     }
                 }
                 str1 = str1.Replace(fragment1, fragment2);
@@ -480,7 +498,7 @@ namespace osfDesigner
             }
             else
             {
-                if (!comp.DefaultValues.Contains(valueName + " == " + compValue))
+                if (!comp.DefaultValues.Contains(valueName + " == " + compValue + Environment.NewLine))
                 {
                     try
                     {
@@ -497,6 +515,10 @@ namespace osfDesigner
         private static void TextToScript(string compName, string valueName, string compValue, dynamic val = null)
         {
             // Пропустим некоторые свойства.
+            if ((val.GetType() == typeof(osfDesigner.DataGridViewCellStyle) || val.GetType() == typeof(osfDesigner.DataGridViewCellStyleHeaders)) && (valueName == "ИмяСтиля"))	
+            {
+                return;
+            }	
             if (val.GetType() == typeof(osfDesigner.StatusBar) && (valueName == "Положение" || valueName == "Размер"))
             {
                 return;
@@ -547,7 +569,15 @@ namespace osfDesigner
             }
             // Закончили пропуск свойств.
 
-            if (compValue == "Ложь" || compValue == "Истина")
+            if ((compValue == "Ложь" || compValue == "Истина") && !(
+                (valueName == "ИзменяемыйРазмер" && val.GetType() == typeof(osfDesigner.DataGridViewTextBoxColumn)) ||
+                (valueName == "ИзменяемыйРазмер" && val.GetType() == typeof(osfDesigner.DataGridViewButtonColumn)) ||
+                (valueName == "ИзменяемыйРазмер" && val.GetType() == typeof(osfDesigner.DataGridViewCheckBoxColumn)) ||
+                (valueName == "ИзменяемыйРазмер" && val.GetType() == typeof(osfDesigner.DataGridViewComboBoxColumn)) ||
+                (valueName == "ИзменяемыйРазмер" && val.GetType() == typeof(osfDesigner.DataGridViewImageColumn)) ||
+                (valueName == "ИзменяемыйРазмер" && val.GetType() == typeof(osfDesigner.DataGridViewLinkColumn)) ||
+                (valueName == "Перенос" && val.GetType() == typeof(osfDesigner.DataGridViewCellStyle)) ||
+                (valueName == "Перенос" && val.GetType() == typeof(osfDesigner.DataGridViewCellStyleHeaders))))
             {
                 AddToScript(compName + "." + valueName + " = " + compValue + ";");
                 return;
@@ -631,12 +661,12 @@ namespace osfDesigner
                                 ListItemComboBox1 = (osfDesigner.ListItemComboBox)ComboBoxObjectCollection1[i];
                                 if (ListItemComboBox1.ValueType == DataType.Строка)
                                 {
-                                    strValue = strValue + "    " + compName + ".Элементы.Добавить(Ф.ЭлементСписка(\u0022" + ListItemComboBox1.Text + "\u0022, \u0022" + ListItemComboBox1.Text + "\u0022));";
+                                    strValue = strValue + Indent1 + compName + ".Элементы.Добавить(Ф.ЭлементСписка(\u0022" + ListItemComboBox1.Text + "\u0022, \u0022" + ListItemComboBox1.Text + "\u0022));";
                                 }
                                 else if (ListItemComboBox1.ValueType == DataType.Дата)
                                 {
                                     DateTime DateTime1 = ListItemComboBox1.ValueDateTime;
-                                    strValue = strValue + "    " + compName + ".Элементы.Добавить(Ф.ЭлементСписка(\u0022" + ListItemComboBox1.Text + "\u0022, " +
+                                    strValue = strValue + Indent1 + compName + ".Элементы.Добавить(Ф.ЭлементСписка(\u0022" + ListItemComboBox1.Text + "\u0022, " +
                                         "Дата(" +
                                         DateTime1.ToString("yyyy") + ", " +
                                         DateTime1.ToString("MM") + ", " +
@@ -647,11 +677,11 @@ namespace osfDesigner
                                 }
                                 else if (ListItemComboBox1.ValueType == DataType.Булево)
                                 {
-                                    strValue = strValue + "    " + compName + ".Элементы.Добавить(Ф.ЭлементСписка(\u0022" + ListItemComboBox1.Text + "\u0022, " + ListItemComboBox1.Text + "));";
+                                    strValue = strValue + Indent1 + compName + ".Элементы.Добавить(Ф.ЭлементСписка(\u0022" + ListItemComboBox1.Text + "\u0022, " + ListItemComboBox1.Text + "));";
                                 }
                                 else if (ListItemComboBox1.ValueType == DataType.Число)
                                 {
-                                    strValue = strValue + "    " + compName + ".Элементы.Добавить(Ф.ЭлементСписка(\u0022" + ListItemComboBox1.Text + "\u0022, " + ListItemComboBox1.Text + "));";
+                                    strValue = strValue + Indent1 + compName + ".Элементы.Добавить(Ф.ЭлементСписка(\u0022" + ListItemComboBox1.Text.Replace(CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator, ".") + "\u0022, " + ListItemComboBox1.Text.Replace(CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator, ".") + "));";
                                 }
                                 if (i == 0)
                                 {
@@ -677,12 +707,12 @@ namespace osfDesigner
                                 ListItemListBox1 = (osfDesigner.ListItemListBox)ListBoxObjectCollection1[i];
                                 if (ListItemListBox1.ValueType == DataType.Строка)
                                 {
-                                    strValue = strValue + "    " + compName + ".Элементы.Добавить(Ф.ЭлементСписка(\u0022" + ListItemListBox1.Text + "\u0022, \u0022" + ListItemListBox1.Text + "\u0022));";
+                                    strValue = strValue + Indent1 + compName + ".Элементы.Добавить(Ф.ЭлементСписка(\u0022" + ListItemListBox1.Text + "\u0022, \u0022" + ListItemListBox1.Text + "\u0022));";
                                 }
                                 else if (ListItemListBox1.ValueType == DataType.Дата)
                                 {
                                     DateTime DateTime1 = ListItemListBox1.ValueDateTime;
-                                    strValue = strValue + "    " + compName + ".Элементы.Добавить(Ф.ЭлементСписка(\u0022" + ListItemListBox1.Text + "\u0022, " +
+                                    strValue = strValue + Indent1 + compName + ".Элементы.Добавить(Ф.ЭлементСписка(\u0022" + ListItemListBox1.Text + "\u0022, " +
                                         "Дата(" +
                                         DateTime1.ToString("yyyy") + ", " +
                                         DateTime1.ToString("MM") + ", " +
@@ -693,11 +723,11 @@ namespace osfDesigner
                                 }
                                 else if (ListItemListBox1.ValueType == DataType.Булево)
                                 {
-                                    strValue = strValue + "    " + compName + ".Элементы.Добавить(Ф.ЭлементСписка(\u0022" + ListItemListBox1.Text + "\u0022, " + ListItemListBox1.Text + "));";
+                                    strValue = strValue + Indent1 + compName + ".Элементы.Добавить(Ф.ЭлементСписка(\u0022" + ListItemListBox1.Text + "\u0022, " + ListItemListBox1.Text + "));";
                                 }
                                 else if (ListItemListBox1.ValueType == DataType.Число)
                                 {
-                                    strValue = strValue + "    " + compName + ".Элементы.Добавить(Ф.ЭлементСписка(\u0022" + ListItemListBox1.Text + "\u0022, " + ListItemListBox1.Text + "));";
+                                    strValue = strValue + Indent1 + compName + ".Элементы.Добавить(Ф.ЭлементСписка(\u0022" + ListItemListBox1.Text.Replace(CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator, ".") + "\u0022, " + ListItemListBox1.Text.Replace(CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator, ".") + "));";
                                 }
                                 if (i == 0)
                                 {
@@ -748,25 +778,239 @@ namespace osfDesigner
                 }
                 return;
             }
+            if (valueName == "Картинка")
+            {
+                DataGridViewImageColumn DataGridViewImageColumn1 = (DataGridViewImageColumn)val;
+                if (compValue != "System.Drawing.Bitmap ()")
+                {
+                    string FileName = OneScriptFormsDesigner.ParseBetween(compValue, "(", ")");
+                    string newPath = "";
+                    if (path != null)
+                    {
+                        string newFileName = FileName.Substring(FileName.LastIndexOf('\\') + 1);
+                        newPath = path + newFileName;
+                        if (!File.Exists(newPath))
+                        {
+                            File.Copy(FileName, newPath);
+                        }
+                    }
+                    else
+                    {
+                        newPath = FileName;
+                    }
+                    AddToScript(DataGridViewImageColumn1.NameColumn + ".Картинка = Ф.Картинка(\u0022" + newPath + "\u0022);");
+                }
+                return;
+            }	
             if (valueName == "Колонки")
             {
                 if (val != null)
                 {
-                    System.Windows.Forms.ListView.ColumnHeaderCollection ColumnHeaderCollection1 = (System.Windows.Forms.ListView.ColumnHeaderCollection)val.Columns;
-                    if (ColumnHeaderCollection1.Count > 0)
+                    if (val.Columns.GetType() == typeof(System.Windows.Forms.DataGridViewColumnCollection))
                     {
-                        osfDesigner.ColumnHeader ColumnHeader1;
-                        for (int i = 0; i < ColumnHeaderCollection1.Count; i++)
+                        System.Windows.Forms.DataGridViewColumnCollection DataGridViewColumnCollection1 = (System.Windows.Forms.DataGridViewColumnCollection)val.Columns;
+                        if (DataGridViewColumnCollection1.Count > 0)
                         {
-                            ColumnHeader1 = (osfDesigner.ColumnHeader)ColumnHeaderCollection1[i];
-                            AddToScript(ColumnHeader1.Name + " = Ф.Колонка();");
-                            PropComponent(ColumnHeader1);
-                            AddToScript(compName + ".Колонки.Добавить(" + ColumnHeader1.Name + ");");
+                            for (int i = 0; i < DataGridViewColumnCollection1.Count; i++)
+                            {
+                                if (DataGridViewColumnCollection1[i].GetType() == typeof(osfDesigner.DataGridViewLinkColumn))
+                                {
+                                    osfDesigner.DataGridViewLinkColumn DataGridViewLinkColumn1 = (osfDesigner.DataGridViewLinkColumn)DataGridViewColumnCollection1[i];
+                                    AddToScript(DataGridViewLinkColumn1.NameColumn + " = Ф.КолонкаСсылка();");
+                                    PropComponent(DataGridViewLinkColumn1);
+                                    AddToScript(compName + ".Колонки.Добавить(" + DataGridViewLinkColumn1.NameColumn + ");");
+                                }
+                                if (DataGridViewColumnCollection1[i].GetType() == typeof(osfDesigner.DataGridViewImageColumn))
+                                {
+                                    osfDesigner.DataGridViewImageColumn DataGridViewImageColumn1 = (osfDesigner.DataGridViewImageColumn)DataGridViewColumnCollection1[i];
+                                    AddToScript(DataGridViewImageColumn1.NameColumn + " = Ф.КолонкаКартинка();");
+                                    PropComponent(DataGridViewImageColumn1);
+                                    AddToScript(compName + ".Колонки.Добавить(" + DataGridViewImageColumn1.NameColumn + ");");
+                                }
+                                if (DataGridViewColumnCollection1[i].GetType() == typeof(osfDesigner.DataGridViewComboBoxColumn))
+                                {
+                                    osfDesigner.DataGridViewComboBoxColumn DataGridViewComboBoxColumn1 = (osfDesigner.DataGridViewComboBoxColumn)DataGridViewColumnCollection1[i];
+                                    AddToScript(DataGridViewComboBoxColumn1.NameColumn + " = Ф.КолонкаПолеВыбора();");
+                                    PropComponent(DataGridViewComboBoxColumn1);
+	
+                                    // Учитываем элементы поля выбора
+                                    System.Windows.Forms.DataGridViewComboBoxCell.ObjectCollection Items = DataGridViewComboBoxColumn1.Items;
+                                    for (int i2 = 0; i2 < Items.Count; i2++)
+                                    {
+                                        osfDesigner.ListItemComboBox ListItemComboBox1 = (osfDesigner.ListItemComboBox)Items[i2];
+                                        dynamic Value1 = ListItemComboBox1.Value;
+                                        if (Value1.GetType() == typeof(System.String))
+                                        {
+                                            AddToScript(DataGridViewComboBoxColumn1.NameColumn + ".Элементы.Добавить(\u0022" + Value1 + "\u0022);");
+                                        }
+                                        else if (Value1.GetType() == typeof(System.Decimal))
+                                        {
+                                            AddToScript(DataGridViewComboBoxColumn1.NameColumn + ".Элементы.Добавить(" + Convert.ToString(Value1).Replace(",", ".") + ");");
+                                        }
+                                        else if (Value1.GetType() == typeof(System.Boolean))
+                                        {
+                                            AddToScript(DataGridViewComboBoxColumn1.NameColumn + ".Элементы.Добавить(" + Convert.ToString(Value1).Replace("False", "Ложь").Replace("True", "Истина") + ");");
+                                        }
+                                        else if (Value1.GetType() == typeof(System.DateTime))
+                                        {
+                                            AddToScript(DataGridViewComboBoxColumn1.NameColumn + ".Элементы.Добавить(Дата(" +
+                                                Value1.ToString("yyyy") + ", " +
+                                                Value1.ToString("MM") + ", " +
+                                                Value1.ToString("dd") + ", " +
+                                                Value1.ToString("HH") + ", " +
+                                                Value1.ToString("mm") + ", " +
+                                                Value1.ToString("ss") + "));");
+                                        }
+                                    }	
+                                    AddToScript(compName + ".Колонки.Добавить(" + DataGridViewComboBoxColumn1.NameColumn + ");");
+                                }
+                                if (DataGridViewColumnCollection1[i].GetType() == typeof(osfDesigner.DataGridViewCheckBoxColumn))
+                                {
+                                    osfDesigner.DataGridViewCheckBoxColumn DataGridViewCheckBoxColumn1 = (osfDesigner.DataGridViewCheckBoxColumn)DataGridViewColumnCollection1[i];
+                                    AddToScript(DataGridViewCheckBoxColumn1.NameColumn + " = Ф.КолонкаФлажок();");
+                                    PropComponent(DataGridViewCheckBoxColumn1);
+                                    AddToScript(compName + ".Колонки.Добавить(" + DataGridViewCheckBoxColumn1.NameColumn + ");");
+                                }
+
+                                if (DataGridViewColumnCollection1[i].GetType() == typeof(osfDesigner.DataGridViewButtonColumn))
+                                {
+                                    osfDesigner.DataGridViewButtonColumn DataGridViewButtonColumn1 = (osfDesigner.DataGridViewButtonColumn)DataGridViewColumnCollection1[i];
+                                    AddToScript(DataGridViewButtonColumn1.NameColumn + " = Ф.КолонкаКнопка();");
+                                    PropComponent(DataGridViewButtonColumn1);
+                                    AddToScript(compName + ".Колонки.Добавить(" + DataGridViewButtonColumn1.NameColumn + ");");
+                                }
+                                if (DataGridViewColumnCollection1[i].GetType() == typeof(osfDesigner.DataGridViewTextBoxColumn))
+                                {
+                                    osfDesigner.DataGridViewTextBoxColumn DataGridViewTextBoxColumn1 = (osfDesigner.DataGridViewTextBoxColumn)DataGridViewColumnCollection1[i];
+                                    AddToScript(DataGridViewTextBoxColumn1.NameColumn + " = Ф.КолонкаПолеВвода();");
+                                    PropComponent(DataGridViewTextBoxColumn1);
+                                    AddToScript(compName + ".Колонки.Добавить(" + DataGridViewTextBoxColumn1.NameColumn + ");");
+                                }
+
+                            }
+                        }
+                    }
+                    else if (val.Columns.GetType() == typeof(System.Windows.Forms.ListView.ColumnHeaderCollection))
+                    {
+                        System.Windows.Forms.ListView.ColumnHeaderCollection ColumnHeaderCollection1 = (System.Windows.Forms.ListView.ColumnHeaderCollection)val.Columns;
+                        if (ColumnHeaderCollection1.Count > 0)
+                        {
+                            osfDesigner.ColumnHeader ColumnHeader1;
+                            for (int i = 0; i < ColumnHeaderCollection1.Count; i++)
+                            {
+                                ColumnHeader1 = (osfDesigner.ColumnHeader)ColumnHeaderCollection1[i];
+                                AddToScript(ColumnHeader1.Name + " = Ф.Колонка();");
+                                PropComponent(ColumnHeader1);
+                                AddToScript(compName + ".Колонки.Добавить(" + ColumnHeader1.Name + ");");
+                            }
                         }
                     }
                 }
                 return;
             }
+            if (valueName == "СтильЗаголовковКолонок")
+            {
+                if (val.GetType() == typeof(osfDesigner.DataGridView))
+                {
+                    osfDesigner.DataGridView DataGridView1 = (osfDesigner.DataGridView)val;
+                    osfDesigner.DataGridViewCellStyleHeaders ColumnHeadersDefaultCellStyle1 = (osfDesigner.DataGridViewCellStyleHeaders)DataGridView1.columnHeadersDefaultCellStyle;
+                    if (!(ColumnHeadersDefaultCellStyle1.NameStyle == "" || ColumnHeadersDefaultCellStyle1.NameStyle == null))
+                    {
+                        AddToScript(ColumnHeadersDefaultCellStyle1.NameStyle + " = Ф.СтильЯчейки();");
+                        PropComponent(ColumnHeadersDefaultCellStyle1);
+                        AddToScript(compName + ".СтильЗаголовковКолонок = " + ColumnHeadersDefaultCellStyle1.NameStyle + ";");
+                    }
+                }
+                return;
+            }
+            if (valueName == "СтильЗаголовковСтрок")
+            {
+                if (val.GetType() == typeof(osfDesigner.DataGridView))
+                {
+                    osfDesigner.DataGridView DataGridView1 = (osfDesigner.DataGridView)val;
+                    osfDesigner.DataGridViewCellStyleHeaders RowHeadersDefaultCellStyle1 = (osfDesigner.DataGridViewCellStyleHeaders)DataGridView1.rowHeadersDefaultCellStyle;
+                    if (!(RowHeadersDefaultCellStyle1.NameStyle == "" || RowHeadersDefaultCellStyle1.NameStyle == null))
+                    {
+                        AddToScript(RowHeadersDefaultCellStyle1.NameStyle + " = Ф.СтильЯчейки();");
+                        PropComponent(RowHeadersDefaultCellStyle1);
+                        AddToScript(compName + ".СтильЗаголовковСтрок = " + RowHeadersDefaultCellStyle1.NameStyle + ";");
+                    }
+                }
+                return;
+            }	
+            if (valueName == "СтильЯчейки")
+            {
+                if (val != null)
+                {
+                    if (val.GetType() == typeof(osfDesigner.DataGridViewTextBoxColumn))
+                    {
+                        osfDesigner.DataGridViewTextBoxColumn DataGridViewTextBoxColumn1 = (osfDesigner.DataGridViewTextBoxColumn)val;
+                        osfDesigner.DataGridViewCellStyle DataGridViewCellStyle1 = (osfDesigner.DataGridViewCellStyle)DataGridViewTextBoxColumn1.DefaultCellStyle;
+                        if (DataGridViewCellStyle1 != null)
+                        {
+                            AddToScript(DataGridViewCellStyle1.NameStyle + " = Ф.СтильЯчейки();");
+                            PropComponent(DataGridViewCellStyle1);
+                            AddToScript(DataGridViewTextBoxColumn1.NameColumn + ".СтильЯчейки = " + DataGridViewCellStyle1.NameStyle + ";");
+                        }
+                    }
+                    else if (val.GetType() == typeof(osfDesigner.DataGridViewButtonColumn))
+                    {
+                        osfDesigner.DataGridViewButtonColumn DataGridViewButtonColumn1 = (osfDesigner.DataGridViewButtonColumn)val;
+                        osfDesigner.DataGridViewCellStyle DataGridViewCellStyle1 = (osfDesigner.DataGridViewCellStyle)DataGridViewButtonColumn1.DefaultCellStyle;
+                        if (DataGridViewCellStyle1 != null)
+                        {
+                            AddToScript(DataGridViewCellStyle1.NameStyle + " = Ф.СтильЯчейки();");
+                            PropComponent(DataGridViewCellStyle1);
+                            AddToScript(DataGridViewButtonColumn1.NameColumn + ".СтильЯчейки = " + DataGridViewCellStyle1.NameStyle + ";");
+                        }
+                    }
+                    else if (val.GetType() == typeof(osfDesigner.DataGridViewCheckBoxColumn))
+                    {
+                        osfDesigner.DataGridViewCheckBoxColumn DataGridViewCheckBoxColumn1 = (osfDesigner.DataGridViewCheckBoxColumn)val;
+                        osfDesigner.DataGridViewCellStyle DataGridViewCellStyle1 = (osfDesigner.DataGridViewCellStyle)DataGridViewCheckBoxColumn1.DefaultCellStyle;
+                        if (DataGridViewCellStyle1 != null)
+                        {
+                            AddToScript(DataGridViewCellStyle1.NameStyle + " = Ф.СтильЯчейки();");
+                            PropComponent(DataGridViewCellStyle1);
+                            AddToScript(DataGridViewCheckBoxColumn1.NameColumn + ".СтильЯчейки = " + DataGridViewCellStyle1.NameStyle + ";");
+                        }
+                    }
+                    else if (val.GetType() == typeof(osfDesigner.DataGridViewComboBoxColumn))
+                    {
+                        osfDesigner.DataGridViewComboBoxColumn DataGridViewComboBoxColumn1 = (osfDesigner.DataGridViewComboBoxColumn)val;
+                        osfDesigner.DataGridViewCellStyle DataGridViewCellStyle1 = (osfDesigner.DataGridViewCellStyle)DataGridViewComboBoxColumn1.DefaultCellStyle;
+                        if (DataGridViewCellStyle1 != null)
+                        {
+                            AddToScript(DataGridViewCellStyle1.NameStyle + " = Ф.СтильЯчейки();");
+                            PropComponent(DataGridViewCellStyle1);
+                            AddToScript(DataGridViewComboBoxColumn1.NameColumn + ".СтильЯчейки = " + DataGridViewCellStyle1.NameStyle + ";");
+                        }
+                    }
+                    else if (val.GetType() == typeof(osfDesigner.DataGridViewImageColumn))
+                    {
+                        osfDesigner.DataGridViewImageColumn DataGridViewImageColumn1 = (osfDesigner.DataGridViewImageColumn)val;
+                        osfDesigner.DataGridViewCellStyle DataGridViewCellStyle1 = (osfDesigner.DataGridViewCellStyle)DataGridViewImageColumn1.DefaultCellStyle;
+                        if (DataGridViewCellStyle1 != null)
+                        {
+                            AddToScript(DataGridViewCellStyle1.NameStyle + " = Ф.СтильЯчейки();");
+                            PropComponent(DataGridViewCellStyle1);
+                            AddToScript(DataGridViewImageColumn1.NameColumn + ".СтильЯчейки = " + DataGridViewCellStyle1.NameStyle + ";");
+                        }
+                    }
+                    else if (val.GetType() == typeof(osfDesigner.DataGridViewLinkColumn))
+                    {
+                        osfDesigner.DataGridViewLinkColumn DataGridViewLinkColumn1 = (osfDesigner.DataGridViewLinkColumn)val;
+                        osfDesigner.DataGridViewCellStyle DataGridViewCellStyle1 = (osfDesigner.DataGridViewCellStyle)DataGridViewLinkColumn1.DefaultCellStyle;
+                        if (DataGridViewCellStyle1 != null)
+                        {
+                            AddToScript(DataGridViewCellStyle1.NameStyle + " = Ф.СтильЯчейки();");
+                            PropComponent(DataGridViewCellStyle1);
+                            AddToScript(DataGridViewLinkColumn1.NameColumn + ".СтильЯчейки = " + DataGridViewCellStyle1.NameStyle + ";");
+                        }
+                    }
+                }
+                return;
+            }	
             if (valueName == "СтилиКолонкиСеткиДанных")
             {
                 if (val != null)
@@ -781,7 +1025,7 @@ namespace osfDesigner
                             {
                                 osfDesigner.DataGridBoolColumn GridColumnStyle1 = (osfDesigner.DataGridBoolColumn)Style1;
                                 AddToScript(GridColumnStyle1.NameStyle + " = Ф.СтильКолонкиБулево();" + Environment.NewLine +
-                                    "    " + GridColumnStyle1.NameStyle + ".ИмяОтображаемого = \u0022" + GridColumnStyle1.MappingName + "\u0022;");
+                                    Indent1 + GridColumnStyle1.NameStyle + ".ИмяОтображаемого = \u0022" + GridColumnStyle1.MappingName + "\u0022;");
                                 PropComponent(GridColumnStyle1);
                                 AddToScript(compName + ".СтилиКолонкиСеткиДанных.Добавить(" + GridColumnStyle1.NameStyle + ");");
                             }
@@ -789,7 +1033,7 @@ namespace osfDesigner
                             {
                                 osfDesigner.DataGridTextBoxColumn GridColumnStyle1 = (osfDesigner.DataGridTextBoxColumn)Style1;
                                 AddToScript(GridColumnStyle1.NameStyle + " = Ф.СтильКолонкиПолеВвода();" + Environment.NewLine +
-                                    "    " + GridColumnStyle1.NameStyle + ".ИмяОтображаемого = \u0022" + GridColumnStyle1.MappingName + "\u0022;");
+                                    Indent1 + GridColumnStyle1.NameStyle + ".ИмяОтображаемого = \u0022" + GridColumnStyle1.MappingName + "\u0022;");
                                 PropComponent(GridColumnStyle1);
                                 AddToScript(compName + ".СтилиКолонкиСеткиДанных.Добавить(" + GridColumnStyle1.NameStyle + ");");
                             }
@@ -797,7 +1041,7 @@ namespace osfDesigner
                             {
                                 osfDesigner.DataGridComboBoxColumnStyle GridColumnStyle1 = (osfDesigner.DataGridComboBoxColumnStyle)Style1;
                                 AddToScript(GridColumnStyle1.NameStyle + " = Ф.СтильКолонкиПолеВыбора();" + Environment.NewLine +
-                                    "    " + GridColumnStyle1.NameStyle + ".ИмяОтображаемого = \u0022" + GridColumnStyle1.MappingName + "\u0022;");
+                                    Indent1 + GridColumnStyle1.NameStyle + ".ИмяОтображаемого = \u0022" + GridColumnStyle1.MappingName + "\u0022;");
                                 PropComponent(GridColumnStyle1);
                                 AddToScript(compName + ".СтилиКолонкиСеткиДанных.Добавить(" + GridColumnStyle1.NameStyle + ");");
                             }
@@ -819,8 +1063,8 @@ namespace osfDesigner
                             System.Windows.Forms.DataGridTableStyle OriginalObj = GridTableStylesCollection1[i];
                             DataGridTableStyle1 = OneScriptFormsDesigner.RevertSimilarObj(OriginalObj);
                             AddToScript(DataGridTableStyle1.NameStyle + " = Ф.СтильТаблицыСеткиДанных();" + Environment.NewLine +
-                                "    " + DataGridTableStyle1.NameStyle + ".ИмяОтображаемого = \u0022" + DataGridTableStyle1.MappingName + "\u0022;" + Environment.NewLine +
-                                "    " + compName + ".СтилиТаблицы.Добавить(" + DataGridTableStyle1.NameStyle + ");");
+                                Indent1 + DataGridTableStyle1.NameStyle + ".ИмяОтображаемого = \u0022" + DataGridTableStyle1.MappingName + "\u0022;" + Environment.NewLine +
+                                Indent1 + compName + ".СтилиТаблицы.Добавить(" + DataGridTableStyle1.NameStyle + ");");
                             PropComponent(DataGridTableStyle1);
                         }
                     }
@@ -909,7 +1153,7 @@ namespace osfDesigner
                     {
                         for (int i1 = 0; i1 < MyBoldedDatesList1.Count; i1++)
                         {
-                            strDateTimes = strDateTimes + "    " + compName + "." + valueName + ".Добавить(Дата(" +
+                            strDateTimes = strDateTimes + Indent1 + compName + "." + valueName + ".Добавить(Дата(" +
                                     MyBoldedDatesList1[i1].Value.ToString("yyyy") + ", " +
                                     MyBoldedDatesList1[i1].Value.ToString("MM") + ", " +
                                     MyBoldedDatesList1[i1].Value.ToString("dd") + ", " +
@@ -940,7 +1184,7 @@ namespace osfDesigner
                     {
                         for (int i1 = 0; i1 < MyAnnuallyBoldedDatesList1.Count; i1++)
                         {
-                            strDateTimes = strDateTimes + "    " + compName + "." + valueName + ".Добавить(Дата(" +
+                            strDateTimes = strDateTimes + Indent1 + compName + "." + valueName + ".Добавить(Дата(" +
                                     MyAnnuallyBoldedDatesList1[i1].Value.ToString("yyyy") + ", " +
                                     MyAnnuallyBoldedDatesList1[i1].Value.ToString("MM") + ", " +
                                     MyAnnuallyBoldedDatesList1[i1].Value.ToString("dd") + ", " +
@@ -971,7 +1215,7 @@ namespace osfDesigner
                     {
                         for (int i1 = 0; i1 < MyMonthlyBoldedDatesList1.Count; i1++)
                         {
-                            strDateTimes = strDateTimes + "    " + compName + "." + valueName + ".Добавить(Дата(" +
+                            strDateTimes = strDateTimes + Indent1 + compName + "." + valueName + ".Добавить(Дата(" +
                                     MyMonthlyBoldedDatesList1[i1].Value.ToString("yyyy") + ", " +
                                     MyMonthlyBoldedDatesList1[i1].Value.ToString("MM") + ", " +
                                     MyMonthlyBoldedDatesList1[i1].Value.ToString("dd") + ", " +
@@ -1013,7 +1257,7 @@ namespace osfDesigner
                                 }
                             }
 
-                            str1 = str1 + "    " + compName + ".Изображения.Добавить(Ф.Картинка(\u0022" + newPath + "\u0022));";
+                            str1 = str1 + Indent1 + compName + ".Изображения.Добавить(Ф.Картинка(\u0022" + newPath + "\u0022));";
                             if (i1 == 0)
                             {
                                 str1 = str1.TrimStart(' ');
@@ -1096,8 +1340,52 @@ namespace osfDesigner
                 }
                 return;
             }
+            // Если это Дата.
+            if (valueName == "Значение" && val.GetType() == typeof(osfDesigner.DateTimePicker))
+            {
+                compValue = compValue.Replace(" ", ".").Replace(":", ".");
+                string[] result = compValue.Split(new string[] { "." }, StringSplitOptions.RemoveEmptyEntries);
+                DateTime rez = new DateTime();
+                for (int i = 0; i < result.Length; i++)
+                {
+                    if (i == 0)
+                    {
+                        rez = rez.AddDays(Int32.Parse(result[0]) - 1);
+                    }
+                    if (i == 1)
+                    {
+                        rez = rez.AddMonths(Int32.Parse(result[1]) - 1);
+                    }
+                    if (i == 2)
+                    {
+                        rez = rez.AddYears(Int32.Parse(result[2]) - 1);
+                    }
+                    if (i == 3)
+                    {
+                        rez = rez.AddHours(Int32.Parse(result[3]));
+                    }
+                    if (i == 4)
+                    {
+                        rez = rez.AddMinutes(Int32.Parse(result[4]));
+                    }
+                    if (i == 5)
+                    {
+                        rez = rez.AddSeconds(Int32.Parse(result[5]));
+                    }
+                }
+                string strDate = "Дата(" +
+                    rez.ToString("yyyy") + ", " +
+                    rez.ToString("MM") + ", " +
+                    rez.ToString("dd") + ", " +
+                    rez.ToString("HH") + ", " +
+                    rez.ToString("mm") + ", " +
+                    rez.ToString("ss") + ")";
+                AddToScript(compName + "." + valueName + " = " + strDate + ";");
+                return;
+            }
             // Если это цвет.
             if (valueName == "ОсновнойЦвет" ||
+                valueName == "ОсновнойЦветВыделенного" ||
                 valueName == "ОсновнойЦветЗаголовков" ||
                 valueName == "ПрозрачныйЦвет" ||
                 valueName == "Цвет" ||
@@ -1106,10 +1394,12 @@ namespace osfDesigner
                 valueName == "ЦветСетки" ||
                 valueName == "ЦветСсылки" ||
                 valueName == "ЦветФона" ||
+                valueName == "ЦветФонаВыделенного" ||
                 valueName == "ЦветФонаЗаголовка" ||
                 valueName == "ЦветФонаЗаголовков" ||
                 valueName == "ЦветФонаНечетныхСтрок" ||
-                valueName == "ЦветФонаСеткиДанных")
+                valueName == "ЦветФонаСеткиДанных" ||
+                valueName == "ЦветФонаТаблицы")
             {
                 string str1 = "";
                 if (val != null)
@@ -1147,22 +1437,29 @@ namespace osfDesigner
                 return;
             }
             // Если это событие.
-            if (valueName == "ВыбранныйЭлементСеткиИзменен" ||
+            if (valueName == "ВводОтклонен" ||
+                valueName == "ВыбранныйЭлементСеткиИзменен" ||
                 valueName == "ВыделениеИзменено" ||
                 valueName == "ДатаВыбрана" ||
                 valueName == "ДатаИзменена" ||
                 valueName == "ДвойноеНажатие" ||
+                valueName == "ДвойноеНажатиеЯчейки" ||
                 valueName == "Закрыта" ||
                 valueName == "ЗначениеИзменено" ||
                 valueName == "ЗначениеСвойстваИзменено" ||
+                valueName == "ЗначениеЯчейкиИзменено" ||
                 valueName == "ИндексВыбранногоИзменен" ||
                 valueName == "КлавишаВверх" ||
                 valueName == "КлавишаВниз" ||
                 valueName == "КлавишаНажата" ||
                 valueName == "КолонкаНажатие" ||
                 valueName == "МышьНадЭлементом" ||
+                valueName == "МышьНадЯчейкой" ||
                 valueName == "МышьПокинулаЭлемент" ||
+                valueName == "МышьПокинулаЯчейку" ||
                 valueName == "Нажатие" ||
+                valueName == "НажатиеСодержимогоЯчейки" ||
+                valueName == "НажатиеЯчейки" ||
                 valueName == "ПередРазвертыванием" ||
                 valueName == "ПередРедактированиемНадписи" ||
                 valueName == "ПоложениеИзменено" ||
@@ -1172,18 +1469,25 @@ namespace osfDesigner
                 valueName == "ПриАктивизации" ||
                 valueName == "ПриАктивизацииЭлемента" ||
                 valueName == "ПриВходе" ||
+                valueName == "ПриВходеВСтроку" ||
+                valueName == "ПриВходеВЯчейку" ||
                 valueName == "ПриВыпадении" ||
                 valueName == "ПриДеактивации" ||
                 valueName == "ПриЗагрузке" ||
                 valueName == "ПриЗадержкеМыши" ||
                 valueName == "ПриЗакрытии" ||
                 valueName == "ПриИзменении" ||
+                valueName == "ПриНажатииЗаголовкаКолонки" ||
+                valueName == "ПриНажатииЗаголовкаСтроки" ||
                 valueName == "ПриНажатииКнопки" ||
                 valueName == "ПриНажатииКнопкиМыши" ||
+                valueName == "ПриНажатииКнопкиМышиВЯчейке" ||
                 valueName == "ПриОтпусканииМыши" ||
+                valueName == "ПриОтпусканииМышиНадЯчейкой" ||
                 valueName == "ПриПереименовании" ||
                 valueName == "ПриПеремещении" ||
                 valueName == "ПриПеремещенииМыши" ||
+                valueName == "ПриПеремещенииМышиНадЯчейкой" ||
                 valueName == "ПриПерерисовке" ||
                 valueName == "ПриПотереФокуса" ||
                 valueName == "ПриПрокручивании" ||
@@ -1191,9 +1495,14 @@ namespace osfDesigner
                 valueName == "ПриСрабатыванииТаймера" ||
                 valueName == "ПриУдалении" ||
                 valueName == "ПриУходе" ||
+                valueName == "ПриУходеИзСтроки" ||
+                valueName == "ПриУходеИзЯчейки" ||
                 valueName == "РазмерИзменен" ||
+                valueName == "РедактированиеЯчейкиЗавершено" ||
+                valueName == "РедактированиеЯчейкиНачато" ||
                 valueName == "СсылкаНажата" ||
                 valueName == "ТекстИзменен" ||
+                valueName == "ТекущаяЯчейкаИзменена" ||
                 valueName == "ТекущаяЯчейкаИзменена" ||
                 valueName == "ЭлементДобавлен" ||
                 valueName == "ЭлементПомечен" ||
@@ -1219,8 +1528,10 @@ namespace osfDesigner
             // Если это Строка.
             if (valueName == "ВыбранныйПуть" ||
                 valueName == "Заголовок" ||
+                valueName == "ИмяСвойстваДанных" ||
                 valueName == "ИмяСтиля" ||
                 valueName == "ИмяФайла" ||
+                valueName == "Маска" ||
                 valueName == "НачальныйКаталог" ||
                 valueName == "Описание" ||
                 valueName == "ПолныйПуть" ||
@@ -1229,6 +1540,7 @@ namespace osfDesigner
                 valueName == "РазделительПути" ||
                 valueName == "РасширениеПоУмолчанию" ||
                 valueName == "СимволПароля" ||
+                valueName == "СимволПриглашения" ||
                 valueName == "Текст" ||
                 valueName == "ТекстЗаголовка" ||
                 valueName == "ТекстПодсказки" ||
@@ -1242,6 +1554,8 @@ namespace osfDesigner
             if (valueName == "АвтоЗадержка" ||
                 valueName == "АвтоЗадержкаПоказа" ||
                 valueName == "БольшоеИзменение" ||
+                valueName == "ВесЗаполнения" ||	
+                valueName == "ВысотаЗаголовковКолонок" ||
                 valueName == "ВысотаЭлемента" ||
                 valueName == "ГоризонтальнаяМера" ||
                 valueName == "ЗадержкаОчередногоПоказа" ||
@@ -1264,7 +1578,7 @@ namespace osfDesigner
                 valueName == "Масштаб" ||
                 valueName == "МинимальнаяШирина" ||
                 valueName == "МинимальноеРасстояние" ||
-                (valueName == "МинимальныйРазмер" && compName.Contains("Splitter")) ||
+                (valueName == "МинимальныйРазмер" && val.GetType() == typeof(osfDesigner.Splitter)) ||
                 valueName == "Минимум" ||
                 valueName == "Отступ" ||
                 valueName == "ОтступМаркера" ||
@@ -1278,7 +1592,8 @@ namespace osfDesigner
                 valueName == "Ширина" ||
                 valueName == "ШиринаВыпадающегоСписка" ||
                 valueName == "ШиринаЗаголовковСтрок" ||
-                valueName == "ШиринаКолонки")
+                valueName == "ШиринаКолонки" ||
+                valueName == "ШиринаРазделителя")	
             {
                 AddToScript(compName + "." + valueName + " = " + compValue.Replace(CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator, ".") + ";");
                 return;
@@ -1292,8 +1607,7 @@ namespace osfDesigner
                 valueName == "РазмерПоляАвтоПрокрутки" ||
                 valueName == "РазмерЭлемента")
             {
-                if (compName.Contains("Календарь") ||
-                    compName.Contains("Вкладка"))
+                if (compName.Contains("Вкладка") && valueName != "РазмерПоляАвтоПрокрутки")
                 {
                     return;
                 }
@@ -1334,7 +1648,83 @@ namespace osfDesigner
                 }
                 return;
             }
-            // Если это перечисление.
+            // Если это Перечисление.
+            if (valueName == "РазмещениеИзображения")
+            {
+                AddToScript(compName + "." + valueName + " = " + "Ф.РазмещениеИзображенияЯчейки." + compValue + ";");
+                return;
+            }
+            if (valueName == "СтильОтображения")
+            {
+                AddToScript(compName + "." + valueName + " = " + "Ф.СтильПоляВыбораЯчейки." + compValue + ";");
+                return;
+            }
+            if (valueName == "РежимСортировки")
+            {
+                AddToScript(compName + "." + valueName + " = " + "Ф.РежимСортировки." + compValue + ";");
+                return;
+            }
+            if (valueName == "РежимАвтоРазмера")
+            {
+                AddToScript(compName + "." + valueName + " = " + "Ф.РежимАвтоРазмераКолонки." + compValue + ";");
+                return;
+            }	
+            if (valueName == "ИзменяемыйРазмер" && (
+                val.GetType() == typeof(osfDesigner.DataGridViewTextBoxColumn) ||
+                val.GetType() == typeof(osfDesigner.DataGridViewButtonColumn) ||
+                val.GetType() == typeof(osfDesigner.DataGridViewCheckBoxColumn) ||
+                val.GetType() == typeof(osfDesigner.DataGridViewComboBoxColumn) ||
+                val.GetType() == typeof(osfDesigner.DataGridViewImageColumn) ||
+                val.GetType() == typeof(osfDesigner.DataGridViewLinkColumn)))
+            {
+                AddToScript(compName + "." + valueName + " = " + "Ф.ТриСостояния." + compValue + ";");
+                return;
+            }	
+            if (valueName == "Перенос" && (val.GetType() == typeof(osfDesigner.DataGridViewCellStyle) || val.GetType() == typeof(osfDesigner.DataGridViewCellStyleHeaders)))
+            {
+                AddToScript(compName + "." + valueName + " = " + "Ф.ТриСостояния." + compValue + ";");
+                return;
+            }	
+            if (valueName == "РежимАвтоРазмераКолонок")
+            {
+                AddToScript(compName + "." + valueName + " = " + "Ф.РежимАвтоРазмераКолонок." + compValue + ";");
+                return;
+            }
+            if (valueName == "РежимАвтоРазмераСтрок")
+            {
+                AddToScript(compName + "." + valueName + " = " + "Ф.РежимАвтоРазмераСтрок." + compValue + ";");
+                return;
+            }
+            if (valueName == "РежимВыбора" && val.GetType() == typeof(osfDesigner.DataGridView))
+            {
+                AddToScript(compName + "." + valueName + " = " + "Ф.РежимВыбораТаблицы." + compValue + ";");
+                return;
+            }
+            if (valueName == "РежимВысотыЗаголовковКолонок")
+            {
+                AddToScript(compName + "." + valueName + " = " + "Ф.РежимВысотыЗаголовковКолонок." + compValue + ";");
+                return;
+            }
+            if (valueName == "АвтоШиринаЗаголовковСтрок")
+            {
+                AddToScript(compName + "." + valueName + " = " + "Ф.РежимШириныЗаголовковСтрок." + compValue + ";");
+                return;
+            }
+            if (valueName == "ФорматМаски")
+            {
+                AddToScript(compName + "." + valueName + " = " + "Ф.ФорматМаски." + compValue + ";");
+                return;
+            }
+            if (valueName == "РежимВставки")
+            {
+                AddToScript(compName + "." + valueName + " = " + "Ф.РежимВставки." + compValue + ";");
+                return;
+            }
+            if (valueName == "КопироватьМаску")
+            {
+                AddToScript(compName + "." + valueName + " = " + "Ф.ФорматМаски." + compValue + ";");
+                return;
+            }
             if (valueName == "ТипСлияния")
             {
                 AddToScript(compName + "." + valueName + " = " + "Ф.СлияниеМеню." + compValue + ";");
@@ -1462,6 +1852,11 @@ namespace osfDesigner
                 AddToScript(compName + "." + valueName + " = " + "Ф.ОформлениеПанелиИнструментов." + compValue + ";");
                 return;
             }
+            if (valueName == "Выравнивание" && (val.GetType() == typeof(osfDesigner.DataGridViewCellStyle) || val.GetType() == typeof(osfDesigner.DataGridViewCellStyleHeaders)))	
+            {
+                AddToScript(compName + "." + valueName + " = " + "Ф.ВыравниваниеСодержимогоЯчейки." + compValue + ";");
+                return;
+            }	
             if (valueName == "Выравнивание" && val.GetType() == typeof(osfDesigner.TabControl))
             {
                 AddToScript(compName + "." + valueName + " = " + "Ф.ВыравниваниеВкладок." + compValue + ";");
@@ -1493,7 +1888,8 @@ namespace osfDesigner
                 AddToScript(compName + "." + valueName + " = " + str1);
                 return;
             }
-            if (valueName == "ВыравниваниеТекста" && val.GetType() == typeof(osfDesigner.ColumnHeader))
+            if (valueName == "ВыравниваниеТекста" && (val.GetType() == typeof(osfDesigner.ColumnHeader) || 
+                val.GetType() == typeof(osfDesigner.MaskedTextBox)))
             {
                 AddToScript(compName + "." + valueName + " = " + "Ф.ГоризонтальноеВыравнивание." + compValue + ";");
                 return;
@@ -1556,6 +1952,11 @@ namespace osfDesigner
                     DateTime1.ToString("ss") + ");");
                 return;
             }
+            if (valueName == "Заполнение" && (val.GetType() == typeof(osfDesigner.DataGridViewCellStyle) || (val.GetType() == typeof(osfDesigner.DataGridViewCellStyleHeaders))))	
+            {
+                AddToScript(compName + "." + valueName + " = " + "Ф.Заполнение(" + compValue.Replace(";", ",") + ");");
+                return;
+            }	
         }
         
         private static void AddToScript(string str)
@@ -1612,7 +2013,6 @@ namespace osfDesigner
                 MenuItemEntry1 = OneScriptFormsDesigner.RevertSimilarObj(menuItem.MenuItems[i]);
                 PropertyDescriptor pd = TypeDescriptor.GetProperties(MenuItemEntry1.Parent)["Name"];
                 string strParent = (string)pd.GetValue(MenuItemEntry1.Parent);
-
                 string strName = MenuItemEntry1.Name.Contains("Сепаратор") ? "-" : MenuItemEntry1.Text;
                 AddToScript(MenuItemEntry1.Name + " = " + strParent + ".ЭлементыМеню.Добавить(Ф.ЭлементМеню(\u0022" + strName + "\u0022));");
 
@@ -1634,10 +2034,21 @@ namespace osfDesigner
             if (comp.GetType() == typeof(osfDesigner.DataGridTableStyle) ||
                 comp.GetType() == typeof(osfDesigner.DataGridBoolColumn) ||
                 comp.GetType() == typeof(osfDesigner.DataGridTextBoxColumn) ||
-                comp.GetType() == typeof(osfDesigner.DataGridComboBoxColumnStyle))
+                comp.GetType() == typeof(osfDesigner.DataGridComboBoxColumnStyle) ||
+                comp.GetType() == typeof(osfDesigner.DataGridViewCellStyleHeaders) ||	
+                comp.GetType() == typeof(osfDesigner.DataGridViewCellStyle))
             {
                 comp_Name = comp.NameStyle;
             }
+            else if (comp.GetType() == typeof(osfDesigner.DataGridViewTextBoxColumn) ||
+                comp.GetType() == typeof(osfDesigner.DataGridViewButtonColumn) ||
+                comp.GetType() == typeof(osfDesigner.DataGridViewCheckBoxColumn) ||
+                comp.GetType() == typeof(osfDesigner.DataGridViewComboBoxColumn) ||
+                comp.GetType() == typeof(osfDesigner.DataGridViewImageColumn) ||
+                comp.GetType() == typeof(osfDesigner.DataGridViewLinkColumn))
+            {
+                comp_Name = comp.NameColumn;
+            }	
             else
             {
                 comp_Name = comp.Name;

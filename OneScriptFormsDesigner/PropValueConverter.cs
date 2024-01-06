@@ -25,6 +25,14 @@ namespace osfDesigner
                 component.GetType().ToString() == "osfDesigner.DataGridComboBoxColumnStyle" ||
                 component.GetType().ToString() == "osfDesigner.DataGridTableStyle" ||
                 component.GetType().ToString() == "osfDesigner.DataGridTextBoxColumn" ||
+                component.GetType().ToString() == "osfDesigner.DataGridViewCellStyle" ||
+                component.GetType().ToString() == "osfDesigner.DataGridViewCellStyleHeaders" ||
+                component.GetType().ToString() == "osfDesigner.DataGridViewTextBoxColumn" ||
+                component.GetType().ToString() == "osfDesigner.DataGridViewImageColumn" ||
+                component.GetType().ToString() == "osfDesigner.DataGridViewButtonColumn" ||
+                component.GetType().ToString() == "osfDesigner.DataGridViewComboBoxColumn" ||
+                component.GetType().ToString() == "osfDesigner.DataGridViewLinkColumn" ||
+                component.GetType().ToString() == "osfDesigner.DataGridViewCheckBoxColumn" ||	
                 component.GetType().ToString() == "osfDesigner.FileSystemWatcher" ||
                 component.GetType().ToString() == "osfDesigner.FolderBrowserDialog" ||
                 component.GetType().ToString() == "osfDesigner.FontDialog" ||
@@ -505,8 +513,47 @@ namespace osfDesigner
                 pi.SetValue(control, sr);
                 return;
             }
+            // Если это Дата.
+            if (displayName == "Значение" && control.GetType() == typeof(osfDesigner.DateTimePicker))
+            {
+                string[] result = valProp.Replace("Дата(", "").Replace(")", "").Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+                DateTime rez = new DateTime();
+                for (int i = 0; i < result.Length; i++)
+                {
+                    if (i == 0)
+                    {
+                        rez = rez.AddYears(Int32.Parse(result[0]) - 1);
+                    }
+                    if (i == 1)
+                    {
+                        rez = rez.AddMonths(Int32.Parse(result[1]) - 1);
+                    }
+                    if (i == 2)
+                    {
+                        rez = rez.AddDays(Int32.Parse(result[2]) - 1);
+                    }
+                    if (i == 3)
+                    {
+                        rez = rez.AddHours(Int32.Parse(result[3]));
+                    }
+                    if (i == 4)
+                    {
+                        rez = rez.AddMinutes(Int32.Parse(result[4]));
+                    }
+                    if (i == 5)
+                    {
+                        rez = rez.AddSeconds(Int32.Parse(result[5]));
+                    }
+                }
+
+                string propertyName = OneScriptFormsDesigner.GetPropName(control, displayName);
+                PropertyInfo pi = control.GetType().GetProperty(propertyName);
+                pi.SetValue(control, rez);
+                return;
+            }	
             // Если это цвет.
             if (displayName == "ОсновнойЦвет" ||
+                displayName == "ОсновнойЦветВыделенного" ||
                 displayName == "ОсновнойЦветЗаголовков" ||
                 displayName == "ПрозрачныйЦвет" ||
                 displayName == "Цвет" ||
@@ -515,10 +562,12 @@ namespace osfDesigner
                 displayName == "ЦветСетки" ||
                 displayName == "ЦветСсылки" ||
                 displayName == "ЦветФона" ||
+                displayName == "ЦветФонаВыделенного" ||
                 displayName == "ЦветФонаЗаголовка" ||
                 displayName == "ЦветФонаЗаголовков" ||
                 displayName == "ЦветФонаНечетныхСтрок" ||
-                displayName == "ЦветФонаСеткиДанных")
+                displayName == "ЦветФонаСеткиДанных" ||
+                displayName == "ЦветФонаТаблицы")
             {
                 Color Color1 = Color.Empty;
                 string strColor = valProp.Replace("\u0022", "");
@@ -593,22 +642,29 @@ namespace osfDesigner
                 return;
             }
             // Если это событие.
-            if (displayName == "ВыбранныйЭлементСеткиИзменен" ||
+            if (displayName == "ВводОтклонен" ||
+                displayName == "ВыбранныйЭлементСеткиИзменен" ||
                 displayName == "ВыделениеИзменено" ||
                 displayName == "ДатаВыбрана" ||
                 displayName == "ДатаИзменена" ||
                 displayName == "ДвойноеНажатие" ||
+                displayName == "ДвойноеНажатиеЯчейки" ||
                 displayName == "Закрыта" ||
                 displayName == "ЗначениеИзменено" ||
                 displayName == "ЗначениеСвойстваИзменено" ||
+                displayName == "ЗначениеЯчейкиИзменено" ||
                 displayName == "ИндексВыбранногоИзменен" ||
                 displayName == "КлавишаВверх" ||
                 displayName == "КлавишаВниз" ||
                 displayName == "КлавишаНажата" ||
                 displayName == "КолонкаНажатие" ||
                 displayName == "МышьНадЭлементом" ||
+                displayName == "МышьНадЯчейкой" ||
                 displayName == "МышьПокинулаЭлемент" ||
+                displayName == "МышьПокинулаЯчейку" ||
                 displayName == "Нажатие" ||
+                displayName == "НажатиеСодержимогоЯчейки" ||
+                displayName == "НажатиеЯчейки" ||
                 displayName == "ПередРазвертыванием" ||
                 displayName == "ПередРедактированиемНадписи" ||
                 displayName == "ПоложениеИзменено" ||
@@ -618,18 +674,25 @@ namespace osfDesigner
                 displayName == "ПриАктивизации" ||
                 displayName == "ПриАктивизацииЭлемента" ||
                 displayName == "ПриВходе" ||
+                displayName == "ПриВходеВСтроку" ||
+                displayName == "ПриВходеВЯчейку" ||
                 displayName == "ПриВыпадении" ||
                 displayName == "ПриДеактивации" ||
                 displayName == "ПриЗагрузке" ||
                 displayName == "ПриЗадержкеМыши" ||
                 displayName == "ПриЗакрытии" ||
                 displayName == "ПриИзменении" ||
+                displayName == "ПриНажатииЗаголовкаКолонки" ||
+                displayName == "ПриНажатииЗаголовкаСтроки" ||
                 displayName == "ПриНажатииКнопки" ||
                 displayName == "ПриНажатииКнопкиМыши" ||
+                displayName == "ПриНажатииКнопкиМышиВЯчейке" ||
                 displayName == "ПриОтпусканииМыши" ||
+                displayName == "ПриОтпусканииМышиНадЯчейкой" ||
                 displayName == "ПриПереименовании" ||
                 displayName == "ПриПеремещении" ||
                 displayName == "ПриПеремещенииМыши" ||
+                displayName == "ПриПеремещенииМышиНадЯчейкой" ||
                 displayName == "ПриПерерисовке" ||
                 displayName == "ПриПотереФокуса" ||
                 displayName == "ПриПрокручивании" ||
@@ -637,9 +700,14 @@ namespace osfDesigner
                 displayName == "ПриСрабатыванииТаймера" ||
                 displayName == "ПриУдалении" ||
                 displayName == "ПриУходе" ||
+                displayName == "ПриУходеИзСтроки" ||
+                displayName == "ПриУходеИзЯчейки" ||
                 displayName == "РазмерИзменен" ||
+                displayName == "РедактированиеЯчейкиЗавершено" ||
+                displayName == "РедактированиеЯчейкиНачато" ||
                 displayName == "СсылкаНажата" ||
                 displayName == "ТекстИзменен" ||
+                displayName == "ТекущаяЯчейкаИзменена" ||
                 displayName == "ТекущаяЯчейкаИзменена" ||
                 displayName == "ЭлементДобавлен" ||
                 displayName == "ЭлементПомечен" ||
@@ -656,7 +724,9 @@ namespace osfDesigner
             if (displayName == "ВыбранныйПуть" ||
                 displayName == "Заголовок" ||
                 displayName == "ИмяОтображаемого" ||
+                displayName == "ИмяСвойстваДанных" ||
                 displayName == "ИмяСтиля" ||
+                displayName == "Маска" ||
                 displayName == "ИмяФайла" ||
                 displayName == "НачальныйКаталог" ||
                 displayName == "Описание" ||
@@ -666,6 +736,7 @@ namespace osfDesigner
                 displayName == "РазделительПути" ||
                 displayName == "РасширениеПоУмолчанию" ||
                 displayName == "СимволПароля" ||
+                displayName == "СимволПриглашения" ||
                 displayName == "Текст" ||
                 displayName == "ТекстЗаголовка" ||
                 displayName == "ТекстПодсказки" ||
@@ -681,14 +752,24 @@ namespace osfDesigner
                 {
                     valProp = valProp.Replace("\u0022", "");
                 }
-                string propertyName = OneScriptFormsDesigner.GetPropName(control, displayName);
-                control.GetType().GetProperty(propertyName).SetValue(control, valProp);
+                try
+                {
+                    string propertyName = OneScriptFormsDesigner.GetPropName(control, displayName);
+                    control.GetType().GetProperty(propertyName).SetValue(control, valProp);
+                }
+                catch
+                {
+                    string propertyName = OneScriptFormsDesigner.GetPropName(control, displayName);
+                    control.GetType().GetProperty(propertyName).SetValue(control, Convert.ToChar(valProp));
+                }
                 return;
             }
             // Если это Число.
             if (displayName == "АвтоЗадержка" ||
                 displayName == "АвтоЗадержкаПоказа" ||
                 displayName == "БольшоеИзменение" ||
+                displayName == "ВесЗаполнения" ||
+                displayName == "ВысотаЗаголовковКолонок" ||
                 displayName == "ВысотаЭлемента" ||
                 displayName == "ГоризонтальнаяМера" ||
                 displayName == "ЗадержкаОчередногоПоказа" ||
@@ -725,9 +806,20 @@ namespace osfDesigner
                 displayName == "Ширина" ||
                 displayName == "ШиринаВыпадающегоСписка" ||
                 displayName == "ШиринаЗаголовковСтрок" ||
-                displayName == "ШиринаКолонки")
+                displayName == "ШиринаКолонки" ||
+                displayName == "ШиринаРазделителя")	
             {
                 string propertyName = OneScriptFormsDesigner.GetPropName(control, displayName);
+                if (displayName == "ВесЗаполнения")
+                {
+                    control.FillWeight = Int32.Parse(valProp);
+                    return;
+                }	
+                else if (displayName == "Масштаб")
+                {
+                    control.ZoomFactor = Decimal.Parse(valProp.Replace(".", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator));
+                    return;
+                }	
                 try
                 {
                     control.GetType().GetProperty(propertyName).SetValue(control, Decimal.Parse(valProp.Replace(".", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator)));
@@ -798,6 +890,7 @@ namespace osfDesigner
             }
             // Если это Перечисление.
             if (displayName == "АвтоРазмер" ||
+                displayName == "АвтоШиринаЗаголовковСтрок" ||
                 displayName == "Активация" ||
                 displayName == "Выравнивание" ||
                 displayName == "ВыравниваниеИзображения" ||
@@ -805,16 +898,25 @@ namespace osfDesigner
                 displayName == "ВыравниваниеПриРаскрытии" ||
                 displayName == "ВыравниваниеТекста" ||
                 displayName == "ГлубинаЦвета" ||
+                displayName == "ИзменяемыйРазмер" ||
+                displayName == "РежимАвтоРазмера" ||
+                displayName == "РежимСортировки" ||	
+                displayName == "КопироватьМаску" ||
                 displayName == "КорневойКаталог" ||
                 displayName == "НачальноеПоложение" ||
                 displayName == "Оформление" ||
                 displayName == "ПервыйДеньНедели" ||
+                displayName == "Перенос" ||
                 displayName == "ПлоскийСтиль" ||
                 displayName == "ПоведениеСсылки" ||
                 displayName == "ПолосыПрокрутки" ||
                 displayName == "РазмещениеФоновогоИзображения" ||
                 displayName == "РегистрСимволов" ||
+                displayName == "РежимАвтоРазмераКолонок" ||
+                displayName == "РежимАвтоРазмераСтрок" ||
+                displayName == "РежимВставки" ||
                 displayName == "РежимВыбора" ||
+                displayName == "РежимВысотыЗаголовковКолонок" ||
                 displayName == "РежимМасштабирования" ||
                 displayName == "РежимОтображения" ||
                 displayName == "РежимРисования" ||
@@ -832,6 +934,7 @@ namespace osfDesigner
                 displayName == "ТипСлияния" ||
                 displayName == "ФильтрУведомлений" ||
                 displayName == "Формат" ||
+                displayName == "ФорматМаски" ||
                 displayName == "Якорь")
             {
                 string enumName = OneScriptFormsDesigner.ParseBetween(valProp, "Ф.", ".");
@@ -862,6 +965,17 @@ namespace osfDesigner
                 if (component.GetType() == typeof(osfDesigner.ToolBarButton))
                 {
                     ((osfDesigner.ToolBarButton)component).Style = (osfDesigner.ToolBarButtonStyle)rez;
+                }
+                if (component.GetType() == typeof(osfDesigner.TabPage))
+                {
+                    ((osfDesigner.TabPage)component).BorderStyle = (osfDesigner.BorderStyle)rez;
+                }	
+                if (component.GetType() == typeof(osfDesigner.DataGridComboBoxColumnStyle))
+                {
+                    if (displayName == "Выравнивание")
+                    {
+                        ((osfDesigner.DataGridComboBoxColumnStyle)component).Alignment = (osfDesigner.HorizontalAlignment)rez;
+                    }
                 }
                 if ((displayName == "Стыковка" && component.GetType() != typeof(osfDesigner.ToolBar)) ||
                     (displayName == "Стыковка" && component.GetType() != typeof(osfDesigner.Splitter)) ||
@@ -938,6 +1052,26 @@ namespace osfDesigner
                 string propertyName = OneScriptFormsDesigner.GetPropName(control, displayName);
                 PropertyInfo pi = control.GetType().GetProperty(propertyName);
                 pi.SetValue(control, rez);
+                return;
+            }
+            if (displayName == "Заполнение" && (control.GetType() == typeof(osfDesigner.DataGridViewCellStyle) || (control.GetType() == typeof(osfDesigner.DataGridViewCellStyleHeaders))))
+            {
+                string[] result = valProp.Replace("Ф.Заполнение(", "").Replace(")", "").Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+                int left = 0;
+                int top = 0;
+                int right = 0;
+                int bottom = 0;
+                for (int i = 0; i < result.Length; i++)
+                {
+                    left = Convert.ToInt32(result[0]);
+                    top = Convert.ToInt32(result[1]);
+                    right = Convert.ToInt32(result[2]);
+                    bottom = Convert.ToInt32(result[3]);
+                }
+                System.Windows.Forms.Padding Padding1 = new System.Windows.Forms.Padding(left, top, right, bottom);
+                string propertyName = OneScriptFormsDesigner.GetPropName(control, displayName);
+                PropertyInfo pi = control.GetType().GetProperty(propertyName);
+                pi.SetValue(control, Padding1);
                 return;
             }
         }
