@@ -48,6 +48,7 @@ namespace osfDesigner
         void CopyOnDesignSurface();
         void PasteOnDesignSurface();
         void DeleteOnDesignSurface();
+        void DeleteOnDesignSurfaceWithoutWarning();
         void SwitchTabOrder();
 
         //* 17.12.2021 perfolenta

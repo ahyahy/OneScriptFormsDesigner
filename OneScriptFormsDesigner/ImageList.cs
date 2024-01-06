@@ -6,7 +6,7 @@ namespace osfDesigner
 {
     public class ImageList : System.Windows.Forms.Timer
     {
-        MyList _images = new MyList();
+        public MyList _images = new MyList();
         public System.Windows.Forms.ImageList M_ImageList;
 
         public ImageList()
