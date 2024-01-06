@@ -1,4 +1,4 @@
-﻿// Скрипт читает файлы справки в C:\444\OneScriptFormsruForDesigner\ и создает *.cs файлы в каталоге C:\444\ВыгрузкаДизайнера\
+﻿// Скрипт читает файлы справки в C:\444\OneScriptFormsru\ и создает *.cs файлы в каталоге C:\444\ВыгрузкаДизайнера\
 // Из каталога C:\444\ВыгрузкаДизайнера\ файлы *.cs можно скопировать в каталог проекта.
 
 Перем СтрДирективы, СтрШапка, СтрРазделОбъявленияПеременных, СтрКонструктор, СтрСвойства, СтрМетоды, СтрПодвал, СтрВыгрузкиПеречислений;
@@ -64,13 +64,32 @@
 		ИмяКонтекстКлассаАнгл = "OpenFileDialog" или 
 		ИмяКонтекстКлассаАнгл = "SaveFileDialog" или 
 		ИмяКонтекстКлассаАнгл = "Timer" или 
+		ИмяКонтекстКлассаАнгл = "ColumnHeader" или 
 		ИмяКонтекстКлассаАнгл = "ToolTip" Тогда
 		Стр = 
 		"using System.ComponentModel;
 		|";
 		Возврат Стр;
-	ИначеЕсли ИмяКонтекстКлассаАнгл = "ColumnHeader" или 
-		ИмяКонтекстКлассаАнгл = "FileSystemWatcher" или 
+	ИначеЕсли ИмяКонтекстКлассаАнгл = "DataGridViewButtonColumn" или 
+		ИмяКонтекстКлассаАнгл = "DataGridViewCheckBoxColumn" или 
+		ИмяКонтекстКлассаАнгл = "DataGridViewComboBoxColumn" или 
+		ИмяКонтекстКлассаАнгл = "DataGridViewTextBoxColumn" Тогда
+		Стр = 
+		"using System.ComponentModel;
+		|using System; 
+		|using System.Drawing.Design;
+		|";
+		Возврат Стр;
+	ИначеЕсли ИмяКонтекстКлассаАнгл = "DataGridViewImageColumn" или 
+		ИмяКонтекстКлассаАнгл = "DataGridViewLinkColumn" Тогда
+		Стр = 
+		"using System.ComponentModel;
+		|using System; 
+		|using System.Drawing;
+		|using System.Drawing.Design;
+		|";
+		Возврат Стр;
+	ИначеЕсли ИмяКонтекстКлассаАнгл = "FileSystemWatcher" или 
 		ИмяКонтекстКлассаАнгл = "MainMenu" или 
 		ИмяКонтекстКлассаАнгл = "NotifyIcon" или 
 		ИмяКонтекстКлассаАнгл = "StatusBarPanel" Тогда
@@ -116,6 +135,8 @@
 		ИмяКонтекстКлассаАнгл = "RadioButton" или 
 		ИмяКонтекстКлассаАнгл = "Splitter" или 
 		ИмяКонтекстКлассаАнгл = "StatusBar" или 
+		ИмяКонтекстКлассаАнгл = "DataGridViewCellStyle" или 
+		ИмяКонтекстКлассаАнгл = "DataGridView" или 
 		ИмяКонтекстКлассаАнгл = "TabControl" Тогда
 		Стр = 
 		"using System.ComponentModel;
@@ -138,7 +159,6 @@
 	ИначеЕсли ИмяКонтекстКлассаАнгл = "Form" Тогда
 		Стр = 
 		"using System.ComponentModel;
-		|using System.Collections;
 		|using System.Drawing.Design;
 		|using System.Drawing;
 		|using System.Windows.Forms;
@@ -154,6 +174,17 @@
 		|using System.Drawing.Design; 
 		|using System.Drawing;
 		|using System.Windows.Forms.Design;
+		|using System.Windows.Forms;
+		|using System;
+		|";
+		Возврат Стр;
+	ИначеЕсли ИмяКонтекстКлассаАнгл = "MaskedTextBox" Тогда
+		Стр = 
+		"using System.ComponentModel;
+		|using System.ComponentModel.Design;
+		|using System.Windows.Forms.Design;
+		|using System.Drawing.Design; 
+		|using System.Drawing;
 		|using System.Windows.Forms;
 		|using System;
 		|";
@@ -193,6 +224,14 @@
 		(Пар1 = "DataGridBoolColumn") или 
 		(Пар1 = "DataGridTextBoxColumn") или 
 		(Пар1 = "DataGridTableStyle") или 
+		(Пар1 = "DataGridView") или 
+		(Пар1 = "DataGridViewTextBoxColumn") или 
+		(Пар1 = "DataGridViewButtonColumn") или 
+		(Пар1 = "DataGridViewCheckBoxColumn") или 
+		(Пар1 = "DataGridViewComboBoxColumn") или 
+		(Пар1 = "DataGridViewImageColumn") или 
+		(Пар1 = "DataGridViewLinkColumn") или 
+		(Пар1 = "DataGridViewCellStyle") или 
 		(Пар1 = "DateTimePicker") или 
 		(Пар1 = "FontDialog") или 
 		(Пар1 = "Form") или 
@@ -214,6 +253,7 @@
 		(Пар1 = "TabControl") или 
 		(Пар1 = "TabPage") или 
 		(Пар1 = "TextBox") или 
+		(Пар1 = "MaskedTextBox") или 
 		(Пар1 = "ToolBarButton") или 
 		(Пар1 = "Timer") или 
 		(Пар1 = "ToolBar") или 
@@ -268,7 +308,7 @@
 Функция РазделОбъявленияПеременных(ИмяФайлаЧленов, ИмяКласса)
 	Стр = "";
 	Если ИмяКласса = "ImageList" Тогда
-		Стр = "        MyList _images = new MyList();";
+		Стр = "        public MyList _images = new MyList();";
 		Стр = Стр + "
 		|        public System.Windows.Forms.ImageList M_ImageList;";
 	КонецЕсли;
@@ -286,6 +326,7 @@
 		ИмяКласса = "PictureBox" или 
 		ИмяКласса = "ListBox" или 
 		ИмяКласса = "ListView" или 
+		ИмяКласса = "MaskedTextBox" или 
 		ИмяКласса = "ComboBox" Тогда
 		Стр = "        private int tic = 0; // Счетчик для правильной работы смарт-тэгов.";
 	КонецЕсли;
@@ -308,6 +349,12 @@
 		ИмяКласса = "DataGrid" или 
 		ИмяКласса = "DataGridBoolColumn" или 
 		ИмяКласса = "DataGridTextBoxColumn" или 
+		ИмяКласса = "DataGridViewTextBoxColumn" или 
+		ИмяКласса = "DataGridViewButtonColumn" или 
+		ИмяКласса = "DataGridViewCheckBoxColumn" или 
+		ИмяКласса = "DataGridViewComboBoxColumn" или 
+		ИмяКласса = "DataGridViewImageColumn" или 
+		ИмяКласса = "DataGridViewLinkColumn" или 
 		ИмяКласса = "DateTimePicker" или  
 		ИмяКласса = "FileSystemWatcher" или 
 		ИмяКласса = "FolderBrowserDialog" или 
@@ -316,7 +363,6 @@
 		ИмяКласса = "GroupBox" или 
 		ИмяКласса = "HScrollBar" или 
 		ИмяКласса = "Label" или 
-		ИмяКласса = "LinkLabel" или 
 		ИмяКласса = "ListView" или 
 		ИмяКласса = "ListViewItem" или 
 		ИмяКласса = "ListViewSubItem" или 
@@ -329,7 +375,6 @@
 		ИмяКласса = "Process" или 
 		ИмяКласса = "ProgressBar" или 
 		ИмяКласса = "PropertyGrid" или 
-		ИмяКласса = "RadioButton" или 
 		ИмяКласса = "RichTextBox" или 
 		ИмяКласса = "SaveFileDialog" или 
 		ИмяКласса = "Splitter" или 
@@ -337,6 +382,7 @@
 		ИмяКласса = "StatusBarPanel" или 
 		ИмяКласса = "TabControl" или 
 		ИмяКласса = "TextBox" или 
+		ИмяКласса = "MaskedTextBox" или 
 		ИмяКласса = "Timer" или 
 		ИмяКласса = "ToolBar" или 
 		ИмяКласса = "ToolTip" или 
@@ -347,6 +393,85 @@
 		"
 		|        public " + ИмяКласса + "()
 		|        {
+		|        }
+		|";
+	ИначеЕсли ИмяКласса = "RadioButton" Тогда 
+		Стр = 
+		"
+		|        public RadioButton()
+		|        {
+		|            TabStop = true; // Для корректного тестирования свойства ТабФокус (TabStop).
+		|        }
+		|";
+	ИначеЕсли ИмяКласса = "LinkLabel" Тогда 
+		Стр = 
+		"
+		|        public LinkLabel()
+		|        {
+		|            Text = ""AnyString""; // Для корректного тестирования свойства ТабФокус (TabStop).
+		|        }
+		|";
+	ИначеЕсли ИмяКласса = "DataGridView" Тогда 
+		Стр = 
+		"
+		|        public DataGridView()
+		|        {
+		|            columnHeadersDefaultCellStyle = new DataGridViewCellStyleHeaders(base.ColumnHeadersDefaultCellStyle);
+		|            rowHeadersDefaultCellStyle = new DataGridViewCellStyleHeaders(base.RowHeadersDefaultCellStyle);
+		|
+		|            columnHeadersDefaultCellStyle.NameStyle = """";
+		|            rowHeadersDefaultCellStyle.NameStyle = """";
+		|
+		|            columnHeadersDefaultCellStyle.DefaultValues = @""
+		|ОсновнойЦвет == ТекстОкна
+		|ОсновнойЦветВыделенного == ТекстВыбранных
+		|ЦветФона == ЛицеваяЭлемента
+		|ЦветФонаВыделенного == ФонВыбранных
+		|Шрифт == Microsoft Sans Serif; 7,8pt
+		|Выравнивание == СерединаЛево
+		|Заполнение == 0; 0; 0; 0
+		|Перенос == Истина
+		|ИмяСтиля == Таблица1СтильЯчейки
+		|"";
+		|            rowHeadersDefaultCellStyle.DefaultValues = @""
+		|ОсновнойЦвет == ТекстОкна
+		|ОсновнойЦветВыделенного == ТекстВыбранных
+		|ЦветФона == ЛицеваяЭлемента
+		|ЦветФонаВыделенного == ФонВыбранных
+		|Шрифт == Microsoft Sans Serif; 7,8pt
+		|Выравнивание == СерединаЛево
+		|Заполнение == 0; 0; 0; 0
+		|Перенос == Истина
+		|ИмяСтиля == Таблица1СтильЯчейки
+		|"";
+		|        }
+		|";
+	ИначеЕсли ИмяКласса = "DataGridViewCellStyle" Тогда 
+		Стр = 
+		"
+		|        [Browsable(false)]
+		|        public System.Windows.Forms.DataGridViewCellStyle OriginalObj { get; set; }
+		|
+		|        public DataGridViewCellStyle(System.Windows.Forms.DataGridViewCellStyle p1) : base(p1)
+		|        {
+		|            OriginalObj = p1;
+		|        }//
+		|        
+		|        public " + ИмяКласса + "()
+		|        {
+		|        }//
+		|
+		|        public DataGridViewCellStyle(string nameStyle, osfDesigner.DataGridView dataGridView)
+		|        {
+		|            NameStyle = nameStyle;
+		|            Alignment = osfDesigner.DataGridViewContentAlignment.СерединаЛево;
+		|            ForeColor = Color.FromName(System.Drawing.KnownColor.ControlText.ToString());
+		|            SelectionForeColor = Color.FromName(System.Drawing.KnownColor.HighlightText.ToString());
+		|            BackColor = Color.FromName(System.Drawing.KnownColor.Window.ToString());
+		|            SelectionBackColor = Color.FromName(System.Drawing.KnownColor.Highlight.ToString());
+		|            Padding = new System.Windows.Forms.Padding(0, 0, 0, 0);
+		|            WrapMode = DataGridViewTriState.Ложь;
+		|            Font = new Font(dataGridView.Font, dataGridView.Font.Style);
 		|        }
 		|";
 	ИначеЕсли ИмяКласса = "ComboBox" Тогда 
@@ -584,7 +709,7 @@
 	СписокСтрПеречислений = Новый СписокЗначений;//перечисления взятые из OneScriptForms.html
 	
 	ТекстДок = Новый ТекстовыйДокумент;
-	ТекстДок.Прочитать("C:\444\OneScriptFormsruForDesigner\OneScriptForms.html");
+	ТекстДок.Прочитать("C:\444\OneScriptFormsru\OneScriptForms.html");
 	Стр = ТекстДок.ПолучитьТекст();
 	//находим текст таблицы
 	СтрТаблица = СтрНайтиМежду(Стр, "<H3 class=dtH3>Перечисления</H3>", "</TBODY></TABLE>", Ложь,);
@@ -620,7 +745,7 @@
 			СтрХ = М07[0];
 			СтрХ = СтрЗаменить(СтрХ, "&nbsp;", " ");
 			
-			ИмяФайлаСвойства = "C:\444\OneScriptFormsruForDesigner\" + СтрНайтиМежду(СтрХ, "<A href=""", """>", ,)[0];
+			ИмяФайлаСвойства = "C:\444\OneScriptFormsru\" + СтрНайтиМежду(СтрХ, "<A href=""", """>", ,)[0];
 			ТекстДокСвойства = Новый ТекстовыйДокумент;
 			ТекстДокСвойства.Прочитать(ИмяФайлаСвойства);
 			СтрТекстДокСвойства = ТекстДокСвойства.ПолучитьТекст();
@@ -640,7 +765,7 @@
 				СкрытыеСвойства.Добавить(СвойствоАнгл);
 			КонецЕсли;
 			
-			Сообщить("ИмяКонтекстКлассаАнгл = " + ИмяКонтекстКлассаАнгл + " СвойствоРус = " + СвойствоРус);
+			// // // Сообщить("ИмяКонтекстКлассаАнгл = " + ИмяКонтекстКлассаАнгл + " СвойствоРус = " + СвойствоРус);
 			
 			// пропустим обработку некоторых свойств
 			Если ((СвойствоРус = "АктивнаяФорма")) или 
@@ -660,7 +785,12 @@
 				((СвойствоРус = "ИндексыВыбранных") и (ИмяКонтекстКлассаАнгл = "ListBox")) или 
 				((СвойствоРус = "ИсточникДанных") и (ИмяКонтекстКлассаАнгл = "ComboBox")) или 
 				((СвойствоРус = "ИсточникДанных") и (ИмяКонтекстКлассаАнгл = "DataGrid")) или 
+				((СвойствоРус = "ИсточникДанных") и (ИмяКонтекстКлассаАнгл = "DataGridView")) или 
 				((СвойствоРус = "ИсточникДанных") и (ИмяКонтекстКлассаАнгл = "ListBox")) или 
+				((СвойствоРус = "ИсточникДанных") и (ИмяКонтекстКлассаАнгл = "DataGridViewComboBoxColumn")) или 
+				((СвойствоРус = "СоответствиеДляНеопределено") и (ИмяКонтекстКлассаАнгл = "DataGridViewCheckBoxColumn")) или 
+				((СвойствоРус = "СоответствиеДляНеПомечен") и (ИмяКонтекстКлассаАнгл = "DataGridViewCheckBoxColumn")) или 
+				((СвойствоРус = "СоответствиеДляПомечен") и (ИмяКонтекстКлассаАнгл = "DataGridViewCheckBoxColumn")) или 
 				((СвойствоРус = "КлиентВысота")) или 
 				((СвойствоРус = "КлиентШирина")) или 
 				((СвойствоРус = "КнопкиМыши")) или 
@@ -683,13 +813,13 @@
 				((СвойствоРус = "РазмерШрифта")) или 
 				((СвойствоРус = "СостояниеОкна")) или 
 				((СвойствоРус = "СтандартныйВывод") и (ИмяКонтекстКлассаАнгл = "Process")) или 
-				
 				((СвойствоРус = "Сценарий") и (ИмяКонтекстКлассаАнгл = "Form")) или 
 				((СвойствоРус = "КонтекстноеМеню") и (ИмяКонтекстКлассаАнгл = "NotifyIcon")) или 
 				((СвойствоРус = "ДвойноеНажатие") и (ИмяКонтекстКлассаАнгл = "DataGridTextBoxColumn")) или 
-				
+				((СвойствоРус = "Активен") и (ИмяКонтекстКлассаАнгл = "Timer")) или 
 				((СвойствоРус = "Тип")) или 
 				((СвойствоРус = "ЧленДанных") и (ИмяКонтекстКлассаАнгл = "DataGrid")) или 
+				((СвойствоРус = "ЧленДанных") и (ИмяКонтекстКлассаАнгл = "DataGridView")) или 
 				((СвойствоРус = "ЭлементыСетки")) или 
 				((СвойствоРус = "ЭлементыУправления")) Тогда
 				Продолжить;
@@ -706,6 +836,8 @@
 			Иначе
 				ТипВозвращаемогоЗначения = СтрЗаменить(СтрЗначение, "Тип: ", "");
 			КонецЕсли;
+			
+			// // // Сообщить("ТипВозвращаемогоЗначения = " + ТипВозвращаемогоЗначения);
 			
 			Описание = "";
 			Если СтрНайтиМежду(СтрРаздела, "<P>", "</P>", ,).Количество() > 1 Тогда
@@ -759,6 +891,10 @@
 				Комментарий = "";
 				
 				
+			///////////////////////////////////////////////
+			ИначеЕсли ТипВозвращаемогоЗначения = "Action" Тогда
+				ТипВозвращаемогоЗначения = "string";
+				Комментарий = "";
 			ИначеЕсли ТипВозвращаемогоЗначения = "Произвольный." Тогда
 				ТипВозвращаемогоЗначения = "dynamic";
 			ИначеЕсли (СвойствоАнгл = "Columns") и (ИмяКонтекстКлассаАнгл = "ListView") Тогда
@@ -785,7 +921,7 @@
 				Комментарий = "";
 				// если это перечисление, добавляем строки в РазделОбъявленияПеременных и в Конструктор
 				// узнаем класс это или перечисление
-				ИмяФайлаТипаВозвращаемогоЗначения = "C:\444\OneScriptFormsruForDesigner\" + СтрНайтиМежду(СтрРаздела, "<A href=""", """>", ,)[0];
+				ИмяФайлаТипаВозвращаемогоЗначения = "C:\444\OneScriptFormsru\" + СтрНайтиМежду(СтрРаздела, "<A href=""", """>", ,)[0];
 				
 				ТекстДок1 = Новый ТекстовыйДокумент;
 				ТекстДок1.Прочитать(ИмяФайлаТипаВозвращаемогоЗначения);
@@ -796,7 +932,7 @@
 				
 				ИначеЕсли СтрНайти(ИмяКлассаИлиПеречисления,"Перечисление") > 0 Тогда
 					ТипВозвращаемогоЗначенияЭтоПеречисление = Истина;
-					// Стр5 = СтрЗаменить(ИмяФайлаТипаВозвращаемогоЗначения, "C:\444\OneScriptFormsruForDesigner\OneScriptForms.", "");
+					// Стр5 = СтрЗаменить(ИмяФайлаТипаВозвращаемогоЗначения, "C:\444\OneScriptFormsru\OneScriptForms.", "");
 					// Стр5 = СтрЗаменить(Стр5, ".html", "");
 					// // // СтрРазделОбъявленияПеременных = СтрРазделОбъявленияПеременных + Символы.ПС +
 					// // // "        private osfDesigner." + Стр5 + " _" + СвойствоАнгл + ";";
@@ -896,6 +1032,12 @@
 					СвойствоАнгл = "ItemSize" Тогда
 				TypeConverterAttribute = СтрЗаменить(TypeConverterAttribute, "typeof()", "typeof(MySizeConverter)");
 				TypeConverterAttribute = СтрЗаменить(TypeConverterAttribute, "//", "");
+			ИначеЕсли (СвойствоАнгл = "SelectionForeColor") и (ИмяКонтекстКлассаАнгл = "DataGridViewCellStyle") Тогда
+				TypeConverterAttribute = СтрЗаменить(TypeConverterAttribute, "typeof()", "typeof(MyColorConverter)");
+				TypeConverterAttribute = СтрЗаменить(TypeConverterAttribute, "//", "");
+			ИначеЕсли (СвойствоАнгл = "SelectionBackColor") и (ИмяКонтекстКлассаАнгл = "DataGridViewCellStyle") Тогда
+				TypeConverterAttribute = СтрЗаменить(TypeConverterAttribute, "typeof()", "typeof(MyColorConverter)");
+				TypeConverterAttribute = СтрЗаменить(TypeConverterAttribute, "//", "");
 			ИначеЕсли (СвойствоАнгл = "ForeColor") или 
 					(СвойствоАнгл = "Color") или 
 					(СвойствоАнгл = "LinkColor") или 
@@ -917,7 +1059,8 @@
 			ИначеЕсли СвойствоАнгл = "Location" Тогда
 				TypeConverterAttribute = СтрЗаменить(TypeConverterAttribute, "typeof()", "typeof(MyLocationConverter)");
 				TypeConverterAttribute = СтрЗаменить(TypeConverterAttribute, "//", "");
-			ИначеЕсли СвойствоАнгл = "BackgroundImage" или 
+			ИначеЕсли (СвойствоАнгл = "BackgroundImage") или 
+					(СвойствоАнгл = "Bitmap") или 
 					(СвойствоАнгл = "Image") Тогда
 				TypeConverterAttribute = СтрЗаменить(TypeConverterAttribute, "typeof()", "typeof(MyImageConverter)");
 				TypeConverterAttribute = СтрЗаменить(TypeConverterAttribute, "//", "");
@@ -989,6 +1132,29 @@
 			ИначеЕсли (СвойствоАнгл = "Panels") и (ИмяКонтекстКлассаАнгл = "StatusBar") Тогда
 				TypeConverterAttribute = СтрЗаменить(TypeConverterAttribute, "typeof()", "typeof(MyCollectionConverter)");
 				TypeConverterAttribute = СтрЗаменить(TypeConverterAttribute, "//", "");
+			ИначеЕсли (СвойствоАнгл = "Items") и (ИмяКонтекстКлассаАнгл = "DataGridViewComboBoxColumn") Тогда
+				TypeConverterAttribute = СтрЗаменить(TypeConverterAttribute, "typeof()", "typeof(MyCollectionConverter)");
+				TypeConverterAttribute = СтрЗаменить(TypeConverterAttribute, "//", "");
+			ИначеЕсли (СвойствоАнгл = "Columns") и (ИмяКонтекстКлассаАнгл = "DataGridView") Тогда
+				TypeConverterAttribute = СтрЗаменить(TypeConverterAttribute, "typeof()", "typeof(MyCollectionConverter)");
+				TypeConverterAttribute = СтрЗаменить(TypeConverterAttribute, "//", "");
+			ИначеЕсли (СвойствоАнгл = "Padding") и (ИмяКонтекстКлассаАнгл = "DataGridViewCellStyle") Тогда
+				TypeConverterAttribute = СтрЗаменить(TypeConverterAttribute, "typeof()", "typeof(MyPaddingConverter)");
+				TypeConverterAttribute = СтрЗаменить(TypeConverterAttribute, "//", "");
+			ИначеЕсли (СвойствоАнгл = "DefaultCellStyle") и (ИмяКонтекстКлассаАнгл = "DataGridViewButtonColumn" или 
+					ИмяКонтекстКлассаАнгл = "DataGridViewCheckBoxColumn" или 
+					ИмяКонтекстКлассаАнгл = "DataGridViewComboBoxColumn" или 
+					ИмяКонтекстКлассаАнгл = "DataGridViewImageColumn" или 
+					ИмяКонтекстКлассаАнгл = "DataGridViewLinkColumn" или 
+					ИмяКонтекстКлассаАнгл = "DataGridViewTextBoxColumn") Тогда
+				TypeConverterAttribute = СтрЗаменить(TypeConverterAttribute, "typeof()", "typeof(MyDataGridViewCellStyleConverter)");
+				TypeConverterAttribute = СтрЗаменить(TypeConverterAttribute, "//", "");
+			ИначеЕсли (СвойствоАнгл = "ColumnHeadersDefaultCellStyle") и (ИмяКонтекстКлассаАнгл = "DataGridView") Тогда
+				TypeConverterAttribute = СтрЗаменить(TypeConverterAttribute, "typeof()", "typeof(MyDataGridViewCellStyleConverter)");
+				TypeConverterAttribute = СтрЗаменить(TypeConverterAttribute, "//", "");
+			ИначеЕсли (СвойствоАнгл = "RowHeadersDefaultCellStyle") и (ИмяКонтекстКлассаАнгл = "DataGridView") Тогда
+				TypeConverterAttribute = СтрЗаменить(TypeConverterAttribute, "typeof()", "typeof(MyDataGridViewCellStyleConverter)");
+				TypeConverterAttribute = СтрЗаменить(TypeConverterAttribute, "//", "");
 
 				
 				
@@ -1000,6 +1166,8 @@
 				СистемныйТипПеречисления = "System.Windows.Forms.ToolBarTextAlign";
 			ИначеЕсли (СвойствоАнгл = "TextAlign") и (ИмяКонтекстКлассаАнгл = "ColumnHeader") Тогда
 				СистемныйТипПеречисления = "System.Windows.Forms.HorizontalAlignment";
+			ИначеЕсли (СвойствоАнгл = "TextAlign") и (ИмяКонтекстКлассаАнгл = "MaskedTextBox") Тогда
+				СистемныйТипПеречисления = "System.Windows.Forms.HorizontalAlignment";
 			ИначеЕсли (СвойствоАнгл = "TextAlign") или
 				(СвойствоАнгл = "ImageAlign") Тогда
 				СистемныйТипПеречисления = "System.Drawing.ContentAlignment";
@@ -1007,6 +1175,8 @@
 				СистемныйТипПеречисления = "System.Windows.Forms.FlatStyle";
 			ИначеЕсли СвойствоАнгл = "CheckAlign" Тогда
 				СистемныйТипПеречисления = "System.Drawing.ContentAlignment";
+			ИначеЕсли (СвойствоАнгл = "SelectionMode") и (ИмяКонтекстКлассаАнгл = "DataGridView") Тогда
+				СистемныйТипПеречисления = "System.Windows.Forms.DataGridViewSelectionMode";
 			ИначеЕсли СвойствоАнгл = "SelectionMode" Тогда
 				СистемныйТипПеречисления = "System.Windows.Forms.SelectionMode";
 			ИначеЕсли (СвойствоАнгл = "Appearance") и (ИмяКонтекстКлассаАнгл = "TabControl") Тогда
@@ -1047,6 +1217,8 @@
 				СистемныйТипПеречисления = "System.Windows.Forms.HorizontalAlignment";
 			ИначеЕсли (СвойствоАнгл = "Alignment") и (ИмяКонтекстКлассаАнгл = "DataGridTextBoxColumn") Тогда
 				СистемныйТипПеречисления = "System.Windows.Forms.HorizontalAlignment";
+			ИначеЕсли (СвойствоАнгл = "Alignment") и (ИмяКонтекстКлассаАнгл = "DataGridViewCellStyle") Тогда
+				СистемныйТипПеречисления = "System.Windows.Forms.DataGridViewContentAlignment";
 			ИначеЕсли СвойствоАнгл = "Alignment" Тогда
 				СистемныйТипПеречисления = "System.Windows.Forms.TabAlignment";
 			ИначеЕсли СвойствоАнгл = "Activation" Тогда
@@ -1083,24 +1255,65 @@
 				СистемныйТипПеречисления = "System.Windows.Forms.ToolBarButtonStyle";
 			ИначеЕсли (СвойствоАнгл = "AutoSize") и (ИмяКонтекстКлассаАнгл = "StatusBarPanel") Тогда
 				СистемныйТипПеречисления = "System.Windows.Forms.StatusBarPanelAutoSize";
-				
-				
-				
-				
-				
-				
-				
-				
+			ИначеЕсли (СвойствоАнгл = "TextMaskFormat") и (ИмяКонтекстКлассаАнгл = "MaskedTextBox") Тогда
+				СистемныйТипПеречисления = "System.Windows.Forms.MaskFormat";
+			ИначеЕсли (СвойствоАнгл = "CutCopyMaskFormat") и (ИмяКонтекстКлассаАнгл = "MaskedTextBox") Тогда
+				СистемныйТипПеречисления = "System.Windows.Forms.MaskFormat";
+			ИначеЕсли (СвойствоАнгл = "InsertKeyMode") и (ИмяКонтекстКлассаАнгл = "MaskedTextBox") Тогда
+				СистемныйТипПеречисления = "System.Windows.Forms.InsertKeyMode";
+			ИначеЕсли (СвойствоАнгл = "AutoResizeRowHeadersWidth") и (ИмяКонтекстКлассаАнгл = "DataGridView") Тогда
+				СистемныйТипПеречисления = "System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode";
+			ИначеЕсли (СвойствоАнгл = "ScrollBars") и (ИмяКонтекстКлассаАнгл = "DataGridView") Тогда
+				СистемныйТипПеречисления = "System.Windows.Forms.ScrollBars";
+			ИначеЕсли (СвойствоАнгл = "AutoSizeColumnsMode") и (ИмяКонтекстКлассаАнгл = "DataGridView") Тогда
+				СистемныйТипПеречисления = "System.Windows.Forms.DataGridViewAutoSizeColumnsMode";
+			ИначеЕсли (СвойствоАнгл = "AutoSizeRowsMode") и (ИмяКонтекстКлассаАнгл = "DataGridView") Тогда
+				СистемныйТипПеречисления = "System.Windows.Forms.DataGridViewAutoSizeRowMode";
+			ИначеЕсли (СвойствоАнгл = "Resizable") и (ИмяКонтекстКлассаАнгл = "DataGridViewButtonColumn" или 
+				ИмяКонтекстКлассаАнгл = "DataGridViewCheckBoxColumn" или 
+				ИмяКонтекстКлассаАнгл = "DataGridViewComboBoxColumn" или 
+				ИмяКонтекстКлассаАнгл = "DataGridViewImageColumn" или 
+				ИмяКонтекстКлассаАнгл = "DataGridViewLinkColumn" или 
+				ИмяКонтекстКлассаАнгл = "DataGridViewTextBoxColumn") Тогда
+				СистемныйТипПеречисления = "System.Windows.Forms.DataGridViewTriState";
+			ИначеЕсли (СвойствоАнгл = "AutoSizeMode") и (ИмяКонтекстКлассаАнгл = "DataGridViewButtonColumn" или 
+				ИмяКонтекстКлассаАнгл = "DataGridViewCheckBoxColumn" или 
+				ИмяКонтекстКлассаАнгл = "DataGridViewComboBoxColumn" или 
+				ИмяКонтекстКлассаАнгл = "DataGridViewImageColumn" или 
+				ИмяКонтекстКлассаАнгл = "DataGridViewLinkColumn" или 
+				ИмяКонтекстКлассаАнгл = "DataGridViewTextBoxColumn") Тогда
+				СистемныйТипПеречисления = "System.Windows.Forms.DataGridViewAutoSizeColumnMode";
+			ИначеЕсли (СвойствоАнгл = "SortMode") и (ИмяКонтекстКлассаАнгл = "DataGridViewButtonColumn" или 
+				ИмяКонтекстКлассаАнгл = "DataGridViewCheckBoxColumn" или 
+				ИмяКонтекстКлассаАнгл = "DataGridViewComboBoxColumn" или 
+				ИмяКонтекстКлассаАнгл = "DataGridViewImageColumn" или 
+				ИмяКонтекстКлассаАнгл = "DataGridViewLinkColumn" или 
+				ИмяКонтекстКлассаАнгл = "DataGridViewTextBoxColumn") Тогда
+				СистемныйТипПеречисления = "System.Windows.Forms.DataGridViewColumnSortMode";
+			ИначеЕсли (СвойствоАнгл = "WrapMode") и (ИмяКонтекстКлассаАнгл = "DataGridViewCellStyle") Тогда
+				СистемныйТипПеречисления = "System.Windows.Forms.DataGridViewTriState";
+			ИначеЕсли (СвойствоАнгл = "ImageLayout") и (ИмяКонтекстКлассаАнгл = "DataGridViewImageColumn") Тогда
+				СистемныйТипПеречисления = "System.Windows.Forms.DataGridViewImageCellLayout";
+			ИначеЕсли (СвойствоАнгл = "DisplayStyle") и (ИмяКонтекстКлассаАнгл = "DataGridViewComboBoxColumn") Тогда
+				СистемныйТипПеречисления = "System.Windows.Forms.DataGridViewComboBoxDisplayStyle";
+			ИначеЕсли (СвойствоАнгл = "ColumnHeadersHeightSizeMode") и (ИмяКонтекстКлассаАнгл = "DataGridView") Тогда
+				СистемныйТипПеречисления = "System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode";
 				
 				
 				
 			КонецЕсли;
+			
 			
 			//определим редактор типа
 			Если (СвойствоАнгл = "TextAlign") и (ИмяКонтекстКлассаАнгл = "ToolBar") Тогда
 				// пропускаем
 			ИначеЕсли (СвойствоАнгл = "TextAlign") и (ИмяКонтекстКлассаАнгл = "ColumnHeader") Тогда
 				// пропускаем
+			ИначеЕсли (СвойствоАнгл = "TextAlign") и (ИмяКонтекстКлассаАнгл = "MaskedTextBox") Тогда
+				// пропускаем
+			ИначеЕсли (СвойствоАнгл = "Mask") Тогда
+				EditorAttribute = СтрЗаменить(EditorAttribute, "typeof()", "typeof(MyMaskPropertyEditor)");
+				EditorAttribute = СтрЗаменить(EditorAttribute, "//", "");
 			ИначеЕсли (СвойствоАнгл = "TextAlign") или
 				(СвойствоАнгл = "ImageAlign") Тогда
 				EditorAttribute = СтрЗаменить(EditorAttribute, "typeof()", "typeof(MyContentAlignmentEditor)");
@@ -1124,6 +1337,12 @@
 			ИначеЕсли СвойствоАнгл = "MinimumSize" Тогда
 				EditorAttribute = СтрЗаменить(EditorAttribute, "typeof()", "typeof(MyMinimumSizeEditor)");
 				EditorAttribute = СтрЗаменить(EditorAttribute, "//", "");
+			ИначеЕсли (СвойствоАнгл = "SelectionForeColor") и (ИмяКонтекстКлассаАнгл = "DataGridViewCellStyle") Тогда
+				EditorAttribute = СтрЗаменить(EditorAttribute, "typeof()", "typeof(MyColorEditor)");
+				EditorAttribute = СтрЗаменить(EditorAttribute, "//", "");
+			ИначеЕсли (СвойствоАнгл = "SelectionBackColor") и (ИмяКонтекстКлассаАнгл = "DataGridViewCellStyle") Тогда
+				EditorAttribute = СтрЗаменить(EditorAttribute, "typeof()", "typeof(MyColorEditor)");
+				EditorAttribute = СтрЗаменить(EditorAttribute, "//", "");
 			ИначеЕсли (СвойствоАнгл = "ForeColor") или 
 					(СвойствоАнгл = "Color") или
 					(СвойствоАнгл = "LinkColor") или 
@@ -1146,6 +1365,7 @@
 				EditorAttribute = СтрЗаменить(EditorAttribute, "typeof()", "typeof(MyLocationEditor)");
 				EditorAttribute = СтрЗаменить(EditorAttribute, "//", "");
 			ИначеЕсли (СвойствоАнгл = "BackgroundImage") или 
+					(СвойствоАнгл = "Bitmap") или 
 					(СвойствоАнгл = "Image") Тогда
 				EditorAttribute = СтрЗаменить(EditorAttribute, "typeof()", "typeof(MyImageFileNameEditor)");
 				EditorAttribute = СтрЗаменить(EditorAttribute, "//", "");
@@ -1205,6 +1425,29 @@
 			ИначеЕсли (СвойствоАнгл = "NotifyFilter") и (ИмяКонтекстКлассаАнгл = "FileSystemWatcher") Тогда
 				EditorAttribute = СтрЗаменить(EditorAttribute, "typeof()", "typeof(MyNotifyFiltersEditor)");
 				EditorAttribute = СтрЗаменить(EditorAttribute, "//", "");
+			ИначеЕсли (СвойствоАнгл = "Items") и (ИмяКонтекстКлассаАнгл = "DataGridViewComboBoxColumn") Тогда
+				EditorAttribute = СтрЗаменить(EditorAttribute, "typeof()", "typeof(MyDataGridViewComboBoxCollectionEditor)");
+				EditorAttribute = СтрЗаменить(EditorAttribute, "//", "");
+			ИначеЕсли (СвойствоАнгл = "Columns") и (ИмяКонтекстКлассаАнгл = "DataGridView") Тогда
+				EditorAttribute = СтрЗаменить(EditorAttribute, "typeof()", "typeof(MyDataGridViewColumnCollectionEditor)");
+				EditorAttribute = СтрЗаменить(EditorAttribute, "//", "");
+			ИначеЕсли (СвойствоАнгл = "Padding") и (ИмяКонтекстКлассаАнгл = "DataGridViewCellStyle") Тогда
+				EditorAttribute = СтрЗаменить(EditorAttribute, "typeof()", "typeof(MyPaddingEditor)");
+				EditorAttribute = СтрЗаменить(EditorAttribute, "//", "");
+			ИначеЕсли (СвойствоАнгл = "DefaultCellStyle") и (ИмяКонтекстКлассаАнгл = "DataGridViewButtonColumn" или 
+					ИмяКонтекстКлассаАнгл = "DataGridViewCheckBoxColumn" или 
+					ИмяКонтекстКлассаАнгл = "DataGridViewComboBoxColumn" или 
+					ИмяКонтекстКлассаАнгл = "DataGridViewImageColumn" или 
+					ИмяКонтекстКлассаАнгл = "DataGridViewLinkColumn" или 
+					ИмяКонтекстКлассаАнгл = "DataGridViewTextBoxColumn") Тогда
+				EditorAttribute = СтрЗаменить(EditorAttribute, "typeof()", "typeof(MyDataGridViewCellStyleEditor)");
+				EditorAttribute = СтрЗаменить(EditorAttribute, "//", "");
+			ИначеЕсли (СвойствоАнгл = "ColumnHeadersDefaultCellStyle") и (ИмяКонтекстКлассаАнгл = "DataGridView") Тогда
+				EditorAttribute = СтрЗаменить(EditorAttribute, "typeof()", "typeof(MyColumnHeadersCellStyleEditor)");
+				EditorAttribute = СтрЗаменить(EditorAttribute, "//", "");
+			ИначеЕсли (СвойствоАнгл = "RowHeadersDefaultCellStyle") и (ИмяКонтекстКлассаАнгл = "DataGridView") Тогда
+				EditorAttribute = СтрЗаменить(EditorAttribute, "typeof()", "typeof(MyRowHeadersCellStyleEditor)");
+				EditorAttribute = СтрЗаменить(EditorAttribute, "//", "");
 			
 			
 				
@@ -1262,12 +1505,32 @@
 				|";
 				Стр = Стр + Символы.ПС;
 				Продолжить;
-			ИначеЕсли ((СвойствоРус = "СимволПароля") и (ИмяКонтекстКлассаАнгл = "TextBox")) Тогда
+			ИначеЕсли (СвойствоРус = "СимволПароля" и ИмяКонтекстКлассаАнгл = "TextBox") Тогда
 				Стр = Стр + 
 				"        public new Char PasswordChar
 				|        {
 				|            get { return base.PasswordChar; }
 				|            set { base.PasswordChar = value; }
+				|        }
+				|";
+				Стр = Стр + Символы.ПС;
+				Продолжить;
+			ИначеЕсли (СвойствоРус = "СимволПароля" и ИмяКонтекстКлассаАнгл = "MaskedTextBox") Тогда
+				Стр = Стр + 
+				"        public new Char PasswordChar
+				|        {
+				|            get { return base.PasswordChar; }
+				|            set { base.PasswordChar = value; }
+				|        }
+				|";
+				Стр = Стр + Символы.ПС;
+				Продолжить;
+			ИначеЕсли (СвойствоРус = "СимволПриглашения" и ИмяКонтекстКлассаАнгл = "MaskedTextBox") Тогда
+				Стр = Стр + 
+				"        public new Char PromptChar
+				|        {
+				|            get { return base.PromptChar; }
+				|            set { base.PromptChar = value; }
 				|        }
 				|";
 				Стр = Стр + Символы.ПС;
@@ -1468,7 +1731,7 @@
 				Продолжить;
 			ИначеЕсли (СвойствоРус = "ВыделенныеДаты") Тогда
 				СтрРазделОбъявленияПеременных = СтрРазделОбъявленияПеременных + Символы.ПС +
-				"        MyBoldedDatesList _boldedDates = new MyBoldedDatesList();";
+				"        public MyBoldedDatesList _boldedDates = new MyBoldedDatesList();";
 				Стр = Стр + 
 				"        [RefreshProperties(RefreshProperties.All)]
 				|        public MyBoldedDatesList BoldedDates_osf
@@ -1487,7 +1750,7 @@
 				Продолжить;
 			ИначеЕсли (СвойствоРус = "ЕжегодныеДаты") Тогда
 				СтрРазделОбъявленияПеременных = СтрРазделОбъявленияПеременных + Символы.ПС +
-				"        MyAnnuallyBoldedDatesList _annuallyBoldedDates = new MyAnnuallyBoldedDatesList();";
+				"        public MyAnnuallyBoldedDatesList _annuallyBoldedDates = new MyAnnuallyBoldedDatesList();";
 				Стр = Стр + 
 				"        [RefreshProperties(RefreshProperties.All)]
 				|        public MyAnnuallyBoldedDatesList AnnuallyBoldedDates_osf
@@ -1506,7 +1769,7 @@
 				Продолжить;
 			ИначеЕсли (СвойствоРус = "ЕжемесячныеДаты") Тогда
 				СтрРазделОбъявленияПеременных = СтрРазделОбъявленияПеременных + Символы.ПС +
-				"        MyMonthlyBoldedDatesList _monthlyBoldedDates = new MyMonthlyBoldedDatesList();";
+				"        public MyMonthlyBoldedDatesList _monthlyBoldedDates = new MyMonthlyBoldedDatesList();";
 				Стр = Стр + 
 				"        [RefreshProperties(RefreshProperties.All)]
 				|        public MyMonthlyBoldedDatesList MonthlyBoldedDates_osf
@@ -1558,6 +1821,42 @@
 				|        {
 				|            get { return base.IntegralHeight; }
 				|            set { base.IntegralHeight = value; }
+				|        }
+				|";
+				Стр = Стр + Символы.ПС;
+				Продолжить;
+			ИначеЕсли (СвойствоРус = "СтильЗаголовковКолонок") и (ИмяКонтекстКлассаАнгл = "DataGridView") Тогда
+				СтрРазделОбъявленияПеременных = СтрРазделОбъявленияПеременных + Символы.ПС +
+				"        public DataGridViewCellStyleHeaders columnHeadersDefaultCellStyle;";
+				Стр = Стр + 
+				"        public new System.Windows.Forms.DataGridViewCellStyle ColumnHeadersDefaultCellStyle
+				|        {
+				|            get { return columnHeadersDefaultCellStyle; }
+				|            set
+				|            {
+				|                string NameStyle1 = columnHeadersDefaultCellStyle.NameStyle;
+				|                columnHeadersDefaultCellStyle = new DataGridViewCellStyleHeaders(value);
+				|                columnHeadersDefaultCellStyle.NameStyle = NameStyle1;
+				|                base.ColumnHeadersDefaultCellStyle = value;
+				|            }
+				|        }
+				|";
+				Стр = Стр + Символы.ПС;
+				Продолжить;
+			ИначеЕсли (СвойствоРус = "СтильЗаголовковСтрок") и (ИмяКонтекстКлассаАнгл = "DataGridView") Тогда
+				СтрРазделОбъявленияПеременных = СтрРазделОбъявленияПеременных + Символы.ПС +
+				"        public DataGridViewCellStyleHeaders rowHeadersDefaultCellStyle;";
+				Стр = Стр + 
+				"        public new System.Windows.Forms.DataGridViewCellStyle RowHeadersDefaultCellStyle
+				|        {
+				|            get { return rowHeadersDefaultCellStyle; }
+				|            set
+				|            {
+				|                string NameStyle1 = rowHeadersDefaultCellStyle.NameStyle;
+				|                rowHeadersDefaultCellStyle = new DataGridViewCellStyleHeaders(value);
+				|                rowHeadersDefaultCellStyle.NameStyle = NameStyle1;
+				|                base.RowHeadersDefaultCellStyle = value;
+				|            }
 				|        }
 				|";
 				Стр = Стр + Символы.ПС;
@@ -1714,8 +2013,102 @@
 				|";
 				Стр = Стр + Символы.ПС;
 				Продолжить;
+			ИначеЕсли (СвойствоРус = "АвтоШиринаЗаголовковСтрок") и (ИмяКонтекстКлассаАнгл = "DataGridView") Тогда
+				Стр = Стр + 
+				"        public new DataGridViewRowHeadersWidthSizeMode AutoResizeRowHeadersWidth
+				|        {
+				|            get { return (DataGridViewRowHeadersWidthSizeMode)base.RowHeadersWidthSizeMode; }
+				|            set { base.RowHeadersWidthSizeMode = (System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode)value; }
+				|        }
+				|";
+				Стр = Стр + Символы.ПС;
+				Продолжить;
+			ИначеЕсли (СвойствоРус = "РежимАвтоРазмераСтрок") и (ИмяКонтекстКлассаАнгл = "DataGridView") Тогда
+				Стр = Стр + 
+				"        public new DataGridViewAutoSizeRowsMode AutoSizeRowsMode
+				|        {
+				|            get { return (DataGridViewAutoSizeRowsMode)base.AutoSizeRowsMode; }
+				|            set { base.AutoSizeRowsMode = (System.Windows.Forms.DataGridViewAutoSizeRowsMode)value; }
+				|        }
+				|";
+				Стр = Стр + Символы.ПС;
+				Продолжить;
+			ИначеЕсли (СвойствоРус = "РежимАвтоРазмераКолонок") и (ИмяКонтекстКлассаАнгл = "DataGridView") Тогда
+				Стр = Стр + 
+				"        public DataGridViewAutoSizeColumnsMode AutoSizeColumnsMode1
+				|        {
+				|            get { return (DataGridViewAutoSizeColumnsMode)base.AutoSizeColumnsMode; }
+				|            set { base.AutoSizeColumnsMode = (System.Windows.Forms.DataGridViewAutoSizeColumnsMode)value; }
+				|        }
+				|";
+				Стр = Стр + Символы.ПС;
+				Продолжить;
+			ИначеЕсли СвойствоРус = "ВесЗаполнения" Тогда
+				Стр = Стр + 
+				"        public new int FillWeight
+				|        {
+				|            get { return Convert.ToInt32(base.FillWeight); }
+				|            set { base.FillWeight = Convert.ToSingle(value); }
+				|        }
+				|";
+				Стр = Стр + Символы.ПС;
+				Продолжить;
+			ИначеЕсли (СвойствоРус = "СтильЯчейки") и (ИмяКонтекстКлассаАнгл = "DataGridViewButtonColumn" или 
+				ИмяКонтекстКлассаАнгл = "DataGridViewCheckBoxColumn" или 
+				ИмяКонтекстКлассаАнгл = "DataGridViewComboBoxColumn" или 
+				ИмяКонтекстКлассаАнгл = "DataGridViewImageColumn" или 
+				ИмяКонтекстКлассаАнгл = "DataGridViewLinkColumn" или 
+				ИмяКонтекстКлассаАнгл = "DataGridViewTextBoxColumn") Тогда
+				Стр = Стр + 
+				"        public new System.Windows.Forms.DataGridViewCellStyle DefaultCellStyle
+				|        {
+				|            get { return base.DefaultCellStyle; }
+				|            set { base.DefaultCellStyle = value; }
+				|        }
+				|";
+				Стр = Стр + Символы.ПС;
+				Продолжить;
+			ИначеЕсли (СвойствоРус = "Картинка") и (ИмяКонтекстКлассаАнгл = "DataGridViewImageColumn") Тогда
+				Стр = Стр + 
+				"        [DefaultValue(null)]
+				|        public Image Bitmap_osf
+				|        {
+				|            get { return base.Image; }
+				|            set { base.Image = value; }
+				|        }
+				|";
+				Стр = Стр + Символы.ПС;
+				Продолжить;
+			ИначеЕсли (СвойствоРус = "Элементы") и (ИмяКонтекстКлассаАнгл = "DataGridViewComboBoxColumn") Тогда
+				Стр = Стр + 
+				"        public new System.Windows.Forms.DataGridViewComboBoxCell.ObjectCollection Items
+				|        {
+				|            get { return base.Items; }
+				|        }
+				|";
+				Стр = Стр + Символы.ПС;
+				Продолжить;
+			ИначеЕсли (СвойствоРус = "СтильЗаголовковКолонок") и (ИмяКонтекстКлассаАнгл = "DataGridView") Тогда
+				Стр = Стр + 
+				"        public new System.Windows.Forms.DataGridViewCellStyle ColumnHeadersDefaultCellStyle
+				|        {
+				|            get { return base.ColumnHeadersDefaultCellStyle; }
+				|            set { base.ColumnHeadersDefaultCellStyle = value; }
+				|        }
+				|";
+				Стр = Стр + Символы.ПС;
+				Продолжить;
+			ИначеЕсли (СвойствоРус = "СтильЗаголовковСтрок") и (ИмяКонтекстКлассаАнгл = "DataGridView") Тогда
+				Стр = Стр + 
+				"        public new System.Windows.Forms.DataGridViewCellStyle RowHeadersDefaultCellStyle
+				|        {
+				|            get { return base.RowHeadersDefaultCellStyle; }
+				|            set { base.RowHeadersDefaultCellStyle = value; }
+				|        }
+				|";
+				Стр = Стр + Символы.ПС;
+				Продолжить;
 			КонецЕсли;
-			
 			
 			
 			
@@ -1868,54 +2261,67 @@
 	
 	// Обработаем сначала перечисления
 	ВыбранныеФайлыП = Новый Массив;
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.AnchorStyles.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.Appearance.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.BorderStyle.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.CharacterCasing.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.CheckState.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.ColorDepth.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.ColumnHeaderStyle.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.ComboBoxStyle.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.ContentAlignment.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.DataType.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.Day.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.DialogResult.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.DockStyle.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.DrawMode.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.FlatStyle.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.FormatDateTimePicker.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.FormBorderStyle.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.FormStartPosition.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.FormWindowState.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.HorizontalAlignment.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.ImageLayout.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.ItemActivation.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.LeftRightAlignment.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.LinkLabelLinkBehavior.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.ListViewAlignment.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.MenuMerge.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.MouseButtons.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.NotifyFilters.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.PictureBoxSizeMode.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.PropertySort.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.ScrollBars.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.SelectionMode.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.Shortcut.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.SortOrder.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.SortType.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.SpecialFolder.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.StatusBarPanelAutoSize.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.StatusBarPanelBorderStyle.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.TabAlignment.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.TabAppearance.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.TabSizeMode.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.ToolBarAppearance.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.ToolBarButtonStyle.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.ToolBarTextAlign.html");
-	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.View.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.AnchorStyles.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.Appearance.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.BorderStyle.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.CharacterCasing.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.CheckState.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.ColorDepth.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.ColumnHeaderStyle.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.ComboBoxStyle.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.ContentAlignment.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.DataType.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.Day.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.DialogResult.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.DockStyle.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.DrawMode.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.FlatStyle.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.FormatDateTimePicker.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.FormBorderStyle.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.FormStartPosition.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.FormWindowState.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.HorizontalAlignment.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.ImageLayout.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.ItemActivation.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.LeftRightAlignment.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.LinkLabelLinkBehavior.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.ListViewAlignment.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.MenuMerge.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.MouseButtons.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.NotifyFilters.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.PictureBoxSizeMode.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.PropertySort.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.ScrollBars.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.SelectionMode.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.Shortcut.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.SortOrder.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.SortType.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.SpecialFolder.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.StatusBarPanelAutoSize.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.StatusBarPanelBorderStyle.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.TabAlignment.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.TabAppearance.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.TabSizeMode.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.ToolBarAppearance.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.ToolBarButtonStyle.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.ToolBarTextAlign.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.View.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.InsertKeyMode.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.MaskFormat.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.DataGridViewRowHeadersWidthSizeMode.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.DataGridViewAutoSizeColumnsMode.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.DataGridViewAutoSizeRowsMode.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.DataGridViewSelectionMode.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.DataGridViewTriState.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.DataGridViewAutoSizeColumnMode.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.DataGridViewColumnSortMode.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.DataGridViewImageCellLayout.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.DataGridViewComboBoxDisplayStyle.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.DataGridViewContentAlignment.html");
+	ВыбранныеФайлыП.Добавить("C:\444\OneScriptFormsru\OneScriptForms.DataGridViewColumnHeadersHeightSizeMode.html");
 	
 	Для А = 0 По ВыбранныеФайлыП.ВГраница() Цикл
-		КлассАнглП = СтрЗаменить(ВыбранныеФайлыП[А], "C:\444\OneScriptFormsruForDesigner\OneScriptForms.", "");
+		КлассАнглП = СтрЗаменить(ВыбранныеФайлыП[А], "C:\444\OneScriptFormsru\OneScriptForms.", "");
 		КлассАнглП = СтрЗаменить(КлассАнглП, ".html", "");
 		Сообщить("перечисление== " + КлассАнглП + " =========================================================================");
 		Перечисления1 = Новый СписокЗначений();
@@ -1936,10 +2342,10 @@
 		СтрВыгрузкиП = 
 		"namespace osfDesigner
 		|{";
-		Если ВыбранныеФайлыП[А] = "C:\444\OneScriptFormsruForDesigner\OneScriptForms.AnchorStyles.html" или 
-			ВыбранныеФайлыП[А] = "C:\444\OneScriptFormsruForDesigner\OneScriptForms.MouseButtons.html" или 
-			ВыбранныеФайлыП[А] = "C:\444\OneScriptFormsruForDesigner\OneScriptForms.FormatDateTimePicker.html" или 
-			ВыбранныеФайлыП[А] = "C:\444\OneScriptFormsruForDesigner\OneScriptForms.NotifyFilters.html" Тогда
+		Если ВыбранныеФайлыП[А] = "C:\444\OneScriptFormsru\OneScriptForms.AnchorStyles.html" или 
+			ВыбранныеФайлыП[А] = "C:\444\OneScriptFormsru\OneScriptForms.MouseButtons.html" или 
+			ВыбранныеФайлыП[А] = "C:\444\OneScriptFormsru\OneScriptForms.FormatDateTimePicker.html" или 
+			ВыбранныеФайлыП[А] = "C:\444\OneScriptFormsru\OneScriptForms.NotifyFilters.html" Тогда
 			СтрВыгрузкиП = СтрВыгрузкиП + Символы.ПС + 
 			"    [System.Flags]";
 		КонецЕсли;
@@ -1978,54 +2384,63 @@
 	СкрытыеСвойства = Новый СписокЗначений(); // это свойства исходного объекта, которые у него изначально скрыты для сетки свойств.
 	
 	ВыбранныеФайлы = Новый Массив;
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.Button.html");   
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.CheckBox.html");
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.ColorDialog.html");
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.ComboBox.html");
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.DataGrid.html");
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.DataGridTableStyle.html");
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.DataGridBoolColumn.html");
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.DataGridTextBoxColumn.html");
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.DateTimePicker.html");   
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.FileSystemWatcher.html");
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.FolderBrowserDialog.html");
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.FontDialog.html");
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.Form.html");
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.GroupBox.html");   
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.HScrollBar.html");  
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.ImageList.html");
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.Label.html");   
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.LinkLabel.html");
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.ListBox.html");
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.ListView.html");
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.ColumnHeader.html");
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.ListViewItem.html");
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.ListViewSubItem.html");
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.MainMenu.html");
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.MonthCalendar.html");
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.NotifyIcon.html");
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.NumericUpDown.html");   
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.OpenFileDialog.html");
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.Panel.html");
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.PictureBox.html");  
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.ProgressBar.html"); 
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.PropertyGrid.html");
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.RadioButton.html");
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.RichTextBox.html");  
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.SaveFileDialog.html");
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.Splitter.html");   
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.StatusBar.html");
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.StatusBarPanel.html");
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.TabControl.html");
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.TabPage.html");
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.TextBox.html");
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.Timer.html");
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.ToolBar.html");
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.ToolBarButton.html");
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.ToolTip.html");
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.TreeView.html");   
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.UserControl.html");
-	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsruForDesigner\OneScriptForms.VScrollBar.html");
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.Button.html");   
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.CheckBox.html");
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.ColorDialog.html");
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.ComboBox.html");
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.DataGrid.html");
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.DataGridView.html");
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.DataGridViewButtonColumn.html");
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.DataGridViewCheckBoxColumn.html");
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.DataGridViewComboBoxColumn.html");
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.DataGridViewImageColumn.html");
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.DataGridViewLinkColumn.html");
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.DataGridViewTextBoxColumn.html");
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.DataGridViewCellStyle.html");
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.DataGridTableStyle.html");
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.DataGridBoolColumn.html");
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.DataGridTextBoxColumn.html");
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.DateTimePicker.html");   
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.FileSystemWatcher.html");
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.FolderBrowserDialog.html");
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.FontDialog.html");
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.Form.html");
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.GroupBox.html");   
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.HScrollBar.html");  
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.ImageList.html");
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.Label.html");   
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.LinkLabel.html");
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.ListBox.html");
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.ListView.html");
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.ColumnHeader.html");
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.ListViewItem.html");
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.ListViewSubItem.html");
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.MainMenu.html");
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.MaskedTextBox.html");
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.MonthCalendar.html");
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.NotifyIcon.html");
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.NumericUpDown.html");   
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.OpenFileDialog.html");
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.Panel.html");
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.PictureBox.html");  
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.ProgressBar.html"); 
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.PropertyGrid.html");
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.RadioButton.html");
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.RichTextBox.html");  
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.SaveFileDialog.html");
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.Splitter.html");   
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.StatusBar.html");
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.StatusBarPanel.html");
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.TabControl.html");
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.TabPage.html");
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.TextBox.html");
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.Timer.html");
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.ToolBar.html");
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.ToolBarButton.html");
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.ToolTip.html");
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.TreeView.html");   
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.UserControl.html");
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.VScrollBar.html");
 	
 	Для А = 0 По ВыбранныеФайлы.ВГраница() Цикл
 		
@@ -2107,7 +2522,7 @@
 		
 		ИмяКонтекстКлассаРус = М08[0];
 		// находим имя файла членов
-		ИмяФайлаЧленов = "C:\444\OneScriptFormsruForDesigner\OneScriptForms." + М01[0] + "Members.html";
+		ИмяФайлаЧленов = "C:\444\OneScriptFormsru\OneScriptForms." + М01[0] + "Members.html";
 		СтрДирективы = Директивы(ИмяКонтекстКлассаАнгл);
 		СтрШапка = Шапка(ИмяКонтекстКлассаАнгл, ИмяКонтекстКлассаРус);
 		СтрРазделОбъявленияПеременных = РазделОбъявленияПеременных(ИмяФайлаЧленов, М01[0]);
@@ -2288,15 +2703,81 @@
 			СтрВыгрузки = СтрЗаменить(СтрВыгрузки, ПодстрокаПоиска, ПодстрокаЗамены);
 		КонецЕсли;
 		
-		
-		
-		
-		
-		
-		
-		
-		
 		// Обработаем смарт-тэги
+		Если ИмяКонтекстКлассаАнгл = "MaskedTextBox" Тогда
+			ПодстрокаПоиска = СтрПодвал;
+			ПодстрокаЗамены = 
+			"        
+			|        protected override void OnHandleCreated(EventArgs e)
+			|        {
+			|            base.OnHandleCreated(e);
+			|            if (DesignMode)
+			|            {
+			|                IDesignerHost designerHost = OneScriptFormsDesigner.DesignerHost;
+			|                if (designerHost != null)
+			|                {
+			|                    ControlDesigner designer = (ControlDesigner)designerHost.GetDesigner(this);
+			|                    if (designer != null)
+			|                    {
+			|                        if (tic < 1)
+			|                        {
+			|                            designer.ActionLists.Clear();
+			|                            designer.ActionLists.Add(new MaskedTextBoxActionList(designer));
+			|                            tic = tic + 1;
+			|                        }
+			|                    }
+			|                }
+			|            }
+			|        }
+			|
+			|        public class MaskedTextBoxActionList : DesignerActionList
+			|        {
+			|            private MaskedTextBox _control;
+			|            private DesignerActionUIService designerActionUISvc = null;
+			|
+			|            public MaskedTextBoxActionList(ControlDesigner designer) : base(designer.Component)
+			|            {
+			|                _control = (MaskedTextBox)designer.Component;
+			|                designerActionUISvc = GetService(typeof(DesignerActionUIService)) as DesignerActionUIService;
+			|            }
+			|
+			|            private PropertyDescriptor GetPropertyByName(String propName)
+			|            {
+			|                return TypeDescriptor.GetProperties(_control)[propName];
+			|            }
+			|
+			|            private void SetMask()
+			|            {
+			|                PropertyDescriptor pd = TypeDescriptor.GetProperties(_control)[""Mask""];
+			|                UITypeEditor editor = (UITypeEditor)pd.GetEditor(typeof(UITypeEditor));
+			|                MyRuntimeServiceProvider serviceProvider = new MyRuntimeServiceProvider(_control);
+			|                object fact = editor.EditValue(serviceProvider, serviceProvider, _control.Mask);
+			|                GetPropertyByName(""Mask"").SetValue(_control, fact);
+			|                designerActionUISvc.Refresh(Component);
+			|            }
+			|
+			|            public override DesignerActionItemCollection GetSortedActionItems()
+			|            {
+			|                var items = new DesignerActionItemCollection();
+			|                items.Add(new DesignerActionMethodItem(this, ""SetMask"", ""Установка маски..."", """", true));
+			|                return items;
+			|            }
+			|        }
+			|    }
+			|}
+			|";
+			СтрВыгрузки = СтрЗаменить(СтрВыгрузки, ПодстрокаПоиска, ПодстрокаЗамены);
+		КонецЕсли;
+
+
+
+
+
+
+		
+		
+		
+		
 		Если ИмяКонтекстКлассаАнгл = "ListView" Тогда
 			ПодстрокаПоиска = СтрПодвал;
 			ПодстрокаЗамены = 
@@ -2773,7 +3254,7 @@
 			ИмяКонтекстКлассаАнгл = "PictureBox" или 
 			ИмяКонтекстКлассаАнгл = "DateTimePicker" или 
 			ИмяКонтекстКлассаАнгл = "TextBox" или 
-			ИмяКонтекстКлассаАнгл = "TabControl" или 
+			ИмяКонтекстКлассаАнгл = "MaskedTextBox" или 
 			ИмяКонтекстКлассаАнгл = "Panel" или 
 			ИмяКонтекстКлассаАнгл = "Label" или 
 			ИмяКонтекстКлассаАнгл = "RadioButton" или 
@@ -2785,6 +3266,25 @@
 			|Положение ==
 			|ПорядокОбхода ==
 			|Размер ==
+			|" + СтрСвойство_DefaultValues_RequiredValues2;
+		ИначеЕсли ИмяКонтекстКлассаАнгл = "TabControl" Тогда
+			ПодстрокаЗамены = СтрСвойствоПодсказка + СтрСвойство_DefaultValues_RequiredValues1 + 
+            "
+			|Положение ==
+			|ПорядокОбхода ==
+			|АвтоРазмер ==
+			|Размер ==
+			|" + СтрСвойство_DefaultValues_RequiredValues2;
+		ИначеЕсли ИмяКонтекстКлассаАнгл = "DataGridView" Тогда
+			ПодстрокаЗамены = СтрСвойствоПодсказка + СтрСвойство_DefaultValues_RequiredValues1 + 
+            "
+			|Положение ==
+			|ПорядокОбхода ==
+			|Размер ==
+			|Колонки ==
+			|РежимВысотыЗаголовковКолонок ==
+			|СтильЗаголовковКолонок ==
+			|СтильЗаголовковСтрок ==
 			|" + СтрСвойство_DefaultValues_RequiredValues2;
 		ИначеЕсли ИмяКонтекстКлассаАнгл = "Splitter" Тогда
 			ПодстрокаЗамены = СтрСвойствоПодсказка + СтрСвойство_DefaultValues_RequiredValues1 + 
@@ -2808,6 +3308,22 @@
 			ПодстрокаЗамены = СтрСвойствоПодсказка + СтрСвойство_DefaultValues_RequiredValues1 + 
             "
 			|Панели ==
+			|" + СтрСвойство_DefaultValues_RequiredValues2;
+		ИначеЕсли ИмяКонтекстКлассаАнгл = "DataGridViewButtonColumn" или 
+			ИмяКонтекстКлассаАнгл = "DataGridViewCheckBoxColumn" или 
+			ИмяКонтекстКлассаАнгл = "DataGridViewComboBoxColumn" или 
+			ИмяКонтекстКлассаАнгл = "DataGridViewImageColumn" или 
+			ИмяКонтекстКлассаАнгл = "DataGridViewLinkColumn" Тогда
+			ПодстрокаЗамены = СтрСвойствоПодсказка + СтрСвойство_DefaultValues_RequiredValues1 + 
+            "
+			|ТекстЗаголовка ==
+			|СтильЯчейки ==
+			|" + СтрСвойство_DefaultValues_RequiredValues2;
+		ИначеЕсли ИмяКонтекстКлассаАнгл = "DataGridViewTextBoxColumn" Тогда
+			ПодстрокаЗамены = СтрСвойствоПодсказка + СтрСвойство_DefaultValues_RequiredValues1 + 
+            "
+			|ТекстЗаголовка ==
+			|СтильЯчейки ==
 			|" + СтрСвойство_DefaultValues_RequiredValues2;
 		ИначеЕсли ИмяКонтекстКлассаАнгл = "StatusBarPanel" или 
 			ИмяКонтекстКлассаАнгл = "DataGridTextBoxColumn" или 
@@ -2850,6 +3366,7 @@
 			|Положение ==
 			|ПорядокОбхода ==
 			|Размер ==
+			|ВысотаЭлемента ==
 			|Элементы ==
 			|" + СтрСвойство_DefaultValues_RequiredValues2;
 		ИначеЕсли ИмяКонтекстКлассаАнгл = "ToolBar" Тогда
@@ -2875,6 +3392,7 @@
             "
 			|Положение ==
 			|ПорядокОбхода ==
+			|Размер ==
 			|ЕжегодныеДаты ==
 			|ЕжемесячныеДаты ==
 			|ВыделенныеДаты ==
@@ -2937,7 +3455,2023 @@
 	
 	
 	
-	
+	СтрВыгрузки = 
+	"using System.ComponentModel;
+	|using System.Drawing.Design;
+	|using System.Drawing;
+	|using System.Windows.Forms;
+	|
+	|namespace osfDesigner
+	|{
+	|    public class DataGridViewCellStyleHeaders : System.Windows.Forms.DataGridViewCellStyle
+	|    {
+	|
+	|        [Browsable(false)]
+	|        public System.Windows.Forms.DataGridViewCellStyle OriginalObj { get; set; }
+	|
+	|        public DataGridViewCellStyleHeaders(System.Windows.Forms.DataGridViewCellStyle p1) : base(p1)
+	|        {
+	|            OriginalObj = p1;
+	|        }
+	|
+	|        public DataGridViewCellStyleHeaders()
+	|        {
+	|        }
+	|
+	|        [DisplayName(""Выравнивание"")]
+	|        [Description(""Возвращает или задает значение, показывающее положение содержимого в ячейке объекта Таблица (DataGridView)."")]
+	|        [Category(""Макет"")]
+	|        [Browsable(true)]
+	|        public new DataGridViewContentAlignment Alignment
+	|        {
+	|            get { return (DataGridViewContentAlignment)base.Alignment; }
+	|            set { base.Alignment = (System.Windows.Forms.DataGridViewContentAlignment)value; }
+	|        }
+	|
+	|        [DisplayName(""Заполнение"")]
+	|        [Description(""Возвращает или задает расстояние между краем ячейки и ее содержимым."")]
+	|        [Category(""Макет"")]
+	|        [Browsable(true)]
+	|        [TypeConverter(typeof(MyPaddingConverter))]
+	|        [Editor(typeof(MyPaddingEditor), typeof(UITypeEditor))]
+	|        public new Padding Padding
+	|        {
+	|            get { return base.Padding; }
+	|            set { base.Padding = value; }
+	|        }
+	|
+	|        [DisplayName(""ОсновнойЦвет"")]
+	|        [Description(""Возвращает или задает основной цвет ячейки объекта Таблица (DataGridView)."")]
+	|        [Category(""Внешний вид"")]
+	|        [Browsable(true)]
+	|        [TypeConverter(typeof(MyColorConverter))]
+	|        [Editor(typeof(MyColorEditor), typeof(UITypeEditor))]
+	|        public new Color ForeColor
+	|        {
+	|            get { return base.ForeColor; }
+	|            set { base.ForeColor = value; }
+	|        }
+	|
+	|        [DisplayName(""ОсновнойЦветВыделенного"")]
+	|        [Description(""Возвращает или задает основной цвет, используемый ячейкой объекта Таблица (DataGridView), когда она выбрана."")]
+	|        [Category(""Внешний вид"")]
+	|        [Browsable(true)]
+	|        [TypeConverter(typeof(MyColorConverter))]
+	|        [Editor(typeof(MyColorEditor), typeof(UITypeEditor))]
+	|        public new Color SelectionForeColor
+	|        {
+	|            get { return base.SelectionForeColor; }
+	|            set { base.SelectionForeColor = value; }
+	|        }
+	|
+	|        [DisplayName(""Перенос"")]
+	|        [Description(""Возвращает или задает значение, показывающее, переносится ли текстовое содержимое ячейки  объекта Таблица (DataGridView) на последующие строки или обрезается, когда оно слишком длинное и не помещается на одной строке."")]
+	|        [Category(""Макет"")]
+	|        [Browsable(true)]
+	|        public new DataGridViewTriState WrapMode
+	|        {
+	|            get { return (DataGridViewTriState)base.WrapMode; }
+	|            set { base.WrapMode = (System.Windows.Forms.DataGridViewTriState)value; }
+	|        }
+	|
+	|        [DisplayName(""ЦветФона"")]
+	|        [Description(""Возвращает или задает цвет фона ячейки объекта Таблица (DataGridView)."")]
+	|        [Category(""Внешний вид"")]
+	|        [Browsable(true)]
+	|        [TypeConverter(typeof(MyColorConverter))]
+	|        [Editor(typeof(MyColorEditor), typeof(UITypeEditor))]
+	|        public new Color BackColor
+	|        {
+	|            get { return base.BackColor; }
+	|            set { base.BackColor = value; }
+	|        }
+	|
+	|        [DisplayName(""ЦветФонаВыделенного"")]
+	|        [Description(""Возвращает или задает цвет фона, используемый ячейкой объекта Таблица (DataGridView), когда она выбрана."")]
+	|        [Category(""Внешний вид"")]
+	|        [Browsable(true)]
+	|        [TypeConverter(typeof(MyColorConverter))]
+	|        [Editor(typeof(MyColorEditor), typeof(UITypeEditor))]
+	|        public new Color SelectionBackColor
+	|        {
+	|            get { return base.SelectionBackColor; }
+	|            set { base.SelectionBackColor = value; }
+	|        }
+	|
+	|        [DisplayName(""Шрифт"")]
+	|        [Description(""Возвращает или задает шрифт, применимый к текстовому содержимому ячейки объекта Таблица (DataGridView)."")]
+	|        [Category(""Внешний вид"")]
+	|        [Browsable(true)]
+	|        [TypeConverter(typeof(MyFontConverter))]
+	|        public new Font Font
+	|        {
+	|            get { return base.Font; }
+	|            set { base.Font = value; }
+	|        }
+	|
+	|        [DisplayName(""ИмяСтиля"")]
+	|        [Category(""Прочее"")]
+	|        [Browsable(true)]
+	|        [ReadOnly(true)]
+	|        public string NameStyle { get; set; }
+	|
+	|        [Browsable(false)]
+	|        public new dynamic DataSourceNullValue { get; set; }
+	|
+	|        [Browsable(false)]
+	|        public new dynamic Format { get; set; }
+	|
+	|        [Browsable(false)]
+	|        public new dynamic FormatProvider { get; set; }
+	|
+	|        [Browsable(false)]
+	|        public new dynamic IsDataSourceNullValueDefault { get; set; }
+	|
+	|        [Browsable(false)]
+	|        public new dynamic IsFormatProviderDefault { get; set; }
+	|
+	|        [Browsable(false)]
+	|        public new dynamic IsNullValueDefault { get; set; }
+	|
+	|        [Browsable(false)]
+	|        public new dynamic NullValue { get; set; }
+	|
+	|        [Browsable(false)]
+	|        public new dynamic Tag { get; set; }
+	|
+	|        [Browsable(false)]
+	|        public string DefaultValues
+	|        {
+	|            get
+	|            {
+	|                return @""
+	|ОсновнойЦвет == ТекстОкна
+	|ОсновнойЦветВыделенного == ТекстВыбранных
+	|ЦветФона == ЛицеваяЭлемента
+	|ЦветФонаВыделенного == ФонВыбранных
+	|Шрифт == Microsoft Sans Serif; 7,8pt
+	|Выравнивание == СерединаЛево
+	|Заполнение == 0; 0; 0; 0
+	|Перенос == Истина
+	|ИмяСтиля == Таблица1СтильЯчейки
+	|"";
+	|            }
+	|            set { }
+	|        }
+	|
+	|        [Browsable(false)]
+	|        public string RequiredValues
+	|        {
+	|            get
+	|            {
+	|                return @""
+	|ИмяСтиля ==
+	|"";
+	|            }
+	|        }
+	|    }
+	|}
+	|";
+	ТекстДокХХХ = Новый ТекстовыйДокумент;
+	ТекстДокХХХ.УстановитьТекст(СтрВыгрузки);
+	ТекстДокХХХ.Записать("C:\444\ВыгрузкаДизайнера\DataGridViewCellStyleHeaders.cs");
+	СтрВыгрузки = 
+	"using System.ComponentModel;
+	|using System.Drawing.Design;
+	|using System.Reflection;
+	|using System.Windows.Forms;
+	|using System;
+	|
+	|namespace osfDesigner
+	|{
+	|    public class MyRowHeadersCellStyleEditor : UITypeEditor
+	|    {
+	|        private System.Windows.Forms.Form Form1;
+	|        private System.Windows.Forms.PropertyGrid PropertyGrid1;
+	|        private System.Windows.Forms.TableLayoutPanel TPanel1;
+	|        private System.Windows.Forms.TableLayoutPanel TPanel2;
+	|        private System.Windows.Forms.Button ButtonOk1 = null;
+	|        private System.Windows.Forms.Button ButtonCancel1 = null;
+	|        private System.Windows.Forms.GroupBox GroupBox1;
+	|        private System.Windows.Forms.TableLayoutPanel TPanel3;
+	|        private System.Windows.Forms.TableLayoutPanel TPanel4;
+	|        private System.Windows.Forms.Label Label1;
+	|        private System.Windows.Forms.Label Label2;
+	|        private System.Windows.Forms.Label Label3;
+	|        private System.Windows.Forms.DataGridView DataGridView2;
+	|        private System.Windows.Forms.DataGridView DataGridView3;
+	|        private System.Windows.Forms.DataGridViewCellStyle DefaultCellStyle1;
+	|        private System.Windows.Forms.DataGridViewCellStyle DataGridViewCellStyle1;
+	|        private System.Windows.Forms.DataGridViewCellStyle initialRowHeadersDefaultCellStyle;
+	|        private DataGridView Instance;
+	|        private DataGridViewCellStyleHeaders SimilarObj;
+	|        private System.Windows.Forms.PropertyGrid TopLevelPropertyGrid1;
+	|
+	|        public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
+	|        {
+	|            Assembly assembly = Assembly.Load(""System.Design, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"");
+	|            System.Type type = assembly.GetType(""System.Windows.Forms.Design.DataGridViewCellStyleBuilder"");
+	|            ConstructorInfo ci = type.GetConstructor(new System.Type[] { typeof(IServiceProvider), typeof(IComponent) });
+	|            Form1 = ci.Invoke(new object[] { provider, null }) as System.Windows.Forms.Form;//, Text: Построитель CellStyle
+	|            Form1.Text = ""Построитель СтильЗаголовковСтрок"";
+	|            Form1.FormClosed += Form1_FormClosed;
+	|            Form1.Shown += Form1_Shown;
+	|            TPanel1 = (System.Windows.Forms.TableLayoutPanel)Form1.Controls[0];
+	|            PropertyGrid1 = (System.Windows.Forms.PropertyGrid)TPanel1.Controls[0];
+	|            Instance = (DataGridView)context.Instance;
+	|
+	|            SimilarObj = Instance.rowHeadersDefaultCellStyle;
+	|
+	|            PropertyGrid1.SelectedObject = SimilarObj;
+	|            PropertyGrid1.PropertyValueChanged += PropertyGrid1_PropertyValueChanged;
+	|
+	|            TPanel2 = (System.Windows.Forms.TableLayoutPanel)TPanel1.Controls[1];
+	|            ButtonOk1 = (System.Windows.Forms.Button)TPanel2.Controls[0];//, Text: ОК
+	|            ButtonOk1.Text = ""ОК"";
+	|            ButtonOk1.Click += ButtonOk1_Click;
+	|            ButtonCancel1 = (System.Windows.Forms.Button)TPanel2.Controls[1];//, Text: Отмена
+	|            ButtonCancel1.Text = ""Отмена"";
+	|            ButtonCancel1.Click += ButtonCancel1_Click;
+	|            GroupBox1 = (System.Windows.Forms.GroupBox)TPanel1.Controls[2];
+	|            TPanel3 = (System.Windows.Forms.TableLayoutPanel)GroupBox1.Controls[0];
+	|            TPanel4 = (System.Windows.Forms.TableLayoutPanel)TPanel3.Controls[0];
+	|            Label1 = (System.Windows.Forms.Label)TPanel3.Controls[1];//, Text: Этот предварительный просмотр позволяет видеть свойства из унаследованных стилей CellStyles (Таблица, Столбец, Строка)
+	|            Label1.Text = ""Этот предварительный просмотр позволяет видеть свойства из унаследованных стилей CellStyles (Таблица, Столбец, Строка)"";
+	|            Label2 = (System.Windows.Forms.Label)TPanel4.Controls[0];//, Text: Обычный:
+	|            Label2.Text = ""Обычный"";
+	|            DataGridView2 = (System.Windows.Forms.DataGridView)TPanel4.Controls[1];
+	|            Label3 = (System.Windows.Forms.Label)TPanel4.Controls[2];//, Text: Выбрано:
+	|            Label3.Text = ""Выбрано"";
+	|            DataGridView3 = (System.Windows.Forms.DataGridView)TPanel4.Controls[3];
+	|
+	|            DefaultCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle(SimilarObj);
+	|            DataGridView2.DefaultCellStyle = DefaultCellStyle1;
+	|            DataGridView3.DefaultCellStyle = DefaultCellStyle1;
+	|
+	|            Form1.ShowDialog();
+	|            return base.EditValue(context, provider, value);
+	|        }
+	|
+	|        private void ButtonCancel1_Click(object sender, EventArgs e)
+	|        {
+	|            Instance.RowHeadersDefaultCellStyle = initialRowHeadersDefaultCellStyle;
+	|            Instance.rowHeadersDefaultCellStyle.NameStyle = Instance.Name + ""СтильЗаголовковСтрок"";
+	|        }
+	|
+	|        private void ButtonOk1_Click(object sender, EventArgs e)
+	|        {
+	|            Instance.rowHeadersDefaultCellStyle = SimilarObj;
+	|        }
+	|
+	|        private void Form1_Shown(object sender, EventArgs e)
+	|        {
+	|            SimilarObj.NameStyle = Instance.Name + ""СтильЗаголовковСтрок"";
+	|            initialRowHeadersDefaultCellStyle = new System.Windows.Forms.DataGridViewCellStyle(SimilarObj);
+	|
+	|            TopLevelPropertyGrid1 = OneScriptFormsDesigner.PropertyGrid;
+	|        }
+	|
+	|        private void Form1_FormClosed(object sender, FormClosedEventArgs e)
+	|        {
+	|            if (e.CloseReason == CloseReason.UserClosing)
+	|            {
+	|                Instance.RowHeadersDefaultCellStyle = initialRowHeadersDefaultCellStyle;
+	|                Instance.rowHeadersDefaultCellStyle.NameStyle = Instance.Name + ""СтильЗаголовковСтрок"";
+	|            }
+	|
+	|            OneScriptFormsDesigner.SetDesignSurfaceState();
+	|        }
+	|
+	|        private void PropertyGrid1_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)
+	|        {
+	|            DataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle(SimilarObj);
+	|            Instance.RowHeadersDefaultCellStyle = DataGridViewCellStyle1;
+	|            DataGridView2.DefaultCellStyle = DataGridViewCellStyle1;
+	|            DataGridView3.DefaultCellStyle = DataGridViewCellStyle1;
+	|        }
+	|
+	|        public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context)
+	|        {
+	|            return UITypeEditorEditStyle.Modal;
+	|        }
+	|    }
+	|}
+	|";
+	ТекстДокХХХ = Новый ТекстовыйДокумент;
+	ТекстДокХХХ.УстановитьТекст(СтрВыгрузки);
+	ТекстДокХХХ.Записать("C:\444\ВыгрузкаДизайнера\MyRowHeadersCellStyleEditor.cs");
+	СтрВыгрузки = 
+	"using System.ComponentModel;
+	|using System.Drawing.Design;
+	|using System.Reflection;
+	|using System.Windows.Forms;
+	|using System;
+	|
+	|namespace osfDesigner
+	|{
+	|    public class MyColumnHeadersCellStyleEditor : UITypeEditor
+	|    {
+	|        private System.Windows.Forms.Form Form1;
+	|        private System.Windows.Forms.PropertyGrid PropertyGrid1;
+	|        private System.Windows.Forms.TableLayoutPanel TPanel1;
+	|        private System.Windows.Forms.TableLayoutPanel TPanel2;
+	|        private System.Windows.Forms.Button ButtonOk1 = null;
+	|        private System.Windows.Forms.Button ButtonCancel1 = null;
+	|        private System.Windows.Forms.GroupBox GroupBox1;
+	|        private System.Windows.Forms.TableLayoutPanel TPanel3;
+	|        private System.Windows.Forms.TableLayoutPanel TPanel4;
+	|        private System.Windows.Forms.Label Label1;
+	|        private System.Windows.Forms.Label Label2;
+	|        private System.Windows.Forms.Label Label3;
+	|        private System.Windows.Forms.DataGridView DataGridView2;
+	|        private System.Windows.Forms.DataGridView DataGridView3;
+	|        private System.Windows.Forms.DataGridViewCellStyle DefaultCellStyle1;
+	|        private System.Windows.Forms.DataGridViewCellStyle DataGridViewCellStyle1;
+	|        private System.Windows.Forms.DataGridViewCellStyle initialColumnHeadersDefaultCellStyle;
+	|        private DataGridView Instance;
+	|        private DataGridViewCellStyleHeaders SimilarObj;
+	|        private System.Windows.Forms.PropertyGrid TopLevelPropertyGrid1;
+	|
+	|        public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
+	|        {
+	|            Assembly assembly = Assembly.Load(""System.Design, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"");
+	|            System.Type type = assembly.GetType(""System.Windows.Forms.Design.DataGridViewCellStyleBuilder"");
+	|            ConstructorInfo ci = type.GetConstructor(new System.Type[] { typeof(IServiceProvider), typeof(IComponent) });
+	|            Form1 = ci.Invoke(new object[] { provider, null }) as System.Windows.Forms.Form;//, Text: Построитель CellStyle
+	|            Form1.Text = ""Построитель СтильЗаголовковКолонок"";
+	|            Form1.FormClosed += Form1_FormClosed;
+	|            Form1.Shown += Form1_Shown;
+	|            TPanel1 = (System.Windows.Forms.TableLayoutPanel)Form1.Controls[0];
+	|            PropertyGrid1 = (System.Windows.Forms.PropertyGrid)TPanel1.Controls[0];
+	|            Instance = (DataGridView)context.Instance;
+	|
+	|            SimilarObj = Instance.columnHeadersDefaultCellStyle;
+	|
+	|            PropertyGrid1.SelectedObject = SimilarObj;
+	|            PropertyGrid1.PropertyValueChanged += PropertyGrid1_PropertyValueChanged;
+	|
+	|            TPanel2 = (System.Windows.Forms.TableLayoutPanel)TPanel1.Controls[1];
+	|            ButtonOk1 = (System.Windows.Forms.Button)TPanel2.Controls[0];//, Text: ОК
+	|            ButtonOk1.Text = ""ОК"";
+	|            ButtonOk1.Click += ButtonOk1_Click;
+	|            ButtonCancel1 = (System.Windows.Forms.Button)TPanel2.Controls[1];//, Text: Отмена
+	|            ButtonCancel1.Text = ""Отмена"";
+	|            ButtonCancel1.Click += ButtonCancel1_Click;
+	|            GroupBox1 = (System.Windows.Forms.GroupBox)TPanel1.Controls[2];
+	|            TPanel3 = (System.Windows.Forms.TableLayoutPanel)GroupBox1.Controls[0];
+	|            TPanel4 = (System.Windows.Forms.TableLayoutPanel)TPanel3.Controls[0];
+	|            Label1 = (System.Windows.Forms.Label)TPanel3.Controls[1];//, Text: Этот предварительный просмотр позволяет видеть свойства из унаследованных стилей CellStyles (Таблица, Столбец, Строка)
+	|            Label1.Text = ""Этот предварительный просмотр позволяет видеть свойства из унаследованных стилей CellStyles (Таблица, Столбец, Строка)"";
+	|            Label2 = (System.Windows.Forms.Label)TPanel4.Controls[0];//, Text: Обычный:
+	|            Label2.Text = ""Обычный"";
+	|            DataGridView2 = (System.Windows.Forms.DataGridView)TPanel4.Controls[1];
+	|            Label3 = (System.Windows.Forms.Label)TPanel4.Controls[2];//, Text: Выбрано:
+	|            Label3.Text = ""Выбрано"";
+	|            DataGridView3 = (System.Windows.Forms.DataGridView)TPanel4.Controls[3];
+	|
+	|            DefaultCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle(SimilarObj);
+	|            DataGridView2.DefaultCellStyle = DefaultCellStyle1;
+	|            DataGridView3.DefaultCellStyle = DefaultCellStyle1;
+	|
+	|            Form1.ShowDialog();
+	|            return base.EditValue(context, provider, value);
+	|        }
+	|
+	|        private void ButtonCancel1_Click(object sender, EventArgs e)
+	|        {
+	|            Instance.ColumnHeadersDefaultCellStyle = initialColumnHeadersDefaultCellStyle;
+	|            Instance.columnHeadersDefaultCellStyle.NameStyle = Instance.Name + ""СтильЗаголовковКолонок"";
+	|        }
+	|
+	|        private void ButtonOk1_Click(object sender, EventArgs e)
+	|        {
+	|            Instance.columnHeadersDefaultCellStyle = SimilarObj;
+	|        }
+	|
+	|        private void Form1_Shown(object sender, EventArgs e)
+	|        {
+	|            SimilarObj.NameStyle = Instance.Name + ""СтильЗаголовковКолонок"";
+	|            initialColumnHeadersDefaultCellStyle = new System.Windows.Forms.DataGridViewCellStyle(SimilarObj);
+	|
+	|            TopLevelPropertyGrid1 = OneScriptFormsDesigner.PropertyGrid;
+	|        }
+	|
+	|        private void Form1_FormClosed(object sender, FormClosedEventArgs e)
+	|        {
+	|            if (e.CloseReason == CloseReason.UserClosing)
+	|            {
+	|                Instance.ColumnHeadersDefaultCellStyle = initialColumnHeadersDefaultCellStyle;
+	|                Instance.columnHeadersDefaultCellStyle.NameStyle = Instance.Name + ""СтильЗаголовковКолонок"";
+	|            }
+	|
+	|            OneScriptFormsDesigner.SetDesignSurfaceState();
+	|        }
+	|
+	|        private void PropertyGrid1_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)
+	|        {
+	|            DataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle(SimilarObj);
+	|            Instance.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle1;
+	|            DataGridView2.DefaultCellStyle = DataGridViewCellStyle1;
+	|            DataGridView3.DefaultCellStyle = DataGridViewCellStyle1;
+	|        }
+	|
+	|        public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context)
+	|        {
+	|            return UITypeEditorEditStyle.Modal;
+	|        }
+	|    }
+	|}
+	|";
+	ТекстДокХХХ = Новый ТекстовыйДокумент;
+	ТекстДокХХХ.УстановитьТекст(СтрВыгрузки);
+	ТекстДокХХХ.Записать("C:\444\ВыгрузкаДизайнера\MyColumnHeadersCellStyleEditor.cs");
+	СтрВыгрузки = 
+	"using System;
+	|using System.ComponentModel;
+	|using System.Globalization;
+	|
+	|namespace osfDesigner
+	|{
+	|    class MyDataGridViewCellStyleConverter : TypeConverter
+	|    {
+	|        public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
+	|        {
+	|            if (destinationType == typeof(string))
+	|            {
+	|                return ""СтильЯчейки{}"";
+	|            }
+	|            return base.ConvertTo(context, culture, value, destinationType);
+	|        }
+	|
+	|        public override bool GetPropertiesSupported(ITypeDescriptorContext context)
+	|        {
+	|            return true;
+	|        }
+	|
+	|        public override PropertyDescriptorCollection GetProperties(ITypeDescriptorContext context, object value, Attribute[] attributes)
+	|        {
+	|            PropertyDescriptorCollection originalCollection = TypeDescriptor.GetProperties(value, attributes);
+	|            PropertyDescriptor[] pds = new PropertyDescriptor[originalCollection.Count];
+	|            for (int i = 0; i < originalCollection.Count; i++)
+	|            {
+	|                pds[i] = new ExpandableDataGridViewCellStylePropertyDescriptor(originalCollection[i]);
+	|            }
+	|            return new PropertyDescriptorCollection(pds);
+	|        }
+	|    }
+	|
+	|    public class ExpandableDataGridViewCellStylePropertyDescriptor : PropertyDescriptor
+	|    {
+	|        private PropertyDescriptor _pd;
+	|
+	|        public ExpandableDataGridViewCellStylePropertyDescriptor(PropertyDescriptor pd) : base(GetDisplayName(pd.DisplayName), null)
+	|        {
+	|            _pd = pd;
+	|        }
+	|
+	|        private static string GetDisplayName(string str)
+	|        {
+	|            if (str == ""Alignment"")
+	|            {
+	|                return ""Выравнивание"";
+	|            }
+	|            else if (str == ""Padding"")
+	|            {
+	|                return ""Заполнение"";
+	|            }
+	|            else if (str == ""ForeColor"")
+	|            {
+	|                return ""ОсновнойЦвет"";
+	|            }
+	|            else if (str == ""SelectionForeColor"")
+	|            {
+	|                return ""ОсновнойЦветВыделенного"";
+	|            }
+	|            else if (str == ""WrapMode"")
+	|            {
+	|                return ""Перенос"";
+	|            }
+	|            else if (str == ""BackColor"")
+	|            {
+	|                return ""ЦветФона"";
+	|            }
+	|            else if (str == ""SelectionBackColor"")
+	|            {
+	|                return ""ЦветФонаВыделенного"";
+	|            }
+	|            else if (str == ""Font"")
+	|            {
+	|                return ""Шрифт"";
+	|            }
+	|            else if (str == ""Format"")
+	|            {
+	|                return ""Формат"";
+	|            }
+	|            else if (str == ""NullValue"")
+	|            {
+	|                return ""СоответствиеДляНеопределено"";
+	|            }
+	|            return str;
+	|        }
+	|
+	|        public override bool CanResetValue(object component)
+	|        {
+	|            return true;
+	|        }
+	|
+	|        public override Type ComponentType
+	|        {
+	|            get { return _pd.GetType(); }
+	|        }
+	|
+	|        public override object GetValue(object component)
+	|        {
+	|            object value = _pd.GetValue(component);
+	|            Type valueType = value.GetType();
+	|            string str = value.ToString();
+	|            if (str == System.Windows.Forms.DataGridViewContentAlignment.TopLeft.ToString())
+	|            {
+	|                return ""ВерхЛево"";
+	|            }
+	|            else if (str == System.Windows.Forms.DataGridViewContentAlignment.TopRight.ToString())
+	|            {
+	|                return ""ВерхПраво"";
+	|            }
+	|            else if (str == System.Windows.Forms.DataGridViewContentAlignment.TopCenter.ToString())
+	|            {
+	|                return ""ВерхЦентр"";
+	|            }
+	|            else if (str == System.Windows.Forms.DataGridViewContentAlignment.NotSet.ToString())
+	|            {
+	|                return ""НеУстановлено"";
+	|            }
+	|            else if (str == System.Windows.Forms.DataGridViewContentAlignment.BottomLeft.ToString())
+	|            {
+	|                return ""НизЛево"";
+	|            }
+	|            else if (str == System.Windows.Forms.DataGridViewContentAlignment.BottomRight.ToString())
+	|            {
+	|                return ""НизПраво"";
+	|            }
+	|            else if (str == System.Windows.Forms.DataGridViewContentAlignment.BottomCenter.ToString())
+	|            {
+	|                return ""НизЦентр"";
+	|            }
+	|            else if (str == System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft.ToString())
+	|            {
+	|                return ""СерединаЛево"";
+	|            }
+	|            else if (str == System.Windows.Forms.DataGridViewContentAlignment.MiddleRight.ToString())
+	|            {
+	|                return ""СерединаПраво"";
+	|            }
+	|            else if (str == System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter.ToString())
+	|            {
+	|                return ""СерединаЦентр"";
+	|            }
+	|            else if (str == System.Windows.Forms.DataGridViewTriState.NotSet.ToString())
+	|            {
+	|                return ""НеУстановлено"";
+	|            }
+	|            else if (str == System.Windows.Forms.DataGridViewTriState.False.ToString())
+	|            {
+	|                return ""Ложь"";
+	|            }
+	|            else if (str == System.Windows.Forms.DataGridViewTriState.True.ToString())
+	|            {
+	|                return ""Истина"";
+	|            }
+	|            else if (valueType == typeof(System.Windows.Forms.Padding))
+	|            {
+	|                return str.Replace(""Left="", ""Лево="").Replace(""Top="", ""Верх="").Replace(""Right="", ""Право="").Replace(""Bottom="", ""Низ="");
+	|            }
+	|            else if (valueType == typeof(System.Drawing.Color))
+	|            {
+	|                return MyColorConverter.ConvertColorToString(value);
+	|            }
+	|            else if (valueType == typeof(System.Drawing.Font))
+	|            {
+	|                return str.Replace(""[Font:"", ""[Шрифт:"")
+	|                    .Replace(""Name="", ""Имя="")
+	|                    .Replace(""Size="", ""Размер="")
+	|                    .Replace(""Units="", ""Единицы="")
+	|                    .Replace(""GdiCharSet="", ""Набор знаков GDI="")
+	|                    .Replace(""GdiVerticalFont="", ""Производный от вертикального GDI="")
+	|                    .Replace(""=False"", ""=Ложь"")
+	|                    .Replace(""=True"", ""=Истина"");
+	|            }
+	|            return _pd.GetValue(component);
+	|        }
+	|
+	|        public override bool IsReadOnly
+	|        {
+	|            get { return false; }
+	|        }
+	|
+	|        public override string Name
+	|        {
+	|            get { return _pd.Name; }
+	|        }
+	|
+	|        public override Type PropertyType
+	|        {
+	|            get { return _pd.GetType(); }
+	|        }
+	|
+	|        public override void ResetValue(object component)
+	|        {
+	|        }
+	|
+	|        public override bool ShouldSerializeValue(object component)
+	|        {
+	|            return true;
+	|        }
+	|
+	|        public override void SetValue(object component, object value)
+	|        {
+	|        }
+	|    }
+	|}
+	|";
+	ТекстДокХХХ = Новый ТекстовыйДокумент;
+	ТекстДокХХХ.УстановитьТекст(СтрВыгрузки);
+	ТекстДокХХХ.Записать("C:\444\ВыгрузкаДизайнера\MyDataGridViewCellStyleConverter.cs");
+	СтрВыгрузки = 
+	"using System;
+	|using System.ComponentModel;
+	|using System.Drawing.Design;
+	|using System.Reflection;
+	|using System.Windows.Forms;
+	|
+	|namespace osfDesigner
+	|{
+	|    public class MyDataGridViewCellStyleEditor : UITypeEditor
+	|    {
+	|        private System.Windows.Forms.Form Form1;
+	|        private System.Windows.Forms.PropertyGrid PropertyGrid1;
+	|        private System.Windows.Forms.TableLayoutPanel TPanel1;
+	|        private System.Windows.Forms.TableLayoutPanel TPanel2;
+	|        private System.Windows.Forms.Button ButtonOk1 = null;
+	|        private System.Windows.Forms.Button ButtonCancel1 = null;
+	|        private System.Windows.Forms.GroupBox GroupBox1;
+	|        private System.Windows.Forms.TableLayoutPanel TPanel3;
+	|        private System.Windows.Forms.TableLayoutPanel TPanel4;
+	|        private System.Windows.Forms.Label Label1;
+	|        private System.Windows.Forms.Label Label2;
+	|        private System.Windows.Forms.Label Label3;
+	|        private System.Windows.Forms.DataGridView DataGridView2;
+	|        private System.Windows.Forms.DataGridView DataGridView3;
+	|        private System.Windows.Forms.DataGridViewCellStyle DataGridViewCellStyle1;
+	|        private osfDesigner.DataGridViewCellStyle DataGridViewCellStyle2;
+	|        private DataGridViewColumn Instance;
+	|        private DataGridViewCellStyle SimilarObj;
+	|        private System.Windows.Forms.PropertyGrid TopLevelPropertyGrid1;
+	|        private System.Windows.Forms.DataGridViewCellStyle initialDefaultCellStyle;
+	|
+	|        public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
+	|        {
+	|            Assembly assembly = Assembly.Load(""System.Design, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"");
+	|            System.Type type = assembly.GetType(""System.Windows.Forms.Design.DataGridViewCellStyleBuilder"");
+	|            ConstructorInfo ci = type.GetConstructor(new System.Type[] { typeof(IServiceProvider), typeof(IComponent) });
+	|            Form1 = ci.Invoke(new object[] { provider, null }) as System.Windows.Forms.Form;//, Text: Построитель CellStyle
+	|            Form1.Text = ""Построитель СтильЯчейки"";
+	|            Form1.Shown += Form1_Shown;
+	|            TPanel1 = (System.Windows.Forms.TableLayoutPanel)Form1.Controls[0];
+	|            PropertyGrid1 = (System.Windows.Forms.PropertyGrid)TPanel1.Controls[0];
+	|            Instance = (System.Windows.Forms.DataGridViewColumn)context.Instance;
+	|            initialDefaultCellStyle = Instance.DefaultCellStyle;
+	|            string nameStyle = Instance.DataGridView.Name + Instance.Name + ""СтильЯчейки"";
+	|            SimilarObj = new DataGridViewCellStyle(nameStyle, (osfDesigner.DataGridView)Instance.DataGridView);
+	|            // Передадим свойства стиля.
+	|            try
+	|            {
+	|                SimilarObj.Font = new System.Drawing.Font(initialDefaultCellStyle.Font, initialDefaultCellStyle.Font.Style);
+	|                SimilarObj.ForeColor = initialDefaultCellStyle.ForeColor;
+	|                SimilarObj.SelectionForeColor = initialDefaultCellStyle.SelectionForeColor;
+	|                SimilarObj.BackColor = initialDefaultCellStyle.BackColor;
+	|                SimilarObj.SelectionBackColor = initialDefaultCellStyle.SelectionBackColor;
+	|                SimilarObj.Alignment = (osfDesigner.DataGridViewContentAlignment)initialDefaultCellStyle.Alignment;
+	|                SimilarObj.Padding = initialDefaultCellStyle.Padding;
+	|                SimilarObj.WrapMode = (osfDesigner.DataGridViewTriState)initialDefaultCellStyle.WrapMode;
+	|            }
+	|            catch
+	|            {
+	|                SimilarObj.Font = new System.Drawing.Font(Instance.DataGridView.Font, Instance.DataGridView.Font.Style);
+	|                SimilarObj.ForeColor = System.Drawing.Color.FromName(System.Drawing.KnownColor.ControlText.ToString());
+	|                SimilarObj.SelectionForeColor = System.Drawing.Color.FromName(System.Drawing.KnownColor.HighlightText.ToString());
+	|                SimilarObj.BackColor = System.Drawing.Color.FromName(System.Drawing.KnownColor.Window.ToString());
+	|                SimilarObj.SelectionBackColor = System.Drawing.Color.FromName(System.Drawing.KnownColor.Highlight.ToString());
+	|                SimilarObj.Alignment = osfDesigner.DataGridViewContentAlignment.СерединаЛево;
+	|                SimilarObj.Padding = new System.Windows.Forms.Padding(0, 0, 0, 0);
+	|                SimilarObj.WrapMode = DataGridViewTriState.Ложь;
+	|            }	
+	|            PropertyGrid1.SelectedObject = SimilarObj;
+	|            PropertyGrid1.PropertyValueChanged += PropertyGrid1_PropertyValueChanged;
+	|            TPanel2 = (System.Windows.Forms.TableLayoutPanel)TPanel1.Controls[1];
+	|            ButtonOk1 = (System.Windows.Forms.Button)TPanel2.Controls[0];//, Text: ОК
+	|            ButtonOk1.Text = ""ОК"";
+	|            ButtonOk1.Click += ButtonOk1_Click;
+	|            ButtonCancel1 = (System.Windows.Forms.Button)TPanel2.Controls[1];//, Text: Отмена
+	|            ButtonCancel1.Text = ""Отмена"";
+	|            ButtonCancel1.Click += ButtonCancel1_Click;
+	|            GroupBox1 = (System.Windows.Forms.GroupBox)TPanel1.Controls[2];
+	|            TPanel3 = (System.Windows.Forms.TableLayoutPanel)GroupBox1.Controls[0];
+	|            TPanel4 = (System.Windows.Forms.TableLayoutPanel)TPanel3.Controls[0];
+	|            Label1 = (System.Windows.Forms.Label)TPanel3.Controls[1];//, Text: Этот предварительный просмотр позволяет видеть свойства из унаследованных стилей CellStyles (Таблица, Столбец, Строка)
+	|            Label1.Text = ""Этот предварительный просмотр позволяет видеть свойства из унаследованных стилей CellStyles (Таблица, Столбец, Строка)"";
+	|            Label2 = (System.Windows.Forms.Label)TPanel4.Controls[0];//, Text: Обычный:
+	|            Label2.Text = ""Обычный"";
+	|            DataGridView2 = (System.Windows.Forms.DataGridView)TPanel4.Controls[1];
+	|            DataGridView2.DefaultCellStyle = initialDefaultCellStyle;
+	|            Label3 = (System.Windows.Forms.Label)TPanel4.Controls[2];//, Text: Выбрано:
+	|            Label3.Text = ""Выбрано"";
+	|            DataGridView3 = (System.Windows.Forms.DataGridView)TPanel4.Controls[3];
+	|            DataGridView3.DefaultCellStyle = initialDefaultCellStyle;
+	|
+	|            Form1.ShowDialog();
+	|            return base.EditValue(context, provider, value);
+	|        }
+	|
+	|        private void ButtonCancel1_Click(object sender, EventArgs e)
+	|        {
+	|            Instance.DefaultCellStyle = initialDefaultCellStyle;
+	|            DataGridViewCellStyle2 = new DataGridViewCellStyle(initialDefaultCellStyle);
+	|            DataGridViewCellStyle2.NameStyle = Instance.DataGridView.Name + Instance.Name + ""СтильЯчейки"";
+	|            Instance.DefaultCellStyle = DataGridViewCellStyle2;
+	|        }
+	|
+	|        private void ButtonOk1_Click(object sender, EventArgs e)
+	|        {
+	|            Instance.DefaultCellStyle = SimilarObj;
+	|        }
+	|
+	|        private void Form1_Shown(object sender, EventArgs e)
+	|        {
+	|            SimilarObj.NameStyle = Instance.DataGridView.Name + Instance.Name + ""СтильЯчейки"";
+	|            SimilarObj.DefaultValues = OneScriptFormsDesigner.GetDefaultValues(SimilarObj, PropertyGrid1);
+	|
+	|            TopLevelPropertyGrid1 = OneScriptFormsDesigner.PropertyGrid;
+	|        }
+	|
+	|        private void PropertyGrid1_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)
+	|        {
+	|            DataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle(SimilarObj);
+	|            Instance.DefaultCellStyle = DataGridViewCellStyle1;
+	|            DataGridView2.DefaultCellStyle = DataGridViewCellStyle1;
+	|            DataGridView3.DefaultCellStyle = DataGridViewCellStyle1;
+	|        }
+	|
+	|        public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context)
+	|        {
+	|            return UITypeEditorEditStyle.Modal;
+	|        }
+	|    }
+	|}
+	|";
+	ТекстДокХХХ = Новый ТекстовыйДокумент;
+	ТекстДокХХХ.УстановитьТекст(СтрВыгрузки);
+	ТекстДокХХХ.Записать("C:\444\ВыгрузкаДизайнера\MyDataGridViewCellStyleEditor.cs");
+	СтрВыгрузки = 
+	"using System;
+	|using System.ComponentModel;
+	|using System.Globalization;
+	|using System.ComponentModel.Design.Serialization;
+	|using System.Windows.Forms;
+	|
+	|namespace osfDesigner
+	|{
+	|    class MyPaddingConverter : TypeConverter
+	|    {
+	|        // Определяет, может ли этот преобразователь преобразовать объект данного исходного типа в собственный тип конвертера.
+	|        public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
+	|        {
+	|            if (sourceType == typeof(string))
+	|            {
+	|                return true;
+	|            }
+	|            return base.CanConvertFrom(context, sourceType);
+	|        }
+	|
+	|        public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
+	|        {
+	|            if (destinationType == typeof(InstanceDescriptor))
+	|            {
+	|                return true;
+	|            }
+	|            return base.CanConvertTo(context, destinationType);
+	|        }
+	|
+	|        // Преобразует данный объект в собственный тип преобразователя.
+	|        public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
+	|        {
+	|            if (!(value is string))
+	|            {
+	|                return base.ConvertFrom(context, culture, value);
+	|            }
+	|            if (value is string)
+	|            {
+	|                string stringValue = ((string)value).Trim();
+	|                if (stringValue.Length == 0)
+	|                {
+	|                    return null;
+	|                }
+	|
+	|                // Разобрать 4 целочисленных значения.
+	|                culture = CultureInfo.CurrentCulture;
+	|
+	|                string[] tokens = stringValue.Split(new char[] { culture.TextInfo.ListSeparator[0] });
+	|                int[] values = new int[tokens.Length];
+	|                TypeConverter intConverter = TypeDescriptor.GetConverter(typeof(int));
+	|                for (int i = 0; i < values.Length; i++)
+	|                {
+	|                    values[i] = (int)intConverter.ConvertFromString(context, culture, tokens[i]);
+	|                }
+	|
+	|                if (values.Length != 4)
+	|                {
+	|                    throw new ArgumentException(""TextParseFailedFormat - left, top, right, bottom"", nameof(value));
+	|                }
+	|                return new Padding(values[0], values[1], values[2], values[3]);
+	|            }
+	|            return base.ConvertFrom(context, culture, value);
+	|        }
+	|
+	|        public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
+	|        {
+	|            if (value is Padding)
+	|        {
+	|                Padding padding = (Padding)value;
+	|                if (destinationType == typeof(string))
+	|                {
+	|                    culture = CultureInfo.CurrentCulture;
+	|
+	|                    string sep = culture.TextInfo.ListSeparator + "" "";
+	|                    TypeConverter intConverter = TypeDescriptor.GetConverter(typeof(int));
+	|
+	|                    string[] args = new string[]
+	|                    {
+	|                        intConverter.ConvertToString(context, culture, padding.Left),
+	|                        intConverter.ConvertToString(context, culture, padding.Top),
+	|                        intConverter.ConvertToString(context, culture, padding.Right),
+	|                        intConverter.ConvertToString(context, culture, padding.Bottom)
+	|                    };
+	|                    return string.Join(sep, args);
+	|                }
+	|                else if (destinationType == typeof(InstanceDescriptor))
+	|                {
+	|                    if (padding.All == -1)
+	|                    {
+	|                        return new InstanceDescriptor(typeof(Padding).GetConstructor(new Type[] { typeof(int) }), new object[] { padding.All });
+	|                    }
+	|                    else
+	|                    {
+	|                        return new InstanceDescriptor(typeof(Padding).GetConstructor(new Type[] { typeof(int), typeof(int), typeof(int), typeof(int) }), new object[] { padding.Left, padding.Top, padding.Right, padding.Bottom });
+	|                    }
+	|                }
+	|            }
+	|            return base.ConvertTo(context, culture, value, destinationType);
+	|        }
+	|
+	|        public override bool GetCreateInstanceSupported(ITypeDescriptorContext context)
+	|        {
+	|            return true;
+	|        }
+	|
+	|        public override bool GetPropertiesSupported(ITypeDescriptorContext context)
+	|        {
+	|            return true;
+	|        }
+	|
+	|        public override PropertyDescriptorCollection GetProperties(ITypeDescriptorContext context, object value, Attribute[] attributes)
+	|        {
+	|            PropertyDescriptorCollection originalCollection = TypeDescriptor.GetProperties(value, attributes);
+	|            PropertyDescriptor[] pds = new PropertyDescriptor[originalCollection.Count];
+	|            for (int i = 0; i < originalCollection.Count; i++)
+	|            {
+	|                pds[i] = new ExpandablePaddingPropertyDescriptor(originalCollection[i]);
+	|            }
+	|            return new PropertyDescriptorCollection(pds);
+	|        }
+	|    }
+	|
+	|    public class ExpandablePaddingPropertyDescriptor : PropertyDescriptor
+	|    {
+	|        private PropertyDescriptor _pd;
+	|
+	|        public ExpandablePaddingPropertyDescriptor(PropertyDescriptor pd) : base(GetDisplayName(pd.DisplayName), null)
+	|        {
+	|            _pd = pd;
+	|        }
+	|
+	|        private static string GetDisplayName(string str)
+	|        {
+	|            if (str == ""All"")
+	|            {
+	|                return ""Все"";
+	|            }
+	|            else if (str == ""Left"")
+	|            {
+	|                return ""Лево"";
+	|            }
+	|            else if (str == ""Top"")
+	|            {
+	|                return ""Верх"";
+	|            }
+	|            else if (str == ""Right"")
+	|            {
+	|                return ""Право"";
+	|            }
+	|            else if (str == ""Bottom"")
+	|            {
+	|                return ""Низ"";
+	|            }
+	|            return str;
+	|        }
+	|
+	|        public override bool CanResetValue(object component)
+	|        {
+	|            return true;
+	|        }
+	|
+	|        public override Type ComponentType
+	|        {
+	|            get { return _pd.GetType(); }
+	|        }
+	|
+	|        public override object GetValue(object component)
+	|        {
+	|            return _pd.GetValue(component);
+	|        }
+	|
+	|        public override bool IsReadOnly
+	|        {
+	|            get { return false; }
+	|        }
+	|
+	|        public override string Name
+	|        {
+	|            get { return _pd.Name; }
+	|        }
+	|
+	|        public override Type PropertyType
+	|        {
+	|            get { return _pd.GetType(); }
+	|        }
+	|
+	|        public override void ResetValue(object component)
+	|        {
+	|        }
+	|
+	|        public override bool ShouldSerializeValue(object component)
+	|        {
+	|            return true;
+	|        }
+	|
+	|        public override void SetValue(object component, object value)
+	|        {
+	|        }
+	|    }
+	|}
+	|";
+	ТекстДокХХХ = Новый ТекстовыйДокумент;
+	ТекстДокХХХ.УстановитьТекст(СтрВыгрузки);
+	ТекстДокХХХ.Записать("C:\444\ВыгрузкаДизайнера\MyPaddingConverter.cs");
+	СтрВыгрузки = 
+	"using System;
+	|using System.ComponentModel;
+	|using System.Drawing.Design;
+	|using System.Drawing;
+	|using System.Windows.Forms.Design;
+	|using System.Windows.Forms;
+	|
+	|namespace osfDesigner
+	|{
+	|    public class MyPaddingEditor : UITypeEditor
+	|    {
+	|        public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
+	|        {
+	|            IWindowsFormsEditorService wfes = provider.GetService(typeof(IWindowsFormsEditorService)) as IWindowsFormsEditorService;
+	|
+	|            if (wfes != null)
+	|            {
+	|                frmPadding _frmPadding = new frmPadding();
+	|
+	|                _frmPadding.numericUpDown1.Value = ((Padding)value).Left;
+	|                _frmPadding.numericUpDown2.Value = ((Padding)value).Top;
+	|                _frmPadding.numericUpDown3.Value = ((Padding)value).Right;
+	|                _frmPadding.numericUpDown4.Value = ((Padding)value).Bottom;
+	|                _frmPadding._wfes = wfes;
+	|
+	|                wfes.DropDownControl(_frmPadding);
+	|                int _Left = Convert.ToInt32(_frmPadding.numericUpDown1.Value);
+	|                int _Top = Convert.ToInt32(_frmPadding.numericUpDown2.Value);
+	|                int _Right = Convert.ToInt32(_frmPadding.numericUpDown3.Value);
+	|                int _Bottom = Convert.ToInt32(_frmPadding.numericUpDown4.Value);
+	|                value = new Padding(_Left, _Top, _Right, _Bottom);
+	|            }
+	|            return value;
+	|        }
+	|
+	|        public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context)
+	|        {
+	|            return UITypeEditorEditStyle.Modal;
+	|        }
+	|    }
+	|
+	|    public class frmPadding : System.Windows.Forms.Form
+	|    {
+	|        private System.Windows.Forms.Label label1;
+	|        private System.Windows.Forms.Label label2;
+	|        private System.Windows.Forms.Label label3;
+	|        private System.Windows.Forms.Label label4;
+	|        public System.Windows.Forms.NumericUpDown numericUpDown1;
+	|        public System.Windows.Forms.NumericUpDown numericUpDown2;
+	|        public System.Windows.Forms.NumericUpDown numericUpDown3;
+	|        public System.Windows.Forms.NumericUpDown numericUpDown4;
+	|        private Container components = null;
+	|
+	|        public IWindowsFormsEditorService _wfes;
+	|
+	|        public frmPadding()
+	|        {
+	|            ClientSize = new Size(192, 130);
+	|            ControlBox = false;
+	|            FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+	|            MaximizeBox = false;
+	|            MinimizeBox = false;
+	|            Name = ""frmPadding"";
+	|            ShowInTaskbar = false;
+	|            Closed += FrmWidthHeight_Closed;
+	|
+	|            label1 = new System.Windows.Forms.Label();
+	|            label1.Parent = this;
+	|            label1.Location = new Point(10, 10);
+	|            label1.Text = ""Лево"";
+	|            label1.Width = 55;
+	|
+	|            numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+	|            numericUpDown1.Parent = this;
+	|            numericUpDown1.Location = new Point(label1.Left + label1.Width + 5, label1.Top);
+	|            numericUpDown1.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+	|            numericUpDown1.ThousandsSeparator = true;
+	|            numericUpDown1.Minimum = 0;
+	|            numericUpDown1.Maximum = 7680;
+	|
+	|            label2 = new System.Windows.Forms.Label();
+	|            label2.Parent = this;
+	|            label2.Location = new Point(label1.Left, label1.Bottom + 5);
+	|            label2.Text = ""Верх"";
+	|            label2.Width = 55;
+	|
+	|            numericUpDown2 = new System.Windows.Forms.NumericUpDown();
+	|            numericUpDown2.Parent = this;
+	|            numericUpDown2.Location = new Point(label2.Left + label2.Width + 5, label2.Top);
+	|            numericUpDown2.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+	|            numericUpDown2.ThousandsSeparator = true;
+	|            numericUpDown2.Minimum = 0;
+	|            numericUpDown2.Maximum = 4800;
+	|
+	|            label3 = new System.Windows.Forms.Label();
+	|            label3.Parent = this;
+	|            label3.Location = new Point(label2.Left, label2.Bottom + 5);
+	|            label3.Text = ""Право"";
+	|            label3.Width = 55;
+	|
+	|            numericUpDown3 = new System.Windows.Forms.NumericUpDown();
+	|            numericUpDown3.Parent = this;
+	|            numericUpDown3.Location = new Point(label3.Left + label3.Width + 5, label3.Top);
+	|            numericUpDown3.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+	|            numericUpDown3.ThousandsSeparator = true;
+	|            numericUpDown3.Minimum = 0;
+	|            numericUpDown3.Maximum = 4800;
+	|
+	|            label4 = new System.Windows.Forms.Label();
+	|            label4.Parent = this;
+	|            label4.Location = new Point(label3.Left, label3.Bottom + 5);
+	|            label4.Text = ""Низ"";
+	|            label4.Width = 55;
+	|
+	|            numericUpDown4 = new System.Windows.Forms.NumericUpDown();
+	|            numericUpDown4.Parent = this;
+	|            numericUpDown4.Location = new Point(label4.Left + label4.Width + 5, label4.Top);
+	|            numericUpDown4.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+	|            numericUpDown4.ThousandsSeparator = true;
+	|            numericUpDown4.Minimum = 0;
+	|            numericUpDown4.Maximum = 4800;
+	|
+	|            TopLevel = false;
+	|        }
+	|
+	|        private void FrmWidthHeight_Closed(object sender, EventArgs e)
+	|        {
+	|            _wfes.CloseDropDown();
+	|        }
+	|
+	|        protected override void Dispose(bool disposing)
+	|        {
+	|            if (disposing)
+	|            {
+	|                if (components != null)
+	|                {
+	|                    components.Dispose();
+	|                }
+	|            }
+	|            base.Dispose(disposing);
+	|        }
+	|    }
+	|}
+	|";
+	ТекстДокХХХ = Новый ТекстовыйДокумент;
+	ТекстДокХХХ.УстановитьТекст(СтрВыгрузки);
+	ТекстДокХХХ.Записать("C:\444\ВыгрузкаДизайнера\MyPaddingEditor.cs");
+	СтрВыгрузки = 
+	"using System;
+	|using System.ComponentModel.Design;
+	|using System.Drawing.Design;
+	|using System.Drawing;
+	|using System.Globalization;
+	|using System.Reflection;
+	|using System.Windows.Forms;
+	|
+	|namespace osfDesigner
+	|{
+	|    public class MyDataGridViewColumnCollectionEditor : CollectionEditor
+	|    {
+	|        private CollectionForm collectionForm;
+	|        private System.Windows.Forms.Form frmCollectionEditorForm;
+	|        private TableLayoutPanel TableLayoutPanel1;
+	|        private TableLayoutPanel AddRemoveTableLayoutPanel1;
+	|        private System.Windows.Forms.Label PropertiesLabel1 = null;
+	|        private System.Windows.Forms.Label MembersLabel1 = null;
+	|        private System.Windows.Forms.ListBox ListBox1;
+	|        private System.Windows.Forms.PropertyGrid PropertyGrid1;
+	|        private TableLayoutPanel OkCancelTableLayoutPanel1;
+	|        private System.Windows.Forms.Button ButtonOk1 = null;
+	|        private System.Windows.Forms.Button ButtonCancel1 = null;
+	|        private System.Windows.Forms.Button ButtonAdd1 = null;
+	|        private System.Windows.Forms.Button ButtonRemove1 = null;
+	|        private System.Windows.Forms.Button ButtonUp1 = null;
+	|        private System.Windows.Forms.Button ButtonDown1 = null;
+	|        private System.Windows.Forms.PropertyGrid TopLevelPropertyGrid1;
+	|        private System.Windows.Forms.DataGridView DataGridView1;
+	|
+	|        public MyDataGridViewColumnCollectionEditor(Type type) : base(type)
+	|        {
+	|        }
+	|
+	|        // Создадим перечень нужных нам в коллекции типов.
+	|        protected override Type[] CreateNewItemTypes()
+	|        {
+	|            Type[] Type1;
+	|            Type1 = new Type[]
+	|            {
+	|                typeof(osfDesigner.DataGridViewTextBoxColumn),
+	|                typeof(osfDesigner.DataGridViewButtonColumn),
+	|                typeof(osfDesigner.DataGridViewCheckBoxColumn),
+	|                typeof(osfDesigner.DataGridViewComboBoxColumn),
+	|                typeof(osfDesigner.DataGridViewImageColumn),
+	|                typeof(osfDesigner.DataGridViewLinkColumn)
+	|            };
+	|            return Type1;
+	|        }
+	|
+	|        protected override CollectionForm CreateCollectionForm()
+	|        {
+	|            collectionForm = base.CreateCollectionForm();
+	|            DataGridView1 = (osfDesigner.DataGridView)Context.Instance;
+	|            collectionForm.Text = ""Редактор коллекции КолонкиТаблицы"";
+	|            collectionForm.Shown += CollectionForm_Shown;
+	|            collectionForm.FormClosed += CollectionForm_FormClosed;
+	|
+	|            frmCollectionEditorForm = collectionForm;
+	|            TableLayoutPanel1 = (TableLayoutPanel)frmCollectionEditorForm.Controls[0];
+	|            if (TableLayoutPanel1 != null)
+	|            {
+	|                for (int i = 0; i < TableLayoutPanel1.Controls.Count; i++)
+	|                {
+	|                    if (i == 0)
+	|                    {
+	|                        ButtonDown1 = (System.Windows.Forms.Button)TableLayoutPanel1.Controls[0];
+	|                        ButtonDown1.Click += ButtonDown1_Click;
+	|                    }
+	|                    if (i == 1)
+	|                    {
+	|                        AddRemoveTableLayoutPanel1 = (TableLayoutPanel)TableLayoutPanel1.Controls[1];
+	|                    }
+	|                    if (i == 2)
+	|                    {
+	|                        PropertiesLabel1 = (System.Windows.Forms.Label)TableLayoutPanel1.Controls[2];
+	|                        PropertiesLabel1.Text = ""Свойства:"";
+	|                    }
+	|                    if (i == 3)
+	|                    {
+	|                        MembersLabel1 = (System.Windows.Forms.Label)TableLayoutPanel1.Controls[3];
+	|                        MembersLabel1.Text = ""Члены:"";
+	|                    }
+	|                    if (i == 4)
+	|                    {
+	|                        ListBox1 = (System.Windows.Forms.ListBox)TableLayoutPanel1.Controls[4];
+	|                        ListBox1.DrawItem += ListBox1_DrawItem;
+	|                    }
+	|                    if (i == 5)
+	|                    {
+	|                        PropertyGrid1 = (System.Windows.Forms.PropertyGrid)TableLayoutPanel1.Controls[5];
+	|                        PropertyGrid1.SelectedGridItemChanged += PropertyGrid1_SelectedGridItemChanged;
+	|                        PropertyGrid1.SelectedObjectsChanged += PropertyGrid1_SelectedObjectsChanged;
+	|                        PropertyGrid1.HelpVisible = true;
+	|                        PropertyGrid1.HelpBackColor = SystemColors.Info;
+	|                    }
+	|                    if (i == 6)
+	|                    {
+	|                        OkCancelTableLayoutPanel1 = (TableLayoutPanel)TableLayoutPanel1.Controls[6];
+	|                    }
+	|                    if (i == 7)
+	|                    {
+	|                        ButtonUp1 = (System.Windows.Forms.Button)TableLayoutPanel1.Controls[7];
+	|                        ButtonUp1.Click += ButtonUp1_Click;
+	|                    }
+	|                }
+	|            }
+	|            if (AddRemoveTableLayoutPanel1 != null)
+	|            {
+	|                for (int i = 0; i < AddRemoveTableLayoutPanel1.Controls.Count; i++)
+	|                {
+	|                    if (i == 0)
+	|                    {
+	|                        ButtonAdd1 = (System.Windows.Forms.Button)AddRemoveTableLayoutPanel1.Controls[0];
+	|                        ButtonAdd1.Click += ButtonAdd1_Click;
+	|                        ButtonAdd1.Text = ""Добавить"";
+	|
+	|                        PropertyInfo PropertyInfo3 = ButtonAdd1.GetType().GetProperty(""ShowSplit"", BindingFlags.Public | BindingFlags.Instance);
+	|                        PropertyInfo3.SetValue(ButtonAdd1, true);
+	|                        foreach (ToolStripMenuItem item in ButtonAdd1.ContextMenuStrip.Items)
+	|                        {
+	|                            if (item.Text == ""DataGridViewTextBoxColumn"")
+	|                            {
+	|                                item.Text = ""КолонкаПолеВвода"";
+	|                                item.Click += Item_TextBoxColumn_Click;
+	|                            }
+	|                            else if (item.Text == ""DataGridViewButtonColumn"")
+	|                            {
+	|                                item.Text = ""КолонкаКнопка"";
+	|                                item.Click += Item_ButtonColumn_Click;
+	|                            }
+	|                            else if (item.Text == ""DataGridViewCheckBoxColumn"")
+	|                            {
+	|                                item.Text = ""КолонкаФлажок"";
+	|                                item.Click += Item_CheckBoxColumn_Click;
+	|                            }
+	|                            else if (item.Text == ""DataGridViewComboBoxColumn"")
+	|                            {
+	|                                item.Text = ""КолонкаПолеВыбора"";
+	|                                item.Click += Item_ComboBoxColumn_Click;
+	|                            }
+	|                            else if (item.Text == ""DataGridViewImageColumn"")
+	|                            {
+	|                                item.Text = ""КолонкаКартинка"";
+	|                                item.Click += Item_ImageColumn_Click;
+	|                            }
+	|                            else if (item.Text == ""DataGridViewLinkColumn"")
+	|                            {
+	|                                item.Text = ""КолонкаСсылка"";
+	|                                item.Click += Item_LinkColumn_Click;
+	|                            }
+	|                        }
+	|                    }
+	|                    if (i == 1)
+	|                    {
+	|                        ButtonRemove1 = (System.Windows.Forms.Button)AddRemoveTableLayoutPanel1.Controls[1];
+	|                        ButtonRemove1.Click += ButtonRemove1_Click;
+	|                        ButtonRemove1.Text = ""Удалить"";
+	|                    }
+	|                }
+	|            }
+	|            if (OkCancelTableLayoutPanel1 != null)
+	|            {
+	|                for (int i = 0; i < OkCancelTableLayoutPanel1.Controls.Count; i++)
+	|                {
+	|                    if (i == 0)
+	|                    {
+	|                        ButtonOk1 = (System.Windows.Forms.Button)OkCancelTableLayoutPanel1.Controls[0];
+	|                        ButtonOk1.Text = ""ОК"";
+	|                    }
+	|                    if (i == 1)
+	|                    {
+	|                        ButtonCancel1 = (System.Windows.Forms.Button)OkCancelTableLayoutPanel1.Controls[1];
+	|                        ButtonCancel1.Text = ""Отмена"";
+	|                    }
+	|                }
+	|            }
+	|            return collectionForm;
+	|        }
+	|
+	|        private void CollectionForm_Shown(object sender, EventArgs e)
+	|        {
+	|            PropertiesLabel1.Text = ""Свойства:"";
+	|            TopLevelPropertyGrid1 = OneScriptFormsDesigner.PropertyGrid;
+	|        }
+	|
+	|        private void CollectionForm_FormClosed(object sender, FormClosedEventArgs e)
+	|        {
+	|            OneScriptFormsDesigner.SetDesignSurfaceState();
+	|        }
+	|
+	|        private void Item_LinkColumn_Click(object sender, EventArgs e)
+	|        {
+	|            dynamic Column1 = DataGridView1.Columns[ListBox1.SelectedIndex];
+	|            ((DataGridViewColumn)Column1).DefaultCellStyle = DataGridView1.DefaultCellStyle;
+	|            Column1.Name = OneScriptFormsDesigner.RevertDataGridViewColumnName(DataGridView1, Column1);
+	|            Column1.NameColumn = DataGridView1.Name + Column1.Name;
+	|            ListBox1.Refresh();
+	|            Column1.DefaultValues = OneScriptFormsDesigner.GetDefaultValues(Column1, PropertyGrid1);
+	|        }
+	|
+	|        private void Item_ImageColumn_Click(object sender, EventArgs e)
+	|        {
+	|            dynamic Column1 = DataGridView1.Columns[ListBox1.SelectedIndex];
+	|            ((DataGridViewColumn)Column1).DefaultCellStyle = DataGridView1.DefaultCellStyle;
+	|            Column1.Name = OneScriptFormsDesigner.RevertDataGridViewColumnName(DataGridView1, Column1);
+	|            Column1.NameColumn = DataGridView1.Name + Column1.Name;
+	|            ListBox1.Refresh();
+	|            Column1.DefaultValues = OneScriptFormsDesigner.GetDefaultValues(Column1, PropertyGrid1);
+	|        }
+	|
+	|        private void Item_ButtonColumn_Click(object sender, EventArgs e)
+	|        {
+	|            dynamic Column1 = DataGridView1.Columns[ListBox1.SelectedIndex];
+	|            ((DataGridViewColumn)Column1).DefaultCellStyle = DataGridView1.DefaultCellStyle;
+	|            Column1.Name = OneScriptFormsDesigner.RevertDataGridViewColumnName(DataGridView1, Column1);
+	|            Column1.NameColumn = DataGridView1.Name + Column1.Name;
+	|            ListBox1.Refresh();
+	|            Column1.DefaultValues = OneScriptFormsDesigner.GetDefaultValues(Column1, PropertyGrid1);
+	|        }
+	|
+	|        private void Item_CheckBoxColumn_Click(object sender, EventArgs e)
+	|        {
+	|            dynamic Column1 = DataGridView1.Columns[ListBox1.SelectedIndex];
+	|            ((DataGridViewColumn)Column1).DefaultCellStyle = DataGridView1.DefaultCellStyle;
+	|            Column1.Name = OneScriptFormsDesigner.RevertDataGridViewColumnName(DataGridView1, Column1);
+	|            Column1.NameColumn = DataGridView1.Name + Column1.Name;
+	|            ListBox1.Refresh();
+	|            Column1.DefaultValues = OneScriptFormsDesigner.GetDefaultValues(Column1, PropertyGrid1);
+	|        }
+	|
+	|        private void Item_ComboBoxColumn_Click(object sender, EventArgs e)
+	|        {
+	|            dynamic Column1 = DataGridView1.Columns[ListBox1.SelectedIndex];
+	|            ((DataGridViewColumn)Column1).DefaultCellStyle = DataGridView1.DefaultCellStyle;
+	|            Column1.Name = OneScriptFormsDesigner.RevertDataGridViewColumnName(DataGridView1, Column1);
+	|            Column1.NameColumn = DataGridView1.Name + Column1.Name;
+	|            ListBox1.Refresh();
+	|            Column1.DefaultValues = OneScriptFormsDesigner.GetDefaultValues(Column1, PropertyGrid1);
+	|        }
+	|
+	|        private void Item_TextBoxColumn_Click(object sender, EventArgs e)
+	|        {
+	|            dynamic Column1 = DataGridView1.Columns[ListBox1.SelectedIndex];
+	|            ((DataGridViewColumn)Column1).DefaultCellStyle = DataGridView1.DefaultCellStyle;
+	|            Column1.Name = OneScriptFormsDesigner.RevertDataGridViewColumnName(DataGridView1, Column1);
+	|            Column1.NameColumn = DataGridView1.Name + Column1.Name;
+	|            ListBox1.Refresh();
+	|            Column1.DefaultValues = OneScriptFormsDesigner.GetDefaultValues(Column1, PropertyGrid1);
+	|        }
+	|
+	|        private void ButtonAdd1_Click(object sender, EventArgs e)
+	|        {
+	|            dynamic Column1 = DataGridView1.Columns[ListBox1.SelectedIndex];
+	|            ((DataGridViewColumn)Column1).DefaultCellStyle = DataGridView1.DefaultCellStyle;
+	|            Column1.Name = OneScriptFormsDesigner.RevertDataGridViewColumnName(DataGridView1, Column1);
+	|            Column1.NameColumn = DataGridView1.Name + Column1.Name;
+	|            ListBox1.Refresh();
+	|            Column1.DefaultValues = OneScriptFormsDesigner.GetDefaultValues(Column1, PropertyGrid1);
+	|        }
+	|
+	|        private void UpdateListBox1()
+	|        {
+	|            int index = ListBox1.SelectedIndex;
+	|            DataGridView1.Columns.Clear();
+	|            MethodInfo MethodInfo3 = collectionForm.GetType().GetMethod(""AddItems"", BindingFlags.NonPublic | BindingFlags.Instance);
+	|            MethodInfo3.Invoke(collectionForm, new object[] { DataGridView1.Columns });
+	|            ListBox1.SelectedIndex = index;
+	|            if (index != ListBox1.Items.Count - 1)
+	|            {
+	|                ListBox1.SetSelected(ListBox1.Items.Count - 1, false);
+	|            }
+	|            collectionForm.Refresh();
+	|        }
+	|
+	|        private void PropertyGrid1_SelectedGridItemChanged(object sender, SelectedGridItemChangedEventArgs e)
+	|        {
+	|            PropertiesLabel1.Text = ""Свойства:"";
+	|        }
+	|
+	|        private void PropertyGrid1_SelectedObjectsChanged(object sender, EventArgs e)
+	|        {
+	|
+	|        }
+	|
+	|        private void ButtonRemove1_Click(object sender, EventArgs e)
+	|        {
+	|            UpdateListBox1();
+	|        }
+	|
+	|        private void ButtonDown1_Click(object sender, EventArgs e)
+	|        {
+	|            UpdateListBox1();
+	|        }
+	|
+	|        private void ButtonUp1_Click(object sender, EventArgs e)
+	|        {
+	|            UpdateListBox1();
+	|        }
+	|
+	|        private void ListBox1_DrawItem(object sender, DrawItemEventArgs e)
+	|        {
+	|            if (e.Index != -1)
+	|            {
+	|                ListItem ListItem1 = new ListItem(ListBox1.Items[e.Index]);
+	|                string ListItem1Text = """";
+	|                try
+	|                {
+	|                    dynamic Column1 = DataGridView1.Columns[e.Index];
+	|                    ListItem1.Value = Column1;
+	|                    ListItem1Text = Column1.Name;
+	|                }
+	|                catch { }
+	|                Graphics Graphics1 = e.Graphics;
+	|
+	|                int Count1 = ListBox1.Items.Count;
+	|                int maxCount1 = Count1;
+	|                if (Count1 > 1)
+	|                {
+	|                    maxCount1 = Count1 - 1;
+	|                }
+	|                SizeF sizeW = Graphics1.MeasureString(maxCount1.ToString(CultureInfo.CurrentCulture), ListBox1.Font);
+	|
+	|                int charactersInNumber = ((int)(Math.Log(maxCount1) / Math.Log(10)) + 1);
+	|                int w = 4 + charactersInNumber * (ListBox1.Font.Height / 2);
+	|
+	|                w = Math.Max(w, (int)Math.Ceiling(sizeW.Width));
+	|                w += SystemInformation.BorderSize.Width * 4;
+	|
+	|                Rectangle button = new Rectangle(e.Bounds.X, e.Bounds.Y, w, e.Bounds.Height);
+	|
+	|                ControlPaint.DrawButton(Graphics1, button, ButtonState.Normal);
+	|                button.Inflate(-SystemInformation.BorderSize.Width * 2, -SystemInformation.BorderSize.Height * 2);
+	|
+	|                int offset = w;
+	|
+	|                Color backColor = SystemColors.Window;
+	|                Color textColor = SystemColors.WindowText;
+	|                if ((e.State & DrawItemState.Selected) == DrawItemState.Selected)
+	|                {
+	|                    backColor = SystemColors.Highlight;
+	|                    textColor = SystemColors.HighlightText;
+	|                }
+	|
+	|                Rectangle res = new Rectangle(e.Bounds.X + offset, e.Bounds.Y, e.Bounds.Width - offset, e.Bounds.Height);
+	|                Graphics1.FillRectangle(new SolidBrush(backColor), res);
+	|                if ((e.State & DrawItemState.Focus) == DrawItemState.Focus)
+	|                {
+	|                    ControlPaint.DrawFocusRectangle(Graphics1, res);
+	|                }
+	|
+	|                offset += 2;
+	|
+	|                if (this != null && GetPaintValueSupported())
+	|                {
+	|                    Rectangle Rectangle2 = new Rectangle(e.Bounds.X + offset, e.Bounds.Y + 1, 20, e.Bounds.Height - 3);
+	|                    Graphics1.DrawRectangle(SystemPens.ControlText,
+	|                        Rectangle2.X,
+	|                        Rectangle2.Y,
+	|                        Rectangle2.Width - 1,
+	|                        Rectangle2.Height - 1);
+	|                    Rectangle2.Inflate(-1, -1);
+	|
+	|                    PaintValueEventArgs PaintValueEventArgs1 = new PaintValueEventArgs(Context, ListItem1.Value, Graphics1, Rectangle2);
+	|                    PaintValue(PaintValueEventArgs1);
+	|                    offset += 26 + 1;
+	|                }
+	|
+	|                StringFormat StringFormat1 = new StringFormat();
+	|                try
+	|                {
+	|                    StringFormat1.Alignment = StringAlignment.Center;
+	|                    Graphics1.DrawString(e.Index.ToString(CultureInfo.CurrentCulture),
+	|                        ListBox1.Font,
+	|                        SystemBrushes.ControlText,
+	|                        new Rectangle(e.Bounds.X, e.Bounds.Y, w, e.Bounds.Height),
+	|                        StringFormat1);
+	|                }
+	|                finally
+	|                {
+	|                    StringFormat1?.Dispose();
+	|                }
+	|
+	|                Brush textBrush = new SolidBrush(textColor);
+	|                Graphics1.DrawString(ListItem1Text, ListBox1.Font, textBrush, new Rectangle(e.Bounds.X + offset, e.Bounds.Y, e.Bounds.Width - offset, e.Bounds.Height));
+	|                textBrush.Dispose();
+	|            }
+	|        }
+	|    }
+	|}
+	|";
+	ТекстДокХХХ = Новый ТекстовыйДокумент;
+	ТекстДокХХХ.УстановитьТекст(СтрВыгрузки);
+	ТекстДокХХХ.Записать("C:\444\ВыгрузкаДизайнера\MyDataGridViewColumnCollectionEditor.cs");
+	СтрВыгрузки = 
+	"using System;
+	|using System.ComponentModel.Design;
+	|using System.Drawing.Design;
+	|using System.Drawing;
+	|using System.Globalization;
+	|using System.Reflection;
+	|using System.Windows.Forms;
+	|
+	|namespace osfDesigner
+	|{
+	|    public class MyDataGridViewComboBoxCollectionEditor : CollectionEditor
+	|    {
+	|        private CollectionForm collectionForm;
+	|        private System.Windows.Forms.Form frmCollectionEditorForm;
+	|        private TableLayoutPanel TableLayoutPanel1;
+	|        private TableLayoutPanel AddRemoveTableLayoutPanel1;
+	|        private System.Windows.Forms.Label PropertiesLabel1 = null;
+	|        private System.Windows.Forms.Label MembersLabel1 = null;
+	|        private System.Windows.Forms.ListBox ListBox1;
+	|        private System.Windows.Forms.PropertyGrid PropertyGrid1;
+	|        private TableLayoutPanel OkCancelTableLayoutPanel1;
+	|        private System.Windows.Forms.Button ButtonOk1 = null;
+	|        private System.Windows.Forms.Button ButtonCancel1 = null;
+	|        private System.Windows.Forms.Button ButtonAdd1 = null;
+	|        private System.Windows.Forms.Button ButtonRemove1 = null;
+	|        private System.Windows.Forms.Button ButtonUp1 = null;
+	|        private System.Windows.Forms.Button ButtonDown1 = null;
+	|        private DataGridViewComboBoxColumn DataGridViewComboBoxColumn1;
+	|
+	|        public MyDataGridViewComboBoxCollectionEditor(Type type) : base(type)
+	|        {
+	|        }
+	|
+	|        // Зададим нужный нам тип коллекции.
+	|        protected override Type[] CreateNewItemTypes()
+	|        {
+	|            return new Type[] { typeof(ListItemComboBox) };
+	|        }
+	|
+	|        protected override CollectionForm CreateCollectionForm()
+	|        {
+	|            collectionForm = base.CreateCollectionForm();
+	|            DataGridViewComboBoxColumn1 = (DataGridViewComboBoxColumn)Context.Instance;
+	|            collectionForm.Text = ""Редактор элементов ПолеВыбора"";
+	|            collectionForm.Shown += CollectionForm_Shown;
+	|            collectionForm.FormClosed += CollectionForm_FormClosed;
+	|
+	|            frmCollectionEditorForm = collectionForm;
+	|            TableLayoutPanel1 = (TableLayoutPanel)frmCollectionEditorForm.Controls[0];
+	|            if (TableLayoutPanel1 != null)
+	|            {
+	|                for (int i = 0; i < TableLayoutPanel1.Controls.Count; i++)
+	|                {
+	|                    if (i == 0)
+	|                    {
+	|                        ButtonDown1 = (System.Windows.Forms.Button)TableLayoutPanel1.Controls[0];
+	|                        ButtonDown1.Click += ButtonDown1_Click;
+	|                    }
+	|                    if (i == 1)
+	|                    {
+	|                        AddRemoveTableLayoutPanel1 = (TableLayoutPanel)TableLayoutPanel1.Controls[1];
+	|                    }
+	|                    if (i == 2)
+	|                    {
+	|                        PropertiesLabel1 = (System.Windows.Forms.Label)TableLayoutPanel1.Controls[2];
+	|                        PropertiesLabel1.Text = ""Свойства:"";
+	|                    }
+	|                    if (i == 3)
+	|                    {
+	|                        MembersLabel1 = (System.Windows.Forms.Label)TableLayoutPanel1.Controls[3];
+	|                        MembersLabel1.Text = ""Члены:"";
+	|                    }
+	|                    if (i == 4)
+	|                    {
+	|                        ListBox1 = (System.Windows.Forms.ListBox)TableLayoutPanel1.Controls[4];
+	|                        ListBox1.DrawItem += ListBox1_DrawItem;
+	|                        ListBox1.SelectedIndexChanged += ListBox1_SelectedIndexChanged;
+	|                    }
+	|                    if (i == 5)
+	|                    {
+	|                        PropertyGrid1 = (System.Windows.Forms.PropertyGrid)TableLayoutPanel1.Controls[5];
+	|                        PropertyGrid1.SelectedGridItemChanged += PropertyGrid1_SelectedGridItemChanged;
+	|                        PropertyGrid1.PropertyValueChanged += PropertyGrid1_PropertyValueChanged;
+	|                        PropertyGrid1.SelectedObjectsChanged += PropertyGrid1_SelectedObjectsChanged;
+	|                        PropertyGrid1.HelpVisible = true;
+	|                        PropertyGrid1.HelpBackColor = SystemColors.Info;
+	|                    }
+	|                    if (i == 6)
+	|                    {
+	|                        OkCancelTableLayoutPanel1 = (TableLayoutPanel)TableLayoutPanel1.Controls[6];
+	|                    }
+	|                    if (i == 7)
+	|                    {
+	|                        ButtonUp1 = (System.Windows.Forms.Button)TableLayoutPanel1.Controls[7];
+	|                        ButtonUp1.Click += ButtonUp1_Click;
+	|                    }
+	|                }
+	|            }
+	|            if (AddRemoveTableLayoutPanel1 != null)
+	|            {
+	|                for (int i = 0; i < AddRemoveTableLayoutPanel1.Controls.Count; i++)
+	|                {
+	|                    if (i == 0)
+	|                    {
+	|                        ButtonAdd1 = (System.Windows.Forms.Button)AddRemoveTableLayoutPanel1.Controls[0];
+	|                        ButtonAdd1.Click += ButtonAdd1_Click;
+	|                        ButtonAdd1.Text = ""Добавить"";
+	|                    }
+	|                    if (i == 1)
+	|                    {
+	|                        ButtonRemove1 = (System.Windows.Forms.Button)AddRemoveTableLayoutPanel1.Controls[1];
+	|                        ButtonRemove1.Click += ButtonRemove1_Click;
+	|                        ButtonRemove1.Text = ""Удалить"";
+	|                    }
+	|                }
+	|            }
+	|            if (OkCancelTableLayoutPanel1 != null)
+	|            {
+	|                for (int i = 0; i < OkCancelTableLayoutPanel1.Controls.Count; i++)
+	|                {
+	|                    if (i == 0)
+	|                    {
+	|                        ButtonOk1 = (System.Windows.Forms.Button)OkCancelTableLayoutPanel1.Controls[0];
+	|                        ButtonOk1.Text = ""ОК"";
+	|                        ButtonOk1.Click += ButtonOk1_Click;
+	|                    }
+	|                    if (i == 1)
+	|                    {
+	|                        ButtonCancel1 = (System.Windows.Forms.Button)OkCancelTableLayoutPanel1.Controls[1];
+	|                        ButtonCancel1.Text = ""Отмена"";
+	|                    }
+	|                }
+	|            }
+	|            return collectionForm;
+	|        }
+	|
+	|        private void CollectionForm_FormClosed(object sender, FormClosedEventArgs e)
+	|        {
+	|            OneScriptFormsDesigner.SetDesignSurfaceState();
+	|        }
+	|
+	|        private void ButtonOk1_Click(object sender, EventArgs e)
+	|        {
+	|        }
+	|
+	|        private void PropertyGrid1_SelectedObjectsChanged(object sender, EventArgs e)
+	|        {
+	|        }
+	|
+	|        private void CollectionForm_Shown(object sender, EventArgs e)
+	|        {
+	|            PropertiesLabel1.Text = ""Свойства:"";
+	|        }
+	|
+	|        private void ButtonAdd1_Click(object sender, EventArgs e)
+	|        {
+	|            UpdateListBox1();
+	|        }
+	|
+	|        private void ButtonUp1_Click(object sender, EventArgs e)
+	|        {
+	|            UpdateListBox1();
+	|        }
+	|
+	|        private void ButtonDown1_Click(object sender, EventArgs e)
+	|        {
+	|            UpdateListBox1();
+	|        }
+	|
+	|        private void ButtonRemove1_Click(object sender, EventArgs e)
+	|        {
+	|            UpdateListBox1();
+	|        }
+	|
+	|        private void ListBox1_SelectedIndexChanged(object sender, EventArgs e)
+	|        {
+	|            PropertiesLabel1.Text = ""Свойства:"";
+	|        }
+	|
+	|        private void PropertyGrid1_SelectedGridItemChanged(object sender, SelectedGridItemChangedEventArgs e)
+	|        {
+	|            PropertiesLabel1.Text = ""Свойства:"";
+	|        }
+	|
+	|        void PropertyGrid1_PropertyValueChanged(object sender, PropertyValueChangedEventArgs e)
+	|        {
+	|            if (e.ChangedItem.Value.ToString() == ""Строка"")
+	|            {
+	|                try
+	|                {
+	|                    string znach = (string)e.ChangedItem.Parent.GridItems[""Значение""].Value;
+	|                }
+	|                catch
+	|                {
+	|                    ((dynamic)DataGridViewComboBoxColumn1.Items[ListBox1.SelectedIndex]).Value = """";
+	|                }
+	|            }
+	|            else if (e.ChangedItem.Value.ToString() == ""Число"")
+	|            {
+	|                try
+	|                {
+	|                    decimal znach = (decimal)e.ChangedItem.Parent.GridItems[""Значение""].Value;
+	|                }
+	|                catch
+	|                {
+	|                    ((dynamic)DataGridViewComboBoxColumn1.Items[ListBox1.SelectedIndex]).Value = 0;
+	|                }
+	|            }
+	|            else if (e.ChangedItem.Value.ToString() == ""Булево"")
+	|            {
+	|                try
+	|                {
+	|                    bool znach = (bool)e.ChangedItem.Parent.GridItems[""Значение""].Value;
+	|                }
+	|                catch
+	|                {
+	|                    ((dynamic)DataGridViewComboBoxColumn1.Items[ListBox1.SelectedIndex]).Value = false;
+	|                }
+	|            }
+	|            else if (e.ChangedItem.Value.ToString() == ""Дата"")
+	|            {
+	|                try
+	|                {
+	|                    DateTime znach = (DateTime)e.ChangedItem.Parent.GridItems[""Значение""].Value;
+	|                }
+	|                catch
+	|                {
+	|                    ((dynamic)DataGridViewComboBoxColumn1.Items[ListBox1.SelectedIndex]).Value = new DateTime(1, 1, 1, 0, 0, 0);
+	|                }
+	|            }
+	|        }
+	|
+	|        private void UpdateListBox1()
+	|        {
+	|            int index = ListBox1.SelectedIndex;
+	|            DataGridViewComboBoxColumn1.Items.Clear();
+	|            MethodInfo MethodInfo3 = collectionForm.GetType().GetMethod(""AddItems"", BindingFlags.NonPublic | BindingFlags.Instance);
+	|            MethodInfo3.Invoke(collectionForm, new object[] { DataGridViewComboBoxColumn1.Items });
+	|            ListBox1.SelectedIndex = index;
+	|            if (index != ListBox1.Items.Count - 1)
+	|            {
+	|                ListBox1.SetSelected(ListBox1.Items.Count - 1, false);
+	|            }
+	|            PropertiesLabel1.Text = ""Свойства:"";
+	|            collectionForm.Refresh();
+	|        }
+	|
+	|        private void ListBox1_DrawItem(object sender, DrawItemEventArgs e)
+	|        {
+	|            if (e.Index != -1)
+	|            {
+	|                ListItem ListItem1 = new ListItem(ListBox1.Items[e.Index]);
+	|                string FileName = """";
+	|                try
+	|                {
+	|                    ListItemComboBox ListItemComboBox1 = (ListItemComboBox)DataGridViewComboBoxColumn1.Items[e.Index];
+	|                    ListItem1.Value = ListItemComboBox1.Value;
+	|                    FileName = ListItemComboBox1.Text;
+	|                }
+	|                catch { }
+	|                Graphics Graphics1 = e.Graphics;
+	|
+	|                int Count1 = ListBox1.Items.Count;
+	|                int maxCount1 = Count1;
+	|                if (Count1 > 1)
+	|                {
+	|                    maxCount1 = Count1 - 1;
+	|                }
+	|                SizeF sizeW = Graphics1.MeasureString(maxCount1.ToString(CultureInfo.CurrentCulture), ListBox1.Font);
+	|
+	|                int charactersInNumber = ((int)(Math.Log(maxCount1) / Math.Log(10)) + 1);
+	|                int w = 4 + charactersInNumber * (ListBox1.Font.Height / 2);
+	|
+	|                w = Math.Max(w, (int)Math.Ceiling(sizeW.Width));
+	|                w += SystemInformation.BorderSize.Width * 4;
+	|
+	|                Rectangle button = new Rectangle(e.Bounds.X, e.Bounds.Y, w, e.Bounds.Height);
+	|
+	|                ControlPaint.DrawButton(Graphics1, button, ButtonState.Normal);
+	|                button.Inflate(-SystemInformation.BorderSize.Width * 2, -SystemInformation.BorderSize.Height * 2);
+	|
+	|                int offset = w;
+	|
+	|                Color backColor = SystemColors.Window;
+	|                Color textColor = SystemColors.WindowText;
+	|                if ((e.State & DrawItemState.Selected) == DrawItemState.Selected)
+	|                {
+	|                    backColor = SystemColors.Highlight;
+	|                    textColor = SystemColors.HighlightText;
+	|                }
+	|
+	|                Rectangle res = new Rectangle(e.Bounds.X + offset,
+	|                                            e.Bounds.Y,
+	|                                            e.Bounds.Width - offset,
+	|                                            e.Bounds.Height);
+	|                Graphics1.FillRectangle(new SolidBrush(backColor), res);
+	|                if ((e.State & DrawItemState.Focus) == DrawItemState.Focus)
+	|                {
+	|                    ControlPaint.DrawFocusRectangle(Graphics1, res);
+	|                }
+	|
+	|                offset += 2;
+	|
+	|                if (this != null && GetPaintValueSupported())
+	|                {
+	|                    Rectangle Rectangle2 = new Rectangle(e.Bounds.X + offset, e.Bounds.Y + 1, 20, e.Bounds.Height - 3);
+	|                    Graphics1.DrawRectangle(SystemPens.ControlText,
+	|                        Rectangle2.X,
+	|                        Rectangle2.Y,
+	|                        Rectangle2.Width - 1,
+	|                        Rectangle2.Height - 1);
+	|                    Rectangle2.Inflate(-1, -1);
+	|
+	|                    PaintValueEventArgs PaintValueEventArgs1 = new PaintValueEventArgs(Context, ListItem1.Value, Graphics1, Rectangle2);
+	|                    PaintValue(PaintValueEventArgs1);
+	|                    offset += 26 + 1;
+	|                }
+	|
+	|                StringFormat StringFormat1 = new StringFormat();
+	|                try
+	|                {
+	|                    StringFormat1.Alignment = StringAlignment.Center;
+	|                    Graphics1.DrawString(e.Index.ToString(CultureInfo.CurrentCulture),
+	|                        ListBox1.Font,
+	|                        SystemBrushes.ControlText,
+	|                        new Rectangle(e.Bounds.X, e.Bounds.Y, w, e.Bounds.Height),
+	|                        StringFormat1);
+	|                }
+	|                finally
+	|                {
+	|                    StringFormat1?.Dispose();
+	|                }
+	|
+	|                Brush textBrush = new SolidBrush(textColor);
+	|                string itemText = FileName;
+	|                try
+	|                {
+	|                    Graphics1.DrawString(itemText,
+	|                        ListBox1.Font,
+	|                        textBrush,
+	|                        new Rectangle(e.Bounds.X + offset, e.Bounds.Y, e.Bounds.Width - offset, e.Bounds.Height));
+	|                }
+	|
+	|                finally
+	|                {
+	|                    textBrush?.Dispose();
+	|                }
+	|
+	|                // Проверим, нужно ли нам изменять горизонтальный экстент списка.
+	|                int width = offset + (int)Graphics1.MeasureString(itemText, ListBox1.Font).Width;
+	|                if (width > e.Bounds.Width && ListBox1.HorizontalExtent < width)
+	|                {
+	|                    ListBox1.HorizontalExtent = width;
+	|                }
+	|            }
+	|        }
+	|    }
+	|}
+	|";
+	ТекстДокХХХ = Новый ТекстовыйДокумент;
+	ТекстДокХХХ.УстановитьТекст(СтрВыгрузки);
+	ТекстДокХХХ.Записать("C:\444\ВыгрузкаДизайнера\MyDataGridViewComboBoxCollectionEditor.cs");
+	СтрВыгрузки = 
+	"using System;
+	|using System.ComponentModel;
+	|using System.Drawing.Design;
+	|using System.Reflection;
+	|using System.Windows.Forms;
+	|
+	|namespace osfDesigner
+	|{
+	|    public class MyMaskPropertyEditor : UITypeEditor
+	|    {
+	|        System.Windows.Forms.Form form;
+	|
+	|        public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context)
+	|        {
+	|            return UITypeEditorEditStyle.Modal;
+	|        }
+	|        public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
+	|        {
+	|            Assembly assembly = Assembly.Load(""System.Design, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"");
+	|            System.Type type = assembly.GetType(""System.Windows.Forms.Design.MaskDesignerDialog"");
+	|            ConstructorInfo ci = type.GetConstructor(new System.Type[] { typeof(System.Windows.Forms.MaskedTextBox), typeof(System.ComponentModel.Design.IHelpService) });
+	|            form = ci.Invoke(new object[] { context.Instance, null }) as System.Windows.Forms.Form;
+	|            form.Text = ""Маска ввода"";
+	|            form.HelpButton = false;
+	|            form.Shown += Form_Shown;
+	|            System.Windows.Forms.TableLayoutPanel tPanel1 = (System.Windows.Forms.TableLayoutPanel)form.Controls[0];
+	|            System.Windows.Forms.TableLayoutPanel tPanel2 = (System.Windows.Forms.TableLayoutPanel)tPanel1.Controls[0];
+	|            System.Windows.Forms.TableLayoutPanel tPanel3 = (System.Windows.Forms.TableLayoutPanel)tPanel1.Controls[1];
+	|            System.Windows.Forms.Label label1 = (System.Windows.Forms.Label)tPanel1.Controls[2];
+	|            System.Windows.Forms.ListView listView1 = (System.Windows.Forms.ListView)tPanel1.Controls[3];
+	|            listView1.ColumnClick += ListView1_ColumnClick;
+	|            label1.Text = ""Выберите готовое описание маски из списка ниже или задайте специальную маску, выбрав команду "" + ""\u0022Специальный"" + ""\u0022."";
+	|            System.Windows.Forms.CheckBox checkBox1 = (System.Windows.Forms.CheckBox)tPanel2.Controls[0];
+	|            checkBox1.Text = ""Использовать ValidatingType"";
+	|            checkBox1.Visible = false;
+	|            System.Windows.Forms.Label label2 = (System.Windows.Forms.Label)tPanel2.Controls[1];
+	|            label2.Text = ""Маска:"";
+	|            System.Windows.Forms.Label label3 = (System.Windows.Forms.Label)tPanel2.Controls[3];
+	|            label3.Text = ""Предварительный просмотр:"";
+	|            listView1.Columns[0].Text = ""Описание маски"";
+	|            listView1.Columns[1].Text = ""Формат данных"";
+	|            listView1.Columns[2].Text = ""Проверка типа"";
+	|            System.Windows.Forms.Button button1 = (System.Windows.Forms.Button)tPanel3.Controls[0];
+	|            button1.Text = ""Отмена"";
+	|            System.Windows.Forms.Button button2 = (System.Windows.Forms.Button)tPanel3.Controls[1];
+	|            button2.Text = ""ОК"";
+	|
+	|            if (form.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+	|            {
+	|                PropertyInfo pi = type.GetProperty(""Mask"");
+	|                ((MaskedTextBox)context.Instance).Mask = pi.GetValue(form, null) as string;
+	|            }
+	|
+	|            return base.EditValue(context, provider, value);
+	|        }
+	|
+	|        private void ListView1_ColumnClick(object sender, ColumnClickEventArgs e)
+	|        {
+	|            System.Windows.Forms.TableLayoutPanel tPanel1 = (System.Windows.Forms.TableLayoutPanel)form.Controls[0];
+	|            System.Windows.Forms.ListView listView1 = (System.Windows.Forms.ListView)tPanel1.Controls[3];
+	|            for (int i = 0; i < listView1.Items.Count; i++)
+	|            {
+	|                System.Windows.Forms.ListViewItem s = listView1.Items[i];
+	|                if (s.SubItems[0].Text.Contains(""Custom""))
+	|                {
+	|                    s.SubItems[0].Text = ""\u0022Специальный\u0022"";
+	|                }
+	|                else if (s.SubItems[0].Text == ""Numeric (5-digits)"")
+	|                {
+	|                    s.SubItems[0].Text = ""Числовой (5 цифр)"";
+	|                }
+	|                else if (s.SubItems[0].Text == ""Phone number"")
+	|                {
+	|                    s.SubItems[0].Text = ""Номер телефона"";
+	|                }
+	|                else if (s.SubItems[0].Text == ""Phone number no area code"")
+	|                {
+	|                    s.SubItems[0].Text = ""Номер телефона без кода города"";
+	|                }
+	|                else if (s.SubItems[0].Text == ""Short date"")
+	|                {
+	|                    s.SubItems[0].Text = ""Короткая дата"";
+	|                }
+	|                else if (s.SubItems[0].Text == ""Short date and time (US)"")
+	|                {
+	|                    s.SubItems[0].Text = ""Короткая дата и время (US)"";
+	|                }
+	|                else if (s.SubItems[0].Text == ""Social security number"")
+	|                {
+	|                    s.SubItems[0].Text = ""Номер социального страхования"";
+	|                }
+	|                else if (s.SubItems[0].Text == ""Time (European/Military)"")
+	|                {
+	|                    s.SubItems[0].Text = ""Время (Европейский/Военный)"";
+	|                }
+	|                else if (s.SubItems[0].Text == ""Time (US)"")
+	|                {
+	|                    s.SubItems[0].Text = ""Время (US)"";
+	|                }
+	|                else if (s.SubItems[0].Text == ""Zip Code"")
+	|                {
+	|                    s.SubItems[0].Text = ""Zip код"";
+	|                }
+	|            }
+	|            listView1.Sort();
+	|        }
+	|
+	|        private void Form_Shown(object sender, EventArgs e)
+	|        {
+	|            System.Windows.Forms.TableLayoutPanel tPanel1 = (System.Windows.Forms.TableLayoutPanel)form.Controls[0];
+	|            System.Windows.Forms.ListView listView1 = (System.Windows.Forms.ListView)tPanel1.Controls[3];
+	|
+	|            listView1.Items[0].SubItems[0].Text = ""Числовой (5 цифр)"";
+	|            listView1.Items[1].SubItems[0].Text = ""Номер телефона"";
+	|            listView1.Items[2].SubItems[0].Text = ""Номер телефона без кода города"";
+	|            listView1.Items[3].SubItems[0].Text = ""Короткая дата"";
+	|            listView1.Items[4].SubItems[0].Text = ""Короткая дата и время (US)"";
+	|            listView1.Items[5].SubItems[0].Text = ""Номер социального страхования"";
+	|            listView1.Items[6].SubItems[0].Text = ""Время (Европейский/Военный)"";
+	|            listView1.Items[7].SubItems[0].Text = ""Время (US)"";
+	|            listView1.Items[8].SubItems[0].Text = ""Zip код"";
+	|            listView1.Items[9].SubItems[0].Text = ""\u0022Специальный\u0022"";
+	|        }
+	|    }
+	|}
+	|";
+	ТекстДокХХХ = Новый ТекстовыйДокумент;
+	ТекстДокХХХ.УстановитьТекст(СтрВыгрузки);
+	ТекстДокХХХ.Записать("C:\444\ВыгрузкаДизайнера\MyMaskPropertyEditor.cs");
 	
 	СтрВыгрузки = 
 	"using osfDesigner.Properties;
@@ -3189,7 +5723,7 @@
 	|            checkBox1.Text = ""Включить визуальные стили для дизайнера. ( Требуется перезапуск дизайнера! )"";
 	|            checkBox1.Checked = (bool)Settings.Default[""visualSyleDesigner""];
 	|
-	|             checkBox2 = new System.Windows.Forms.CheckBox();
+	|            checkBox2 = new System.Windows.Forms.CheckBox();
 	|            checkBox2.Parent = groupBox3;
 	|            checkBox2.Left = 10;
 	|            checkBox2.Top = radioButton1.Bottom + 15;
@@ -4821,6 +7355,7 @@
 	|{
 	|    public class SaveForm
 	|    {
+	|        public static string Indent1 = """";
 	|        public static System.Windows.Forms.TreeView TreeView1 = OneScriptFormsDesigner.PropertyGridHost.TreeView;
 	|        public static System.Windows.Forms.ToolBarButton ButtonSort1 = OneScriptFormsDesigner.PropertyGridHost.ButtonSort;
 	|
@@ -4892,7 +7427,7 @@
 	|                        Template1 = Template1.Replace(@""[Конструкторы>]"", strComp + Environment.NewLine + @""[Конструкторы>]"");
 	|                    }
 	|                }
-	|                // Запишем в выгрузку свойства компонентов.
+	|                // Запишем свойства компонентов.
 	|                // Последовательность возмем из древовидной структуры TreeView при сортировке ""В порядке создания"".
 	|                bool stateSort = ButtonSort1.Pushed;
 	|                ButtonSort1.Pushed = false;
@@ -5014,7 +7549,7 @@
 	|            return ReSort(Template1);
 	|        }
 	|
-	|        // Переформируем выгруженную форму.
+	|        // Переформируем выгруженный код.
 	|        private static string ReSort(string Template1)
 	|        {
 	|            string[] stringSeparators = new string[] { Environment.NewLine };
@@ -5065,46 +7600,63 @@
 	|
 	|                string fragment2 = """";
 	|                SortedList SortedList1 = new SortedList();
-	|                SortedList1.Capacity = 1000;
+	|                SortedList1.Capacity = 10000;
 	|                string[] result = fragment1.Split(stringSeparators, StringSplitOptions.RemoveEmptyEntries);
+	|
 	|                for (int i1 = 0; i1 < result.Length; i1++)
 	|                {
 	|                    string strResult = result[i1];
 	|                    if (i1 == 0)
 	|                    {
-	|                        SortedList1.Add(i1, strResult);
+	|                        SortedList1.Add(0.0M, strResult);
 	|                    }
 	|                    else if (strResult.Contains(namecomp + ""."" + ""Родитель =""))
 	|                    {
-	|                        SortedList1.Add(1, strResult);
+	|                        SortedList1.Add(1.0M, strResult);
 	|                    }
 	|                    else if (strResult.Contains(namecomp + ""."" + ""Стыковка =""))
 	|                    {
-	|                        SortedList1.Add(2, strResult);
+	|                        SortedList1.Add(2.0M, strResult);
+	|                    }
+	|                    else if (strResult.Contains(namecomp + ""."" + ""АвтоРазмер =""))
+	|                    {
+	|                        SortedList1.Add(3.0M, strResult);
+	|                    }
+	|                    else if (strResult.Contains(namecomp + ""."" + ""МногострочныйРежим =""))
+	|                    {
+	|                        SortedList1.Add(4.0M, strResult);
+	|                    }
+	|                    else if (strResult.Contains(namecomp + ""."" + ""СтильГраницыФормы =""))
+	|                    {
+	|                        SortedList1.Add(5.0M, strResult);
 	|                    }
 	|                    else if (strResult.Contains(namecomp + ""."" + ""Размер =""))
 	|                    {
-	|                        SortedList1.Add(3, strResult);
+	|                        SortedList1.Add(6.0M, strResult);
 	|                    }
 	|                    else if (strResult.Contains(namecomp + ""."" + ""ПорядокОбхода =""))
 	|                    {
-	|                        SortedList1.Add(4, strResult);
+	|                        SortedList1.Add(7.0M, strResult);
 	|                    }
 	|                    else if (strResult.Contains(namecomp + ""."" + ""Флажки =""))
 	|                    {
-	|                        SortedList1.Add(5, strResult);
+	|                        SortedList1.Add(8.0M, strResult);
+	|                    }
+	|                    else if (strResult.Contains(namecomp + ""."" + ""Путь =""))
+	|                    {
+	|                        SortedList1.Add(9.0M, strResult);
 	|                    }
 	|                    else
 	|                    {
-	|                        SortedList1.Add(i1 + 500, strResult);
+	|                        SortedList1.Add(Convert.ToDecimal(i1 + 500), strResult);
 	|                    }
 	|                }
 	|                ArrayList ArrayList3 = new ArrayList();
-	|                for (int i1 = 0; i1 < SortedList1.Capacity; i1++)
+	|                for (int i1 = 0; i1 < SortedList1.Count; i1++)
 	|                {
-	|                    if (SortedList1[i1] != null)
+	|                    if (SortedList1[SortedList1.GetKey(i1)] != null)
 	|                    {
-	|                        ArrayList3.Add(SortedList1[i1]);
+	|                        ArrayList3.Add(SortedList1[SortedList1.GetKey(i1)]);
 	|                    }
 	|                }
 	|                for (int i4 = 0; i4 < ArrayList3.Count; i4++)
@@ -5116,9 +7668,8 @@
 	|                    }
 	|                    else
 	|                    {
-	|                        fragment2 = fragment2 + Environment.NewLine + strArrayList;
+	|                        fragment2 = fragment2 + Environment.NewLine + Indent1 + strArrayList;
 	|                    }
-	|
 	|                }
 	|                str1 = str1.Replace(fragment1, fragment2);
 	|            }
@@ -5141,7 +7692,7 @@
 	|            }
 	|            else
 	|            {
-	|                if (!comp.DefaultValues.Contains(valueName + "" == "" + compValue))
+	|                if (!comp.DefaultValues.Contains(valueName + "" == "" + compValue + Environment.NewLine))
 	|                {
 	|                    try
 	|                    {
@@ -5200,7 +7751,15 @@
 	|            }
 	|            // Закончили пропуск свойств.
 	|
-	|            if (compValue == ""Ложь"" || compValue == ""Истина"")
+	|            if ((compValue == ""Ложь"" || compValue == ""Истина"") && !(
+	|                (valueName == ""ИзменяемыйРазмер"" && val.GetType() == typeof(osfDesigner.DataGridViewTextBoxColumn)) ||
+	|                (valueName == ""ИзменяемыйРазмер"" && val.GetType() == typeof(osfDesigner.DataGridViewButtonColumn)) ||
+	|                (valueName == ""ИзменяемыйРазмер"" && val.GetType() == typeof(osfDesigner.DataGridViewCheckBoxColumn)) ||
+	|                (valueName == ""ИзменяемыйРазмер"" && val.GetType() == typeof(osfDesigner.DataGridViewComboBoxColumn)) ||
+	|                (valueName == ""ИзменяемыйРазмер"" && val.GetType() == typeof(osfDesigner.DataGridViewImageColumn)) ||
+	|                (valueName == ""ИзменяемыйРазмер"" && val.GetType() == typeof(osfDesigner.DataGridViewLinkColumn)) ||
+	|                (valueName == ""Перенос"" && val.GetType() == typeof(osfDesigner.DataGridViewCellStyle)) ||
+	|                (valueName == ""Перенос"" && val.GetType() == typeof(osfDesigner.DataGridViewCellStyleHeaders))))
 	|            {
 	|                AddToScript(compName + ""."" + valueName + "" = "" + compValue + "";"");
 	|                return;
@@ -5284,12 +7843,12 @@
 	|                                ListItemComboBox1 = (osfDesigner.ListItemComboBox)ComboBoxObjectCollection1[i];
 	|                                if (ListItemComboBox1.ValueType == DataType.Строка)
 	|                                {
-	|                                    strValue = strValue + compName + "".Элементы.Добавить(Ф.ЭлементСписка(\u0022"" + ListItemComboBox1.Text + ""\u0022, \u0022"" + ListItemComboBox1.Text + ""\u0022));"";
+	|                                    strValue = strValue + Indent1 + compName + "".Элементы.Добавить(Ф.ЭлементСписка(\u0022"" + ListItemComboBox1.Text + ""\u0022, \u0022"" + ListItemComboBox1.Text + ""\u0022));"";
 	|                                }
 	|                                else if (ListItemComboBox1.ValueType == DataType.Дата)
 	|                                {
 	|                                    DateTime DateTime1 = ListItemComboBox1.ValueDateTime;
-	|                                    strValue = strValue + compName + "".Элементы.Добавить(Ф.ЭлементСписка(\u0022"" + ListItemComboBox1.Text + ""\u0022, "" +
+	|                                    strValue = strValue + Indent1 + compName + "".Элементы.Добавить(Ф.ЭлементСписка(\u0022"" + ListItemComboBox1.Text + ""\u0022, "" +
 	|                                        ""Дата("" +
 	|                                        DateTime1.ToString(""yyyy"") + "", "" +
 	|                                        DateTime1.ToString(""MM"") + "", "" +
@@ -5300,11 +7859,11 @@
 	|                                }
 	|                                else if (ListItemComboBox1.ValueType == DataType.Булево)
 	|                                {
-	|                                    strValue = strValue + compName + "".Элементы.Добавить(Ф.ЭлементСписка(\u0022"" + ListItemComboBox1.Text + ""\u0022, "" + ListItemComboBox1.Text + ""));"";
+	|                                    strValue = strValue + Indent1 + compName + "".Элементы.Добавить(Ф.ЭлементСписка(\u0022"" + ListItemComboBox1.Text + ""\u0022, "" + ListItemComboBox1.Text + ""));"";
 	|                                }
 	|                                else if (ListItemComboBox1.ValueType == DataType.Число)
 	|                                {
-	|                                    strValue = strValue + compName + "".Элементы.Добавить(Ф.ЭлементСписка(\u0022"" + ListItemComboBox1.Text + ""\u0022, "" + ListItemComboBox1.Text + ""));"";
+	|                                    strValue = strValue + Indent1 + compName + "".Элементы.Добавить(Ф.ЭлементСписка(\u0022"" + ListItemComboBox1.Text.Replace(CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator, ""."") + ""\u0022, "" + ListItemComboBox1.Text.Replace(CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator, ""."") + ""));"";
 	|                                }
 	|                                if (i == 0)
 	|                                {
@@ -5330,12 +7889,12 @@
 	|                                ListItemListBox1 = (osfDesigner.ListItemListBox)ListBoxObjectCollection1[i];
 	|                                if (ListItemListBox1.ValueType == DataType.Строка)
 	|                                {
-	|                                    strValue = strValue + compName + "".Элементы.Добавить(Ф.ЭлементСписка(\u0022"" + ListItemListBox1.Text + ""\u0022, \u0022"" + ListItemListBox1.Text + ""\u0022));"";
+	|                                    strValue = strValue + Indent1 + compName + "".Элементы.Добавить(Ф.ЭлементСписка(\u0022"" + ListItemListBox1.Text + ""\u0022, \u0022"" + ListItemListBox1.Text + ""\u0022));"";
 	|                                }
 	|                                else if (ListItemListBox1.ValueType == DataType.Дата)
 	|                                {
 	|                                    DateTime DateTime1 = ListItemListBox1.ValueDateTime;
-	|                                    strValue = strValue + compName + "".Элементы.Добавить(Ф.ЭлементСписка(\u0022"" + ListItemListBox1.Text + ""\u0022, "" +
+	|                                    strValue = strValue + Indent1 + compName + "".Элементы.Добавить(Ф.ЭлементСписка(\u0022"" + ListItemListBox1.Text + ""\u0022, "" +
 	|                                        ""Дата("" +
 	|                                        DateTime1.ToString(""yyyy"") + "", "" +
 	|                                        DateTime1.ToString(""MM"") + "", "" +
@@ -5346,11 +7905,11 @@
 	|                                }
 	|                                else if (ListItemListBox1.ValueType == DataType.Булево)
 	|                                {
-	|                                    strValue = strValue + compName + "".Элементы.Добавить(Ф.ЭлементСписка(\u0022"" + ListItemListBox1.Text + ""\u0022, "" + ListItemListBox1.Text + ""));"";
+	|                                    strValue = strValue + Indent1 + compName + "".Элементы.Добавить(Ф.ЭлементСписка(\u0022"" + ListItemListBox1.Text + ""\u0022, "" + ListItemListBox1.Text + ""));"";
 	|                                }
 	|                                else if (ListItemListBox1.ValueType == DataType.Число)
 	|                                {
-	|                                    strValue = strValue + compName + "".Элементы.Добавить(Ф.ЭлементСписка(\u0022"" + ListItemListBox1.Text + ""\u0022, "" + ListItemListBox1.Text + ""));"";
+	|                                    strValue = strValue + Indent1 + compName + "".Элементы.Добавить(Ф.ЭлементСписка(\u0022"" + ListItemListBox1.Text.Replace(CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator, ""."") + ""\u0022, "" + ListItemListBox1.Text.Replace(CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator, ""."") + ""));"";
 	|                                }
 	|                                if (i == 0)
 	|                                {
@@ -5401,25 +7960,237 @@
 	|                }
 	|                return;
 	|            }
+	|            if (valueName == ""Картинка"")
+	|            {
+	|                DataGridViewImageColumn DataGridViewImageColumn1 = (DataGridViewImageColumn)val;
+	|                if (compValue != ""System.Drawing.Bitmap ()"")
+	|                {
+	|                    string FileName = OneScriptFormsDesigner.ParseBetween(compValue, ""("", "")"");
+	|                    string newPath = """";
+	|                    if (path != null)
+	|                    {
+	|                        string newFileName = FileName.Substring(FileName.LastIndexOf('\\') + 1);
+	|                        newPath = path + newFileName;
+	|                        if (!File.Exists(newPath))
+	|                        {
+	|                            File.Copy(FileName, newPath);
+	|                        }
+	|                    }
+	|                    else
+	|                    {
+	|                        newPath = FileName;
+	|                    }
+	|                    AddToScript(DataGridViewImageColumn1.NameColumn + "".Картинка = Ф.Картинка(\u0022"" + newPath + ""\u0022);"");
+	|                }
+	|                return;
+	|            }	
 	|            if (valueName == ""Колонки"")
 	|            {
 	|                if (val != null)
 	|                {
-	|                    System.Windows.Forms.ListView.ColumnHeaderCollection ColumnHeaderCollection1 = (System.Windows.Forms.ListView.ColumnHeaderCollection)val.Columns;
-	|                    if (ColumnHeaderCollection1.Count > 0)
+	|                    if (val.Columns.GetType() == typeof(System.Windows.Forms.DataGridViewColumnCollection))
 	|                    {
-	|                        osfDesigner.ColumnHeader ColumnHeader1;
-	|                        for (int i = 0; i < ColumnHeaderCollection1.Count; i++)
+	|                        System.Windows.Forms.DataGridViewColumnCollection DataGridViewColumnCollection1 = (System.Windows.Forms.DataGridViewColumnCollection)val.Columns;
+	|                        if (DataGridViewColumnCollection1.Count > 0)
 	|                        {
-	|                            ColumnHeader1 = (osfDesigner.ColumnHeader)ColumnHeaderCollection1[i];
-	|                            AddToScript(ColumnHeader1.Name + "" = Ф.Колонка();"");
-	|                            PropComponent(ColumnHeader1);
-	|                            AddToScript(compName + "".Колонки.Добавить("" + ColumnHeader1.Name + "");"");
+	|                            for (int i = 0; i < DataGridViewColumnCollection1.Count; i++)
+	|                            {
+	|                                if (DataGridViewColumnCollection1[i].GetType() == typeof(osfDesigner.DataGridViewLinkColumn))
+	|                                {
+	|                                    osfDesigner.DataGridViewLinkColumn DataGridViewLinkColumn1 = (osfDesigner.DataGridViewLinkColumn)DataGridViewColumnCollection1[i];
+	|                                    AddToScript(DataGridViewLinkColumn1.NameColumn + "" = Ф.КолонкаСсылка();"");
+	|                                    PropComponent(DataGridViewLinkColumn1);
+	|                                    AddToScript(compName + "".Колонки.Добавить("" + DataGridViewLinkColumn1.NameColumn + "");"");
+	|                                }
+	|                                if (DataGridViewColumnCollection1[i].GetType() == typeof(osfDesigner.DataGridViewImageColumn))
+	|                                {
+	|                                    osfDesigner.DataGridViewImageColumn DataGridViewImageColumn1 = (osfDesigner.DataGridViewImageColumn)DataGridViewColumnCollection1[i];
+	|                                    AddToScript(DataGridViewImageColumn1.NameColumn + "" = Ф.КолонкаКартинка();"");
+	|                                    PropComponent(DataGridViewImageColumn1);
+	|                                    AddToScript(compName + "".Колонки.Добавить("" + DataGridViewImageColumn1.NameColumn + "");"");
+	|                                }
+	|                                if (DataGridViewColumnCollection1[i].GetType() == typeof(osfDesigner.DataGridViewComboBoxColumn))
+	|                                {
+	|                                    osfDesigner.DataGridViewComboBoxColumn DataGridViewComboBoxColumn1 = (osfDesigner.DataGridViewComboBoxColumn)DataGridViewColumnCollection1[i];
+	|                                    AddToScript(DataGridViewComboBoxColumn1.NameColumn + "" = Ф.КолонкаПолеВыбора();"");
+	|                                    PropComponent(DataGridViewComboBoxColumn1);
+	|	
+	|                                    // Учитываем элементы поля выбора
+	|                                    System.Windows.Forms.DataGridViewComboBoxCell.ObjectCollection Items = DataGridViewComboBoxColumn1.Items;
+	|                                    for (int i2 = 0; i2 < Items.Count; i2++)
+	|                                    {
+	|                                        osfDesigner.ListItemComboBox ListItemComboBox1 = (osfDesigner.ListItemComboBox)Items[i2];
+	|                                        dynamic Value1 = ListItemComboBox1.Value;
+	|                                        if (Value1.GetType() == typeof(System.String))
+	|                                        {
+	|                                            AddToScript(DataGridViewComboBoxColumn1.NameColumn + "".Элементы.Добавить(\u0022"" + Value1 + ""\u0022);"");
+	|                                        }
+	|                                        else if (Value1.GetType() == typeof(System.Decimal))
+	|                                        {
+	|                                            AddToScript(DataGridViewComboBoxColumn1.NameColumn + "".Элементы.Добавить("" + Convert.ToString(Value1).Replace("","", ""."") + "");"");
+	|                                        }
+	|                                        else if (Value1.GetType() == typeof(System.Boolean))
+	|                                        {
+	|                                            AddToScript(DataGridViewComboBoxColumn1.NameColumn + "".Элементы.Добавить("" + Convert.ToString(Value1).Replace(""False"", ""Ложь"").Replace(""True"", ""Истина"") + "");"");
+	|                                        }
+	|                                        else if (Value1.GetType() == typeof(System.DateTime))
+	|                                        {
+	|                                            AddToScript(DataGridViewComboBoxColumn1.NameColumn + "".Элементы.Добавить(Дата("" +
+	|                                                Value1.ToString(""yyyy"") + "", "" +
+	|                                                Value1.ToString(""MM"") + "", "" +
+	|                                                Value1.ToString(""dd"") + "", "" +
+	|                                                Value1.ToString(""HH"") + "", "" +
+	|                                                Value1.ToString(""mm"") + "", "" +
+	|                                                Value1.ToString(""ss"") + ""));"");
+	|                                        }
+	|                                    }	
+	|                                    AddToScript(compName + "".Колонки.Добавить("" + DataGridViewComboBoxColumn1.NameColumn + "");"");
+	|                                }
+	|                                if (DataGridViewColumnCollection1[i].GetType() == typeof(osfDesigner.DataGridViewCheckBoxColumn))
+	|                                {
+	|                                    osfDesigner.DataGridViewCheckBoxColumn DataGridViewCheckBoxColumn1 = (osfDesigner.DataGridViewCheckBoxColumn)DataGridViewColumnCollection1[i];
+	|                                    AddToScript(DataGridViewCheckBoxColumn1.NameColumn + "" = Ф.КолонкаФлажок();"");
+	|                                    PropComponent(DataGridViewCheckBoxColumn1);
+	|                                    AddToScript(compName + "".Колонки.Добавить("" + DataGridViewCheckBoxColumn1.NameColumn + "");"");
+	|                                }
+	|                                if (DataGridViewColumnCollection1[i].GetType() == typeof(osfDesigner.DataGridViewButtonColumn))
+	|                                {
+	|                                    osfDesigner.DataGridViewButtonColumn DataGridViewButtonColumn1 = (osfDesigner.DataGridViewButtonColumn)DataGridViewColumnCollection1[i];
+	|                                    AddToScript(DataGridViewButtonColumn1.NameColumn + "" = Ф.КолонкаКнопка();"");
+	|                                    PropComponent(DataGridViewButtonColumn1);
+	|                                    AddToScript(compName + "".Колонки.Добавить("" + DataGridViewButtonColumn1.NameColumn + "");"");
+	|                                }
+	|                                if (DataGridViewColumnCollection1[i].GetType() == typeof(osfDesigner.DataGridViewTextBoxColumn))
+	|                                {
+	|                                    osfDesigner.DataGridViewTextBoxColumn DataGridViewTextBoxColumn1 = (osfDesigner.DataGridViewTextBoxColumn)DataGridViewColumnCollection1[i];
+	|                                    AddToScript(DataGridViewTextBoxColumn1.NameColumn + "" = Ф.КолонкаПолеВвода();"");
+	|                                    PropComponent(DataGridViewTextBoxColumn1);
+	|                                    AddToScript(compName + "".Колонки.Добавить("" + DataGridViewTextBoxColumn1.NameColumn + "");"");
+	|                                }
+	|                            }
+	|                        }
+	|                    }
+	|                    else if (val.Columns.GetType() == typeof(System.Windows.Forms.ListView.ColumnHeaderCollection))
+	|                    {
+	|                        System.Windows.Forms.ListView.ColumnHeaderCollection ColumnHeaderCollection1 = (System.Windows.Forms.ListView.ColumnHeaderCollection)val.Columns;
+	|                        if (ColumnHeaderCollection1.Count > 0)
+	|                        {
+	|                            osfDesigner.ColumnHeader ColumnHeader1;
+	|                            for (int i = 0; i < ColumnHeaderCollection1.Count; i++)
+	|                            {
+	|                                ColumnHeader1 = (osfDesigner.ColumnHeader)ColumnHeaderCollection1[i];
+	|                                AddToScript(ColumnHeader1.Name + "" = Ф.Колонка();"");
+	|                                PropComponent(ColumnHeader1);
+	|                                AddToScript(compName + "".Колонки.Добавить("" + ColumnHeader1.Name + "");"");
+	|                            }
 	|                        }
 	|                    }
 	|                }
 	|                return;
 	|            }
+	|            if (valueName == ""СтильЗаголовковКолонок"")
+	|            {
+	|                if (val.GetType() == typeof(osfDesigner.DataGridView))
+	|                {
+	|                    osfDesigner.DataGridView DataGridView1 = (osfDesigner.DataGridView)val;
+	|                    osfDesigner.DataGridViewCellStyleHeaders ColumnHeadersDefaultCellStyle1 = (osfDesigner.DataGridViewCellStyleHeaders)DataGridView1.columnHeadersDefaultCellStyle;
+	|                    if (!(ColumnHeadersDefaultCellStyle1.NameStyle == """" || ColumnHeadersDefaultCellStyle1.NameStyle == null))
+	|                    {
+	|                        AddToScript(ColumnHeadersDefaultCellStyle1.NameStyle + "" = Ф.СтильЯчейки();"");
+	|                        PropComponent(ColumnHeadersDefaultCellStyle1);
+	|                        AddToScript(compName + "".СтильЗаголовковКолонок = "" + ColumnHeadersDefaultCellStyle1.NameStyle + "";"");
+	|                    }
+	|                }
+	|                return;
+	|            }
+	|            if (valueName == ""СтильЗаголовковСтрок"")
+	|            {
+	|                if (val.GetType() == typeof(osfDesigner.DataGridView))
+	|                {
+	|                    osfDesigner.DataGridView DataGridView1 = (osfDesigner.DataGridView)val;
+	|                    osfDesigner.DataGridViewCellStyleHeaders RowHeadersDefaultCellStyle1 = (osfDesigner.DataGridViewCellStyleHeaders)DataGridView1.rowHeadersDefaultCellStyle;
+	|                    if (!(RowHeadersDefaultCellStyle1.NameStyle == """" || RowHeadersDefaultCellStyle1.NameStyle == null))
+	|                    {
+	|                        AddToScript(RowHeadersDefaultCellStyle1.NameStyle + "" = Ф.СтильЯчейки();"");
+	|                        PropComponent(RowHeadersDefaultCellStyle1);
+	|                        AddToScript(compName + "".СтильЗаголовковСтрок = "" + RowHeadersDefaultCellStyle1.NameStyle + "";"");
+	|                    }
+	|                }
+	|                return;
+	|            }
+	|            if (valueName == ""СтильЯчейки"")
+	|            {
+	|                if (val != null)
+	|                {
+	|                    if (val.GetType() == typeof(osfDesigner.DataGridViewTextBoxColumn))
+	|                    {
+	|                        osfDesigner.DataGridViewTextBoxColumn DataGridViewTextBoxColumn1 = (osfDesigner.DataGridViewTextBoxColumn)val;
+	|                        osfDesigner.DataGridViewCellStyle DataGridViewCellStyle1 = (osfDesigner.DataGridViewCellStyle)DataGridViewTextBoxColumn1.DefaultCellStyle;
+	|                        if (DataGridViewCellStyle1 != null)
+	|                        {
+	|                            AddToScript(DataGridViewCellStyle1.NameStyle + "" = Ф.СтильЯчейки();"");
+	|                            PropComponent(DataGridViewCellStyle1);
+	|                            AddToScript(DataGridViewTextBoxColumn1.NameColumn + "".СтильЯчейки = "" + DataGridViewCellStyle1.NameStyle + "";"");
+	|                        }
+	|                    }
+	|                    else if (val.GetType() == typeof(osfDesigner.DataGridViewButtonColumn))
+	|                    {
+	|                        osfDesigner.DataGridViewButtonColumn DataGridViewButtonColumn1 = (osfDesigner.DataGridViewButtonColumn)val;
+	|                        osfDesigner.DataGridViewCellStyle DataGridViewCellStyle1 = (osfDesigner.DataGridViewCellStyle)DataGridViewButtonColumn1.DefaultCellStyle;
+	|                        if (DataGridViewCellStyle1 != null)
+	|                        {
+	|                            AddToScript(DataGridViewCellStyle1.NameStyle + "" = Ф.СтильЯчейки();"");
+	|                            PropComponent(DataGridViewCellStyle1);
+	|                            AddToScript(DataGridViewButtonColumn1.NameColumn + "".СтильЯчейки = "" + DataGridViewCellStyle1.NameStyle + "";"");
+	|                        }
+	|                    }
+	|                    else if (val.GetType() == typeof(osfDesigner.DataGridViewCheckBoxColumn))
+	|                    {
+	|                        osfDesigner.DataGridViewCheckBoxColumn DataGridViewCheckBoxColumn1 = (osfDesigner.DataGridViewCheckBoxColumn)val;
+	|                        osfDesigner.DataGridViewCellStyle DataGridViewCellStyle1 = (osfDesigner.DataGridViewCellStyle)DataGridViewCheckBoxColumn1.DefaultCellStyle;
+	|                        if (DataGridViewCellStyle1 != null)
+	|                        {
+	|                            AddToScript(DataGridViewCellStyle1.NameStyle + "" = Ф.СтильЯчейки();"");
+	|                            PropComponent(DataGridViewCellStyle1);
+	|                            AddToScript(DataGridViewCheckBoxColumn1.NameColumn + "".СтильЯчейки = "" + DataGridViewCellStyle1.NameStyle + "";"");
+	|                        }
+	|                    }
+	|                    else if (val.GetType() == typeof(osfDesigner.DataGridViewComboBoxColumn))
+	|                    {
+	|                        osfDesigner.DataGridViewComboBoxColumn DataGridViewComboBoxColumn1 = (osfDesigner.DataGridViewComboBoxColumn)val;
+	|                        osfDesigner.DataGridViewCellStyle DataGridViewCellStyle1 = (osfDesigner.DataGridViewCellStyle)DataGridViewComboBoxColumn1.DefaultCellStyle;
+	|                        if (DataGridViewCellStyle1 != null)
+	|                        {
+	|                            AddToScript(DataGridViewCellStyle1.NameStyle + "" = Ф.СтильЯчейки();"");
+	|                            PropComponent(DataGridViewCellStyle1);
+	|                            AddToScript(DataGridViewComboBoxColumn1.NameColumn + "".СтильЯчейки = "" + DataGridViewCellStyle1.NameStyle + "";"");
+	|                        }
+	|                    }
+	|                    else if (val.GetType() == typeof(osfDesigner.DataGridViewImageColumn))
+	|                    {
+	|                        osfDesigner.DataGridViewImageColumn DataGridViewImageColumn1 = (osfDesigner.DataGridViewImageColumn)val;
+	|                        osfDesigner.DataGridViewCellStyle DataGridViewCellStyle1 = (osfDesigner.DataGridViewCellStyle)DataGridViewImageColumn1.DefaultCellStyle;
+	|                        if (DataGridViewCellStyle1 != null)
+	|                        {
+	|                            AddToScript(DataGridViewCellStyle1.NameStyle + "" = Ф.СтильЯчейки();"");
+	|                            PropComponent(DataGridViewCellStyle1);
+	|                            AddToScript(DataGridViewImageColumn1.NameColumn + "".СтильЯчейки = "" + DataGridViewCellStyle1.NameStyle + "";"");
+	|                        }
+	|                    }
+	|                    else if (val.GetType() == typeof(osfDesigner.DataGridViewLinkColumn))
+	|                    {
+	|                        osfDesigner.DataGridViewLinkColumn DataGridViewLinkColumn1 = (osfDesigner.DataGridViewLinkColumn)val;
+	|                        osfDesigner.DataGridViewCellStyle DataGridViewCellStyle1 = (osfDesigner.DataGridViewCellStyle)DataGridViewLinkColumn1.DefaultCellStyle;
+	|                        if (DataGridViewCellStyle1 != null)
+	|                        {
+	|                            AddToScript(DataGridViewCellStyle1.NameStyle + "" = Ф.СтильЯчейки();"");
+	|                            PropComponent(DataGridViewCellStyle1);
+	|                            AddToScript(DataGridViewLinkColumn1.NameColumn + "".СтильЯчейки = "" + DataGridViewCellStyle1.NameStyle + "";"");
+	|                        }
+	|                    }
+	|                }
+	|                return;
+	|            }	
 	|            if (valueName == ""СтилиКолонкиСеткиДанных"")
 	|            {
 	|                if (val != null)
@@ -5434,7 +8205,7 @@
 	|                            {
 	|                                osfDesigner.DataGridBoolColumn GridColumnStyle1 = (osfDesigner.DataGridBoolColumn)Style1;
 	|                                AddToScript(GridColumnStyle1.NameStyle + "" = Ф.СтильКолонкиБулево();"" + Environment.NewLine +
-	|                                    GridColumnStyle1.NameStyle + "".ИмяОтображаемого = \u0022"" + GridColumnStyle1.MappingName + ""\u0022;"");
+	|                                    Indent1 + GridColumnStyle1.NameStyle + "".ИмяОтображаемого = \u0022"" + GridColumnStyle1.MappingName + ""\u0022;"");
 	|                                PropComponent(GridColumnStyle1);
 	|                                AddToScript(compName + "".СтилиКолонкиСеткиДанных.Добавить("" + GridColumnStyle1.NameStyle + "");"");
 	|                            }
@@ -5442,7 +8213,7 @@
 	|                            {
 	|                                osfDesigner.DataGridTextBoxColumn GridColumnStyle1 = (osfDesigner.DataGridTextBoxColumn)Style1;
 	|                                AddToScript(GridColumnStyle1.NameStyle + "" = Ф.СтильКолонкиПолеВвода();"" + Environment.NewLine +
-	|                                    GridColumnStyle1.NameStyle + "".ИмяОтображаемого = \u0022"" + GridColumnStyle1.MappingName + ""\u0022;"");
+	|                                    Indent1 + GridColumnStyle1.NameStyle + "".ИмяОтображаемого = \u0022"" + GridColumnStyle1.MappingName + ""\u0022;"");
 	|                                PropComponent(GridColumnStyle1);
 	|                                AddToScript(compName + "".СтилиКолонкиСеткиДанных.Добавить("" + GridColumnStyle1.NameStyle + "");"");
 	|                            }
@@ -5450,7 +8221,7 @@
 	|                            {
 	|                                osfDesigner.DataGridComboBoxColumnStyle GridColumnStyle1 = (osfDesigner.DataGridComboBoxColumnStyle)Style1;
 	|                                AddToScript(GridColumnStyle1.NameStyle + "" = Ф.СтильКолонкиПолеВыбора();"" + Environment.NewLine +
-	|                                    GridColumnStyle1.NameStyle + "".ИмяОтображаемого = \u0022"" + GridColumnStyle1.MappingName + ""\u0022;"");
+	|                                    Indent1 + GridColumnStyle1.NameStyle + "".ИмяОтображаемого = \u0022"" + GridColumnStyle1.MappingName + ""\u0022;"");
 	|                                PropComponent(GridColumnStyle1);
 	|                                AddToScript(compName + "".СтилиКолонкиСеткиДанных.Добавить("" + GridColumnStyle1.NameStyle + "");"");
 	|                            }
@@ -5472,8 +8243,8 @@
 	|                            System.Windows.Forms.DataGridTableStyle OriginalObj = GridTableStylesCollection1[i];
 	|                            DataGridTableStyle1 = OneScriptFormsDesigner.RevertSimilarObj(OriginalObj);
 	|                            AddToScript(DataGridTableStyle1.NameStyle + "" = Ф.СтильТаблицыСеткиДанных();"" + Environment.NewLine +
-	|                                DataGridTableStyle1.NameStyle + "".ИмяОтображаемого = \u0022"" + DataGridTableStyle1.MappingName + ""\u0022;"" + Environment.NewLine +
-	|                                compName + "".СтилиТаблицы.Добавить("" + DataGridTableStyle1.NameStyle + "");"");
+	|                                Indent1 + DataGridTableStyle1.NameStyle + "".ИмяОтображаемого = \u0022"" + DataGridTableStyle1.MappingName + ""\u0022;"" + Environment.NewLine +
+	|                                Indent1 + compName + "".СтилиТаблицы.Добавить("" + DataGridTableStyle1.NameStyle + "");"");
 	|                            PropComponent(DataGridTableStyle1);
 	|                        }
 	|                    }
@@ -5562,7 +8333,7 @@
 	|                    {
 	|                        for (int i1 = 0; i1 < MyBoldedDatesList1.Count; i1++)
 	|                        {
-	|                            strDateTimes = strDateTimes + compName + ""."" + valueName + "".Добавить(Дата("" +
+	|                            strDateTimes = strDateTimes + Indent1 + compName + ""."" + valueName + "".Добавить(Дата("" +
 	|                                    MyBoldedDatesList1[i1].Value.ToString(""yyyy"") + "", "" +
 	|                                    MyBoldedDatesList1[i1].Value.ToString(""MM"") + "", "" +
 	|                                    MyBoldedDatesList1[i1].Value.ToString(""dd"") + "", "" +
@@ -5593,7 +8364,7 @@
 	|                    {
 	|                        for (int i1 = 0; i1 < MyAnnuallyBoldedDatesList1.Count; i1++)
 	|                        {
-	|                            strDateTimes = strDateTimes + compName + ""."" + valueName + "".Добавить(Дата("" +
+	|                            strDateTimes = strDateTimes + Indent1 + compName + ""."" + valueName + "".Добавить(Дата("" +
 	|                                    MyAnnuallyBoldedDatesList1[i1].Value.ToString(""yyyy"") + "", "" +
 	|                                    MyAnnuallyBoldedDatesList1[i1].Value.ToString(""MM"") + "", "" +
 	|                                    MyAnnuallyBoldedDatesList1[i1].Value.ToString(""dd"") + "", "" +
@@ -5624,7 +8395,7 @@
 	|                    {
 	|                        for (int i1 = 0; i1 < MyMonthlyBoldedDatesList1.Count; i1++)
 	|                        {
-	|                            strDateTimes = strDateTimes + compName + ""."" + valueName + "".Добавить(Дата("" +
+	|                            strDateTimes = strDateTimes + Indent1 + compName + ""."" + valueName + "".Добавить(Дата("" +
 	|                                    MyMonthlyBoldedDatesList1[i1].Value.ToString(""yyyy"") + "", "" +
 	|                                    MyMonthlyBoldedDatesList1[i1].Value.ToString(""MM"") + "", "" +
 	|                                    MyMonthlyBoldedDatesList1[i1].Value.ToString(""dd"") + "", "" +
@@ -5662,7 +8433,7 @@
 	|                                File.Copy(MyList1[i1].Path, newPath);
 	|                            }
 	|
-	|                            str1 = str1 + compName + "".Изображения.Добавить(Ф.Картинка(\u0022"" + newPath + ""\u0022));"";
+	|                            str1 = str1 + Indent1 + compName + "".Изображения.Добавить(Ф.Картинка(\u0022"" + newPath + ""\u0022));"";
 	|                            if (i1 == 0)
 	|                            {
 	|                                str1 = str1.TrimStart(' ');
@@ -5745,8 +8516,52 @@
 	|                }
 	|                return;
 	|            }
+	|            // Если это Дата.
+	|            if (valueName == ""Значение"" && val.GetType() == typeof(osfDesigner.DateTimePicker))
+	|            {
+	|                compValue = compValue.Replace("" "", ""."").Replace("":"", ""."");
+	|                string[] result = compValue.Split(new string[] { ""."" }, StringSplitOptions.RemoveEmptyEntries);
+	|                DateTime rez = new DateTime();
+	|                for (int i = 0; i < result.Length; i++)
+	|                {
+	|                    if (i == 0)
+	|                    {
+	|                        rez = rez.AddDays(Int32.Parse(result[0]) - 1);
+	|                    }
+	|                    if (i == 1)
+	|                    {
+	|                        rez = rez.AddMonths(Int32.Parse(result[1]) - 1);
+	|                    }
+	|                    if (i == 2)
+	|                    {
+	|                        rez = rez.AddYears(Int32.Parse(result[2]) - 1);
+	|                    }
+	|                    if (i == 3)
+	|                    {
+	|                        rez = rez.AddHours(Int32.Parse(result[3]));
+	|                    }
+	|                    if (i == 4)
+	|                    {
+	|                        rez = rez.AddMinutes(Int32.Parse(result[4]));
+	|                    }
+	|                    if (i == 5)
+	|                    {
+	|                        rez = rez.AddSeconds(Int32.Parse(result[5]));
+	|                    }
+	|                }
+	|                string strDate = ""Дата("" +
+	|                    rez.ToString(""yyyy"") + "", "" +
+	|                    rez.ToString(""MM"") + "", "" +
+	|                    rez.ToString(""dd"") + "", "" +
+	|                    rez.ToString(""HH"") + "", "" +
+	|                    rez.ToString(""mm"") + "", "" +
+	|                    rez.ToString(""ss"") + "")"";
+	|                AddToScript(compName + ""."" + valueName + "" = "" + strDate + "";"");
+	|                return;
+	|            }
 	|            // Если это цвет.
 	|            if (valueName == ""ОсновнойЦвет"" ||
+	|                valueName == ""ОсновнойЦветВыделенного"" ||
 	|                valueName == ""ОсновнойЦветЗаголовков"" ||
 	|                valueName == ""ПрозрачныйЦвет"" ||
 	|                valueName == ""Цвет"" ||
@@ -5755,10 +8570,12 @@
 	|                valueName == ""ЦветСетки"" ||
 	|                valueName == ""ЦветСсылки"" ||
 	|                valueName == ""ЦветФона"" ||
+	|                valueName == ""ЦветФонаВыделенного"" ||
 	|                valueName == ""ЦветФонаЗаголовка"" ||
 	|                valueName == ""ЦветФонаЗаголовков"" ||
 	|                valueName == ""ЦветФонаНечетныхСтрок"" ||
-	|                valueName == ""ЦветФонаСеткиДанных"")
+	|                valueName == ""ЦветФонаСеткиДанных"" ||
+	|                valueName == ""ЦветФонаТаблицы"")
 	|            {
 	|                string str1 = """";
 	|                if (val != null)
@@ -5796,22 +8613,29 @@
 	|                return;
 	|            }
 	|            // Если это событие.
-	|            if (valueName == ""ВыбранныйЭлементСеткиИзменен"" ||
+	|            if (valueName == ""ВводОтклонен"" ||
+	|                valueName == ""ВыбранныйЭлементСеткиИзменен"" ||
 	|                valueName == ""ВыделениеИзменено"" ||
 	|                valueName == ""ДатаВыбрана"" ||
 	|                valueName == ""ДатаИзменена"" ||
 	|                valueName == ""ДвойноеНажатие"" ||
+	|                valueName == ""ДвойноеНажатиеЯчейки"" ||
 	|                valueName == ""Закрыта"" ||
 	|                valueName == ""ЗначениеИзменено"" ||
 	|                valueName == ""ЗначениеСвойстваИзменено"" ||
+	|                valueName == ""ЗначениеЯчейкиИзменено"" ||
 	|                valueName == ""ИндексВыбранногоИзменен"" ||
 	|                valueName == ""КлавишаВверх"" ||
 	|                valueName == ""КлавишаВниз"" ||
 	|                valueName == ""КлавишаНажата"" ||
 	|                valueName == ""КолонкаНажатие"" ||
 	|                valueName == ""МышьНадЭлементом"" ||
+	|                valueName == ""МышьНадЯчейкой"" ||
 	|                valueName == ""МышьПокинулаЭлемент"" ||
+	|                valueName == ""МышьПокинулаЯчейку"" ||
 	|                valueName == ""Нажатие"" ||
+	|                valueName == ""НажатиеСодержимогоЯчейки"" ||
+	|                valueName == ""НажатиеЯчейки"" ||
 	|                valueName == ""ПередРазвертыванием"" ||
 	|                valueName == ""ПередРедактированиемНадписи"" ||
 	|                valueName == ""ПоложениеИзменено"" ||
@@ -5821,18 +8645,25 @@
 	|                valueName == ""ПриАктивизации"" ||
 	|                valueName == ""ПриАктивизацииЭлемента"" ||
 	|                valueName == ""ПриВходе"" ||
+	|                valueName == ""ПриВходеВСтроку"" ||
+	|                valueName == ""ПриВходеВЯчейку"" ||
 	|                valueName == ""ПриВыпадении"" ||
 	|                valueName == ""ПриДеактивации"" ||
 	|                valueName == ""ПриЗагрузке"" ||
 	|                valueName == ""ПриЗадержкеМыши"" ||
 	|                valueName == ""ПриЗакрытии"" ||
 	|                valueName == ""ПриИзменении"" ||
+	|                valueName == ""ПриНажатииЗаголовкаКолонки"" ||
+	|                valueName == ""ПриНажатииЗаголовкаСтроки"" ||
 	|                valueName == ""ПриНажатииКнопки"" ||
 	|                valueName == ""ПриНажатииКнопкиМыши"" ||
+	|                valueName == ""ПриНажатииКнопкиМышиВЯчейке"" ||
 	|                valueName == ""ПриОтпусканииМыши"" ||
+	|                valueName == ""ПриОтпусканииМышиНадЯчейкой"" ||
 	|                valueName == ""ПриПереименовании"" ||
 	|                valueName == ""ПриПеремещении"" ||
 	|                valueName == ""ПриПеремещенииМыши"" ||
+	|                valueName == ""ПриПеремещенииМышиНадЯчейкой"" ||
 	|                valueName == ""ПриПерерисовке"" ||
 	|                valueName == ""ПриПотереФокуса"" ||
 	|                valueName == ""ПриПрокручивании"" ||
@@ -5840,9 +8671,14 @@
 	|                valueName == ""ПриСрабатыванииТаймера"" ||
 	|                valueName == ""ПриУдалении"" ||
 	|                valueName == ""ПриУходе"" ||
+	|                valueName == ""ПриУходеИзСтроки"" ||
+	|                valueName == ""ПриУходеИзЯчейки"" ||
 	|                valueName == ""РазмерИзменен"" ||
+	|                valueName == ""РедактированиеЯчейкиЗавершено"" ||
+	|                valueName == ""РедактированиеЯчейкиНачато"" ||
 	|                valueName == ""СсылкаНажата"" ||
 	|                valueName == ""ТекстИзменен"" ||
+	|                valueName == ""ТекущаяЯчейкаИзменена"" ||
 	|                valueName == ""ТекущаяЯчейкаИзменена"" ||
 	|                valueName == ""ЭлементДобавлен"" ||
 	|                valueName == ""ЭлементПомечен"" ||
@@ -5859,8 +8695,10 @@
 	|            // Если это Строка.
 	|            if (valueName == ""ВыбранныйПуть"" ||
 	|                valueName == ""Заголовок"" ||
+	|                valueName == ""ИмяСвойстваДанных"" ||
 	|                valueName == ""ИмяСтиля"" ||
 	|                valueName == ""ИмяФайла"" ||
+	|                valueName == ""Маска"" ||
 	|                valueName == ""НачальныйКаталог"" ||
 	|                valueName == ""Описание"" ||
 	|                valueName == ""ПолныйПуть"" ||
@@ -5869,6 +8707,7 @@
 	|                valueName == ""РазделительПути"" ||
 	|                valueName == ""РасширениеПоУмолчанию"" ||
 	|                valueName == ""СимволПароля"" ||
+	|                valueName == ""СимволПриглашения"" ||
 	|                valueName == ""Текст"" ||
 	|                valueName == ""ТекстЗаголовка"" ||
 	|                valueName == ""ТекстПодсказки"" ||
@@ -5882,6 +8721,8 @@
 	|            if (valueName == ""АвтоЗадержка"" ||
 	|                valueName == ""АвтоЗадержкаПоказа"" ||
 	|                valueName == ""БольшоеИзменение"" ||
+	|                valueName == ""ВесЗаполнения"" ||	
+	|                valueName == ""ВысотаЗаголовковКолонок"" ||
 	|                valueName == ""ВысотаЭлемента"" ||
 	|                valueName == ""ГоризонтальнаяМера"" ||
 	|                valueName == ""ЗадержкаОчередногоПоказа"" ||
@@ -5904,7 +8745,7 @@
 	|                valueName == ""Масштаб"" ||
 	|                valueName == ""МинимальнаяШирина"" ||
 	|                valueName == ""МинимальноеРасстояние"" ||
-	|                (valueName == ""МинимальныйРазмер"" && compName.Contains(""Splitter"")) ||
+	|                (valueName == ""МинимальныйРазмер"" && val.GetType() == typeof(osfDesigner.Splitter)) ||
 	|                valueName == ""Минимум"" ||
 	|                valueName == ""Отступ"" ||
 	|                valueName == ""ОтступМаркера"" ||
@@ -5918,7 +8759,8 @@
 	|                valueName == ""Ширина"" ||
 	|                valueName == ""ШиринаВыпадающегоСписка"" ||
 	|                valueName == ""ШиринаЗаголовковСтрок"" ||
-	|                valueName == ""ШиринаКолонки"")
+	|                valueName == ""ШиринаКолонки"" ||
+	|                valueName == ""ШиринаРазделителя"")
 	|            {
 	|                AddToScript(compName + ""."" + valueName + "" = "" + compValue.Replace(CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator, ""."") + "";"");
 	|                return;
@@ -5932,8 +8774,7 @@
 	|                valueName == ""РазмерПоляАвтоПрокрутки"" ||
 	|                valueName == ""РазмерЭлемента"")
 	|            {
-	|                if (compName.Contains(""Календарь"") ||
-	|                    compName.Contains(""Вкладка""))
+	|                if (compName.Contains(""Вкладка"") && valueName != ""РазмерПоляАвтоПрокрутки"")
 	|                {
 	|                    return;
 	|                }
@@ -5975,6 +8816,82 @@
 	|                return;
 	|            }
 	|            // Если это Перечисление.
+	|            if (valueName == ""РазмещениеИзображения"")
+	|            {
+	|                AddToScript(compName + ""."" + valueName + "" = "" + ""Ф.РазмещениеИзображенияЯчейки."" + compValue + "";"");
+	|                return;
+	|            }
+	|            if (valueName == ""СтильОтображения"")
+	|            {
+	|                AddToScript(compName + ""."" + valueName + "" = "" + ""Ф.СтильПоляВыбораЯчейки."" + compValue + "";"");
+	|                return;
+	|            }
+	|            if (valueName == ""РежимСортировки"")
+	|            {
+	|                AddToScript(compName + ""."" + valueName + "" = "" + ""Ф.РежимСортировки."" + compValue + "";"");
+	|                return;
+	|            }
+	|            if (valueName == ""РежимАвтоРазмера"")
+	|            {
+	|                AddToScript(compName + ""."" + valueName + "" = "" + ""Ф.РежимАвтоРазмераКолонки."" + compValue + "";"");
+	|                return;
+	|            }	
+	|            if (valueName == ""ИзменяемыйРазмер"" && (
+	|                val.GetType() == typeof(osfDesigner.DataGridViewTextBoxColumn) ||
+	|                val.GetType() == typeof(osfDesigner.DataGridViewButtonColumn) ||
+	|                val.GetType() == typeof(osfDesigner.DataGridViewCheckBoxColumn) ||
+	|                val.GetType() == typeof(osfDesigner.DataGridViewComboBoxColumn) ||
+	|                val.GetType() == typeof(osfDesigner.DataGridViewImageColumn) ||
+	|                val.GetType() == typeof(osfDesigner.DataGridViewLinkColumn)))
+	|            {
+	|                AddToScript(compName + ""."" + valueName + "" = "" + ""Ф.ТриСостояния."" + compValue + "";"");
+	|                return;
+	|            }	
+	|            if (valueName == ""Перенос"" && (val.GetType() == typeof(osfDesigner.DataGridViewCellStyle) || val.GetType() == typeof(osfDesigner.DataGridViewCellStyleHeaders)))
+	|            {
+	|                AddToScript(compName + ""."" + valueName + "" = "" + ""Ф.ТриСостояния."" + compValue + "";"");
+	|                return;
+	|            }	
+	|            if (valueName == ""РежимАвтоРазмераКолонок"")
+	|            {
+	|                AddToScript(compName + ""."" + valueName + "" = "" + ""Ф.РежимАвтоРазмераКолонок."" + compValue + "";"");
+	|                return;
+	|            }
+	|            if (valueName == ""РежимАвтоРазмераСтрок"")
+	|            {
+	|                AddToScript(compName + ""."" + valueName + "" = "" + ""Ф.РежимАвтоРазмераСтрок."" + compValue + "";"");
+	|                return;
+	|            }
+	|            if (valueName == ""РежимВыбора"" && val.GetType() == typeof(osfDesigner.DataGridView))
+	|            {
+	|                AddToScript(compName + ""."" + valueName + "" = "" + ""Ф.РежимВыбораТаблицы."" + compValue + "";"");
+	|                return;
+	|            }
+	|            if (valueName == ""РежимВысотыЗаголовковКолонок"")
+	|            {
+	|                AddToScript(compName + ""."" + valueName + "" = "" + ""Ф.РежимВысотыЗаголовковКолонок."" + compValue + "";"");
+	|                return;
+	|            }
+	|            if (valueName == ""АвтоШиринаЗаголовковСтрок"")
+	|            {
+	|                AddToScript(compName + ""."" + valueName + "" = "" + ""Ф.РежимШириныЗаголовковСтрок."" + compValue + "";"");
+	|                return;
+	|            }
+	|            if (valueName == ""ФорматМаски"")
+	|            {
+	|                AddToScript(compName + ""."" + valueName + "" = "" + ""Ф.ФорматМаски."" + compValue + "";"");
+	|                return;
+	|            }
+	|            if (valueName == ""РежимВставки"")
+	|            {
+	|                AddToScript(compName + ""."" + valueName + "" = "" + ""Ф.РежимВставки."" + compValue + "";"");
+	|                return;
+	|            }
+	|            if (valueName == ""КопироватьМаску"")
+	|            {
+	|                AddToScript(compName + ""."" + valueName + "" = "" + ""Ф.ФорматМаски."" + compValue + "";"");
+	|                return;
+	|            }
 	|            if (valueName == ""ТипСлияния"")
 	|            {
 	|                AddToScript(compName + ""."" + valueName + "" = "" + ""Ф.СлияниеМеню."" + compValue + "";"");
@@ -6102,6 +9019,11 @@
 	|                AddToScript(compName + ""."" + valueName + "" = "" + ""Ф.ОформлениеПанелиИнструментов."" + compValue + "";"");
 	|                return;
 	|            }
+	|            if (valueName == ""Выравнивание"" && (val.GetType() == typeof(osfDesigner.DataGridViewCellStyle) || val.GetType() == typeof(osfDesigner.DataGridViewCellStyleHeaders)))	
+	|            {
+	|                AddToScript(compName + ""."" + valueName + "" = "" + ""Ф.ВыравниваниеСодержимогоЯчейки."" + compValue + "";"");
+	|                return;
+	|            }	
 	|            if (valueName == ""Выравнивание"" && val.GetType() == typeof(osfDesigner.TabControl))
 	|            {
 	|                AddToScript(compName + ""."" + valueName + "" = "" + ""Ф.ВыравниваниеВкладок."" + compValue + "";"");
@@ -6133,7 +9055,8 @@
 	|                AddToScript(compName + ""."" + valueName + "" = "" + str1);
 	|                return;
 	|            }
-	|            if (valueName == ""ВыравниваниеТекста"" && val.GetType() == typeof(osfDesigner.ColumnHeader))
+	|            if (valueName == ""ВыравниваниеТекста"" && (val.GetType() == typeof(osfDesigner.ColumnHeader) || 
+	|                val.GetType() == typeof(osfDesigner.MaskedTextBox)))
 	|            {
 	|                AddToScript(compName + ""."" + valueName + "" = "" + ""Ф.ГоризонтальноеВыравнивание."" + compValue + "";"");
 	|                return;
@@ -6195,6 +9118,11 @@
 	|                    DateTime1.ToString(""ss"") + "");"");
 	|                return;
 	|            }
+	|            if (valueName == ""Заполнение"" && (val.GetType() == typeof(osfDesigner.DataGridViewCellStyle) || (val.GetType() == typeof(osfDesigner.DataGridViewCellStyleHeaders))))	
+	|            {
+	|                AddToScript(compName + ""."" + valueName + "" = "" + ""Ф.Заполнение("" + compValue.Replace("";"", "","") + "");"");
+	|                return;
+	|            }	
 	|        }
 	|        
 	|        private static void AddToScript(string str)
@@ -6272,10 +9200,21 @@
 	|            if (comp.GetType() == typeof(osfDesigner.DataGridTableStyle) ||
 	|                comp.GetType() == typeof(osfDesigner.DataGridBoolColumn) ||
 	|                comp.GetType() == typeof(osfDesigner.DataGridTextBoxColumn) ||
-	|                comp.GetType() == typeof(osfDesigner.DataGridComboBoxColumnStyle))
+	|                comp.GetType() == typeof(osfDesigner.DataGridComboBoxColumnStyle) ||
+	|                comp.GetType() == typeof(osfDesigner.DataGridViewCellStyleHeaders) ||	
+	|                comp.GetType() == typeof(osfDesigner.DataGridViewCellStyle))
 	|            {
 	|                comp_Name = comp.NameStyle;
 	|            }
+	|            else if (comp.GetType() == typeof(osfDesigner.DataGridViewTextBoxColumn) ||
+	|                comp.GetType() == typeof(osfDesigner.DataGridViewButtonColumn) ||
+	|                comp.GetType() == typeof(osfDesigner.DataGridViewCheckBoxColumn) ||
+	|                comp.GetType() == typeof(osfDesigner.DataGridViewComboBoxColumn) ||
+	|                comp.GetType() == typeof(osfDesigner.DataGridViewImageColumn) ||
+	|                comp.GetType() == typeof(osfDesigner.DataGridViewLinkColumn))
+	|            {
+	|                comp_Name = comp.NameColumn;
+	|            }	
 	|            else
 	|            {
 	|                comp_Name = comp.Name;
@@ -6425,9 +9364,9 @@
 	СтрВыгрузки = 
 	"using System.ComponentModel.Design;
 	|using System.ComponentModel;
-	|using System.Globalization;
 	|using System.Drawing.Text;
 	|using System.Drawing;
+	|using System.Globalization;
 	|using System.IO;
 	|using System.Reflection;
 	|using System.Windows.Forms;
@@ -6450,6 +9389,14 @@
 	|                component.GetType().ToString() == ""osfDesigner.DataGridComboBoxColumnStyle"" ||
 	|                component.GetType().ToString() == ""osfDesigner.DataGridTableStyle"" ||
 	|                component.GetType().ToString() == ""osfDesigner.DataGridTextBoxColumn"" ||
+	|                component.GetType().ToString() == ""osfDesigner.DataGridViewCellStyle"" ||
+	|                component.GetType().ToString() == ""osfDesigner.DataGridViewCellStyleHeaders"" ||
+	|                component.GetType().ToString() == ""osfDesigner.DataGridViewTextBoxColumn"" ||
+	|                component.GetType().ToString() == ""osfDesigner.DataGridViewImageColumn"" ||
+	|                component.GetType().ToString() == ""osfDesigner.DataGridViewButtonColumn"" ||
+	|                component.GetType().ToString() == ""osfDesigner.DataGridViewComboBoxColumn"" ||
+	|                component.GetType().ToString() == ""osfDesigner.DataGridViewLinkColumn"" ||
+	|                component.GetType().ToString() == ""osfDesigner.DataGridViewCheckBoxColumn"" ||	
 	|                component.GetType().ToString() == ""osfDesigner.FileSystemWatcher"" ||
 	|                component.GetType().ToString() == ""osfDesigner.FolderBrowserDialog"" ||
 	|                component.GetType().ToString() == ""osfDesigner.FontDialog"" ||
@@ -6930,8 +9877,47 @@
 	|                pi.SetValue(control, sr);
 	|                return;
 	|            }
+	|            // Если это Дата.
+	|            if (displayName == ""Значение"" && control.GetType() == typeof(osfDesigner.DateTimePicker))
+	|            {
+	|                string[] result = valProp.Replace(""Дата("", """").Replace("")"", """").Split(new string[] { "","" }, StringSplitOptions.RemoveEmptyEntries);
+	|                DateTime rez = new DateTime();
+	|                for (int i = 0; i < result.Length; i++)
+	|                {
+	|                    if (i == 0)
+	|                    {
+	|                        rez = rez.AddYears(Int32.Parse(result[0]) - 1);
+	|                    }
+	|                    if (i == 1)
+	|                    {
+	|                        rez = rez.AddMonths(Int32.Parse(result[1]) - 1);
+	|                    }
+	|                    if (i == 2)
+	|                    {
+	|                        rez = rez.AddDays(Int32.Parse(result[2]) - 1);
+	|                    }
+	|                    if (i == 3)
+	|                    {
+	|                        rez = rez.AddHours(Int32.Parse(result[3]));
+	|                    }
+	|                    if (i == 4)
+	|                    {
+	|                        rez = rez.AddMinutes(Int32.Parse(result[4]));
+	|                    }
+	|                    if (i == 5)
+	|                    {
+	|                        rez = rez.AddSeconds(Int32.Parse(result[5]));
+	|                    }
+	|                }
+	|
+	|                string propertyName = OneScriptFormsDesigner.GetPropName(control, displayName);
+	|                PropertyInfo pi = control.GetType().GetProperty(propertyName);
+	|                pi.SetValue(control, rez);
+	|                return;
+	|            }	
 	|            // Если это цвет.
 	|            if (displayName == ""ОсновнойЦвет"" ||
+	|                displayName == ""ОсновнойЦветВыделенного"" ||
 	|                displayName == ""ОсновнойЦветЗаголовков"" ||
 	|                displayName == ""ПрозрачныйЦвет"" ||
 	|                displayName == ""Цвет"" ||
@@ -6940,10 +9926,12 @@
 	|                displayName == ""ЦветСетки"" ||
 	|                displayName == ""ЦветСсылки"" ||
 	|                displayName == ""ЦветФона"" ||
+	|                displayName == ""ЦветФонаВыделенного"" ||
 	|                displayName == ""ЦветФонаЗаголовка"" ||
 	|                displayName == ""ЦветФонаЗаголовков"" ||
 	|                displayName == ""ЦветФонаНечетныхСтрок"" ||
-	|                displayName == ""ЦветФонаСеткиДанных"")
+	|                displayName == ""ЦветФонаСеткиДанных"" ||
+	|                displayName == ""ЦветФонаТаблицы"")
 	|            {
 	|                Color Color1 = Color.Empty;
 	|                string strColor = valProp.Replace(""\u0022"", """");
@@ -7018,22 +10006,29 @@
 	|                return;
 	|            }
 	|            // Если это событие.
-	|            if (displayName == ""ВыбранныйЭлементСеткиИзменен"" ||
+	|            if (displayName == ""ВводОтклонен"" ||
+	|                displayName == ""ВыбранныйЭлементСеткиИзменен"" ||
 	|                displayName == ""ВыделениеИзменено"" ||
 	|                displayName == ""ДатаВыбрана"" ||
 	|                displayName == ""ДатаИзменена"" ||
 	|                displayName == ""ДвойноеНажатие"" ||
+	|                displayName == ""ДвойноеНажатиеЯчейки"" ||
 	|                displayName == ""Закрыта"" ||
 	|                displayName == ""ЗначениеИзменено"" ||
 	|                displayName == ""ЗначениеСвойстваИзменено"" ||
+	|                displayName == ""ЗначениеЯчейкиИзменено"" ||
 	|                displayName == ""ИндексВыбранногоИзменен"" ||
 	|                displayName == ""КлавишаВверх"" ||
 	|                displayName == ""КлавишаВниз"" ||
 	|                displayName == ""КлавишаНажата"" ||
 	|                displayName == ""КолонкаНажатие"" ||
 	|                displayName == ""МышьНадЭлементом"" ||
+	|                displayName == ""МышьНадЯчейкой"" ||
 	|                displayName == ""МышьПокинулаЭлемент"" ||
+	|                displayName == ""МышьПокинулаЯчейку"" ||
 	|                displayName == ""Нажатие"" ||
+	|                displayName == ""НажатиеСодержимогоЯчейки"" ||
+	|                displayName == ""НажатиеЯчейки"" ||
 	|                displayName == ""ПередРазвертыванием"" ||
 	|                displayName == ""ПередРедактированиемНадписи"" ||
 	|                displayName == ""ПоложениеИзменено"" ||
@@ -7043,18 +10038,25 @@
 	|                displayName == ""ПриАктивизации"" ||
 	|                displayName == ""ПриАктивизацииЭлемента"" ||
 	|                displayName == ""ПриВходе"" ||
+	|                displayName == ""ПриВходеВСтроку"" ||
+	|                displayName == ""ПриВходеВЯчейку"" ||
 	|                displayName == ""ПриВыпадении"" ||
 	|                displayName == ""ПриДеактивации"" ||
 	|                displayName == ""ПриЗагрузке"" ||
 	|                displayName == ""ПриЗадержкеМыши"" ||
 	|                displayName == ""ПриЗакрытии"" ||
 	|                displayName == ""ПриИзменении"" ||
+	|                displayName == ""ПриНажатииЗаголовкаКолонки"" ||
+	|                displayName == ""ПриНажатииЗаголовкаСтроки"" ||
 	|                displayName == ""ПриНажатииКнопки"" ||
 	|                displayName == ""ПриНажатииКнопкиМыши"" ||
+	|                displayName == ""ПриНажатииКнопкиМышиВЯчейке"" ||
 	|                displayName == ""ПриОтпусканииМыши"" ||
+	|                displayName == ""ПриОтпусканииМышиНадЯчейкой"" ||
 	|                displayName == ""ПриПереименовании"" ||
 	|                displayName == ""ПриПеремещении"" ||
 	|                displayName == ""ПриПеремещенииМыши"" ||
+	|                displayName == ""ПриПеремещенииМышиНадЯчейкой"" ||
 	|                displayName == ""ПриПерерисовке"" ||
 	|                displayName == ""ПриПотереФокуса"" ||
 	|                displayName == ""ПриПрокручивании"" ||
@@ -7062,9 +10064,14 @@
 	|                displayName == ""ПриСрабатыванииТаймера"" ||
 	|                displayName == ""ПриУдалении"" ||
 	|                displayName == ""ПриУходе"" ||
+	|                displayName == ""ПриУходеИзСтроки"" ||
+	|                displayName == ""ПриУходеИзЯчейки"" ||
 	|                displayName == ""РазмерИзменен"" ||
+	|                displayName == ""РедактированиеЯчейкиЗавершено"" ||
+	|                displayName == ""РедактированиеЯчейкиНачато"" ||
 	|                displayName == ""СсылкаНажата"" ||
 	|                displayName == ""ТекстИзменен"" ||
+	|                displayName == ""ТекущаяЯчейкаИзменена"" ||
 	|                displayName == ""ТекущаяЯчейкаИзменена"" ||
 	|                displayName == ""ЭлементДобавлен"" ||
 	|                displayName == ""ЭлементПомечен"" ||
@@ -7081,7 +10088,9 @@
 	|            if (displayName == ""ВыбранныйПуть"" ||
 	|                displayName == ""Заголовок"" ||
 	|                displayName == ""ИмяОтображаемого"" ||
+	|                displayName == ""ИмяСвойстваДанных"" ||
 	|                displayName == ""ИмяСтиля"" ||
+	|                displayName == ""Маска"" ||
 	|                displayName == ""ИмяФайла"" ||
 	|                displayName == ""НачальныйКаталог"" ||
 	|                displayName == ""Описание"" ||
@@ -7091,6 +10100,7 @@
 	|                displayName == ""РазделительПути"" ||
 	|                displayName == ""РасширениеПоУмолчанию"" ||
 	|                displayName == ""СимволПароля"" ||
+	|                displayName == ""СимволПриглашения"" ||
 	|                displayName == ""Текст"" ||
 	|                displayName == ""ТекстЗаголовка"" ||
 	|                displayName == ""ТекстПодсказки"" ||
@@ -7106,14 +10116,24 @@
 	|                {
 	|                    valProp = valProp.Replace(""\u0022"", """");
 	|                }
-	|                string propertyName = OneScriptFormsDesigner.GetPropName(control, displayName);
-	|                control.GetType().GetProperty(propertyName).SetValue(control, valProp);
+	|                try
+	|                {
+	|                    string propertyName = OneScriptFormsDesigner.GetPropName(control, displayName);
+	|                    control.GetType().GetProperty(propertyName).SetValue(control, valProp);
+	|                }
+	|                catch
+	|                {
+	|                    string propertyName = OneScriptFormsDesigner.GetPropName(control, displayName);
+	|                    control.GetType().GetProperty(propertyName).SetValue(control, Convert.ToChar(valProp));
+	|                }
 	|                return;
 	|            }
 	|            // Если это Число.
 	|            if (displayName == ""АвтоЗадержка"" ||
 	|                displayName == ""АвтоЗадержкаПоказа"" ||
 	|                displayName == ""БольшоеИзменение"" ||
+	|                displayName == ""ВесЗаполнения"" ||
+	|                displayName == ""ВысотаЗаголовковКолонок"" ||
 	|                displayName == ""ВысотаЭлемента"" ||
 	|                displayName == ""ГоризонтальнаяМера"" ||
 	|                displayName == ""ЗадержкаОчередногоПоказа"" ||
@@ -7150,9 +10170,20 @@
 	|                displayName == ""Ширина"" ||
 	|                displayName == ""ШиринаВыпадающегоСписка"" ||
 	|                displayName == ""ШиринаЗаголовковСтрок"" ||
-	|                displayName == ""ШиринаКолонки"")
+	|                displayName == ""ШиринаКолонки"" ||
+	|                displayName == ""ШиринаРазделителя"")	
 	|            {
 	|                string propertyName = OneScriptFormsDesigner.GetPropName(control, displayName);
+	|                if (displayName == ""ВесЗаполнения"")
+	|                {
+	|                    control.FillWeight = Int32.Parse(valProp);
+	|                    return;
+	|                }	
+	|                else if (displayName == ""Масштаб"")
+	|                {
+	|                    control.ZoomFactor = Decimal.Parse(valProp.Replace(""."", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator));
+	|                    return;
+	|                }	
 	|                try
 	|                {
 	|                    control.GetType().GetProperty(propertyName).SetValue(control, Decimal.Parse(valProp.Replace(""."", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator)));
@@ -7223,6 +10254,7 @@
 	|            }
 	|            // Если это Перечисление.
 	|            if (displayName == ""АвтоРазмер"" ||
+	|                displayName == ""АвтоШиринаЗаголовковСтрок"" ||
 	|                displayName == ""Активация"" ||
 	|                displayName == ""Выравнивание"" ||
 	|                displayName == ""ВыравниваниеИзображения"" ||
@@ -7230,16 +10262,25 @@
 	|                displayName == ""ВыравниваниеПриРаскрытии"" ||
 	|                displayName == ""ВыравниваниеТекста"" ||
 	|                displayName == ""ГлубинаЦвета"" ||
+	|                displayName == ""ИзменяемыйРазмер"" ||
+	|                displayName == ""РежимАвтоРазмера"" ||
+	|                displayName == ""РежимСортировки"" ||	
+	|                displayName == ""КопироватьМаску"" ||
 	|                displayName == ""КорневойКаталог"" ||
 	|                displayName == ""НачальноеПоложение"" ||
 	|                displayName == ""Оформление"" ||
 	|                displayName == ""ПервыйДеньНедели"" ||
+	|                displayName == ""Перенос"" ||
 	|                displayName == ""ПлоскийСтиль"" ||
 	|                displayName == ""ПоведениеСсылки"" ||
 	|                displayName == ""ПолосыПрокрутки"" ||
 	|                displayName == ""РазмещениеФоновогоИзображения"" ||
 	|                displayName == ""РегистрСимволов"" ||
+	|                displayName == ""РежимАвтоРазмераКолонок"" ||
+	|                displayName == ""РежимАвтоРазмераСтрок"" ||
+	|                displayName == ""РежимВставки"" ||
 	|                displayName == ""РежимВыбора"" ||
+	|                displayName == ""РежимВысотыЗаголовковКолонок"" ||
 	|                displayName == ""РежимМасштабирования"" ||
 	|                displayName == ""РежимОтображения"" ||
 	|                displayName == ""РежимРисования"" ||
@@ -7257,6 +10298,7 @@
 	|                displayName == ""ТипСлияния"" ||
 	|                displayName == ""ФильтрУведомлений"" ||
 	|                displayName == ""Формат"" ||
+	|                displayName == ""ФорматМаски"" ||
 	|                displayName == ""Якорь"")
 	|            {
 	|                string enumName = OneScriptFormsDesigner.ParseBetween(valProp, ""Ф."", ""."");
@@ -7287,6 +10329,17 @@
 	|                if (component.GetType() == typeof(osfDesigner.ToolBarButton))
 	|                {
 	|                    ((osfDesigner.ToolBarButton)component).Style = (osfDesigner.ToolBarButtonStyle)rez;
+	|                }
+	|                if (component.GetType() == typeof(osfDesigner.TabPage))
+	|                {
+	|                    ((osfDesigner.TabPage)component).BorderStyle = (osfDesigner.BorderStyle)rez;
+	|                }	
+	|                if (component.GetType() == typeof(osfDesigner.DataGridComboBoxColumnStyle))
+	|                {
+	|                    if (displayName == ""Выравнивание"")
+	|                    {
+	|                        ((osfDesigner.DataGridComboBoxColumnStyle)component).Alignment = (osfDesigner.HorizontalAlignment)rez;
+	|                    }
 	|                }
 	|                if ((displayName == ""Стыковка"" && component.GetType() != typeof(osfDesigner.ToolBar)) ||
 	|                    (displayName == ""Стыковка"" && component.GetType() != typeof(osfDesigner.Splitter)) ||
@@ -7363,6 +10416,26 @@
 	|                string propertyName = OneScriptFormsDesigner.GetPropName(control, displayName);
 	|                PropertyInfo pi = control.GetType().GetProperty(propertyName);
 	|                pi.SetValue(control, rez);
+	|                return;
+	|            }
+	|            if (displayName == ""Заполнение"" && (control.GetType() == typeof(osfDesigner.DataGridViewCellStyle) || (control.GetType() == typeof(osfDesigner.DataGridViewCellStyleHeaders))))
+	|            {
+	|                string[] result = valProp.Replace(""Ф.Заполнение("", """").Replace("")"", """").Split(new string[] { "","" }, StringSplitOptions.RemoveEmptyEntries);
+	|                int left = 0;
+	|                int top = 0;
+	|                int right = 0;
+	|                int bottom = 0;
+	|                for (int i = 0; i < result.Length; i++)
+	|                {
+	|                    left = Convert.ToInt32(result[0]);
+	|                    top = Convert.ToInt32(result[1]);
+	|                    right = Convert.ToInt32(result[2]);
+	|                    bottom = Convert.ToInt32(result[3]);
+	|                }
+	|                System.Windows.Forms.Padding Padding1 = new System.Windows.Forms.Padding(left, top, right, bottom);
+	|                string propertyName = OneScriptFormsDesigner.GetPropName(control, displayName);
+	|                PropertyInfo pi = control.GetType().GetProperty(propertyName);
+	|                pi.SetValue(control, Padding1);
 	|                return;
 	|            }
 	|        }
@@ -7509,6 +10582,7 @@
 	|{
 	|    public class SaveScript
 	|    {
+	|        public static string Indent1 = ""    "";
 	|        public static System.Windows.Forms.TreeView TreeView1 = OneScriptFormsDesigner.PropertyGridHost.TreeView;
 	|        public static System.Windows.Forms.ToolBarButton ButtonSort1 = OneScriptFormsDesigner.PropertyGridHost.ButtonSort;
 	|
@@ -7543,7 +10617,7 @@
 	|        {
 	|            // 1. Получить перечень текущих свойств формы и всех компонентов
 	|            // 2. Выгрузить обязательные свойства согласно RequiredValues.
-	|            // 3. Сравнить текущие свойства с DefaultValues и измененные заполнить.
+	|            // 3. Сравнить текущие свойства с DefaultValues и измененные выгрузить.
 	|
 	|            if (fileName != null)
 	|            {
@@ -7582,10 +10656,10 @@
 	|                    if (comp.GetType() == typeof(Form))
 	|                    {
 	|                        strForm = ""// блок Форма"" + Environment.NewLine +
-	|                                ""    "" + comp.Site.Name + "" = Ф.Форма();"" + Environment.NewLine +
-	|                                ""    "" + comp.Site.Name + "".Отображать = Истина;"" + Environment.NewLine +
-	|                                ""    "" + comp.Site.Name + "".Показать();"" + Environment.NewLine +
-	|                                ""    "" + comp.Site.Name + "".Активизировать();"" + Environment.NewLine +
+	|                                Indent1 + comp.Site.Name + "" = Ф.Форма();"" + Environment.NewLine +
+	|                                Indent1 + comp.Site.Name + "".Отображать = Истина;"" + Environment.NewLine +
+	|                                Indent1 + comp.Site.Name + "".Показать();"" + Environment.NewLine +
+	|                                Indent1 + comp.Site.Name + "".Активизировать();"" + Environment.NewLine +
 	|                                ""    // блок конецФорма"";
 	|                    }
 	|                    else
@@ -7607,7 +10681,7 @@
 	|                        Template1 = Template1.Replace(""// конец Перем"", ""Перем "" + compName + "";"" + Environment.NewLine + ""// конец Перем"");
 	|                    }
 	|                }
-	|                // Запишем в скрипте свойства компонентов.
+	|                // Запишем свойства компонентов.
 	|                // Последовательность возмем из древовидной структуры TreeView при сортировке ""В порядке создания"".
 	|                bool stateSort = ButtonSort1.Pushed;
 	|                ButtonSort1.Pushed = false;
@@ -7618,9 +10692,8 @@
 	|                    OneScriptFormsDesigner.PropertyGridHost.ChangeSelectNode(comp2);
 	|                }
 	|
-	|                ArrayList objArrayList2 = new ArrayList(); // Содержит имена компонентов.
+	|                ArrayList objArrayList2 = new ArrayList(); // Содержит имена компонентов в иерархии дерева компонентов.
 	|                GetNodes1(TreeView1, ref objArrayList2);
-	|
 	|                for (int i = 0; i < objArrayList2.Count; i++)
 	|                {
 	|                    Component comp = comps[(string)objArrayList2[i]];
@@ -7780,13 +10853,11 @@
 	|            return newScript;
 	|        }
 	|
-	|        // Переформируем скрипт.
+	|        // Переформируем выгруженный код.
 	|        private static string ReSort(string Template1)
 	|        {
 	|            string[] stringSeparators = new string[] { Environment.NewLine };
-	|
 	|            string str1 = Template1;
-	|
 	|            // Для удобочитаемости сделаем сортировку в разделе объявления переменных.
 	|            string strPerem = (string)OneScriptFormsDesigner.StrFindBetween(str1, @""Перем Ф;"", @""// конец Перем"")[0];
 	|            string[] peremArray = strPerem.Split(stringSeparators, StringSplitOptions.RemoveEmptyEntries);
@@ -7897,50 +10968,70 @@
 	|
 	|                string fragment2 = """";
 	|                SortedList SortedList1 = new SortedList();
-	|                SortedList1.Capacity = 1000;
+	|                SortedList1.Capacity = 10000;
 	|                string[] result = fragment1.Split(stringSeparators, StringSplitOptions.RemoveEmptyEntries);
+	|
+	|                decimal lastNumber = 0.00001M;
 	|                for (int i1 = 0; i1 < result.Length; i1++)
 	|                {
 	|                    string strResult = result[i1];
 	|                    if (i1 == 0)
 	|                    {
-	|                        SortedList1.Add(i1, strResult);
+	|                        SortedList1.Add(0.0M, strResult);
 	|                    }
 	|                    else if (strResult.Contains(namecomp + ""."" + ""Родитель =""))
 	|                    {
-	|                        SortedList1.Add(1, strResult);
+	|                        SortedList1.Add(1.0M, strResult);
 	|                    }
 	|                    else if (strResult.Contains(namecomp + ""."" + ""Стыковка =""))
 	|                    {
-	|                        SortedList1.Add(2, strResult);
+	|                        SortedList1.Add(2.0M, strResult);
 	|                    }
 	|                    else if (strResult.Contains(namecomp + "".НаПереднийПлан();""))
 	|                    {
-	|                        SortedList1.Add(3, strResult);
+	|                        SortedList1.Add(3.0M, strResult);
+	|                    }
+	|                    else if (strResult.Contains(namecomp + ""."" + ""АвтоРазмер =""))
+	|                    {
+	|                        SortedList1.Add(4.0M, strResult);
 	|                    }
 	|                    else if (strResult.Contains(namecomp + ""."" + ""Размер =""))
 	|                    {
-	|                        SortedList1.Add(4, strResult);
+	|                        SortedList1.Add(5.0M, strResult);
 	|                    }
 	|                    else if (strResult.Contains(namecomp + ""."" + ""ПорядокОбхода =""))
 	|                    {
-	|                        SortedList1.Add(5, strResult);
+	|                        SortedList1.Add(6.0M, strResult);
 	|                    }
 	|                    else if (strResult.Contains(namecomp + ""."" + ""Флажки =""))
 	|                    {
-	|                        SortedList1.Add(6, strResult);
+	|                        SortedList1.Add(7.0M, strResult);
+	|                    }
+	|                    else if (strResult.Contains(namecomp + ""."" + ""Путь =""))
+	|                    {
+	|                        SortedList1.Add(8.0M, strResult);
+	|                    }
+	|                    else if (strResult.Contains(namecomp + ""."" + ""Элементы.Добавить(Ф.ЭлементСписка(""))
+	|                    {
+	|                        // Элементов может быть больше одного.
+	|                        SortedList1.Add(9.0M + lastNumber, strResult);
+	|                        lastNumber = lastNumber + 0.00001M;
+	|                    }
+	|                    else if (strResult.Contains(namecomp + ""."" + ""ГоризонтальнаяПрокрутка =""))
+	|                    {
+	|                        SortedList1.Add(10.0M, strResult);
 	|                    }
 	|                    else
 	|                    {
-	|                        SortedList1.Add(i1 + 500, strResult);
+	|                        SortedList1.Add(Convert.ToDecimal(i1 + 500), strResult);
 	|                    }
 	|                }
 	|                ArrayList ArrayList3 = new ArrayList();
-	|                for (int i1 = 0; i1 < SortedList1.Capacity; i1++)
+	|                for (int i1 = 0; i1 < SortedList1.Count; i1++)
 	|                {
-	|                    if (SortedList1[i1] != null)
+	|                    if (SortedList1[SortedList1.GetKey(i1)] != null)
 	|                    {
-	|                        ArrayList3.Add(SortedList1[i1]);
+	|                        ArrayList3.Add(SortedList1[SortedList1.GetKey(i1)]);
 	|                    }
 	|                }
 	|                for (int i4 = 0; i4 < ArrayList3.Count; i4++)
@@ -7952,7 +11043,7 @@
 	|                    }
 	|                    else
 	|                    {
-	|                        fragment2 = fragment2 + Environment.NewLine + ""    "" + strArrayList;
+	|                        fragment2 = fragment2 + Environment.NewLine + Indent1 + strArrayList;
 	|                    }
 	|                }
 	|                str1 = str1.Replace(fragment1, fragment2);
@@ -7976,7 +11067,7 @@
 	|            }
 	|            else
 	|            {
-	|                if (!comp.DefaultValues.Contains(valueName + "" == "" + compValue))
+	|                if (!comp.DefaultValues.Contains(valueName + "" == "" + compValue + Environment.NewLine))
 	|                {
 	|                    try
 	|                    {
@@ -7993,6 +11084,10 @@
 	|        private static void TextToScript(string compName, string valueName, string compValue, dynamic val = null)
 	|        {
 	|            // Пропустим некоторые свойства.
+	|            if ((val.GetType() == typeof(osfDesigner.DataGridViewCellStyle) || val.GetType() == typeof(osfDesigner.DataGridViewCellStyleHeaders)) && (valueName == ""ИмяСтиля""))	
+	|            {
+	|                return;
+	|            }	
 	|            if (val.GetType() == typeof(osfDesigner.StatusBar) && (valueName == ""Положение"" || valueName == ""Размер""))
 	|            {
 	|                return;
@@ -8043,7 +11138,15 @@
 	|            }
 	|            // Закончили пропуск свойств.
 	|
-	|            if (compValue == ""Ложь"" || compValue == ""Истина"")
+	|            if ((compValue == ""Ложь"" || compValue == ""Истина"") && !(
+	|                (valueName == ""ИзменяемыйРазмер"" && val.GetType() == typeof(osfDesigner.DataGridViewTextBoxColumn)) ||
+	|                (valueName == ""ИзменяемыйРазмер"" && val.GetType() == typeof(osfDesigner.DataGridViewButtonColumn)) ||
+	|                (valueName == ""ИзменяемыйРазмер"" && val.GetType() == typeof(osfDesigner.DataGridViewCheckBoxColumn)) ||
+	|                (valueName == ""ИзменяемыйРазмер"" && val.GetType() == typeof(osfDesigner.DataGridViewComboBoxColumn)) ||
+	|                (valueName == ""ИзменяемыйРазмер"" && val.GetType() == typeof(osfDesigner.DataGridViewImageColumn)) ||
+	|                (valueName == ""ИзменяемыйРазмер"" && val.GetType() == typeof(osfDesigner.DataGridViewLinkColumn)) ||
+	|                (valueName == ""Перенос"" && val.GetType() == typeof(osfDesigner.DataGridViewCellStyle)) ||
+	|                (valueName == ""Перенос"" && val.GetType() == typeof(osfDesigner.DataGridViewCellStyleHeaders))))
 	|            {
 	|                AddToScript(compName + ""."" + valueName + "" = "" + compValue + "";"");
 	|                return;
@@ -8127,12 +11230,12 @@
 	|                                ListItemComboBox1 = (osfDesigner.ListItemComboBox)ComboBoxObjectCollection1[i];
 	|                                if (ListItemComboBox1.ValueType == DataType.Строка)
 	|                                {
-	|                                    strValue = strValue + ""    "" + compName + "".Элементы.Добавить(Ф.ЭлементСписка(\u0022"" + ListItemComboBox1.Text + ""\u0022, \u0022"" + ListItemComboBox1.Text + ""\u0022));"";
+	|                                    strValue = strValue + Indent1 + compName + "".Элементы.Добавить(Ф.ЭлементСписка(\u0022"" + ListItemComboBox1.Text + ""\u0022, \u0022"" + ListItemComboBox1.Text + ""\u0022));"";
 	|                                }
 	|                                else if (ListItemComboBox1.ValueType == DataType.Дата)
 	|                                {
 	|                                    DateTime DateTime1 = ListItemComboBox1.ValueDateTime;
-	|                                    strValue = strValue + ""    "" + compName + "".Элементы.Добавить(Ф.ЭлементСписка(\u0022"" + ListItemComboBox1.Text + ""\u0022, "" +
+	|                                    strValue = strValue + Indent1 + compName + "".Элементы.Добавить(Ф.ЭлементСписка(\u0022"" + ListItemComboBox1.Text + ""\u0022, "" +
 	|                                        ""Дата("" +
 	|                                        DateTime1.ToString(""yyyy"") + "", "" +
 	|                                        DateTime1.ToString(""MM"") + "", "" +
@@ -8143,11 +11246,11 @@
 	|                                }
 	|                                else if (ListItemComboBox1.ValueType == DataType.Булево)
 	|                                {
-	|                                    strValue = strValue + ""    "" + compName + "".Элементы.Добавить(Ф.ЭлементСписка(\u0022"" + ListItemComboBox1.Text + ""\u0022, "" + ListItemComboBox1.Text + ""));"";
+	|                                    strValue = strValue + Indent1 + compName + "".Элементы.Добавить(Ф.ЭлементСписка(\u0022"" + ListItemComboBox1.Text + ""\u0022, "" + ListItemComboBox1.Text + ""));"";
 	|                                }
 	|                                else if (ListItemComboBox1.ValueType == DataType.Число)
 	|                                {
-	|                                    strValue = strValue + ""    "" + compName + "".Элементы.Добавить(Ф.ЭлементСписка(\u0022"" + ListItemComboBox1.Text + ""\u0022, "" + ListItemComboBox1.Text + ""));"";
+	|                                    strValue = strValue + Indent1 + compName + "".Элементы.Добавить(Ф.ЭлементСписка(\u0022"" + ListItemComboBox1.Text.Replace(CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator, ""."") + ""\u0022, "" + ListItemComboBox1.Text.Replace(CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator, ""."") + ""));"";
 	|                                }
 	|                                if (i == 0)
 	|                                {
@@ -8173,12 +11276,12 @@
 	|                                ListItemListBox1 = (osfDesigner.ListItemListBox)ListBoxObjectCollection1[i];
 	|                                if (ListItemListBox1.ValueType == DataType.Строка)
 	|                                {
-	|                                    strValue = strValue + ""    "" + compName + "".Элементы.Добавить(Ф.ЭлементСписка(\u0022"" + ListItemListBox1.Text + ""\u0022, \u0022"" + ListItemListBox1.Text + ""\u0022));"";
+	|                                    strValue = strValue + Indent1 + compName + "".Элементы.Добавить(Ф.ЭлементСписка(\u0022"" + ListItemListBox1.Text + ""\u0022, \u0022"" + ListItemListBox1.Text + ""\u0022));"";
 	|                                }
 	|                                else if (ListItemListBox1.ValueType == DataType.Дата)
 	|                                {
 	|                                    DateTime DateTime1 = ListItemListBox1.ValueDateTime;
-	|                                    strValue = strValue + ""    "" + compName + "".Элементы.Добавить(Ф.ЭлементСписка(\u0022"" + ListItemListBox1.Text + ""\u0022, "" +
+	|                                    strValue = strValue + Indent1 + compName + "".Элементы.Добавить(Ф.ЭлементСписка(\u0022"" + ListItemListBox1.Text + ""\u0022, "" +
 	|                                        ""Дата("" +
 	|                                        DateTime1.ToString(""yyyy"") + "", "" +
 	|                                        DateTime1.ToString(""MM"") + "", "" +
@@ -8189,11 +11292,11 @@
 	|                                }
 	|                                else if (ListItemListBox1.ValueType == DataType.Булево)
 	|                                {
-	|                                    strValue = strValue + ""    "" + compName + "".Элементы.Добавить(Ф.ЭлементСписка(\u0022"" + ListItemListBox1.Text + ""\u0022, "" + ListItemListBox1.Text + ""));"";
+	|                                    strValue = strValue + Indent1 + compName + "".Элементы.Добавить(Ф.ЭлементСписка(\u0022"" + ListItemListBox1.Text + ""\u0022, "" + ListItemListBox1.Text + ""));"";
 	|                                }
 	|                                else if (ListItemListBox1.ValueType == DataType.Число)
 	|                                {
-	|                                    strValue = strValue + ""    "" + compName + "".Элементы.Добавить(Ф.ЭлементСписка(\u0022"" + ListItemListBox1.Text + ""\u0022, "" + ListItemListBox1.Text + ""));"";
+	|                                    strValue = strValue + Indent1 + compName + "".Элементы.Добавить(Ф.ЭлементСписка(\u0022"" + ListItemListBox1.Text.Replace(CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator, ""."") + ""\u0022, "" + ListItemListBox1.Text.Replace(CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator, ""."") + ""));"";
 	|                                }
 	|                                if (i == 0)
 	|                                {
@@ -8244,25 +11347,240 @@
 	|                }
 	|                return;
 	|            }
+	|            if (valueName == ""Картинка"")
+	|            {
+	|                DataGridViewImageColumn DataGridViewImageColumn1 = (DataGridViewImageColumn)val;
+	|                if (compValue != ""System.Drawing.Bitmap ()"")
+	|                {
+	|                    string FileName = OneScriptFormsDesigner.ParseBetween(compValue, ""("", "")"");
+	|                    string newPath = """";
+	|                    if (path != null)
+	|                    {
+	|                        string newFileName = FileName.Substring(FileName.LastIndexOf('\\') + 1);
+	|                        newPath = path + newFileName;
+	|                        if (!File.Exists(newPath))
+	|                        {
+	|                            File.Copy(FileName, newPath);
+	|                        }
+	|                    }
+	|                    else
+	|                    {
+	|                        newPath = FileName;
+	|                    }
+	|                    AddToScript(DataGridViewImageColumn1.NameColumn + "".Картинка = Ф.Картинка(\u0022"" + newPath + ""\u0022);"");
+	|                }
+	|                return;
+	|            }	
 	|            if (valueName == ""Колонки"")
 	|            {
 	|                if (val != null)
 	|                {
-	|                    System.Windows.Forms.ListView.ColumnHeaderCollection ColumnHeaderCollection1 = (System.Windows.Forms.ListView.ColumnHeaderCollection)val.Columns;
-	|                    if (ColumnHeaderCollection1.Count > 0)
+	|                    if (val.Columns.GetType() == typeof(System.Windows.Forms.DataGridViewColumnCollection))
 	|                    {
-	|                        osfDesigner.ColumnHeader ColumnHeader1;
-	|                        for (int i = 0; i < ColumnHeaderCollection1.Count; i++)
+	|                        System.Windows.Forms.DataGridViewColumnCollection DataGridViewColumnCollection1 = (System.Windows.Forms.DataGridViewColumnCollection)val.Columns;
+	|                        if (DataGridViewColumnCollection1.Count > 0)
 	|                        {
-	|                            ColumnHeader1 = (osfDesigner.ColumnHeader)ColumnHeaderCollection1[i];
-	|                            AddToScript(ColumnHeader1.Name + "" = Ф.Колонка();"");
-	|                            PropComponent(ColumnHeader1);
-	|                            AddToScript(compName + "".Колонки.Добавить("" + ColumnHeader1.Name + "");"");
+	|                            for (int i = 0; i < DataGridViewColumnCollection1.Count; i++)
+	|                            {
+	|                                if (DataGridViewColumnCollection1[i].GetType() == typeof(osfDesigner.DataGridViewLinkColumn))
+	|                                {
+	|                                    osfDesigner.DataGridViewLinkColumn DataGridViewLinkColumn1 = (osfDesigner.DataGridViewLinkColumn)DataGridViewColumnCollection1[i];
+	|                                    AddToScript(DataGridViewLinkColumn1.NameColumn + "" = Ф.КолонкаСсылка();"");
+	|                                    PropComponent(DataGridViewLinkColumn1);
+	|                                    AddToScript(compName + "".Колонки.Добавить("" + DataGridViewLinkColumn1.NameColumn + "");"");
+	|                                }
+	|                                if (DataGridViewColumnCollection1[i].GetType() == typeof(osfDesigner.DataGridViewImageColumn))
+	|                                {
+	|                                    osfDesigner.DataGridViewImageColumn DataGridViewImageColumn1 = (osfDesigner.DataGridViewImageColumn)DataGridViewColumnCollection1[i];
+	|                                    AddToScript(DataGridViewImageColumn1.NameColumn + "" = Ф.КолонкаКартинка();"");
+	|                                    PropComponent(DataGridViewImageColumn1);
+	|                                    AddToScript(compName + "".Колонки.Добавить("" + DataGridViewImageColumn1.NameColumn + "");"");
+	|                                }
+	|                                if (DataGridViewColumnCollection1[i].GetType() == typeof(osfDesigner.DataGridViewComboBoxColumn))
+	|                                {
+	|                                    osfDesigner.DataGridViewComboBoxColumn DataGridViewComboBoxColumn1 = (osfDesigner.DataGridViewComboBoxColumn)DataGridViewColumnCollection1[i];
+	|                                    AddToScript(DataGridViewComboBoxColumn1.NameColumn + "" = Ф.КолонкаПолеВыбора();"");
+	|                                    PropComponent(DataGridViewComboBoxColumn1);
+	|	
+	|                                    // Учитываем элементы поля выбора
+	|                                    System.Windows.Forms.DataGridViewComboBoxCell.ObjectCollection Items = DataGridViewComboBoxColumn1.Items;
+	|                                    for (int i2 = 0; i2 < Items.Count; i2++)
+	|                                    {
+	|                                        osfDesigner.ListItemComboBox ListItemComboBox1 = (osfDesigner.ListItemComboBox)Items[i2];
+	|                                        dynamic Value1 = ListItemComboBox1.Value;
+	|                                        if (Value1.GetType() == typeof(System.String))
+	|                                        {
+	|                                            AddToScript(DataGridViewComboBoxColumn1.NameColumn + "".Элементы.Добавить(\u0022"" + Value1 + ""\u0022);"");
+	|                                        }
+	|                                        else if (Value1.GetType() == typeof(System.Decimal))
+	|                                        {
+	|                                            AddToScript(DataGridViewComboBoxColumn1.NameColumn + "".Элементы.Добавить("" + Convert.ToString(Value1).Replace("","", ""."") + "");"");
+	|                                        }
+	|                                        else if (Value1.GetType() == typeof(System.Boolean))
+	|                                        {
+	|                                            AddToScript(DataGridViewComboBoxColumn1.NameColumn + "".Элементы.Добавить("" + Convert.ToString(Value1).Replace(""False"", ""Ложь"").Replace(""True"", ""Истина"") + "");"");
+	|                                        }
+	|                                        else if (Value1.GetType() == typeof(System.DateTime))
+	|                                        {
+	|                                            AddToScript(DataGridViewComboBoxColumn1.NameColumn + "".Элементы.Добавить(Дата("" +
+	|                                                Value1.ToString(""yyyy"") + "", "" +
+	|                                                Value1.ToString(""MM"") + "", "" +
+	|                                                Value1.ToString(""dd"") + "", "" +
+	|                                                Value1.ToString(""HH"") + "", "" +
+	|                                                Value1.ToString(""mm"") + "", "" +
+	|                                                Value1.ToString(""ss"") + ""));"");
+	|                                        }
+	|                                    }	
+	|                                    AddToScript(compName + "".Колонки.Добавить("" + DataGridViewComboBoxColumn1.NameColumn + "");"");
+	|                                }
+	|                                if (DataGridViewColumnCollection1[i].GetType() == typeof(osfDesigner.DataGridViewCheckBoxColumn))
+	|                                {
+	|                                    osfDesigner.DataGridViewCheckBoxColumn DataGridViewCheckBoxColumn1 = (osfDesigner.DataGridViewCheckBoxColumn)DataGridViewColumnCollection1[i];
+	|                                    AddToScript(DataGridViewCheckBoxColumn1.NameColumn + "" = Ф.КолонкаФлажок();"");
+	|                                    PropComponent(DataGridViewCheckBoxColumn1);
+	|                                    AddToScript(compName + "".Колонки.Добавить("" + DataGridViewCheckBoxColumn1.NameColumn + "");"");
+	|                                }
+	|
+	|
+	|                                if (DataGridViewColumnCollection1[i].GetType() == typeof(osfDesigner.DataGridViewButtonColumn))
+	|                                {
+	|                                    osfDesigner.DataGridViewButtonColumn DataGridViewButtonColumn1 = (osfDesigner.DataGridViewButtonColumn)DataGridViewColumnCollection1[i];
+	|                                    AddToScript(DataGridViewButtonColumn1.NameColumn + "" = Ф.КолонкаКнопка();"");
+	|                                    PropComponent(DataGridViewButtonColumn1);
+	|                                    AddToScript(compName + "".Колонки.Добавить("" + DataGridViewButtonColumn1.NameColumn + "");"");
+	|                                }
+	|                                if (DataGridViewColumnCollection1[i].GetType() == typeof(osfDesigner.DataGridViewTextBoxColumn))
+	|                                {
+	|                                    osfDesigner.DataGridViewTextBoxColumn DataGridViewTextBoxColumn1 = (osfDesigner.DataGridViewTextBoxColumn)DataGridViewColumnCollection1[i];
+	|                                    AddToScript(DataGridViewTextBoxColumn1.NameColumn + "" = Ф.КолонкаПолеВвода();"");
+	|                                    PropComponent(DataGridViewTextBoxColumn1);
+	|                                    AddToScript(compName + "".Колонки.Добавить("" + DataGridViewTextBoxColumn1.NameColumn + "");"");
+	|                                }
+	|
+	|                            }
+	|                        }
+	|                    }
+	|                    else if (val.Columns.GetType() == typeof(System.Windows.Forms.ListView.ColumnHeaderCollection))
+	|                    {
+	|                        System.Windows.Forms.ListView.ColumnHeaderCollection ColumnHeaderCollection1 = (System.Windows.Forms.ListView.ColumnHeaderCollection)val.Columns;
+	|                        if (ColumnHeaderCollection1.Count > 0)
+	|                        {
+	|                            osfDesigner.ColumnHeader ColumnHeader1;
+	|                            for (int i = 0; i < ColumnHeaderCollection1.Count; i++)
+	|                            {
+	|                                ColumnHeader1 = (osfDesigner.ColumnHeader)ColumnHeaderCollection1[i];
+	|                                AddToScript(ColumnHeader1.Name + "" = Ф.Колонка();"");
+	|                                PropComponent(ColumnHeader1);
+	|                                AddToScript(compName + "".Колонки.Добавить("" + ColumnHeader1.Name + "");"");
+	|                            }
 	|                        }
 	|                    }
 	|                }
 	|                return;
 	|            }
+	|            if (valueName == ""СтильЗаголовковКолонок"")
+	|            {
+	|                if (val.GetType() == typeof(osfDesigner.DataGridView))
+	|                {
+	|                    osfDesigner.DataGridView DataGridView1 = (osfDesigner.DataGridView)val;
+	|                    osfDesigner.DataGridViewCellStyleHeaders ColumnHeadersDefaultCellStyle1 = (osfDesigner.DataGridViewCellStyleHeaders)DataGridView1.columnHeadersDefaultCellStyle;
+	|                    if (!(ColumnHeadersDefaultCellStyle1.NameStyle == """" || ColumnHeadersDefaultCellStyle1.NameStyle == null))
+	|                    {
+	|                        AddToScript(ColumnHeadersDefaultCellStyle1.NameStyle + "" = Ф.СтильЯчейки();"");
+	|                        PropComponent(ColumnHeadersDefaultCellStyle1);
+	|                        AddToScript(compName + "".СтильЗаголовковКолонок = "" + ColumnHeadersDefaultCellStyle1.NameStyle + "";"");
+	|                    }
+	|                }
+	|                return;
+	|            }
+	|            if (valueName == ""СтильЗаголовковСтрок"")
+	|            {
+	|                if (val.GetType() == typeof(osfDesigner.DataGridView))
+	|                {
+	|                    osfDesigner.DataGridView DataGridView1 = (osfDesigner.DataGridView)val;
+	|                    osfDesigner.DataGridViewCellStyleHeaders RowHeadersDefaultCellStyle1 = (osfDesigner.DataGridViewCellStyleHeaders)DataGridView1.rowHeadersDefaultCellStyle;
+	|                    if (!(RowHeadersDefaultCellStyle1.NameStyle == """" || RowHeadersDefaultCellStyle1.NameStyle == null))
+	|                    {
+	|                        AddToScript(RowHeadersDefaultCellStyle1.NameStyle + "" = Ф.СтильЯчейки();"");
+	|                        PropComponent(RowHeadersDefaultCellStyle1);
+	|                        AddToScript(compName + "".СтильЗаголовковСтрок = "" + RowHeadersDefaultCellStyle1.NameStyle + "";"");
+	|                    }
+	|                }
+	|                return;
+	|            }	
+	|            if (valueName == ""СтильЯчейки"")
+	|            {
+	|                if (val != null)
+	|                {
+	|                    if (val.GetType() == typeof(osfDesigner.DataGridViewTextBoxColumn))
+	|                    {
+	|                        osfDesigner.DataGridViewTextBoxColumn DataGridViewTextBoxColumn1 = (osfDesigner.DataGridViewTextBoxColumn)val;
+	|                        osfDesigner.DataGridViewCellStyle DataGridViewCellStyle1 = (osfDesigner.DataGridViewCellStyle)DataGridViewTextBoxColumn1.DefaultCellStyle;
+	|                        if (DataGridViewCellStyle1 != null)
+	|                        {
+	|                            AddToScript(DataGridViewCellStyle1.NameStyle + "" = Ф.СтильЯчейки();"");
+	|                            PropComponent(DataGridViewCellStyle1);
+	|                            AddToScript(DataGridViewTextBoxColumn1.NameColumn + "".СтильЯчейки = "" + DataGridViewCellStyle1.NameStyle + "";"");
+	|                        }
+	|                    }
+	|                    else if (val.GetType() == typeof(osfDesigner.DataGridViewButtonColumn))
+	|                    {
+	|                        osfDesigner.DataGridViewButtonColumn DataGridViewButtonColumn1 = (osfDesigner.DataGridViewButtonColumn)val;
+	|                        osfDesigner.DataGridViewCellStyle DataGridViewCellStyle1 = (osfDesigner.DataGridViewCellStyle)DataGridViewButtonColumn1.DefaultCellStyle;
+	|                        if (DataGridViewCellStyle1 != null)
+	|                        {
+	|                            AddToScript(DataGridViewCellStyle1.NameStyle + "" = Ф.СтильЯчейки();"");
+	|                            PropComponent(DataGridViewCellStyle1);
+	|                            AddToScript(DataGridViewButtonColumn1.NameColumn + "".СтильЯчейки = "" + DataGridViewCellStyle1.NameStyle + "";"");
+	|                        }
+	|                    }
+	|                    else if (val.GetType() == typeof(osfDesigner.DataGridViewCheckBoxColumn))
+	|                    {
+	|                        osfDesigner.DataGridViewCheckBoxColumn DataGridViewCheckBoxColumn1 = (osfDesigner.DataGridViewCheckBoxColumn)val;
+	|                        osfDesigner.DataGridViewCellStyle DataGridViewCellStyle1 = (osfDesigner.DataGridViewCellStyle)DataGridViewCheckBoxColumn1.DefaultCellStyle;
+	|                        if (DataGridViewCellStyle1 != null)
+	|                        {
+	|                            AddToScript(DataGridViewCellStyle1.NameStyle + "" = Ф.СтильЯчейки();"");
+	|                            PropComponent(DataGridViewCellStyle1);
+	|                            AddToScript(DataGridViewCheckBoxColumn1.NameColumn + "".СтильЯчейки = "" + DataGridViewCellStyle1.NameStyle + "";"");
+	|                        }
+	|                    }
+	|                    else if (val.GetType() == typeof(osfDesigner.DataGridViewComboBoxColumn))
+	|                    {
+	|                        osfDesigner.DataGridViewComboBoxColumn DataGridViewComboBoxColumn1 = (osfDesigner.DataGridViewComboBoxColumn)val;
+	|                        osfDesigner.DataGridViewCellStyle DataGridViewCellStyle1 = (osfDesigner.DataGridViewCellStyle)DataGridViewComboBoxColumn1.DefaultCellStyle;
+	|                        if (DataGridViewCellStyle1 != null)
+	|                        {
+	|                            AddToScript(DataGridViewCellStyle1.NameStyle + "" = Ф.СтильЯчейки();"");
+	|                            PropComponent(DataGridViewCellStyle1);
+	|                            AddToScript(DataGridViewComboBoxColumn1.NameColumn + "".СтильЯчейки = "" + DataGridViewCellStyle1.NameStyle + "";"");
+	|                        }
+	|                    }
+	|                    else if (val.GetType() == typeof(osfDesigner.DataGridViewImageColumn))
+	|                    {
+	|                        osfDesigner.DataGridViewImageColumn DataGridViewImageColumn1 = (osfDesigner.DataGridViewImageColumn)val;
+	|                        osfDesigner.DataGridViewCellStyle DataGridViewCellStyle1 = (osfDesigner.DataGridViewCellStyle)DataGridViewImageColumn1.DefaultCellStyle;
+	|                        if (DataGridViewCellStyle1 != null)
+	|                        {
+	|                            AddToScript(DataGridViewCellStyle1.NameStyle + "" = Ф.СтильЯчейки();"");
+	|                            PropComponent(DataGridViewCellStyle1);
+	|                            AddToScript(DataGridViewImageColumn1.NameColumn + "".СтильЯчейки = "" + DataGridViewCellStyle1.NameStyle + "";"");
+	|                        }
+	|                    }
+	|                    else if (val.GetType() == typeof(osfDesigner.DataGridViewLinkColumn))
+	|                    {
+	|                        osfDesigner.DataGridViewLinkColumn DataGridViewLinkColumn1 = (osfDesigner.DataGridViewLinkColumn)val;
+	|                        osfDesigner.DataGridViewCellStyle DataGridViewCellStyle1 = (osfDesigner.DataGridViewCellStyle)DataGridViewLinkColumn1.DefaultCellStyle;
+	|                        if (DataGridViewCellStyle1 != null)
+	|                        {
+	|                            AddToScript(DataGridViewCellStyle1.NameStyle + "" = Ф.СтильЯчейки();"");
+	|                            PropComponent(DataGridViewCellStyle1);
+	|                            AddToScript(DataGridViewLinkColumn1.NameColumn + "".СтильЯчейки = "" + DataGridViewCellStyle1.NameStyle + "";"");
+	|                        }
+	|                    }
+	|                }
+	|                return;
+	|            }	
 	|            if (valueName == ""СтилиКолонкиСеткиДанных"")
 	|            {
 	|                if (val != null)
@@ -8277,7 +11595,7 @@
 	|                            {
 	|                                osfDesigner.DataGridBoolColumn GridColumnStyle1 = (osfDesigner.DataGridBoolColumn)Style1;
 	|                                AddToScript(GridColumnStyle1.NameStyle + "" = Ф.СтильКолонкиБулево();"" + Environment.NewLine +
-	|                                    ""    "" + GridColumnStyle1.NameStyle + "".ИмяОтображаемого = \u0022"" + GridColumnStyle1.MappingName + ""\u0022;"");
+	|                                    Indent1 + GridColumnStyle1.NameStyle + "".ИмяОтображаемого = \u0022"" + GridColumnStyle1.MappingName + ""\u0022;"");
 	|                                PropComponent(GridColumnStyle1);
 	|                                AddToScript(compName + "".СтилиКолонкиСеткиДанных.Добавить("" + GridColumnStyle1.NameStyle + "");"");
 	|                            }
@@ -8285,7 +11603,7 @@
 	|                            {
 	|                                osfDesigner.DataGridTextBoxColumn GridColumnStyle1 = (osfDesigner.DataGridTextBoxColumn)Style1;
 	|                                AddToScript(GridColumnStyle1.NameStyle + "" = Ф.СтильКолонкиПолеВвода();"" + Environment.NewLine +
-	|                                    ""    "" + GridColumnStyle1.NameStyle + "".ИмяОтображаемого = \u0022"" + GridColumnStyle1.MappingName + ""\u0022;"");
+	|                                    Indent1 + GridColumnStyle1.NameStyle + "".ИмяОтображаемого = \u0022"" + GridColumnStyle1.MappingName + ""\u0022;"");
 	|                                PropComponent(GridColumnStyle1);
 	|                                AddToScript(compName + "".СтилиКолонкиСеткиДанных.Добавить("" + GridColumnStyle1.NameStyle + "");"");
 	|                            }
@@ -8293,7 +11611,7 @@
 	|                            {
 	|                                osfDesigner.DataGridComboBoxColumnStyle GridColumnStyle1 = (osfDesigner.DataGridComboBoxColumnStyle)Style1;
 	|                                AddToScript(GridColumnStyle1.NameStyle + "" = Ф.СтильКолонкиПолеВыбора();"" + Environment.NewLine +
-	|                                    ""    "" + GridColumnStyle1.NameStyle + "".ИмяОтображаемого = \u0022"" + GridColumnStyle1.MappingName + ""\u0022;"");
+	|                                    Indent1 + GridColumnStyle1.NameStyle + "".ИмяОтображаемого = \u0022"" + GridColumnStyle1.MappingName + ""\u0022;"");
 	|                                PropComponent(GridColumnStyle1);
 	|                                AddToScript(compName + "".СтилиКолонкиСеткиДанных.Добавить("" + GridColumnStyle1.NameStyle + "");"");
 	|                            }
@@ -8315,8 +11633,8 @@
 	|                            System.Windows.Forms.DataGridTableStyle OriginalObj = GridTableStylesCollection1[i];
 	|                            DataGridTableStyle1 = OneScriptFormsDesigner.RevertSimilarObj(OriginalObj);
 	|                            AddToScript(DataGridTableStyle1.NameStyle + "" = Ф.СтильТаблицыСеткиДанных();"" + Environment.NewLine +
-	|                                ""    "" + DataGridTableStyle1.NameStyle + "".ИмяОтображаемого = \u0022"" + DataGridTableStyle1.MappingName + ""\u0022;"" + Environment.NewLine +
-	|                                ""    "" + compName + "".СтилиТаблицы.Добавить("" + DataGridTableStyle1.NameStyle + "");"");
+	|                                Indent1 + DataGridTableStyle1.NameStyle + "".ИмяОтображаемого = \u0022"" + DataGridTableStyle1.MappingName + ""\u0022;"" + Environment.NewLine +
+	|                                Indent1 + compName + "".СтилиТаблицы.Добавить("" + DataGridTableStyle1.NameStyle + "");"");
 	|                            PropComponent(DataGridTableStyle1);
 	|                        }
 	|                    }
@@ -8405,7 +11723,7 @@
 	|                    {
 	|                        for (int i1 = 0; i1 < MyBoldedDatesList1.Count; i1++)
 	|                        {
-	|                            strDateTimes = strDateTimes + ""    "" + compName + ""."" + valueName + "".Добавить(Дата("" +
+	|                            strDateTimes = strDateTimes + Indent1 + compName + ""."" + valueName + "".Добавить(Дата("" +
 	|                                    MyBoldedDatesList1[i1].Value.ToString(""yyyy"") + "", "" +
 	|                                    MyBoldedDatesList1[i1].Value.ToString(""MM"") + "", "" +
 	|                                    MyBoldedDatesList1[i1].Value.ToString(""dd"") + "", "" +
@@ -8436,7 +11754,7 @@
 	|                    {
 	|                        for (int i1 = 0; i1 < MyAnnuallyBoldedDatesList1.Count; i1++)
 	|                        {
-	|                            strDateTimes = strDateTimes + ""    "" + compName + ""."" + valueName + "".Добавить(Дата("" +
+	|                            strDateTimes = strDateTimes + Indent1 + compName + ""."" + valueName + "".Добавить(Дата("" +
 	|                                    MyAnnuallyBoldedDatesList1[i1].Value.ToString(""yyyy"") + "", "" +
 	|                                    MyAnnuallyBoldedDatesList1[i1].Value.ToString(""MM"") + "", "" +
 	|                                    MyAnnuallyBoldedDatesList1[i1].Value.ToString(""dd"") + "", "" +
@@ -8467,7 +11785,7 @@
 	|                    {
 	|                        for (int i1 = 0; i1 < MyMonthlyBoldedDatesList1.Count; i1++)
 	|                        {
-	|                            strDateTimes = strDateTimes + ""    "" + compName + ""."" + valueName + "".Добавить(Дата("" +
+	|                            strDateTimes = strDateTimes + Indent1 + compName + ""."" + valueName + "".Добавить(Дата("" +
 	|                                    MyMonthlyBoldedDatesList1[i1].Value.ToString(""yyyy"") + "", "" +
 	|                                    MyMonthlyBoldedDatesList1[i1].Value.ToString(""MM"") + "", "" +
 	|                                    MyMonthlyBoldedDatesList1[i1].Value.ToString(""dd"") + "", "" +
@@ -8509,7 +11827,7 @@
 	|                                }
 	|                            }
 	|
-	|                            str1 = str1 + ""    "" + compName + "".Изображения.Добавить(Ф.Картинка(\u0022"" + newPath + ""\u0022));"";
+	|                            str1 = str1 + Indent1 + compName + "".Изображения.Добавить(Ф.Картинка(\u0022"" + newPath + ""\u0022));"";
 	|                            if (i1 == 0)
 	|                            {
 	|                                str1 = str1.TrimStart(' ');
@@ -8592,8 +11910,52 @@
 	|                }
 	|                return;
 	|            }
+	|            // Если это Дата.
+	|            if (valueName == ""Значение"" && val.GetType() == typeof(osfDesigner.DateTimePicker))
+	|            {
+	|                compValue = compValue.Replace("" "", ""."").Replace("":"", ""."");
+	|                string[] result = compValue.Split(new string[] { ""."" }, StringSplitOptions.RemoveEmptyEntries);
+	|                DateTime rez = new DateTime();
+	|                for (int i = 0; i < result.Length; i++)
+	|                {
+	|                    if (i == 0)
+	|                    {
+	|                        rez = rez.AddDays(Int32.Parse(result[0]) - 1);
+	|                    }
+	|                    if (i == 1)
+	|                    {
+	|                        rez = rez.AddMonths(Int32.Parse(result[1]) - 1);
+	|                    }
+	|                    if (i == 2)
+	|                    {
+	|                        rez = rez.AddYears(Int32.Parse(result[2]) - 1);
+	|                    }
+	|                    if (i == 3)
+	|                    {
+	|                        rez = rez.AddHours(Int32.Parse(result[3]));
+	|                    }
+	|                    if (i == 4)
+	|                    {
+	|                        rez = rez.AddMinutes(Int32.Parse(result[4]));
+	|                    }
+	|                    if (i == 5)
+	|                    {
+	|                        rez = rez.AddSeconds(Int32.Parse(result[5]));
+	|                    }
+	|                }
+	|                string strDate = ""Дата("" +
+	|                    rez.ToString(""yyyy"") + "", "" +
+	|                    rez.ToString(""MM"") + "", "" +
+	|                    rez.ToString(""dd"") + "", "" +
+	|                    rez.ToString(""HH"") + "", "" +
+	|                    rez.ToString(""mm"") + "", "" +
+	|                    rez.ToString(""ss"") + "")"";
+	|                AddToScript(compName + ""."" + valueName + "" = "" + strDate + "";"");
+	|                return;
+	|            }
 	|            // Если это цвет.
 	|            if (valueName == ""ОсновнойЦвет"" ||
+	|                valueName == ""ОсновнойЦветВыделенного"" ||
 	|                valueName == ""ОсновнойЦветЗаголовков"" ||
 	|                valueName == ""ПрозрачныйЦвет"" ||
 	|                valueName == ""Цвет"" ||
@@ -8602,10 +11964,12 @@
 	|                valueName == ""ЦветСетки"" ||
 	|                valueName == ""ЦветСсылки"" ||
 	|                valueName == ""ЦветФона"" ||
+	|                valueName == ""ЦветФонаВыделенного"" ||
 	|                valueName == ""ЦветФонаЗаголовка"" ||
 	|                valueName == ""ЦветФонаЗаголовков"" ||
 	|                valueName == ""ЦветФонаНечетныхСтрок"" ||
-	|                valueName == ""ЦветФонаСеткиДанных"")
+	|                valueName == ""ЦветФонаСеткиДанных"" ||
+	|                valueName == ""ЦветФонаТаблицы"")
 	|            {
 	|                string str1 = """";
 	|                if (val != null)
@@ -8643,22 +12007,29 @@
 	|                return;
 	|            }
 	|            // Если это событие.
-	|            if (valueName == ""ВыбранныйЭлементСеткиИзменен"" ||
+	|            if (valueName == ""ВводОтклонен"" ||
+	|                valueName == ""ВыбранныйЭлементСеткиИзменен"" ||
 	|                valueName == ""ВыделениеИзменено"" ||
 	|                valueName == ""ДатаВыбрана"" ||
 	|                valueName == ""ДатаИзменена"" ||
 	|                valueName == ""ДвойноеНажатие"" ||
+	|                valueName == ""ДвойноеНажатиеЯчейки"" ||
 	|                valueName == ""Закрыта"" ||
 	|                valueName == ""ЗначениеИзменено"" ||
 	|                valueName == ""ЗначениеСвойстваИзменено"" ||
+	|                valueName == ""ЗначениеЯчейкиИзменено"" ||
 	|                valueName == ""ИндексВыбранногоИзменен"" ||
 	|                valueName == ""КлавишаВверх"" ||
 	|                valueName == ""КлавишаВниз"" ||
 	|                valueName == ""КлавишаНажата"" ||
 	|                valueName == ""КолонкаНажатие"" ||
 	|                valueName == ""МышьНадЭлементом"" ||
+	|                valueName == ""МышьНадЯчейкой"" ||
 	|                valueName == ""МышьПокинулаЭлемент"" ||
+	|                valueName == ""МышьПокинулаЯчейку"" ||
 	|                valueName == ""Нажатие"" ||
+	|                valueName == ""НажатиеСодержимогоЯчейки"" ||
+	|                valueName == ""НажатиеЯчейки"" ||
 	|                valueName == ""ПередРазвертыванием"" ||
 	|                valueName == ""ПередРедактированиемНадписи"" ||
 	|                valueName == ""ПоложениеИзменено"" ||
@@ -8668,18 +12039,25 @@
 	|                valueName == ""ПриАктивизации"" ||
 	|                valueName == ""ПриАктивизацииЭлемента"" ||
 	|                valueName == ""ПриВходе"" ||
+	|                valueName == ""ПриВходеВСтроку"" ||
+	|                valueName == ""ПриВходеВЯчейку"" ||
 	|                valueName == ""ПриВыпадении"" ||
 	|                valueName == ""ПриДеактивации"" ||
 	|                valueName == ""ПриЗагрузке"" ||
 	|                valueName == ""ПриЗадержкеМыши"" ||
 	|                valueName == ""ПриЗакрытии"" ||
 	|                valueName == ""ПриИзменении"" ||
+	|                valueName == ""ПриНажатииЗаголовкаКолонки"" ||
+	|                valueName == ""ПриНажатииЗаголовкаСтроки"" ||
 	|                valueName == ""ПриНажатииКнопки"" ||
 	|                valueName == ""ПриНажатииКнопкиМыши"" ||
+	|                valueName == ""ПриНажатииКнопкиМышиВЯчейке"" ||
 	|                valueName == ""ПриОтпусканииМыши"" ||
+	|                valueName == ""ПриОтпусканииМышиНадЯчейкой"" ||
 	|                valueName == ""ПриПереименовании"" ||
 	|                valueName == ""ПриПеремещении"" ||
 	|                valueName == ""ПриПеремещенииМыши"" ||
+	|                valueName == ""ПриПеремещенииМышиНадЯчейкой"" ||
 	|                valueName == ""ПриПерерисовке"" ||
 	|                valueName == ""ПриПотереФокуса"" ||
 	|                valueName == ""ПриПрокручивании"" ||
@@ -8687,9 +12065,14 @@
 	|                valueName == ""ПриСрабатыванииТаймера"" ||
 	|                valueName == ""ПриУдалении"" ||
 	|                valueName == ""ПриУходе"" ||
+	|                valueName == ""ПриУходеИзСтроки"" ||
+	|                valueName == ""ПриУходеИзЯчейки"" ||
 	|                valueName == ""РазмерИзменен"" ||
+	|                valueName == ""РедактированиеЯчейкиЗавершено"" ||
+	|                valueName == ""РедактированиеЯчейкиНачато"" ||
 	|                valueName == ""СсылкаНажата"" ||
 	|                valueName == ""ТекстИзменен"" ||
+	|                valueName == ""ТекущаяЯчейкаИзменена"" ||
 	|                valueName == ""ТекущаяЯчейкаИзменена"" ||
 	|                valueName == ""ЭлементДобавлен"" ||
 	|                valueName == ""ЭлементПомечен"" ||
@@ -8715,8 +12098,10 @@
 	|            // Если это Строка.
 	|            if (valueName == ""ВыбранныйПуть"" ||
 	|                valueName == ""Заголовок"" ||
+	|                valueName == ""ИмяСвойстваДанных"" ||
 	|                valueName == ""ИмяСтиля"" ||
 	|                valueName == ""ИмяФайла"" ||
+	|                valueName == ""Маска"" ||
 	|                valueName == ""НачальныйКаталог"" ||
 	|                valueName == ""Описание"" ||
 	|                valueName == ""ПолныйПуть"" ||
@@ -8725,6 +12110,7 @@
 	|                valueName == ""РазделительПути"" ||
 	|                valueName == ""РасширениеПоУмолчанию"" ||
 	|                valueName == ""СимволПароля"" ||
+	|                valueName == ""СимволПриглашения"" ||
 	|                valueName == ""Текст"" ||
 	|                valueName == ""ТекстЗаголовка"" ||
 	|                valueName == ""ТекстПодсказки"" ||
@@ -8738,6 +12124,8 @@
 	|            if (valueName == ""АвтоЗадержка"" ||
 	|                valueName == ""АвтоЗадержкаПоказа"" ||
 	|                valueName == ""БольшоеИзменение"" ||
+	|                valueName == ""ВесЗаполнения"" ||	
+	|                valueName == ""ВысотаЗаголовковКолонок"" ||
 	|                valueName == ""ВысотаЭлемента"" ||
 	|                valueName == ""ГоризонтальнаяМера"" ||
 	|                valueName == ""ЗадержкаОчередногоПоказа"" ||
@@ -8760,7 +12148,7 @@
 	|                valueName == ""Масштаб"" ||
 	|                valueName == ""МинимальнаяШирина"" ||
 	|                valueName == ""МинимальноеРасстояние"" ||
-	|                (valueName == ""МинимальныйРазмер"" && compName.Contains(""Splitter"")) ||
+	|                (valueName == ""МинимальныйРазмер"" && val.GetType() == typeof(osfDesigner.Splitter)) ||
 	|                valueName == ""Минимум"" ||
 	|                valueName == ""Отступ"" ||
 	|                valueName == ""ОтступМаркера"" ||
@@ -8774,7 +12162,8 @@
 	|                valueName == ""Ширина"" ||
 	|                valueName == ""ШиринаВыпадающегоСписка"" ||
 	|                valueName == ""ШиринаЗаголовковСтрок"" ||
-	|                valueName == ""ШиринаКолонки"")
+	|                valueName == ""ШиринаКолонки"" ||
+	|                valueName == ""ШиринаРазделителя"")	
 	|            {
 	|                AddToScript(compName + ""."" + valueName + "" = "" + compValue.Replace(CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator, ""."") + "";"");
 	|                return;
@@ -8788,8 +12177,7 @@
 	|                valueName == ""РазмерПоляАвтоПрокрутки"" ||
 	|                valueName == ""РазмерЭлемента"")
 	|            {
-	|                if (compName.Contains(""Календарь"") ||
-	|                    compName.Contains(""Вкладка""))
+	|                if (compName.Contains(""Вкладка"") && valueName != ""РазмерПоляАвтоПрокрутки"")
 	|                {
 	|                    return;
 	|                }
@@ -8830,7 +12218,83 @@
 	|                }
 	|                return;
 	|            }
-	|            // Если это перечисление.
+	|            // Если это Перечисление.
+	|            if (valueName == ""РазмещениеИзображения"")
+	|            {
+	|                AddToScript(compName + ""."" + valueName + "" = "" + ""Ф.РазмещениеИзображенияЯчейки."" + compValue + "";"");
+	|                return;
+	|            }
+	|            if (valueName == ""СтильОтображения"")
+	|            {
+	|                AddToScript(compName + ""."" + valueName + "" = "" + ""Ф.СтильПоляВыбораЯчейки."" + compValue + "";"");
+	|                return;
+	|            }
+	|            if (valueName == ""РежимСортировки"")
+	|            {
+	|                AddToScript(compName + ""."" + valueName + "" = "" + ""Ф.РежимСортировки."" + compValue + "";"");
+	|                return;
+	|            }
+	|            if (valueName == ""РежимАвтоРазмера"")
+	|            {
+	|                AddToScript(compName + ""."" + valueName + "" = "" + ""Ф.РежимАвтоРазмераКолонки."" + compValue + "";"");
+	|                return;
+	|            }	
+	|            if (valueName == ""ИзменяемыйРазмер"" && (
+	|                val.GetType() == typeof(osfDesigner.DataGridViewTextBoxColumn) ||
+	|                val.GetType() == typeof(osfDesigner.DataGridViewButtonColumn) ||
+	|                val.GetType() == typeof(osfDesigner.DataGridViewCheckBoxColumn) ||
+	|                val.GetType() == typeof(osfDesigner.DataGridViewComboBoxColumn) ||
+	|                val.GetType() == typeof(osfDesigner.DataGridViewImageColumn) ||
+	|                val.GetType() == typeof(osfDesigner.DataGridViewLinkColumn)))
+	|            {
+	|                AddToScript(compName + ""."" + valueName + "" = "" + ""Ф.ТриСостояния."" + compValue + "";"");
+	|                return;
+	|            }	
+	|            if (valueName == ""Перенос"" && (val.GetType() == typeof(osfDesigner.DataGridViewCellStyle) || val.GetType() == typeof(osfDesigner.DataGridViewCellStyleHeaders)))
+	|            {
+	|                AddToScript(compName + ""."" + valueName + "" = "" + ""Ф.ТриСостояния."" + compValue + "";"");
+	|                return;
+	|            }	
+	|            if (valueName == ""РежимАвтоРазмераКолонок"")
+	|            {
+	|                AddToScript(compName + ""."" + valueName + "" = "" + ""Ф.РежимАвтоРазмераКолонок."" + compValue + "";"");
+	|                return;
+	|            }
+	|            if (valueName == ""РежимАвтоРазмераСтрок"")
+	|            {
+	|                AddToScript(compName + ""."" + valueName + "" = "" + ""Ф.РежимАвтоРазмераСтрок."" + compValue + "";"");
+	|                return;
+	|            }
+	|            if (valueName == ""РежимВыбора"" && val.GetType() == typeof(osfDesigner.DataGridView))
+	|            {
+	|                AddToScript(compName + ""."" + valueName + "" = "" + ""Ф.РежимВыбораТаблицы."" + compValue + "";"");
+	|                return;
+	|            }
+	|            if (valueName == ""РежимВысотыЗаголовковКолонок"")
+	|            {
+	|                AddToScript(compName + ""."" + valueName + "" = "" + ""Ф.РежимВысотыЗаголовковКолонок."" + compValue + "";"");
+	|                return;
+	|            }
+	|            if (valueName == ""АвтоШиринаЗаголовковСтрок"")
+	|            {
+	|                AddToScript(compName + ""."" + valueName + "" = "" + ""Ф.РежимШириныЗаголовковСтрок."" + compValue + "";"");
+	|                return;
+	|            }
+	|            if (valueName == ""ФорматМаски"")
+	|            {
+	|                AddToScript(compName + ""."" + valueName + "" = "" + ""Ф.ФорматМаски."" + compValue + "";"");
+	|                return;
+	|            }
+	|            if (valueName == ""РежимВставки"")
+	|            {
+	|                AddToScript(compName + ""."" + valueName + "" = "" + ""Ф.РежимВставки."" + compValue + "";"");
+	|                return;
+	|            }
+	|            if (valueName == ""КопироватьМаску"")
+	|            {
+	|                AddToScript(compName + ""."" + valueName + "" = "" + ""Ф.ФорматМаски."" + compValue + "";"");
+	|                return;
+	|            }
 	|            if (valueName == ""ТипСлияния"")
 	|            {
 	|                AddToScript(compName + ""."" + valueName + "" = "" + ""Ф.СлияниеМеню."" + compValue + "";"");
@@ -8958,6 +12422,11 @@
 	|                AddToScript(compName + ""."" + valueName + "" = "" + ""Ф.ОформлениеПанелиИнструментов."" + compValue + "";"");
 	|                return;
 	|            }
+	|            if (valueName == ""Выравнивание"" && (val.GetType() == typeof(osfDesigner.DataGridViewCellStyle) || val.GetType() == typeof(osfDesigner.DataGridViewCellStyleHeaders)))	
+	|            {
+	|                AddToScript(compName + ""."" + valueName + "" = "" + ""Ф.ВыравниваниеСодержимогоЯчейки."" + compValue + "";"");
+	|                return;
+	|            }	
 	|            if (valueName == ""Выравнивание"" && val.GetType() == typeof(osfDesigner.TabControl))
 	|            {
 	|                AddToScript(compName + ""."" + valueName + "" = "" + ""Ф.ВыравниваниеВкладок."" + compValue + "";"");
@@ -8989,7 +12458,8 @@
 	|                AddToScript(compName + ""."" + valueName + "" = "" + str1);
 	|                return;
 	|            }
-	|            if (valueName == ""ВыравниваниеТекста"" && val.GetType() == typeof(osfDesigner.ColumnHeader))
+	|            if (valueName == ""ВыравниваниеТекста"" && (val.GetType() == typeof(osfDesigner.ColumnHeader) || 
+	|                val.GetType() == typeof(osfDesigner.MaskedTextBox)))
 	|            {
 	|                AddToScript(compName + ""."" + valueName + "" = "" + ""Ф.ГоризонтальноеВыравнивание."" + compValue + "";"");
 	|                return;
@@ -9052,6 +12522,11 @@
 	|                    DateTime1.ToString(""ss"") + "");"");
 	|                return;
 	|            }
+	|            if (valueName == ""Заполнение"" && (val.GetType() == typeof(osfDesigner.DataGridViewCellStyle) || (val.GetType() == typeof(osfDesigner.DataGridViewCellStyleHeaders))))	
+	|            {
+	|                AddToScript(compName + ""."" + valueName + "" = "" + ""Ф.Заполнение("" + compValue.Replace("";"", "","") + "");"");
+	|                return;
+	|            }	
 	|        }
 	|        
 	|        private static void AddToScript(string str)
@@ -9108,7 +12583,6 @@
 	|                MenuItemEntry1 = OneScriptFormsDesigner.RevertSimilarObj(menuItem.MenuItems[i]);
 	|                PropertyDescriptor pd = TypeDescriptor.GetProperties(MenuItemEntry1.Parent)[""Name""];
 	|                string strParent = (string)pd.GetValue(MenuItemEntry1.Parent);
-	|
 	|                string strName = MenuItemEntry1.Name.Contains(""Сепаратор"") ? ""-"" : MenuItemEntry1.Text;
 	|                AddToScript(MenuItemEntry1.Name + "" = "" + strParent + "".ЭлементыМеню.Добавить(Ф.ЭлементМеню(\u0022"" + strName + ""\u0022));"");
 	|
@@ -9130,10 +12604,21 @@
 	|            if (comp.GetType() == typeof(osfDesigner.DataGridTableStyle) ||
 	|                comp.GetType() == typeof(osfDesigner.DataGridBoolColumn) ||
 	|                comp.GetType() == typeof(osfDesigner.DataGridTextBoxColumn) ||
-	|                comp.GetType() == typeof(osfDesigner.DataGridComboBoxColumnStyle))
+	|                comp.GetType() == typeof(osfDesigner.DataGridComboBoxColumnStyle) ||
+	|                comp.GetType() == typeof(osfDesigner.DataGridViewCellStyleHeaders) ||	
+	|                comp.GetType() == typeof(osfDesigner.DataGridViewCellStyle))
 	|            {
 	|                comp_Name = comp.NameStyle;
 	|            }
+	|            else if (comp.GetType() == typeof(osfDesigner.DataGridViewTextBoxColumn) ||
+	|                comp.GetType() == typeof(osfDesigner.DataGridViewButtonColumn) ||
+	|                comp.GetType() == typeof(osfDesigner.DataGridViewCheckBoxColumn) ||
+	|                comp.GetType() == typeof(osfDesigner.DataGridViewComboBoxColumn) ||
+	|                comp.GetType() == typeof(osfDesigner.DataGridViewImageColumn) ||
+	|                comp.GetType() == typeof(osfDesigner.DataGridViewLinkColumn))
+	|            {
+	|                comp_Name = comp.NameColumn;
+	|            }	
 	|            else
 	|            {
 	|                comp_Name = comp.Name;
@@ -11514,11 +14999,13 @@
 	
 	СтрВыгрузки = 
 	"using osfDesigner.Properties;
+	|using ScriptEngine.Machine;
 	|using System.Collections.Generic;
 	|using System.ComponentModel.Design;
 	|using System.ComponentModel;
 	|using System.Drawing.Design;
 	|using System.Drawing;
+	|using System.Globalization;
 	|using System.IO;
 	|using System.Reflection;
 	|using System.Text;
@@ -11612,6 +15099,1729 @@
 	|                    propertyGrid1.SelectedGridItem.Expanded = false;
 	|                }
 	|                catch { }
+	|            }
+	|        }
+	|
+	|        public delegate void SetProperty(string controlName, string propertyName, IValue propertyValue); // УстановитьСвойство
+	|        public void SetPropertyMethod(string controlName, string propertyName, IValue propertyValue)
+	|        {
+	|            // Найдем и выделим компонент с именем controlName.
+	|            Component Comp1 = (Component)OneScriptFormsDesigner.GetComponentByName(controlName);
+	|            if (Comp1 != null)
+	|            {
+	|                // Позиционируемся на компоненте.
+	|                ISelectionService iSel = (ISelectionService)OneScriptFormsDesigner.DesignerHost.GetService(typeof(ISelectionService));
+	|                if (iSel == null)
+	|                {
+	|                    return;
+	|                }
+	|                iSel.SetSelectedComponents(new IComponent[] { Comp1 });
+	|                OneScriptFormsDesigner.PropertyGridHost.ReloadTreeView();
+	|                OneScriptFormsDesigner.PropertyGridHost.ChangeSelectNode((Component)Comp1);
+	|
+	|                Type componentType = Comp1.GetType();
+	|                Type propertyValueType = propertyValue.GetType();
+	|                string propertyNameEn;
+	|                if (componentType == typeof(System.Windows.Forms.ImageList)) // Для подобных объектов (унаследован от System.Windows.Forms.Timer) задаем DefaultValues
+	|                {
+	|                    osfDesigner.ImageList SimilarObj = OneScriptFormsDesigner.RevertSimilarObj(Comp1);
+	|                    SimilarObj.DefaultValues = @""ГлубинаЦвета == Глубина8
+	|Изображения == (Коллекция)
+	|РазмерИзображения == {Ширина=16, Высота=16}
+	|(Name) == "" + Comp1.Site.Name + Environment.NewLine;
+	|                    propertyNameEn = OneScriptFormsDesigner.GetPropName(SimilarObj, propertyName);
+	|                }
+	|                else if (componentType == typeof(System.Windows.Forms.TabPage))
+	|                {
+	|                    osfDesigner.TabPage SimilarObj = OneScriptFormsDesigner.RevertSimilarObj(Comp1);
+	|                    propertyNameEn = OneScriptFormsDesigner.GetPropName(SimilarObj, propertyName);
+	|                }
+	|                else
+	|                {
+	|                    propertyNameEn = OneScriptFormsDesigner.GetPropName(Comp1, propertyName);
+	|                }
+	|                // Установим для компонента значение свойства.
+	|                // Если это Число или Перечисление.
+	|                if (propertyValueType == typeof(ScriptEngine.Machine.Values.NumberValue))
+	|                {
+	|                    if (propertyName == ""АвтоРазмер"" ||
+	|                        propertyName == ""АвтоШиринаЗаголовковСтрок"" ||
+	|                        propertyName == ""Активация"" ||
+	|                        propertyName == ""Выравнивание"" ||
+	|                        propertyName == ""ВыравниваниеИзображения"" ||
+	|                        propertyName == ""ВыравниваниеПометки"" ||
+	|                        propertyName == ""ВыравниваниеПриРаскрытии"" ||
+	|                        propertyName == ""ВыравниваниеТекста"" ||
+	|                        propertyName == ""ГлубинаЦвета"" ||
+	|                        propertyName == ""ИзменяемыйРазмер"" ||
+	|                        propertyName == ""РежимАвтоРазмера"" ||
+	|                        propertyName == ""РежимСортировки"" ||
+	|                        propertyName == ""КопироватьМаску"" ||
+	|                        propertyName == ""КорневойКаталог"" ||
+	|                        propertyName == ""НачальноеПоложение"" ||
+	|                        propertyName == ""Оформление"" ||
+	|                        propertyName == ""ПервыйДеньНедели"" ||
+	|                        propertyName == ""Перенос"" ||
+	|                        propertyName == ""ПлоскийСтиль"" ||
+	|                        propertyName == ""ПоведениеСсылки"" ||
+	|                        propertyName == ""ПолосыПрокрутки"" ||
+	|                        propertyName == ""РазмещениеФоновогоИзображения"" ||
+	|                        propertyName == ""РегистрСимволов"" ||
+	|                        propertyName == ""РежимАвтоРазмераКолонок"" ||
+	|                        propertyName == ""РежимАвтоРазмераСтрок"" ||
+	|                        propertyName == ""РежимВставки"" ||
+	|                        propertyName == ""РежимВыбора"" ||
+	|                        propertyName == ""РежимВысотыЗаголовковКолонок"" ||
+	|                        propertyName == ""РежимМасштабирования"" ||
+	|                        propertyName == ""РежимОтображения"" ||
+	|                        propertyName == ""РежимРисования"" ||
+	|                        propertyName == ""РезультатДиалога"" ||
+	|                        propertyName == ""Сортировка"" ||
+	|                        propertyName == ""СортировкаСвойств"" ||
+	|                        propertyName == ""СостояниеФлажка"" ||
+	|                        propertyName == ""СочетаниеКлавиш"" ||
+	|                        propertyName == ""Стиль"" ||
+	|                        propertyName == ""СтильВыпадающегоСписка"" ||
+	|                        propertyName == ""СтильГраницы"" ||
+	|                        propertyName == ""СтильГраницыФормы"" ||
+	|                        propertyName == ""СтильЗаголовка"" ||
+	|                        propertyName == ""Стыковка"" ||
+	|                        propertyName == ""ТипСлияния"" ||
+	|                        propertyName == ""ФильтрУведомлений"" ||
+	|                        propertyName == ""Формат"" ||
+	|                        propertyName == ""ФорматМаски"" ||
+	|                        propertyName == ""Якорь"")
+	|                    // Это Перечисление.
+	|                    {
+	|                        TrySetPropertyValue(componentType, propertyNameEn, Comp1, Convert.ToInt32(propertyValue.AsNumber()));
+	|
+	|                        if ((propertyName == ""Стыковка"" && componentType != typeof(osfDesigner.ToolBar)) ||
+	|                            (propertyName == ""Стыковка"" && componentType != typeof(osfDesigner.Splitter)) ||
+	|                            (propertyName == ""Стыковка"" && componentType != typeof(osfDesigner.StatusBar)))
+	|                        {
+	|                            ((Control)Comp1).BringToFront();
+	|                        }
+	|                    }
+	|                    else
+	|                    // Это Число.
+	|                    {
+	|                        if (propertyName == ""ИндексИзображения"" ||
+	|                            propertyName == ""ИндексВыбранногоИзображения"")
+	|                        {
+	|                            // Сначала добавим компонент СписокИзображений.
+	|                            string NameImageList = AddControlMethod(""СписокИзображений"");
+	|                            Component Component1 = (Component)OneScriptFormsDesigner.GetComponentByName(NameImageList);
+	|                            if (Component1 != null)
+	|                            {
+	|                                osfDesigner.ImageList SimilarObj = OneScriptFormsDesigner.RevertSimilarObj(Component1);
+	|
+	|                                MyList MyList1 = new MyList();
+	|                                osfDesigner.ImageList ImageList1 = SimilarObj;
+	|                                System.Windows.Forms.ImageList.ImageCollection ImageCollection1 = ImageList1.OriginalObj.Images;
+	|                                string Paht1 = ""C:\\444\\Pic\\maslenica10.JPG"";
+	|                                string Paht2 = ""C:\\444\\Pic\\Motif.jpg"";
+	|                                string Paht3 = ""C:\\444\\Pic\\Games4.JPG"";
+	|
+	|                                ImageEntry ImageEntry1 = new ImageEntry();
+	|                                ImageEntry1.Image = new Bitmap("""" + Paht1);
+	|                                ImageEntry1.Path = Paht1;
+	|                                ImageEntry1.FileName = Paht1;
+	|                                MyList1.Add(ImageEntry1);
+	|                                ImageCollection1.Add(ImageEntry1.Image);
+	|
+	|                                ImageEntry ImageEntry2 = new ImageEntry();
+	|                                ImageEntry2.Image = new Bitmap("""" + Paht2);
+	|                                ImageEntry2.Path = Paht2;
+	|                                ImageEntry2.FileName = Paht2;
+	|                                MyList1.Add(ImageEntry2);
+	|                                ImageCollection1.Add(ImageEntry2.Image);
+	|
+	|                                ImageEntry ImageEntry3 = new ImageEntry();
+	|                                ImageEntry3.Image = new Bitmap("""" + Paht3);
+	|                                ImageEntry3.Path = Paht3;
+	|                                ImageEntry3.FileName = Paht3;
+	|                                MyList1.Add(ImageEntry3);
+	|                                ImageCollection1.Add(ImageEntry3.Image);
+	|
+	|                                SimilarObj._images = MyList1;
+	|                                if (componentType == typeof(System.Windows.Forms.TabPage))
+	|                                {
+	|                                    TrySetPropertyValue(((Control)Comp1).Parent.GetType(), ""ImageList"", ((Control)Comp1).Parent, Component1);
+	|                                }
+	|                                else
+	|                                {
+	|                                    TrySetPropertyValue(componentType, ""ImageList"", Comp1, Component1);
+	|                                }
+	|                            }
+	|                        }
+	|                        else if (propertyName == ""Масштаб"")
+	|                        {
+	|                            TrySetPropertyValue(componentType, propertyNameEn, Comp1, Convert.ToSingle(propertyValue.AsNumber()));
+	|                            return;
+	|                        }
+	|                        try
+	|                        {
+	|                            TrySetPropertyValue(componentType, propertyNameEn, Comp1, propertyValue.AsNumber());
+	|                        }
+	|                        catch
+	|                        {
+	|                            TrySetPropertyValue(componentType, propertyNameEn, Comp1, Convert.ToInt32(propertyValue.AsNumber()));
+	|                        }
+	|                    }
+	|                }
+	|                // Если это Булево.
+	|                else if (propertyValueType == typeof(ScriptEngine.Machine.Values.BooleanValue))
+	|                {
+	|                    if (propertyName == ""ВключаяПодкаталоги"")
+	|                    {
+	|                        // Установим значение свойству Путь.
+	|                        SetPropertyMethod(Comp1.Site.Name, ""Путь"", ValueFactory.Create(""C:\\""));
+	|                    }
+	|                    if (propertyName == ""ГоризонтальнаяПрокрутка"" && componentType == typeof(osfDesigner.ListBox))
+	|                    {
+	|                        //нужно добавить элементы
+	|                        osfDesigner.ListBox ListBox1 = (osfDesigner.ListBox)Comp1;
+	|                        System.Windows.Forms.ListBox.ObjectCollection ListBoxObjectCollection1 = (System.Windows.Forms.ListBox.ObjectCollection)ListBox1.Items;
+	|                        osfDesigner.ListItemListBox ListItemListBox1 = new osfDesigner.ListItemListBox();
+	|                        ListItemListBox1.ValueType = (DataType)0;
+	|                        ListItemListBox1.Value = ""Просто строка"";
+	|                        ListItemListBox1.Text = ListItemListBox1.Value.ToString();
+	|
+	|                        osfDesigner.ListItemListBox ListItemListBox2 = new osfDesigner.ListItemListBox();
+	|                        ListItemListBox2.ValueType = (DataType)2;
+	|                        ListItemListBox2.Value = false;
+	|                        ListItemListBox2.Text = ""Ложь"";
+	|
+	|                        osfDesigner.ListItemListBox ListItemListBox3 = new osfDesigner.ListItemListBox();
+	|                        ListItemListBox3.ValueType = (DataType)1;
+	|                        ListItemListBox3.Value = 18.245M;
+	|                        ListItemListBox3.Text = ListItemListBox3.Value.ToString();
+	|
+	|                        osfDesigner.ListItemListBox ListItemListBox4 = new osfDesigner.ListItemListBox();
+	|                        ListItemListBox4.ValueType = (DataType)3;
+	|                        ListItemListBox4.Value = new DateTime(2023, 12, 29);
+	|                        ListItemListBox4.Text = ListItemListBox4.Value.ToString();
+	|
+	|                        ListBoxObjectCollection1.Add(ListItemListBox1);
+	|                        ListBoxObjectCollection1.Add(ListItemListBox2);
+	|                        ListBoxObjectCollection1.Add(ListItemListBox3);
+	|                        ListBoxObjectCollection1.Add(ListItemListBox4);
+	|                    }
+	|                    TrySetPropertyValue(componentType, propertyNameEn, Comp1, propertyValue.AsBoolean());
+	|                }
+	|                // Если это Дата.
+	|                else if (propertyValueType == typeof(ScriptEngine.Machine.Values.DateValue))
+	|                {
+	|                    TrySetPropertyValue(componentType, propertyNameEn, Comp1, propertyValue.AsDate());
+	|                }
+	|                // Если это Строка.
+	|                else if (propertyValueType == typeof(ScriptEngine.Machine.Values.StringValue))
+	|                {
+	|                    // Если это СимволПароля? СимволПриглашения.
+	|                    if (propertyValue.AsString() == ""System.Char"")
+	|                    {
+	|                        TrySetPropertyValue(componentType, propertyNameEn, Comp1, Convert.ToChar('i'));
+	|                    }
+	|                    // Если это Форма - КнопкаОтмена, КнопкаПринять.
+	|                    else if (propertyValue.AsString() == ""System.Windows.Forms.IButtonControl"")
+	|                    {
+	|                        // Добавим кнопку и зададим её как КнопкаОтмена или КнопкаПринять.
+	|                        string NameButton = AddControlMethod(""Кнопка"");
+	|                        Component Component1 = (Component)OneScriptFormsDesigner.GetComponentByName(NameButton);
+	|                        if (Component1 != null)
+	|                        {
+	|                            TrySetPropertyValue(componentType, propertyNameEn, Comp1, Component1);
+	|                        }
+	|                    }
+	|                    // Если это Цвет.
+	|                    else if (propertyValue.AsString() == ""System.Drawing.Color"")
+	|                    {
+	|                        if (propertyName == ""ЦветАктивнойСсылки"")
+	|                        {
+	|                            TrySetPropertyValue(componentType, propertyNameEn, Comp1, System.Drawing.Color.NavajoWhite);
+	|                        }
+	|                        else
+	|                        {
+	|                            TrySetPropertyValue(componentType, propertyNameEn, Comp1, System.Drawing.Color.Red);
+	|                        }
+	|                    }
+	|                    // Если это Подсказка.
+	|                    else if (propertyValue.AsString() == ""System.Collections.Hashtable"")
+	|                    {
+	|                        // Ничего не делаем, подсказка уже назначена.
+	|                    }
+	|                    // Если это ПолеСписка - Элементы.
+	|                    else if (propertyValue.AsString() == ""System.Windows.Forms.ListBox+ObjectCollection"")
+	|                    {
+	|                        osfDesigner.ListBox ListBox1 = (osfDesigner.ListBox)Comp1;
+	|                        System.Windows.Forms.ListBox.ObjectCollection ListBoxObjectCollection1 = (System.Windows.Forms.ListBox.ObjectCollection)ListBox1.Items;
+	|                        osfDesigner.ListItemListBox ListItemListBox1 = new osfDesigner.ListItemListBox();
+	|                        ListItemListBox1.ValueType = (DataType)0;
+	|                        ListItemListBox1.Value = ""Просто строка"";
+	|                        ListItemListBox1.Text = ListItemListBox1.Value.ToString();
+	|
+	|                        osfDesigner.ListItemListBox ListItemListBox2 = new osfDesigner.ListItemListBox();
+	|                        ListItemListBox2.ValueType = (DataType)2;
+	|                        ListItemListBox2.Value = false;
+	|                        ListItemListBox2.Text = ""Ложь"";
+	|
+	|                        osfDesigner.ListItemListBox ListItemListBox3 = new osfDesigner.ListItemListBox();
+	|                        ListItemListBox3.ValueType = (DataType)1;
+	|                        ListItemListBox3.Value = 18.245M;
+	|                        ListItemListBox3.Text = ListItemListBox3.Value.ToString();
+	|
+	|                        osfDesigner.ListItemListBox ListItemListBox4 = new osfDesigner.ListItemListBox();
+	|                        ListItemListBox4.ValueType = (DataType)3;
+	|                        ListItemListBox4.Value = new DateTime(2023, 12, 29);
+	|                        ListItemListBox4.Text = ListItemListBox4.Value.ToString();
+	|
+	|                        ListBoxObjectCollection1.Add(ListItemListBox1);
+	|                        ListBoxObjectCollection1.Add(ListItemListBox2);
+	|                        ListBoxObjectCollection1.Add(ListItemListBox3);
+	|                        ListBoxObjectCollection1.Add(ListItemListBox4);
+	|                    }
+	|                    // Если это ПолеВыбора - Элементы.
+	|                    else if (propertyValue.AsString() == ""System.Windows.Forms.ComboBox+ObjectCollection"")
+	|                    {
+	|                        osfDesigner.ComboBox ComboBox1 = (osfDesigner.ComboBox)Comp1;
+	|                        System.Windows.Forms.ComboBox.ObjectCollection ComboBoxObjectCollection1 = (System.Windows.Forms.ComboBox.ObjectCollection)ComboBox1.Items;
+	|                        osfDesigner.ListItemComboBox ListItemComboBox1 = new osfDesigner.ListItemComboBox();
+	|                        ListItemComboBox1.ValueType = (DataType)0;
+	|                        ListItemComboBox1.Value = ""Просто строка"";
+	|                        ListItemComboBox1.Text = ListItemComboBox1.Value.ToString();
+	|
+	|                        osfDesigner.ListItemComboBox ListItemComboBox2 = new osfDesigner.ListItemComboBox();
+	|                        ListItemComboBox2.ValueType = (DataType)2;
+	|                        ListItemComboBox2.Value = false;
+	|                        ListItemComboBox2.Text = ""Ложь"";
+	|
+	|                        osfDesigner.ListItemComboBox ListItemComboBox3 = new osfDesigner.ListItemComboBox();
+	|                        ListItemComboBox3.ValueType = (DataType)1;
+	|                        ListItemComboBox3.Value = 18.245M;
+	|                        ListItemComboBox3.Text = ListItemComboBox3.Value.ToString();
+	|
+	|                        osfDesigner.ListItemComboBox ListItemComboBox4 = new osfDesigner.ListItemComboBox();
+	|                        ListItemComboBox4.ValueType = (DataType)3;
+	|                        ListItemComboBox4.Value = new DateTime(2023, 12, 29);
+	|                        ListItemComboBox4.Text = ListItemComboBox4.Value.ToString();
+	|
+	|                        ComboBoxObjectCollection1.Add(ListItemComboBox1);
+	|                        ComboBoxObjectCollection1.Add(ListItemComboBox2);
+	|                        ComboBoxObjectCollection1.Add(ListItemComboBox3);
+	|                        ComboBoxObjectCollection1.Add(ListItemComboBox4);
+	|                    }
+	|                    // Если это СтилиТаблицы.
+	|                    else if (propertyValue.AsString() == ""System.Windows.Forms.GridTableStylesCollection"")
+	|                    {
+	|                        osfDesigner.DataGridTableStyle SimilarObj = new osfDesigner.DataGridTableStyle();
+	|                        System.Windows.Forms.DataGridTableStyle OriginalObj = new System.Windows.Forms.DataGridTableStyle();
+	|                        SimilarObj.OriginalObj = OriginalObj;
+	|                        OneScriptFormsDesigner.AddToDictionary(OriginalObj, SimilarObj);
+	|                        OneScriptFormsDesigner.PassProperties(OriginalObj, SimilarObj); // Передадим свойства.
+	|                        SimilarObj.NameStyle = OneScriptFormsDesigner.RevertDataGridTableStyleName((osfDesigner.DataGrid)Comp1);
+	|                        SimilarObj.Text = ""Стиль"" + OneScriptFormsDesigner.ParseBetween(SimilarObj.NameStyle, ""Стиль"", null);
+	|                        ((osfDesigner.DataGrid)Comp1).TableStyles.Add(OriginalObj);
+	|
+	|                        SimilarObj.DefaultValues = @""ШрифтЗаголовков == Microsoft Sans Serif; 7,8pt
+	|ПредпочтительнаяВысотаСтрок == 18
+	|ПредпочтительнаяШиринаСтолбцов == 75
+	|ШиринаЗаголовковСтрок == 35
+	|РазрешитьСортировку == Истина
+	|ОтображатьЗаголовкиСтолбцов == Истина
+	|ОтображатьЗаголовкиСтрок == Истина
+	|ИмяОтображаемого == 
+	|СтилиКолонкиСеткиДанных == (Коллекция)
+	|Текст == 
+	|ТолькоЧтение == Ложь
+	|ОсновнойЦвет == ТекстОкна
+	|ОсновнойЦветЗаголовков == ТекстЭлемента
+	|ЦветСетки == ЛицеваяЭлемента
+	|ЦветФона == Окно
+	|ЦветФонаЗаголовков == ЛицеваяЭлемента
+	|ЦветФонаНечетныхСтрок == Окно
+	|"";
+	|                    }
+	|                    // Если это Вкладки.
+	|                    else if (propertyValue.AsString() == ""System.Windows.Forms.TabControl+TabPageCollection"")
+	|                    {
+	|                        // У панели вкладок уже есть автоматически созданные две вкладки. Добавим ещё одну.
+	|                        ToolboxItem toolTabPage1 = new ToolboxItem(typeof(System.Windows.Forms.TabPage));
+	|                        Component compTabPage = (Component)toolTabPage1.CreateComponents(OneScriptFormsDesigner.DesignerHost)[0];
+	|                        // Для comp1 уже создан дублер, получим его.
+	|                        osfDesigner.TabPage SimilarObj = OneScriptFormsDesigner.RevertSimilarObj(compTabPage);
+	|                        SimilarObj.OriginalObj = (System.Windows.Forms.TabPage)compTabPage;
+	|                        OneScriptFormsDesigner.PassProperties(compTabPage, SimilarObj); // Передадим свойства.
+	|
+	|                        ((System.Windows.Forms.TabControl)Comp1).TabPages.Add((System.Windows.Forms.TabPage)compTabPage);
+	|
+	|                        OneScriptFormsDesigner.PropertyGrid.SelectedObject = SimilarObj;
+	|                        SimilarObj.DefaultValues = OneScriptFormsDesigner.GetDefaultValues(SimilarObj, OneScriptFormsDesigner.PropertyGrid);
+	|                    }
+	|                    // Если это Таблица - СтильЗаголовковКолонок, СтильЗаголовковСтрок.
+	|                    else if (propertyValue.AsString() == ""System.Windows.Forms.DataGridViewCellStyle"")
+	|                    {
+	|                        if (propertyName == ""СтильЗаголовковКолонок"")
+	|                        {
+	|                            osfDesigner.DataGridView DataGridView1 = (osfDesigner.DataGridView)Comp1;
+	|                            DataGridViewCellStyleHeaders SimilarObj = DataGridView1.columnHeadersDefaultCellStyle;
+	|                            System.Windows.Forms.DataGridViewCellStyle ColumnHeadersDefaultCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle(SimilarObj);
+	|                            ColumnHeadersDefaultCellStyle1.BackColor = Color.Red;
+	|                            DataGridView1.ColumnHeadersDefaultCellStyle = ColumnHeadersDefaultCellStyle1;
+	|                            DataGridView1.columnHeadersDefaultCellStyle.NameStyle = DataGridView1.Name + ""СтильЗаголовковКолонок"";
+	|                        }
+	|                        else if (propertyName == ""СтильЗаголовковСтрок"")
+	|                        {
+	|                            osfDesigner.DataGridView DataGridView1 = (osfDesigner.DataGridView)Comp1;
+	|                            DataGridViewCellStyleHeaders SimilarObj = DataGridView1.rowHeadersDefaultCellStyle;
+	|                            System.Windows.Forms.DataGridViewCellStyle RowHeadersDefaultCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle(SimilarObj);
+	|                            RowHeadersDefaultCellStyle1.BackColor = Color.Red;
+	|                            DataGridView1.RowHeadersDefaultCellStyle = RowHeadersDefaultCellStyle1;
+	|                            DataGridView1.rowHeadersDefaultCellStyle.NameStyle = DataGridView1.Name + ""СтильЗаголовковСтрок"";
+	|                        }
+	|                    }
+	|                    // Если это Таблица - Колонки.
+	|                    else if (propertyValue.AsString() == ""System.Windows.Forms.DataGridViewColumnCollection"")
+	|                    {
+	|                        osfDesigner.DataGridView DataGridView1 = (osfDesigner.DataGridView)Comp1;
+	|                        // Создадим КолонкаПолеВвода
+	|                        DataGridViewTextBoxColumn DataGridViewTextBoxColumn1 = new DataGridViewTextBoxColumn();
+	|                        DataGridViewTextBoxColumn1.Name = OneScriptFormsDesigner.RevertDataGridViewColumnName(DataGridView1, DataGridViewTextBoxColumn1);
+	|                        DataGridViewTextBoxColumn1.NameColumn = DataGridView1.Name + DataGridViewTextBoxColumn1.Name;
+	|	
+	|                        string TextBoxnameStyle = DataGridView1.Name + DataGridViewTextBoxColumn1.Name + ""СтильЯчейки"";
+	|                        DataGridViewCellStyle TextBoxSimilarObj = new DataGridViewCellStyle(TextBoxnameStyle, DataGridView1);
+	|                        // Передадим свойства стиля.
+	|                        TextBoxSimilarObj.ForeColor = Color.FromName(System.Drawing.KnownColor.Green.ToString());
+	|                        TextBoxSimilarObj.SelectionForeColor = Color.FromName(System.Drawing.KnownColor.Blue.ToString());
+	|                        TextBoxSimilarObj.BackColor = Color.FromName(System.Drawing.KnownColor.Salmon.ToString());
+	|                        TextBoxSimilarObj.SelectionBackColor = Color.FromName(System.Drawing.KnownColor.Lime.ToString());
+	|                        TextBoxSimilarObj.Font = new Font(DataGridView1.Font, System.Drawing.FontStyle.Strikeout);
+	|                        TextBoxSimilarObj.Alignment = osfDesigner.DataGridViewContentAlignment.НизПраво;
+	|                        TextBoxSimilarObj.Padding = new System.Windows.Forms.Padding(1, 1, 1, 1);
+	|                        TextBoxSimilarObj.WrapMode = DataGridViewTriState.Истина;
+	|                        DataGridViewTextBoxColumn1.DefaultCellStyle = TextBoxSimilarObj;	
+	|
+	|                        DataGridViewTextBoxColumn1.DefaultValues = @""
+	|Отображать == Истина
+	|ТекстЗаголовка == КолонкаПолеВвода0
+	|ТекстПодсказки == 
+	|ИмяСвойстваДанных == 
+	|ВесЗаполнения == 100
+	|Закреплено == Ложь
+	|МинимальнаяШирина == 5
+	|РежимАвтоРазмера == НеУстановлено
+	|Ширина == 100
+	|ШиринаРазделителя == 0
+	|ИзменяемыйРазмер == Истина
+	|МаксимальнаяДлина == 32767
+	|РежимСортировки == Автоматически
+	|ТолькоЧтение == Ложь
+	|ИмяКолонки == Таблица1КолонкаПолеВвода0
+	|"";
+	|                        DataGridView1.Columns.Add(DataGridViewTextBoxColumn1);
+	|                        // Закончили КолонкаПолеВвода =======================================================================================
+	|
+	|                        // Создадим КолонкаКартинка =======================================================================================
+	|                        DataGridViewImageColumn DataGridViewImageColumn1 = new DataGridViewImageColumn();
+	|                        DataGridViewImageColumn1.Name = OneScriptFormsDesigner.RevertDataGridViewColumnName(DataGridView1, DataGridViewImageColumn1);
+	|                        DataGridViewImageColumn1.NameColumn = DataGridView1.Name + DataGridViewImageColumn1.Name;
+	|	
+	|                        string ImagenameStyle = DataGridView1.Name + DataGridViewImageColumn1.Name + ""СтильЯчейки"";
+	|                        DataGridViewCellStyle ImageSimilarObj = new DataGridViewCellStyle(ImagenameStyle, DataGridView1);
+	|                        // Передадим свойства стиля.
+	|                        ImageSimilarObj.ForeColor = Color.FromName(System.Drawing.KnownColor.Green.ToString());
+	|                        ImageSimilarObj.SelectionForeColor = Color.FromName(System.Drawing.KnownColor.Blue.ToString());
+	|                        ImageSimilarObj.BackColor = Color.FromName(System.Drawing.KnownColor.Salmon.ToString());
+	|                        ImageSimilarObj.SelectionBackColor = Color.FromName(System.Drawing.KnownColor.Lime.ToString());
+	|                        ImageSimilarObj.Font = new Font(DataGridView1.Font, System.Drawing.FontStyle.Strikeout);
+	|                        ImageSimilarObj.Alignment = osfDesigner.DataGridViewContentAlignment.НизПраво;
+	|                        ImageSimilarObj.Padding = new System.Windows.Forms.Padding(1, 1, 1, 1);
+	|                        ImageSimilarObj.WrapMode = DataGridViewTriState.Истина;
+	|                        DataGridViewImageColumn1.DefaultCellStyle = ImageSimilarObj;	
+	|
+	|                        DataGridViewImageColumn1.DefaultValues = @""
+	|Описание == 
+	|Отображать == Истина
+	|РазмещениеИзображения == Стандартное
+	|ТекстЗаголовка == КолонкаКартинка0
+	|ТекстПодсказки == 
+	|ИмяСвойстваДанных == 
+	|ВесЗаполнения == 100
+	|Закреплено == Ложь
+	|МинимальнаяШирина == 5
+	|РежимАвтоРазмера == НеУстановлено
+	|Ширина == 100
+	|ШиринаРазделителя == 0
+	|ИзменяемыйРазмер == Истина
+	|РежимСортировки == НеСортируемый
+	|ТолькоЧтение == Ложь
+	|ИмяКолонки == Таблица1КолонкаКартинка0
+	|Картинка == 
+	|"";
+	|                        DataGridView1.Columns.Add(DataGridViewImageColumn1);
+	|                        // Закончили КолонкаКартинка =======================================================================================
+	|
+	|                        // Создадим КолонкаКнопка =======================================================================================
+	|                        DataGridViewButtonColumn DataGridViewButtonColumn1 = new DataGridViewButtonColumn();
+	|                        DataGridViewButtonColumn1.Name = OneScriptFormsDesigner.RevertDataGridViewColumnName(DataGridView1, DataGridViewButtonColumn1);
+	|                        DataGridViewButtonColumn1.NameColumn = DataGridView1.Name + DataGridViewButtonColumn1.Name;
+	|	
+	|                        string ButtonnameStyle = DataGridView1.Name + DataGridViewButtonColumn1.Name + ""СтильЯчейки"";
+	|                        DataGridViewCellStyle ButtonSimilarObj = new DataGridViewCellStyle(ButtonnameStyle, DataGridView1);
+	|                        // Передадим свойства стиля.
+	|                        ButtonSimilarObj.ForeColor = Color.FromName(System.Drawing.KnownColor.Green.ToString());
+	|                        ButtonSimilarObj.SelectionForeColor = Color.FromName(System.Drawing.KnownColor.Blue.ToString());
+	|                        ButtonSimilarObj.BackColor = Color.FromName(System.Drawing.KnownColor.Salmon.ToString());
+	|                        ButtonSimilarObj.SelectionBackColor = Color.FromName(System.Drawing.KnownColor.Lime.ToString());
+	|                        ButtonSimilarObj.Font = new Font(DataGridView1.Font, System.Drawing.FontStyle.Strikeout);
+	|                        ButtonSimilarObj.Alignment = osfDesigner.DataGridViewContentAlignment.НизПраво;
+	|                        ButtonSimilarObj.Padding = new System.Windows.Forms.Padding(1, 1, 1, 1);
+	|                        ButtonSimilarObj.WrapMode = DataGridViewTriState.Истина;
+	|                        DataGridViewButtonColumn1.DefaultCellStyle = ButtonSimilarObj;	
+	|
+	|                        DataGridViewButtonColumn1.DefaultValues = @""
+	|ИспользоватьТекстКакЗначение == Ложь
+	|Отображать == Истина
+	|ПлоскийСтиль == Стандартный
+	|Текст == 
+	|ТекстЗаголовка == КолонкаКнопка0
+	|ТекстПодсказки == 
+	|ИмяСвойстваДанных == 
+	|ВесЗаполнения == 100
+	|Закреплено == Ложь
+	|МинимальнаяШирина == 5
+	|РежимАвтоРазмера == НеУстановлено
+	|Ширина == 100
+	|ШиринаРазделителя == 0
+	|ИзменяемыйРазмер == Истина
+	|РежимСортировки == НеСортируемый
+	|ТолькоЧтение == Ложь
+	|ИмяКолонки == Таблица1КолонкаКнопка0
+	|"";
+	|                        DataGridView1.Columns.Add(DataGridViewButtonColumn1);
+	|                        // Закончили КолонкаКнопка =======================================================================================
+	|
+	|                        // Создадим КолонкаПолеВыбора =======================================================================================
+	|                        DataGridViewComboBoxColumn DataGridViewComboBoxColumn1 = new DataGridViewComboBoxColumn();
+	|                        DataGridViewComboBoxColumn1.Name = OneScriptFormsDesigner.RevertDataGridViewColumnName(DataGridView1, DataGridViewComboBoxColumn1);
+	|                        DataGridViewComboBoxColumn1.NameColumn = DataGridView1.Name + DataGridViewComboBoxColumn1.Name;
+	|	
+	|                        string ComboBoxnameStyle = DataGridView1.Name + DataGridViewComboBoxColumn1.Name + ""СтильЯчейки"";
+	|                        DataGridViewCellStyle ComboBoxSimilarObj = new DataGridViewCellStyle(ComboBoxnameStyle, DataGridView1);
+	|                        // Передадим свойства стиля.
+	|                        ComboBoxSimilarObj.ForeColor = Color.FromName(System.Drawing.KnownColor.Green.ToString());
+	|                        ComboBoxSimilarObj.SelectionForeColor = Color.FromName(System.Drawing.KnownColor.Blue.ToString());
+	|                        ComboBoxSimilarObj.BackColor = Color.FromName(System.Drawing.KnownColor.Salmon.ToString());
+	|                        ComboBoxSimilarObj.SelectionBackColor = Color.FromName(System.Drawing.KnownColor.Lime.ToString());
+	|                        ComboBoxSimilarObj.Font = new Font(DataGridView1.Font, System.Drawing.FontStyle.Strikeout);
+	|                        ComboBoxSimilarObj.Alignment = osfDesigner.DataGridViewContentAlignment.НизПраво;
+	|                        ComboBoxSimilarObj.Padding = new System.Windows.Forms.Padding(1, 1, 1, 1);
+	|                        ComboBoxSimilarObj.WrapMode = DataGridViewTriState.Истина;
+	|                        DataGridViewComboBoxColumn1.DefaultCellStyle = ComboBoxSimilarObj;	
+	|
+	|                        DataGridViewComboBoxColumn1.DefaultValues = @""
+	|Отображать == Истина
+	|ПлоскийСтиль == Стандартный
+	|СтильОтображения == КнопкаСписка
+	|ТекстЗаголовка == КолонкаПолеВыбора0
+	|ТекстПодсказки == 
+	|ИмяСвойстваДанных == 
+	|Элементы == (Коллекция)
+	|ВесЗаполнения == 100
+	|Закреплено == Ложь
+	|МинимальнаяШирина == 5
+	|РежимАвтоРазмера == НеУстановлено
+	|Ширина == 100
+	|ШиринаРазделителя == 0
+	|ИзменяемыйРазмер == Истина
+	|МаксимумЭлементов == 8
+	|Отсортирован == Ложь
+	|РежимСортировки == НеСортируемый
+	|ТолькоЧтение == Ложь
+	|ИмяКолонки == Таблица1КолонкаПолеВыбора0
+	|"";
+	|                        DataGridView1.Columns.Add(DataGridViewComboBoxColumn1);
+	|                        // Закончили КолонкаПолеВыбора =======================================================================================
+	|
+	|                        // Создадим КолонкаСсылка =======================================================================================
+	|                        DataGridViewLinkColumn DataGridViewLinkColumn1 = new DataGridViewLinkColumn();
+	|                        DataGridViewLinkColumn1.Name = OneScriptFormsDesigner.RevertDataGridViewColumnName(DataGridView1, DataGridViewLinkColumn1);
+	|                        DataGridViewLinkColumn1.NameColumn = DataGridView1.Name + DataGridViewLinkColumn1.Name;
+	|	
+	|                        string LinknameStyle = DataGridView1.Name + DataGridViewLinkColumn1.Name + ""СтильЯчейки"";
+	|                        DataGridViewCellStyle LinkSimilarObj = new DataGridViewCellStyle(LinknameStyle, DataGridView1);
+	|                        // Передадим свойства стиля.
+	|                        LinkSimilarObj.ForeColor = Color.FromName(System.Drawing.KnownColor.Green.ToString());
+	|                        LinkSimilarObj.SelectionForeColor = Color.FromName(System.Drawing.KnownColor.Blue.ToString());
+	|                        LinkSimilarObj.BackColor = Color.FromName(System.Drawing.KnownColor.Salmon.ToString());
+	|                        LinkSimilarObj.SelectionBackColor = Color.FromName(System.Drawing.KnownColor.Lime.ToString());
+	|                        LinkSimilarObj.Font = new Font(DataGridView1.Font, System.Drawing.FontStyle.Strikeout);
+	|                        LinkSimilarObj.Alignment = osfDesigner.DataGridViewContentAlignment.НизПраво;
+	|                        LinkSimilarObj.Padding = new System.Windows.Forms.Padding(1, 1, 1, 1);
+	|                        LinkSimilarObj.WrapMode = DataGridViewTriState.Истина;
+	|                        DataGridViewLinkColumn1.DefaultCellStyle = LinkSimilarObj;	
+	|
+	|                        DataGridViewLinkColumn1.DefaultValues = @""
+	|ИспользоватьТекстКакСсылку == Ложь
+	|Отображать == Истина
+	|Текст == 
+	|ТекстЗаголовка == КолонкаСсылка0
+	|ТекстПодсказки == 
+	|ЦветАктивнойСсылки == Красный
+	|ЦветПосещеннойСсылки == 128; 0; 128
+	|ЦветСсылки == 0; 0; 255
+	|ИмяСвойстваДанных == 
+	|ВесЗаполнения == 100
+	|Закреплено == Ложь
+	|МинимальнаяШирина == 5
+	|РежимАвтоРазмера == НеУстановлено
+	|Ширина == 100
+	|ШиринаРазделителя == 0
+	|ИзменяемыйРазмер == Истина
+	|ПоведениеСсылки == СистемныйПоУмолчанию
+	|РежимСортировки == НеСортируемый
+	|ТолькоЧтение == Ложь
+	|ЦветПосещеннойИзменяется == Истина
+	|ИмяКолонки == Таблица1КолонкаСсылка0
+	|"";
+	|                        DataGridView1.Columns.Add(DataGridViewLinkColumn1);
+	|                        // Закончили КолонкаСсылка =======================================================================================
+	|
+	|                        // Создадим КолонкаФлажок =======================================================================================
+	|                        DataGridViewCheckBoxColumn DataGridViewCheckBoxColumn1 = new DataGridViewCheckBoxColumn();
+	|                        DataGridViewCheckBoxColumn1.Name = OneScriptFormsDesigner.RevertDataGridViewColumnName(DataGridView1, DataGridViewCheckBoxColumn1);
+	|                        DataGridViewCheckBoxColumn1.NameColumn = DataGridView1.Name + DataGridViewCheckBoxColumn1.Name;
+	|	
+	|                        string CheckBoxnameStyle = DataGridView1.Name + DataGridViewCheckBoxColumn1.Name + ""СтильЯчейки"";
+	|                        DataGridViewCellStyle CheckBoxSimilarObj = new DataGridViewCellStyle(CheckBoxnameStyle, DataGridView1);
+	|                        // Передадим свойства стиля.
+	|                        CheckBoxSimilarObj.ForeColor = Color.FromName(System.Drawing.KnownColor.Green.ToString());
+	|                        CheckBoxSimilarObj.SelectionForeColor = Color.FromName(System.Drawing.KnownColor.Blue.ToString());
+	|                        CheckBoxSimilarObj.BackColor = Color.FromName(System.Drawing.KnownColor.Salmon.ToString());
+	|                        CheckBoxSimilarObj.SelectionBackColor = Color.FromName(System.Drawing.KnownColor.Lime.ToString());
+	|                        CheckBoxSimilarObj.Font = new Font(DataGridView1.Font, System.Drawing.FontStyle.Strikeout);
+	|                        CheckBoxSimilarObj.Alignment = osfDesigner.DataGridViewContentAlignment.НизПраво;
+	|                        CheckBoxSimilarObj.Padding = new System.Windows.Forms.Padding(1, 1, 1, 1);
+	|                        CheckBoxSimilarObj.WrapMode = DataGridViewTriState.Истина;
+	|                        DataGridViewCheckBoxColumn1.DefaultCellStyle = CheckBoxSimilarObj;	
+	|
+	|                        DataGridViewCheckBoxColumn1.DefaultValues = @""
+	|Отображать == Истина
+	|ПлоскийСтиль == Стандартный
+	|ТекстЗаголовка == КолонкаФлажок0
+	|ТекстПодсказки == 
+	|ИмяСвойстваДанных == 
+	|ВесЗаполнения == 100
+	|Закреплено == Ложь
+	|МинимальнаяШирина == 5
+	|РежимАвтоРазмера == НеУстановлено
+	|Ширина == 100
+	|ШиринаРазделителя == 0
+	|ИзменяемыйРазмер == Истина
+	|РежимСортировки == НеСортируемый
+	|ТолькоЧтение == Ложь
+	|ТриСостояния == Ложь
+	|ИмяКолонки == Таблица1КолонкаФлажок0
+	|"";
+	|                        DataGridView1.Columns.Add(DataGridViewCheckBoxColumn1);
+	|                        // Закончили КолонкаФлажок =======================================================================================
+	|                    }
+	|                    // Если это СписокЭлементов - Колонки.
+	|                    else if (propertyValue.AsString() == ""System.Windows.Forms.ListView+ColumnHeaderCollection"")
+	|                    {
+	|                        // Создаем колонку списка элементов.
+	|                        osfDesigner.ListView ListView1 = (osfDesigner.ListView)Comp1;
+	|                        osfDesigner.ColumnHeader ColumnHeader1 = new ColumnHeader();
+	|                        ColumnHeader1.Name = OneScriptFormsDesigner.RevertColumnHeaderName(ListView1);
+	|                        ColumnHeader1.Text = ""Колонка"" + OneScriptFormsDesigner.ParseBetween(ColumnHeader1.Name, ""Колонка"", null);
+	|
+	|                        ColumnHeader1.DefaultValues = @""ВыравниваниеТекста == Лево
+	|Текст == 
+	|ТипСортировки == Текст
+	|Ширина == 60
+	|(Name) == 
+	|"";
+	|                        ListView1.Columns.Add(ColumnHeader1);
+	|                    }
+	|                    // Если это СтрокаСостояния - Панели.
+	|                    else if (propertyValue.AsString() == ""System.Windows.Forms.StatusBar+StatusBarPanelCollection"")
+	|                    {
+	|                        // Создаем панель.
+	|                        osfDesigner.StatusBar StatusBar1 = (osfDesigner.StatusBar)Comp1;
+	|                        StatusBarPanel StatusBarPanel1 = new StatusBarPanel();
+	|                        StatusBarPanel1.Name = OneScriptFormsDesigner.RevertStatusBarPanelName(StatusBar1);
+	|                        StatusBarPanel1.Text = ""Панель"" + OneScriptFormsDesigner.ParseBetween(StatusBarPanel1.Name, ""Панель"", null);
+	|
+	|                        StatusBarPanel1.DefaultValues = @""АвтоРазмер == Отсутствие
+	|Значок == 
+	|СтильГраницы == Утопленная
+	|Текст == 
+	|Ширина == 100
+	|МинимальнаяШирина == 10
+	|(Name) == 
+	|"";
+	|                        StatusBar1.Panels.Add(StatusBarPanel1);
+	|                        SetPropertyMethod(StatusBar1.Name, ""ПоказатьПанели"", ValueFactory.Create(true));
+	|                    }
+	|                    // Если это Элементы.
+	|                    else if (propertyValue.AsString() == ""System.Windows.Forms.ListView+ListViewItemCollection"")
+	|                    {
+	|                        // Создаем элемент списка элементов.
+	|                        osfDesigner.ListView ListView1 = (osfDesigner.ListView)Comp1;
+	|                        ListViewItem ListViewItem1 = new ListViewItem();
+	|                        ListViewItem1.Name = OneScriptFormsDesigner.RevertListViewItemName(ListView1);
+	|                        string str1 = OneScriptFormsDesigner.ParseBetween(ListViewItem1.Name, ""СписокЭлементов"", null);
+	|                        ListViewItem1.Text = ""Элемент"" + OneScriptFormsDesigner.ParseBetween(str1, ""Элемент"", null);
+	|
+	|                        ListViewItem1.DefaultValues = @""ИспользоватьСтильДляПодэлементов == Истина
+	|ОсновнойЦвет == ТекстОкна
+	|Помечен == Ложь
+	|Текст == 
+	|ЦветФона == Окно
+	|Шрифт == Microsoft Sans Serif; 7,8pt
+	|Подэлементы == (Коллекция)
+	|ИндексИзображения == -1
+	|(Name) == 
+	|"";
+	|                        ListView1.Items.Add(ListViewItem1);
+	|
+	|                        // Создаем подэлемент списка элементов.
+	|                        ListViewSubItem ListViewSubItem1 = new ListViewSubItem();
+	|                        ListViewSubItem1.Name = OneScriptFormsDesigner.RevertListViewSubItemName(ListViewItem1);
+	|                        ListViewSubItem1.Text = ""Подэлемент"" + OneScriptFormsDesigner.ParseBetween(ListViewSubItem1.Name, ""Подэлемент"", null);
+	|                        ListViewSubItem1.DefaultValues = @""ОсновнойЦвет == ТекстОкна
+	|Текст == 
+	|ЦветФона == Окно
+	|Шрифт == Microsoft Sans Serif; 7,8pt
+	|(Name) == 
+	|"";
+	|                        ListViewItem1.SubItems.Add(ListViewSubItem1);
+	|                    }
+	|                    // Если это Кнопки.
+	|                    else if (propertyValue.AsString() == ""System.Windows.Forms.ToolBar+ToolBarButtonCollection"")
+	|                    {
+	|                        // Добавим кнопку панели инструментов.
+	|                        osfDesigner.ToolBar ToolBar1 = (osfDesigner.ToolBar)Comp1;
+	|                        System.Windows.Forms.ToolBarButton OriginalObj = new System.Windows.Forms.ToolBarButton();
+	|                        osfDesigner.ToolBarButton SimilarObj = new osfDesigner.ToolBarButton();
+	|                        OneScriptFormsDesigner.PassProperties(OriginalObj, SimilarObj); // Передадим свойства.
+	|                        SimilarObj.OriginalObj = OriginalObj;
+	|                        SimilarObj.Parent = OriginalObj.Parent;
+	|                        SimilarObj.Style = (osfDesigner.ToolBarButtonStyle)OriginalObj.Style;
+	|                        OriginalObj.Tag = SimilarObj;
+	|                        SimilarObj.Name = OneScriptFormsDesigner.RevertToolBarButtonName(ToolBar1);
+	|                        SimilarObj.Text = ""Кн"" + OneScriptFormsDesigner.ParseBetween(SimilarObj.Name, ""Кн"", null);
+	|                        ToolBar1.Buttons.Add(OriginalObj);
+	|                        SimilarObj.DefaultValues = @""Доступность == Истина
+	|ИндексИзображения == -1
+	|Нажата == Ложь
+	|НейтральноеПоложение == Ложь
+	|Отображать == Истина
+	|Прямоугольник == 
+	|Стиль == СтандартнаяТрехмерная
+	|Текст == 
+	|ТекстПодсказки == 
+	|(Name) == 
+	|"";
+	|                        // Добавим кнопку-разделитель панели инструментов.
+	|                        System.Windows.Forms.ToolBarButton OriginalObj2 = new System.Windows.Forms.ToolBarButton();
+	|                        osfDesigner.ToolBarButton SimilarObj2 = new osfDesigner.ToolBarButton();
+	|                        OneScriptFormsDesigner.PassProperties(OriginalObj2, SimilarObj2); // Передадим свойства.
+	|                        SimilarObj2.OriginalObj = OriginalObj2;
+	|                        SimilarObj2.Parent = OriginalObj2.Parent;
+	|                        OriginalObj2.Style = System.Windows.Forms.ToolBarButtonStyle.Separator;
+	|                        SimilarObj2.Style = (osfDesigner.ToolBarButtonStyle)OriginalObj2.Style;
+	|                        OriginalObj2.Tag = SimilarObj2;
+	|                        SimilarObj2.Name = OneScriptFormsDesigner.RevertToolBarButtonName(ToolBar1);
+	|                        SimilarObj2.Text = ""Кн"" + OneScriptFormsDesigner.ParseBetween(SimilarObj2.Name, ""Кн"", null);
+	|                        ToolBar1.Buttons.Add(OriginalObj2);
+	|                        SimilarObj2.DefaultValues = @""Доступность == Истина
+	|ИндексИзображения == -1
+	|Нажата == Ложь
+	|НейтральноеПоложение == Ложь
+	|Отображать == Истина
+	|Прямоугольник == 
+	|Стиль == СтандартнаяТрехмерная
+	|Текст == 
+	|ТекстПодсказки == 
+	|(Name) == 
+	|"";
+	|                        // Добавим кнопку-тумблер панели инструментов.
+	|                        System.Windows.Forms.ToolBarButton OriginalObj3 = new System.Windows.Forms.ToolBarButton();
+	|                        osfDesigner.ToolBarButton SimilarObj3 = new osfDesigner.ToolBarButton();
+	|                        OneScriptFormsDesigner.PassProperties(OriginalObj3, SimilarObj3); // Передадим свойства.
+	|                        SimilarObj3.OriginalObj = OriginalObj3;
+	|                        SimilarObj3.Parent = OriginalObj3.Parent;
+	|                        OriginalObj3.Style = System.Windows.Forms.ToolBarButtonStyle.ToggleButton;
+	|                        SimilarObj3.Style = (osfDesigner.ToolBarButtonStyle)OriginalObj3.Style;
+	|                        OriginalObj3.Tag = SimilarObj3;
+	|                        SimilarObj3.Name = OneScriptFormsDesigner.RevertToolBarButtonName(ToolBar1);
+	|                        SimilarObj3.Text = ""Кн"" + OneScriptFormsDesigner.ParseBetween(SimilarObj3.Name, ""Кн"", null);
+	|                        ToolBar1.Buttons.Add(OriginalObj3);
+	|                        SimilarObj3.DefaultValues = @""Доступность == Истина
+	|ИндексИзображения == -1
+	|Нажата == Ложь
+	|НейтральноеПоложение == Ложь
+	|Отображать == Истина
+	|Прямоугольник == 
+	|Стиль == СтандартнаяТрехмерная
+	|Текст == 
+	|ТекстПодсказки == 
+	|(Name) == 
+	|"";
+	|                        // Добавим кнопку с выпадающим списком панели инструментов.
+	|                        System.Windows.Forms.ToolBarButton OriginalObj4 = new System.Windows.Forms.ToolBarButton();
+	|                        osfDesigner.ToolBarButton SimilarObj4 = new osfDesigner.ToolBarButton();
+	|                        OneScriptFormsDesigner.PassProperties(OriginalObj4, SimilarObj4); // Передадим свойства.
+	|                        SimilarObj4.OriginalObj = OriginalObj4;
+	|                        SimilarObj4.Parent = OriginalObj4.Parent;
+	|                        OriginalObj4.Style = System.Windows.Forms.ToolBarButtonStyle.DropDownButton;
+	|                        SimilarObj4.Style = (osfDesigner.ToolBarButtonStyle)OriginalObj4.Style;
+	|                        OriginalObj4.Tag = SimilarObj4;
+	|                        SimilarObj4.Name = OneScriptFormsDesigner.RevertToolBarButtonName(ToolBar1);
+	|                        SimilarObj4.Text = ""Кн"" + OneScriptFormsDesigner.ParseBetween(SimilarObj4.Name, ""Кн"", null);
+	|                        ToolBar1.Buttons.Add(OriginalObj4);
+	|                        SimilarObj4.DefaultValues = @""Доступность == Истина
+	|ИндексИзображения == -1
+	|Нажата == Ложь
+	|НейтральноеПоложение == Ложь
+	|Отображать == Истина
+	|Прямоугольник == 
+	|Стиль == СтандартнаяТрехмерная
+	|Текст == 
+	|ТекстПодсказки == 
+	|(Name) == 
+	|"";
+	|                    }
+	|                    // Если это ВыбранныйОбъект.
+	|                    else if (propertyValue.AsString() == ""System.Object"")
+	|                    {
+	|                        if (Comp1.GetType() == typeof(osfDesigner.PropertyGrid))
+	|                        {
+	|                            // Добавим кнопку и зададим её как ВыбранныйОбъект
+	|                            string NameButton = AddControlMethod(""Кнопка"");
+	|                            Component Component1 = (Component)OneScriptFormsDesigner.GetComponentByName(NameButton);
+	|                            if (Component1 != null)
+	|                            {
+	|                                TrySetPropertyValue(componentType, propertyNameEn, Comp1, Component1);
+	|                            }
+	|                        }
+	|                    }
+	|                    // Если это ОбластьСсылки.
+	|                    else if (propertyValue.AsString() == ""System.Windows.Forms.LinkArea"")
+	|                    {
+	|                        System.Windows.Forms.LinkArea LinkArea1 = new LinkArea(0, 1);
+	|                        TrySetPropertyValue(componentType, propertyNameEn, Comp1, LinkArea1);
+	|                    }
+	|                    // Если это Изображение.
+	|                    else if (propertyValue.AsString() == ""System.Drawing.Image"")
+	|                    {
+	|                        string Paht1 = ""C:\\444\\Pic\\maslenica10.JPG"";
+	|                        System.Drawing.Bitmap Bitmap1 = new Bitmap(Paht1);
+	|                        ImageEntry ImageEntry1 = new ImageEntry();
+	|                        ImageEntry1.Image = Bitmap1;
+	|                        ImageEntry1.Path = Paht1;
+	|                        Bitmap1.Tag = Paht1;
+	|
+	|                        if (Comp1.GetType() == typeof(osfDesigner.TabPage))
+	|                        {
+	|                            osfDesigner.TabPage SimilarObj = OneScriptFormsDesigner.RevertSimilarObj(Comp1);
+	|                            TrySetPropertyValue(componentType, propertyNameEn, SimilarObj, Bitmap1);
+	|                        }
+	|                        else
+	|                        {
+	|                            TrySetPropertyValue(componentType, propertyNameEn, Comp1, Bitmap1);
+	|                        }
+	|                    }
+	|                    // Если это СписокИзображений.
+	|                    else if (propertyValue.AsString() == ""System.Windows.Forms.ImageList"")
+	|                    {
+	|                        // Сначала добавим компонент СписокИзображений.
+	|                        string NameImageList = AddControlMethod(""СписокИзображений"");
+	|                        Component Component1 = (Component)OneScriptFormsDesigner.GetComponentByName(NameImageList);
+	|                        if (Component1 != null)
+	|                        {
+	|                            osfDesigner.ImageList SimilarObj = OneScriptFormsDesigner.RevertSimilarObj(Component1);
+	|
+	|                            MyList MyList1 = new MyList();
+	|                            osfDesigner.ImageList ImageList1 = SimilarObj;
+	|                            System.Windows.Forms.ImageList.ImageCollection ImageCollection1 = ImageList1.OriginalObj.Images;
+	|                            string Paht1 = ""C:\\444\\Pic\\maslenica10.JPG"";
+	|                            string Paht2 = ""C:\\444\\Pic\\Motif.jpg"";
+	|                            string Paht3 = ""C:\\444\\Pic\\Games4.JPG"";
+	|
+	|                            ImageEntry ImageEntry1 = new ImageEntry();
+	|                            ImageEntry1.Image = new Bitmap("""" + Paht1);
+	|                            ImageEntry1.Path = Paht1;
+	|                            ImageEntry1.FileName = Paht1;
+	|                            MyList1.Add(ImageEntry1);
+	|                            ImageCollection1.Add(ImageEntry1.Image);
+	|
+	|                            ImageEntry ImageEntry2 = new ImageEntry();
+	|                            ImageEntry2.Image = new Bitmap("""" + Paht2);
+	|                            ImageEntry2.Path = Paht2;
+	|                            ImageEntry2.FileName = Paht2;
+	|                            MyList1.Add(ImageEntry2);
+	|                            ImageCollection1.Add(ImageEntry2.Image);
+	|
+	|                            ImageEntry ImageEntry3 = new ImageEntry();
+	|                            ImageEntry3.Image = new Bitmap("""" + Paht3);
+	|                            ImageEntry3.Path = Paht3;
+	|                            ImageEntry3.FileName = Paht3;
+	|                            MyList1.Add(ImageEntry3);
+	|                            ImageCollection1.Add(ImageEntry3.Image);
+	|
+	|                            SimilarObj._images = MyList1;
+	|                            TrySetPropertyValue(componentType, propertyNameEn, Comp1, Component1);
+	|                        }
+	|                    }
+	|                    // Если это Значок.
+	|                    else if (propertyValue.AsString() == ""osfDesigner.MyIcon"")
+	|                    {
+	|                        string Path1 = ""C:\\444\\Pic\\tray2.ico"";
+	|                        System.Drawing.Icon Icon1 = new Icon(Path1);
+	|                        MyIcon MyIcon1 = new MyIcon(Icon1);
+	|                        MyIcon1.M_Icon = Icon1;
+	|                        MyIcon1.Path = Path1;
+	|                        TrySetPropertyValue(componentType, propertyNameEn, Comp1, MyIcon1);
+	|                    }
+	|                    // Если это Размер.
+	|                    else if (propertyValue.AsString() == ""System.Drawing.Size"")
+	|                    {
+	|                        System.Drawing.Size Size1 = (System.Drawing.Size)componentType.GetProperty(propertyNameEn).GetValue(Comp1);
+	|                        System.Drawing.Size newSize = new System.Drawing.Size(Size1.Width + 20, Size1.Height + 20);
+	|                        if (propertyName == ""МаксимальныйРазмер"")
+	|                        {
+	|                            newSize = new System.Drawing.Size(Size1.Width + 120, Size1.Height + 120);
+	|                        }
+	|                        if (propertyName == ""МинимальныйРазмер"" && componentType == typeof(osfDesigner.Form))
+	|                        {
+	|                            newSize = new System.Drawing.Size(120, 120);
+	|                        }
+	|                        TrySetPropertyValue(componentType, propertyNameEn, Comp1, newSize);
+	|                    }
+	|                    // Если это Шрифт.
+	|                    else if (propertyValue.AsString() == ""System.Drawing.Font"")
+	|                    {
+	|                        System.Drawing.Font Font1 = new System.Drawing.Font(this.Font.Name, this.Font.Size, System.Drawing.FontStyle.Strikeout);
+	|                        TrySetPropertyValue(componentType, propertyNameEn, Comp1, Font1);
+	|                    }
+	|                    // Если это Положение.
+	|                    else if (propertyValue.AsString() == ""System.Drawing.Point"")
+	|                    {
+	|                        if (componentType == typeof(osfDesigner.Form))
+	|                        {
+	|                            // Установим свойство НачальноеПоложение в значение Вручную (Manual) (то есть 0)
+	|                            SetPropertyMethod(""Форма_0"", ""НачальноеПоложение"", ValueFactory.Create(0));
+	|                        }
+	|                        System.Drawing.Point Point1 = (System.Drawing.Point)componentType.GetProperty(propertyNameEn).GetValue(Comp1);
+	|                        System.Drawing.Point newPoint = new Point(Point1.X + 20, Point1.Y + 20);
+	|                        TrySetPropertyValue(componentType, propertyNameEn, Comp1, newPoint);
+	|                    }
+	|                    // Если это ВыделенныеДаты.
+	|                    else if (propertyValue.AsString() == ""osfDesigner.MyBoldedDatesList"")
+	|                    {
+	|                        ((osfDesigner.MonthCalendar)Comp1)._boldedDates.Add(new DateEntry(new System.DateTime(2023, 11, 10)));
+	|                        ((osfDesigner.MonthCalendar)Comp1)._boldedDates.Add(new DateEntry(new System.DateTime(2023, 11, 12)));
+	|                        ((osfDesigner.MonthCalendar)Comp1)._boldedDates.Add(new DateEntry(new System.DateTime(2023, 11, 15)));
+	|                    }
+	|                    // Если это ВыделенныйДиапазон.
+	|                    else if (propertyValue.AsString() == ""System.Windows.Forms.SelectionRange"")
+	|                    {
+	|                        System.Windows.Forms.SelectionRange sr = new System.Windows.Forms.SelectionRange(new System.DateTime(2023, 11, 10), new System.DateTime(2023, 11, 15));
+	|                        TrySetPropertyValue(componentType, propertyNameEn, Comp1, sr);
+	|                    }
+	|                    // Если это ЕжегодныеДаты.
+	|                    else if (propertyValue.AsString() == ""osfDesigner.MyAnnuallyBoldedDatesList"")
+	|                    {
+	|                        ((osfDesigner.MonthCalendar)Comp1)._annuallyBoldedDates.Add(new DateEntry(new System.DateTime(2023, 11, 10)));
+	|                        ((osfDesigner.MonthCalendar)Comp1)._annuallyBoldedDates.Add(new DateEntry(new System.DateTime(2023, 11, 12)));
+	|                        ((osfDesigner.MonthCalendar)Comp1)._annuallyBoldedDates.Add(new DateEntry(new System.DateTime(2023, 11, 15)));
+	|                    }
+	|                    // Если это ЕжемесячныеДаты.
+	|                    else if (propertyValue.AsString() == ""osfDesigner.MyMonthlyBoldedDatesList"")
+	|                    {
+	|                        ((osfDesigner.MonthCalendar)Comp1)._monthlyBoldedDates.Add(new DateEntry(new System.DateTime(2023, 11, 10)));
+	|                        ((osfDesigner.MonthCalendar)Comp1)._monthlyBoldedDates.Add(new DateEntry(new System.DateTime(2023, 11, 12)));
+	|                        ((osfDesigner.MonthCalendar)Comp1)._monthlyBoldedDates.Add(new DateEntry(new System.DateTime(2023, 11, 15)));
+	|                    }
+	|                    // Если это Изображения.
+	|                    else if (propertyValue.AsString() == ""osfDesigner.MyList"")
+	|                    {
+	|                        osfDesigner.ImageList SimilarObj = OneScriptFormsDesigner.RevertSimilarObj(Comp1);
+	|
+	|                        MyList MyList1 = new MyList();
+	|                        osfDesigner.ImageList ImageList1 = SimilarObj;
+	|                        System.Windows.Forms.ImageList.ImageCollection ImageCollection1 = ImageList1.OriginalObj.Images;
+	|                        string Paht1 = ""C:\\444\\Pic\\maslenica10.JPG"";
+	|                        string Paht2 = ""C:\\444\\Pic\\Motif.jpg"";
+	|                        string Paht3 = ""C:\\444\\Pic\\Games4.JPG"";
+	|
+	|                        ImageEntry ImageEntry1 = new ImageEntry();
+	|                        ImageEntry1.Image = new Bitmap("""" + Paht1);
+	|                        ImageEntry1.Path = Paht1;
+	|                        ImageEntry1.FileName = Paht1;
+	|                        MyList1.Add(ImageEntry1);
+	|                        ImageCollection1.Add(ImageEntry1.Image);
+	|
+	|                        ImageEntry ImageEntry2 = new ImageEntry();
+	|                        ImageEntry2.Image = new Bitmap("""" + Paht2);
+	|                        ImageEntry2.Path = Paht2;
+	|                        ImageEntry2.FileName = Paht2;
+	|                        MyList1.Add(ImageEntry2);
+	|                        ImageCollection1.Add(ImageEntry2.Image);
+	|
+	|                        ImageEntry ImageEntry3 = new ImageEntry();
+	|                        ImageEntry3.Image = new Bitmap("""" + Paht3);
+	|                        ImageEntry3.Path = Paht3;
+	|                        ImageEntry3.FileName = Paht3;
+	|                        MyList1.Add(ImageEntry3);
+	|                        ImageCollection1.Add(ImageEntry3.Image);
+	|
+	|                        SimilarObj._images = MyList1;
+	|                    }
+	|                    // Если это Узлы.
+	|                    else if (propertyValue.AsString() == ""System.Windows.Forms.TreeNodeCollection"")
+	|                    {
+	|                        osfDesigner.TreeView TreeView1 = (osfDesigner.TreeView)Comp1;
+	|
+	|                        // Добавим узел Узел0.
+	|                        MyTreeNode TreeNode1 = new MyTreeNode();
+	|                        TreeNode1.TreeView = TreeView1;
+	|                        TreeNode1.Name = OneScriptFormsDesigner.RevertNodeName(TreeView1);
+	|                        TreeNode1.Text = ""Узел"" + OneScriptFormsDesigner.ParseBetween(TreeNode1.Name, ""Узел"", null);
+	|                        TreeView1.Nodes.Add(TreeNode1);
+	|
+	|                        // Добавим узел Узел1.
+	|                        MyTreeNode TreeNode2 = new MyTreeNode();
+	|                        TreeNode2.TreeView = TreeView1;
+	|                        TreeNode2.Name = OneScriptFormsDesigner.RevertNodeName(TreeView1);
+	|                        TreeNode2.Text = ""Узел"" + OneScriptFormsDesigner.ParseBetween(TreeNode2.Name, ""Узел"", null);
+	|                        TreeView1.Nodes.Add(TreeNode2);
+	|
+	|                        // Добавим узел Узел2.
+	|                        MyTreeNode TreeNode3 = new MyTreeNode();
+	|                        TreeNode3.TreeView = TreeView1;
+	|                        TreeNode3.Name = OneScriptFormsDesigner.RevertNodeName(TreeView1);
+	|                        TreeNode3.Text = ""Узел"" + OneScriptFormsDesigner.ParseBetween(TreeNode3.Name, ""Узел"", null);
+	|                        TreeView1.Nodes.Add(TreeNode3);
+	|
+	|                        // Добавим подузел Узел3.
+	|                        MyTreeNode TreeNode4 = new MyTreeNode();
+	|                        TreeNode4.TreeView = TreeView1;
+	|                        TreeNode4.Name = OneScriptFormsDesigner.RevertNodeName(TreeView1);
+	|                        TreeNode4.Text = ""Узел"" + OneScriptFormsDesigner.ParseBetween(TreeNode4.Name, ""Узел"", null);
+	|                        TreeNode2.Nodes.Add(TreeNode4);
+	|                        TreeNode2.Expand();
+	|
+	|                        // Добавим подузел Узел4.
+	|                        MyTreeNode TreeNode5 = new MyTreeNode();
+	|                        TreeNode5.TreeView = TreeView1;
+	|                        TreeNode5.Name = OneScriptFormsDesigner.RevertNodeName(TreeView1);
+	|                        TreeNode5.Text = ""Узел"" + OneScriptFormsDesigner.ParseBetween(TreeNode5.Name, ""Узел"", null);
+	|                        TreeNode2.Nodes.Add(TreeNode5);
+	|                        TreeNode2.Expand();
+	|                    }
+	|                    // Если это Меню.
+	|                    else if (propertyValue.AsString() == ""System.Windows.Forms.MainMenu"")
+	|                    {
+	|                        // Сначала добавим компонент ГлавноеМеню.
+	|                        string NameMainMenu = AddControlMethod(""ГлавноеМеню"");
+	|                        // Найдем и выделим компонент с именем NameMainMenu.
+	|                        Component Component1 = (Component)OneScriptFormsDesigner.GetComponentByName(NameMainMenu);
+	|                        if (Component1 != null)
+	|                        {
+	|                            System.Windows.Forms.MainMenu MainMenu1 = ((System.Windows.Forms.MainMenu)Component1);
+	|                            osfDesigner.MainMenu SimilarObj = OneScriptFormsDesigner.RevertSimilarObj(MainMenu1);
+	|                            System.Windows.Forms.TreeView TreeView1 = SimilarObj.TreeView;
+	|                            SimilarObj.FrmMenuItems = new frmMenuItems(SimilarObj);
+	|
+	|                            //==========================================================================
+	|                            // Добавим Меню0.
+	|                            MenuItemEntry MenuItemEntry0 = new MenuItemEntry();
+	|                            MenuItemEntry0.Name = OneScriptFormsDesigner.RevertMenuName(SimilarObj);
+	|                            MenuItemEntry0.Text = ""Меню"" + OneScriptFormsDesigner.ParseBetween(MenuItemEntry0.Name.Replace(""ГлавноеМеню"", """"), ""Меню"", null);
+	|                            SimilarObj.MenuItems.Add(MenuItemEntry0.M_MenuItem);
+	|                            OneScriptFormsDesigner.AddToDictionary(MenuItemEntry0.M_MenuItem, MenuItemEntry0);
+	|                            TreeNode TreeNode0 = TreeView1.Nodes.Add(""Меню0"", MenuItemEntry0.Text);
+	|                            TreeNode0.Tag = MenuItemEntry0;
+	|                            TreeNode0.Text = MenuItemEntry0.Text;
+	|                            //==========================================================================
+	|                            // Добавим подменю Меню1.
+	|                            MenuItemEntry MenuItemEntry1 = new MenuItemEntry();
+	|                            MenuItemEntry1.Name = OneScriptFormsDesigner.RevertMenuName(SimilarObj);
+	|                            MenuItemEntry1.Text = ""Меню"" + OneScriptFormsDesigner.ParseBetween(MenuItemEntry1.Name.Replace(""ГлавноеМеню"", """"), ""Меню"", null);
+	|                            MenuItemEntry MenuItemParent1 = (MenuItemEntry)TreeView1.Nodes.Find(""Меню0"", true)[0].Tag;
+	|                            MenuItemParent1.MenuItems.Add(MenuItemEntry1.M_MenuItem);
+	|                            OneScriptFormsDesigner.AddToDictionary(MenuItemEntry1.M_MenuItem, MenuItemEntry1);
+	|                            TreeNode TreeNode1 = TreeView1.Nodes.Add(""Меню1"", MenuItemEntry1.Text);
+	|                            TreeNode1.Tag = MenuItemEntry1;
+	|                            TreeNode1.Text = MenuItemEntry1.Text;
+	|                            TreeView1.Nodes.Find(""Меню0"", true)[0].Nodes.Add(TreeNode1);
+	|                            //==========================================================================
+	|                            // Добавим подменю Меню2.
+	|                            MenuItemEntry MenuItemEntry2 = new MenuItemEntry();
+	|                            MenuItemEntry2.Name = OneScriptFormsDesigner.RevertMenuName(SimilarObj);
+	|                            MenuItemEntry2.Text = ""Меню"" + OneScriptFormsDesigner.ParseBetween(MenuItemEntry2.Name.Replace(""ГлавноеМеню"", """"), ""Меню"", null);
+	|                            MenuItemEntry MenuItemParent2 = (MenuItemEntry)TreeView1.Nodes.Find(""Меню0"", true)[0].Tag;
+	|                            MenuItemParent2.MenuItems.Add(MenuItemEntry2.M_MenuItem);
+	|                            OneScriptFormsDesigner.AddToDictionary(MenuItemEntry2.M_MenuItem, MenuItemEntry2);
+	|                            TreeNode TreeNode2 = TreeView1.Nodes.Add(""Меню2"", MenuItemEntry2.Text);
+	|                            TreeNode2.Tag = MenuItemEntry2;
+	|                            TreeNode2.Text = MenuItemEntry2.Text;
+	|                            TreeView1.Nodes.Find(""Меню0"", true)[0].Nodes.Add(TreeNode2);
+	|                            //==========================================================================
+	|                            // Добавим подменю Сепаратор1.
+	|                            MenuItemEntry MenuItemEntry3 = new MenuItemEntry();
+	|                            MenuItemEntry3.Name = OneScriptFormsDesigner.RevertSeparatorName(SimilarObj);
+	|                            // Имя в виде тире не присваивать, заменять на тире только во время формирования сценария.
+	|                            MenuItemEntry3.Text = ""Сепаратор"" + OneScriptFormsDesigner.ParseBetween(MenuItemEntry3.Name.Replace(""ГлавноеМеню"", """"), ""Сепаратор"", null);
+	|                            MenuItemEntry MenuItemParent3 = (MenuItemEntry)TreeView1.Nodes.Find(""Меню0"", true)[0].Tag;
+	|                            MenuItemParent3.MenuItems.Add(MenuItemEntry3.M_MenuItem);
+	|                            OneScriptFormsDesigner.AddToDictionary(MenuItemEntry3.M_MenuItem, MenuItemEntry3);
+	|                            TreeNode TreeNode3 = TreeView1.Nodes.Add(""Сепаратор1"", MenuItemEntry3.Text);
+	|                            TreeNode3.Tag = MenuItemEntry3;
+	|                            TreeNode3.Text = MenuItemEntry3.Text;
+	|                            TreeView1.Nodes.Find(""Меню0"", true)[0].Nodes.Add(TreeNode3);
+	|                            //==========================================================================
+	|                            // Добавим подменю Меню3.
+	|                            MenuItemEntry MenuItemEntry4 = new MenuItemEntry();
+	|                            MenuItemEntry4.Name = OneScriptFormsDesigner.RevertMenuName(SimilarObj);
+	|                            MenuItemEntry4.Text = ""Меню"" + OneScriptFormsDesigner.ParseBetween(MenuItemEntry4.Name.Replace(""ГлавноеМеню"", """"), ""Меню"", null);
+	|                            MenuItemEntry MenuItemParent4 = (MenuItemEntry)TreeView1.Nodes.Find(""Меню0"", true)[0].Tag;
+	|                            MenuItemParent4.MenuItems.Add(MenuItemEntry4.M_MenuItem);
+	|                            OneScriptFormsDesigner.AddToDictionary(MenuItemEntry4.M_MenuItem, MenuItemEntry4);
+	|                            TreeNode TreeNode4 = TreeView1.Nodes.Add(""Меню3"", MenuItemEntry4.Text);
+	|                            TreeNode4.Tag = MenuItemEntry4;
+	|                            TreeNode4.Text = MenuItemEntry4.Text;
+	|                            TreeView1.Nodes.Find(""Меню0"", true)[0].Nodes.Add(TreeNode4);
+	|                            //==========================================================================
+	|                            // Добавим Меню4.
+	|                            MenuItemEntry MenuItemEntry5 = new MenuItemEntry();
+	|                            MenuItemEntry5.Name = OneScriptFormsDesigner.RevertMenuName(SimilarObj);
+	|                            MenuItemEntry5.Text = ""Меню"" + OneScriptFormsDesigner.ParseBetween(MenuItemEntry5.Name.Replace(""ГлавноеМеню"", """"), ""Меню"", null);
+	|                            SimilarObj.MenuItems.Add(MenuItemEntry5.M_MenuItem);
+	|                            OneScriptFormsDesigner.AddToDictionary(MenuItemEntry5.M_MenuItem, MenuItemEntry5);
+	|                            TreeNode TreeNode5 = TreeView1.Nodes.Add(""Меню4"", MenuItemEntry5.Text);
+	|                            TreeNode5.Tag = MenuItemEntry5;
+	|                            TreeNode5.Text = MenuItemEntry5.Text;
+	|                            //==========================================================================
+	|                            // Добавим подменю Меню5.
+	|                            MenuItemEntry MenuItemEntry6 = new MenuItemEntry();
+	|                            MenuItemEntry6.Name = OneScriptFormsDesigner.RevertMenuName(SimilarObj);
+	|                            MenuItemEntry6.Text = ""Меню"" + OneScriptFormsDesigner.ParseBetween(MenuItemEntry6.Name.Replace(""ГлавноеМеню"", """"), ""Меню"", null);
+	|                            MenuItemEntry MenuItemParent6 = (MenuItemEntry)TreeView1.Nodes.Find(""Меню4"", true)[0].Tag;
+	|                            MenuItemParent6.MenuItems.Add(MenuItemEntry6.M_MenuItem);
+	|                            OneScriptFormsDesigner.AddToDictionary(MenuItemEntry6.M_MenuItem, MenuItemEntry6);
+	|                            TreeNode TreeNode6 = TreeView1.Nodes.Add(""Меню5"", MenuItemEntry6.Text);
+	|                            TreeNode6.Tag = MenuItemEntry6;
+	|                            TreeNode6.Text = MenuItemEntry6.Text;
+	|                            TreeView1.Nodes.Find(""Меню4"", true)[0].Nodes.Add(TreeNode6);
+	|                            //==========================================================================
+	|                            // Добавим подменю Меню6.
+	|                            MenuItemEntry MenuItemEntry7 = new MenuItemEntry();
+	|                            MenuItemEntry7.Name = OneScriptFormsDesigner.RevertMenuName(SimilarObj);
+	|                            MenuItemEntry7.Text = ""Меню"" + OneScriptFormsDesigner.ParseBetween(MenuItemEntry7.Name.Replace(""ГлавноеМеню"", """"), ""Меню"", null);
+	|                            MenuItemEntry MenuItemParent7 = (MenuItemEntry)TreeView1.Nodes.Find(""Меню5"", true)[0].Tag;
+	|                            MenuItemParent7.MenuItems.Add(MenuItemEntry7.M_MenuItem);
+	|                            OneScriptFormsDesigner.AddToDictionary(MenuItemEntry7.M_MenuItem, MenuItemEntry7);
+	|                            TreeNode TreeNode7 = TreeView1.Nodes.Add(""Меню6"", MenuItemEntry7.Text);
+	|                            TreeNode7.Tag = MenuItemEntry7;
+	|                            TreeNode7.Text = MenuItemEntry7.Text;
+	|                            TreeView1.Nodes.Find(""Меню5"", true)[0].Nodes.Add(TreeNode7);
+	|                            //==========================================================================
+	|                            // Добавим подменю Меню7.
+	|                            MenuItemEntry MenuItemEntry8 = new MenuItemEntry();
+	|                            MenuItemEntry8.Name = OneScriptFormsDesigner.RevertMenuName(SimilarObj);
+	|                            MenuItemEntry8.Text = ""Меню"" + OneScriptFormsDesigner.ParseBetween(MenuItemEntry8.Name.Replace(""ГлавноеМеню"", """"), ""Меню"", null);
+	|                            MenuItemEntry MenuItemParent8 = (MenuItemEntry)TreeView1.Nodes.Find(""Меню6"", true)[0].Tag;
+	|                            MenuItemParent8.MenuItems.Add(MenuItemEntry8.M_MenuItem);
+	|                            OneScriptFormsDesigner.AddToDictionary(MenuItemEntry8.M_MenuItem, MenuItemEntry8);
+	|                            TreeNode TreeNode8 = TreeView1.Nodes.Add(""Меню6"", MenuItemEntry8.Text);
+	|                            TreeNode8.Tag = MenuItemEntry8;
+	|                            TreeNode8.Text = MenuItemEntry8.Text;
+	|                            TreeView1.Nodes.Find(""Меню6"", true)[0].Nodes.Add(TreeNode8);
+	|                            //==========================================================================
+	|                            ((Form)Comp1).Menu = MainMenu1;
+	|                        }
+	|                    }
+	|                    // Если это Форма - Значок.
+	|                    else if (propertyValue.AsString() == ""System.Drawing.Icon"")
+	|                    {
+	|                        string Path1 = ""C:\\444\\Pic\\tray2.ico"";
+	|                        System.Drawing.Icon Icon1 = new Icon(Path1);
+	|                        MyIcon MyIcon1 = new MyIcon(Icon1);
+	|                        MyIcon1.M_Icon = Icon1;
+	|                        MyIcon1.Path = Path1;
+	|                        ((osfDesigner.Form)Comp1).Icon = MyIcon1;
+	|                    }
+	|                    // Если это ГлавноеМеню.
+	|                    else if (propertyValue.AsString() == ""System.Windows.Forms.Menu+MenuItemCollection"")
+	|                    {
+	|                        System.Windows.Forms.MainMenu MainMenu1 = ((System.Windows.Forms.MainMenu)Comp1);
+	|                        osfDesigner.MainMenu SimilarObj = OneScriptFormsDesigner.RevertSimilarObj(Comp1);
+	|                        System.Windows.Forms.TreeView TreeView1 = SimilarObj.TreeView;
+	|                        SimilarObj.FrmMenuItems = new frmMenuItems(SimilarObj);
+	|
+	|                        //==========================================================================
+	|                        // Добавим Меню0.
+	|                        MenuItemEntry MenuItemEntry0 = new MenuItemEntry();
+	|                        MenuItemEntry0.Name = OneScriptFormsDesigner.RevertMenuName(SimilarObj);
+	|                        MenuItemEntry0.Text = ""Меню"" + OneScriptFormsDesigner.ParseBetween(MenuItemEntry0.Name.Replace(""ГлавноеМеню"", """"), ""Меню"", null);
+	|                        SimilarObj.MenuItems.Add(MenuItemEntry0.M_MenuItem);
+	|                        OneScriptFormsDesigner.AddToDictionary(MenuItemEntry0.M_MenuItem, MenuItemEntry0);
+	|                        TreeNode TreeNode0 = TreeView1.Nodes.Add(""Меню0"", MenuItemEntry0.Text);
+	|                        TreeNode0.Tag = MenuItemEntry0;
+	|                        TreeNode0.Text = MenuItemEntry0.Text;
+	|                        //==========================================================================
+	|                        // Добавим подменю Меню1.
+	|                        MenuItemEntry MenuItemEntry1 = new MenuItemEntry();
+	|                        MenuItemEntry1.Name = OneScriptFormsDesigner.RevertMenuName(SimilarObj);
+	|                        MenuItemEntry1.Text = ""Меню"" + OneScriptFormsDesigner.ParseBetween(MenuItemEntry1.Name.Replace(""ГлавноеМеню"", """"), ""Меню"", null);
+	|                        MenuItemEntry MenuItemParent1 = (MenuItemEntry)TreeView1.Nodes.Find(""Меню0"", true)[0].Tag;
+	|                        MenuItemParent1.MenuItems.Add(MenuItemEntry1.M_MenuItem);
+	|                        OneScriptFormsDesigner.AddToDictionary(MenuItemEntry1.M_MenuItem, MenuItemEntry1);
+	|                        TreeNode TreeNode1 = TreeView1.Nodes.Add(""Меню1"", MenuItemEntry1.Text);
+	|                        TreeNode1.Tag = MenuItemEntry1;
+	|                        TreeNode1.Text = MenuItemEntry1.Text;
+	|                        TreeView1.Nodes.Find(""Меню0"", true)[0].Nodes.Add(TreeNode1);
+	|                        //==========================================================================
+	|                        // Добавим подменю Меню2.
+	|                        MenuItemEntry MenuItemEntry2 = new MenuItemEntry();
+	|                        MenuItemEntry2.Name = OneScriptFormsDesigner.RevertMenuName(SimilarObj);
+	|                        MenuItemEntry2.Text = ""Меню"" + OneScriptFormsDesigner.ParseBetween(MenuItemEntry2.Name.Replace(""ГлавноеМеню"", """"), ""Меню"", null);
+	|                        MenuItemEntry MenuItemParent2 = (MenuItemEntry)TreeView1.Nodes.Find(""Меню0"", true)[0].Tag;
+	|                        MenuItemParent2.MenuItems.Add(MenuItemEntry2.M_MenuItem);
+	|                        OneScriptFormsDesigner.AddToDictionary(MenuItemEntry2.M_MenuItem, MenuItemEntry2);
+	|                        TreeNode TreeNode2 = TreeView1.Nodes.Add(""Меню2"", MenuItemEntry2.Text);
+	|                        TreeNode2.Tag = MenuItemEntry2;
+	|                        TreeNode2.Text = MenuItemEntry2.Text;
+	|                        TreeView1.Nodes.Find(""Меню0"", true)[0].Nodes.Add(TreeNode2);
+	|                        //==========================================================================
+	|                        // Добавим подменю Сепаратор1.
+	|                        MenuItemEntry MenuItemEntry3 = new MenuItemEntry();
+	|                        MenuItemEntry3.Name = OneScriptFormsDesigner.RevertSeparatorName(SimilarObj);
+	|                        // Имя в виде тире не присваивать, заменять на тире только во время формирования сценария.
+	|                        MenuItemEntry3.Text = ""Сепаратор"" + OneScriptFormsDesigner.ParseBetween(MenuItemEntry3.Name.Replace(""ГлавноеМеню"", """"), ""Сепаратор"", null);
+	|                        MenuItemEntry MenuItemParent3 = (MenuItemEntry)TreeView1.Nodes.Find(""Меню0"", true)[0].Tag;
+	|                        MenuItemParent3.MenuItems.Add(MenuItemEntry3.M_MenuItem);
+	|                        OneScriptFormsDesigner.AddToDictionary(MenuItemEntry3.M_MenuItem, MenuItemEntry3);
+	|                        TreeNode TreeNode3 = TreeView1.Nodes.Add(""Сепаратор1"", MenuItemEntry3.Text);
+	|                        TreeNode3.Tag = MenuItemEntry3;
+	|                        TreeNode3.Text = MenuItemEntry3.Text;
+	|                        TreeView1.Nodes.Find(""Меню0"", true)[0].Nodes.Add(TreeNode3);
+	|                        //==========================================================================
+	|                        // Добавим подменю Меню3.
+	|                        MenuItemEntry MenuItemEntry4 = new MenuItemEntry();
+	|                        MenuItemEntry4.Name = OneScriptFormsDesigner.RevertMenuName(SimilarObj);
+	|                        MenuItemEntry4.Text = ""Меню"" + OneScriptFormsDesigner.ParseBetween(MenuItemEntry4.Name.Replace(""ГлавноеМеню"", """"), ""Меню"", null);
+	|                        MenuItemEntry MenuItemParent4 = (MenuItemEntry)TreeView1.Nodes.Find(""Меню0"", true)[0].Tag;
+	|                        MenuItemParent4.MenuItems.Add(MenuItemEntry4.M_MenuItem);
+	|                        OneScriptFormsDesigner.AddToDictionary(MenuItemEntry4.M_MenuItem, MenuItemEntry4);
+	|                        TreeNode TreeNode4 = TreeView1.Nodes.Add(""Меню3"", MenuItemEntry4.Text);
+	|                        TreeNode4.Tag = MenuItemEntry4;
+	|                        TreeNode4.Text = MenuItemEntry4.Text;
+	|                        TreeView1.Nodes.Find(""Меню0"", true)[0].Nodes.Add(TreeNode4);
+	|                        //==========================================================================
+	|                        // Добавим Меню4.
+	|                        MenuItemEntry MenuItemEntry5 = new MenuItemEntry();
+	|                        MenuItemEntry5.Name = OneScriptFormsDesigner.RevertMenuName(SimilarObj);
+	|                        MenuItemEntry5.Text = ""Меню"" + OneScriptFormsDesigner.ParseBetween(MenuItemEntry5.Name.Replace(""ГлавноеМеню"", """"), ""Меню"", null);
+	|                        SimilarObj.MenuItems.Add(MenuItemEntry5.M_MenuItem);
+	|                        OneScriptFormsDesigner.AddToDictionary(MenuItemEntry5.M_MenuItem, MenuItemEntry5);
+	|                        TreeNode TreeNode5 = TreeView1.Nodes.Add(""Меню4"", MenuItemEntry5.Text);
+	|                        TreeNode5.Tag = MenuItemEntry5;
+	|                        TreeNode5.Text = MenuItemEntry5.Text;
+	|                        //==========================================================================
+	|                        // Добавим подменю Меню5.
+	|                        MenuItemEntry MenuItemEntry6 = new MenuItemEntry();
+	|                        MenuItemEntry6.Name = OneScriptFormsDesigner.RevertMenuName(SimilarObj);
+	|                        MenuItemEntry6.Text = ""Меню"" + OneScriptFormsDesigner.ParseBetween(MenuItemEntry6.Name.Replace(""ГлавноеМеню"", """"), ""Меню"", null);
+	|                        MenuItemEntry MenuItemParent6 = (MenuItemEntry)TreeView1.Nodes.Find(""Меню4"", true)[0].Tag;
+	|                        MenuItemParent6.MenuItems.Add(MenuItemEntry6.M_MenuItem);
+	|                        OneScriptFormsDesigner.AddToDictionary(MenuItemEntry6.M_MenuItem, MenuItemEntry6);
+	|                        TreeNode TreeNode6 = TreeView1.Nodes.Add(""Меню5"", MenuItemEntry6.Text);
+	|                        TreeNode6.Tag = MenuItemEntry6;
+	|                        TreeNode6.Text = MenuItemEntry6.Text;
+	|                        TreeView1.Nodes.Find(""Меню4"", true)[0].Nodes.Add(TreeNode6);
+	|                        //==========================================================================
+	|                        // Добавим подменю Меню6.
+	|                        MenuItemEntry MenuItemEntry7 = new MenuItemEntry();
+	|                        MenuItemEntry7.Name = OneScriptFormsDesigner.RevertMenuName(SimilarObj);
+	|                        MenuItemEntry7.Text = ""Меню"" + OneScriptFormsDesigner.ParseBetween(MenuItemEntry7.Name.Replace(""ГлавноеМеню"", """"), ""Меню"", null);
+	|                        MenuItemEntry MenuItemParent7 = (MenuItemEntry)TreeView1.Nodes.Find(""Меню5"", true)[0].Tag;
+	|                        MenuItemParent7.MenuItems.Add(MenuItemEntry7.M_MenuItem);
+	|                        OneScriptFormsDesigner.AddToDictionary(MenuItemEntry7.M_MenuItem, MenuItemEntry7);
+	|                        TreeNode TreeNode7 = TreeView1.Nodes.Add(""Меню6"", MenuItemEntry7.Text);
+	|                        TreeNode7.Tag = MenuItemEntry7;
+	|                        TreeNode7.Text = MenuItemEntry7.Text;
+	|                        TreeView1.Nodes.Find(""Меню5"", true)[0].Nodes.Add(TreeNode7);
+	|                        //==========================================================================
+	|                        // Добавим подменю Меню7.
+	|                        MenuItemEntry MenuItemEntry8 = new MenuItemEntry();
+	|                        MenuItemEntry8.Name = OneScriptFormsDesigner.RevertMenuName(SimilarObj);
+	|                        MenuItemEntry8.Text = ""Меню"" + OneScriptFormsDesigner.ParseBetween(MenuItemEntry8.Name.Replace(""ГлавноеМеню"", """"), ""Меню"", null);
+	|                        MenuItemEntry MenuItemParent8 = (MenuItemEntry)TreeView1.Nodes.Find(""Меню6"", true)[0].Tag;
+	|                        MenuItemParent8.MenuItems.Add(MenuItemEntry8.M_MenuItem);
+	|                        OneScriptFormsDesigner.AddToDictionary(MenuItemEntry8.M_MenuItem, MenuItemEntry8);
+	|                        TreeNode TreeNode8 = TreeView1.Nodes.Add(""Меню6"", MenuItemEntry8.Text);
+	|                        TreeNode8.Tag = MenuItemEntry8;
+	|                        TreeNode8.Text = MenuItemEntry8.Text;
+	|                        TreeView1.Nodes.Find(""Меню6"", true)[0].Nodes.Add(TreeNode8);
+	|                        //==========================================================================
+	|                        ((Form)OneScriptFormsDesigner.RootComponent).Menu = MainMenu1;
+	|                    }
+	|                    // Если это просто строка.
+	|                    else
+	|                    {
+	|                        if (Comp1.GetType() == typeof(System.Windows.Forms.TabPage))
+	|                        {
+	|                            osfDesigner.TabPage SimilarObj = OneScriptFormsDesigner.RevertSimilarObj(Comp1);
+	|                            TrySetPropertyValue(SimilarObj.GetType(), propertyNameEn, SimilarObj, propertyValue.AsString());
+	|                        }
+	|                        else
+	|                        {
+	|                            TrySetPropertyValue(componentType, propertyNameEn, Comp1, propertyValue.AsString());
+	|                        }
+	|                    }
+	|                }
+	|                // Если это Курсор.
+	|                else if (propertyValueType.ToString() == ""osf.ClCursor"")
+	|                {
+	|                    TrySetPropertyValue(componentType, propertyNameEn, Comp1, ((dynamic)propertyValue.AsObject()).Base_obj.M_Cursor);
+	|                }
+	|                else
+	|                {
+	|                    System.Windows.Forms.MessageBox.Show(""propertyValue.AsString() = "" + propertyValue.AsString() + ""\r\n"" +
+	|                        ""propertyValueType.ToString() = "" + propertyValueType.ToString() + ""\r\n"" +
+	|                        //""col = "" + col + ""\r\n"" +
+	|                        //""col = "" + col + ""\r\n"" +
+	|                        //""col = "" + col + ""\r\n"" +
+	|                        """");
+	|                }
+	|
+	|                // Позиционируемся на компоненте и обновим его.
+	|                if (iSel == null)
+	|                {
+	|                    return;
+	|                }
+	|                IDesignSurfaceExt surface = OneScriptFormsDesigner.ActiveDesignSurface;
+	|                IDesignerHost idh = (IDesignerHost)surface.GetIDesignerHost();
+	|                OneScriptFormsDesigner.PropertyGrid.SelectedObject = idh.RootComponent;
+	|                iSel.SetSelectedComponents(new IComponent[] { Comp1 });
+	|                OneScriptFormsDesigner.PropertyGridHost.ReloadTreeView();
+	|                OneScriptFormsDesigner.PropertyGridHost.ChangeSelectNode((Component)Comp1);
+	|            }
+	|        }
+	|
+	|        public delegate IValue GetPropertyValue(string controlName, string propertyName); // ПолучитьЗначениеСвойства
+	|        public IValue GetPropertyValueMethod(string controlName, string propertyName)
+	|        {
+	|            // Найдем и выделим компонент с именем controlName.
+	|            Component Comp1 = (Component)OneScriptFormsDesigner.GetComponentByName(controlName);
+	|            if (Comp1 != null)
+	|            {
+	|                string valueToString;
+	|                Type valueType;
+	|                string propertyNameEn;
+	|
+	|                if (Comp1.GetType() == typeof(System.Windows.Forms.TabPage))
+	|                {
+	|                    // Для Comp1 уже создан дублер, получим его.
+	|                    osfDesigner.TabPage SimilarObj = OneScriptFormsDesigner.RevertSimilarObj(Comp1);
+	|                    propertyNameEn = OneScriptFormsDesigner.GetPropName(SimilarObj, propertyName);
+	|                }
+	|                else
+	|                {
+	|                    propertyNameEn = OneScriptFormsDesigner.GetPropName(Comp1, propertyName);
+	|                }
+	|                // Получим для компонента значение свойства.
+	|                dynamic val1;
+	|                try
+	|                {
+	|                    val1 = Comp1.GetType().GetProperty(propertyNameEn).GetValue(Comp1);
+	|                }
+	|                catch
+	|                {
+	|                    try
+	|                    {
+	|                        val1 = Comp1.GetType().BaseType.GetProperty(propertyNameEn).GetValue(Comp1);
+	|                    }
+	|                    catch
+	|                    {
+	|                        return null;
+	|                    }
+	|                }
+	|                try
+	|                {
+	|                    valueType = val1.GetType();
+	|                    valueToString = val1.ToString();
+	|                }
+	|                catch
+	|                {
+	|                    return null;
+	|                }
+	|
+	|                if (valueType == typeof(System.Decimal))
+	|                {
+	|                    return ValueFactory.Create((System.Decimal)val1);
+	|                }
+	|                else if(valueType == typeof(System.Int32))
+	|                {
+	|                    return ValueFactory.Create((System.Int32)val1);
+	|                }
+	|                else if (valueType == typeof(System.String))
+	|                {
+	|                    return ValueFactory.Create((String)val1);
+	|                }
+	|                else if (valueType == typeof(System.Boolean))
+	|                {
+	|                    return ValueFactory.Create((Boolean)val1);
+	|                }
+	|                else if (valueType == typeof(System.DateTime))
+	|                {
+	|                    return ValueFactory.Create((DateTime)val1);
+	|                }
+	|                else if (valueType == typeof(System.Char))
+	|                {
+	|                    string str1 = System.Char.ToString(val1);
+	|                    int code = System.Char.ConvertToUtf32(str1, 0);
+	|                    if (code == 0)
+	|                    {
+	|                        return ValueFactory.Create("""");
+	|                    }
+	|                    else
+	|                    {
+	|                        return ValueFactory.Create("""" + str1);
+	|                    }
+	|                }
+	|                else if (valueType == typeof(System.Drawing.Color) ||
+	|                    valueType == typeof(System.Drawing.Font) ||
+	|                    valueType == typeof(System.Drawing.Size) ||
+	|                    valueType == typeof(System.Drawing.Point) ||
+	|                    valueType == typeof(System.Windows.Forms.Day)
+	|                    )
+	|                {
+	|                    return ValueFactory.Create(valueToString);
+	|                }
+	|                else if (valueType.BaseType == typeof(System.Enum))
+	|                {
+	|                    return ValueFactory.Create((int)val1);
+	|                }
+	|                else
+	|                {
+	|                    return ValueFactory.Create(valueToString);
+	|                }
+	|            }
+	|            return null;
+	|        }
+	|
+	|        public delegate string GetPropertyType(string controlName, string propertyName); // ПолучитьТипСвойства
+	|        public string GetPropertyTypeMethod(string controlName, string propertyName)
+	|        {
+	|            Component Comp1 = (Component)OneScriptFormsDesigner.GetComponentByName(controlName);
+	|            if (Comp1 != null)
+	|            {
+	|                Type componentType;
+	|                string propertyNameEn;
+	|
+	|                if (Comp1.GetType() == typeof(System.Windows.Forms.MainMenu))
+	|                {
+	|                    // Для Comp1 уже создан дублер, получим его.
+	|                    osfDesigner.MainMenu SimilarObj = OneScriptFormsDesigner.RevertSimilarObj(Comp1);
+	|                    componentType = SimilarObj.GetType();
+	|                    propertyNameEn = OneScriptFormsDesigner.GetPropName(SimilarObj, propertyName);
+	|                }
+	|                else if (propertyName.Contains(""ToolTip на""))
+	|                {
+	|                    Component ToolTipComp1 = (Component)OneScriptFormsDesigner.GetComponentByName(""Подсказка1"");
+	|                    if (ToolTipComp1 != null)
+	|                    {
+	|                        return ""System.Collections.Hashtable"";
+	|                    }
+	|                    // Создадим подсказку.
+	|                    ToolboxItem toolToolTip1 = new ToolboxItem(typeof(osfDesigner.ToolTip));
+	|                    Component comp1 = (Component)toolToolTip1.CreateComponents(OneScriptFormsDesigner.DesignerHost)[0];
+	|                    // Установим подсказку для Comp1.
+	|                    string toolTipName = comp1.Site.Name;
+	|                    System.Windows.Forms.ToolTip ToolTip1 = (System.Windows.Forms.ToolTip)OneScriptFormsDesigner.GetComponentByName(toolTipName);
+	|                    string caption = ""Это "" + toolTipName;
+	|                    ToolTip1.SetToolTip(((dynamic)Comp1), caption);
+	|                    ((dynamic)Comp1).ToolTip[toolTipName] = caption;
+	|
+	|                    return ""System.Collections.Hashtable"";
+	|                }
+	|                else if (Comp1.GetType() == typeof(System.Windows.Forms.ImageList))
+	|                {
+	|                    // Для Comp1 уже создан дублер, получим его.
+	|                    osfDesigner.ImageList SimilarObj = OneScriptFormsDesigner.RevertSimilarObj(Comp1);
+	|                    componentType = SimilarObj.GetType();
+	|                    propertyNameEn = OneScriptFormsDesigner.GetPropName(SimilarObj, propertyName);
+	|                }
+	|                else if (Comp1.GetType() == typeof(System.Windows.Forms.TabPage))
+	|                {
+	|                    // Для Comp1 уже создан дублер, получим его.
+	|                    osfDesigner.TabPage SimilarObj = OneScriptFormsDesigner.RevertSimilarObj(Comp1);
+	|                    componentType = SimilarObj.GetType();
+	|                    propertyNameEn = OneScriptFormsDesigner.GetPropName(SimilarObj, propertyName);
+	|                }
+	|                else
+	|                {
+	|                    componentType = Comp1.GetType();
+	|                    propertyNameEn = OneScriptFormsDesigner.GetPropName(Comp1, propertyName);
+	|                }
+	|
+	|                // Получим для компонента тип свойства.
+	|                try
+	|                {
+	|                    return componentType.GetProperty(propertyNameEn).PropertyType.ToString();
+	|                }
+	|                catch
+	|                {
+	|                    try
+	|                    {
+	|                        return componentType.BaseType.GetProperty(propertyNameEn).PropertyType.ToString();
+	|                    }
+	|                    catch
+	|                    {
+	|                        return null;
+	|                    }
+	|                }
+	|            }
+	|            return null;
+	|        }
+	|
+	|        public delegate void CloseDesigner(); // ЗакрытьДизайнер
+	|        public void CloseDesignerMethod()
+	|        {
+	|            Dictionary<System.Windows.Forms.TabPage, bool>.KeyCollection keys = OneScriptFormsDesigner.dictionaryTabPageChanged.Keys;
+	|            System.Windows.Forms.TabControl.TabPageCollection TabPageCollection1 = pDesigner.TabControl.TabPages;
+	|            foreach (System.Windows.Forms.TabPage item in TabPageCollection1)
+	|            {
+	|                OneScriptFormsDesigner.dictionaryTabPageChanged[item] = false;
+	|            }
+	|            ((osfDesigner.pDesignerMainForm)osfDesigner.Program.pDesignerMainForm1).Close();
+	|        }
+	|
+	|        public delegate void LoadForm(string fileName); // ОткрытьФорму
+	|        public void LoadFormMethod(string fileName)
+	|        {
+	|            ((osfDesigner.pDesignerMainForm)osfDesigner.Program.pDesignerMainForm1).LoadForm_Click(fileName, false);
+	|        }
+	|
+	|        public delegate void RunScript(); // ЗапуститьСценарий
+	|        public void RunScriptMethod()
+	|        {
+	|            OneScriptFormsDesigner.PropertyGrid.Refresh();
+	|            string Script = SaveScript.GetScriptText();
+	|            if (!(bool)Settings.Default[""styleScript""])
+	|            {
+	|                string strFind = @""#КонецОбласти"";
+	|                string strReplace = @""#КонецОбласти"" + Environment.NewLine +
+	|""ПодключитьВнешнююКомпоненту("" + ""\u0022"" + Settings.Default[""dllPath""] + ""\u0022"" + @"");"" + Environment.NewLine +
+	|@""Ф = Новый ФормыДляОдноСкрипта();
+	|ПриСозданииФормы(Ф.Форма());
+	|Ф.ЗапуститьОбработкуСобытий();"";
+	|                Script = Script.Replace(strFind, strReplace);
+	|            }
+	|            if ((bool)Settings.Default[""visualSyleForms""])
+	|            {
+	|                string strFind = @""Ф = Новый ФормыДляОдноСкрипта();"";
+	|                string strReplace = @""Ф = Новый ФормыДляОдноСкрипта();"" + Environment.NewLine +
+	|                @""    Ф.ВключитьВизуальныеСтили();"";
+	|                Script = Script.Replace(strFind, strReplace);
+	|            }
+	|            string strTempFile = String.Format(Path.GetTempPath() + ""oscript_{0}_{1}.os"", DateTime.Now.ToString(""yyyyMMddHHmmssfff""), Guid.NewGuid().ToString().Replace(""-"", """"));
+	|            File.WriteAllText(strTempFile, Script, Encoding.UTF8);
+	|
+	|            System.Diagnostics.ProcessStartInfo psi = new System.Diagnostics.ProcessStartInfo();
+	|            psi.Arguments = strTempFile;
+	|            psi.FileName = (string)Settings.Default[""osPath""];
+	|            System.Diagnostics.Process.Start(psi);
+	|        }
+	|
+	|        public delegate void UnloadForm(string fileName); // СохранитьФорму
+	|        public void UnloadFormMethod(string fileName)
+	|        {
+	|            IDesignSurfaceExt surface = OneScriptFormsDesigner.ActiveDesignSurface;
+	|            IDesignerHost idh = (IDesignerHost)surface.GetIDesignerHost();
+	|            Form unloadForm = (Form)idh.RootComponent;
+	|            unloadForm.Path = fileName;
+	|            File.WriteAllText(fileName, SaveForm.GetScriptText(fileName), Encoding.UTF8);
+	|        }
+	|
+	|        public delegate void GenerateScript(string fileName); // СформироватьСценарий
+	|        public void GenerateScriptMethod(string fileName)
+	|        {
+	|            SaveScript.comps.Clear();
+	|
+	|            string scriptText = SaveScript.GetScriptText(fileName);
+	|            if ((bool)Settings.Default[""visualSyleForms""])
+	|            {
+	|                string strFind = @""Ф = Новый ФормыДляОдноСкрипта();"";
+	|                string strReplace = @""Ф = Новый ФормыДляОдноСкрипта();"" + Environment.NewLine +
+	|                @""    Ф.ВключитьВизуальныеСтили();"";
+	|                scriptText = scriptText.Replace(strFind, strReplace);
+	|            }
+	|            File.WriteAllText(fileName, scriptText, Encoding.UTF8);
+	|        }
+	|
+	|        public delegate void RemoveControls(); // УдалитьКонтролы
+	|        public void RemoveControlsMethod()
+	|        {
+	|            ISelectionService iSel = (ISelectionService)OneScriptFormsDesigner.DesignerHost.GetService(typeof(ISelectionService));
+	|            if (iSel != null)
+	|            {
+	|                ComponentCollection ctrlsExisting = OneScriptFormsDesigner.DesignerHost.Container.Components;
+	|                iSel.SetSelectedComponents(ctrlsExisting);
+	|                IpDesignerCore.DeleteOnDesignSurfaceWithoutWarning();
+	|            }
+	|        }
+	|
+	|        public delegate string AddControl(string controlName); // ДобавитьКонтрол
+	|        public string AddControlMethod(string controlName)
+	|        {
+	|            IDesignSurfaceExt surface = OneScriptFormsDesigner.ActiveDesignSurface;
+	|            Type type1;
+	|            string type_NameEn;
+	|
+	|            if (controlName == ""Форма"")
+	|            {
+	|                type1 = typeof(osfDesigner.Form);
+	|            }
+	|            else
+	|            {
+	|                type_NameEn = ""osfDesigner."" + OneScriptFormsDesigner.namesRuEn[controlName];
+	|                type1 = Type.GetType(type_NameEn);
+	|            }
+	|            if (type1 == typeof(osfDesigner.MainMenu))
+	|            {
+	|                ToolboxItem toolMainMenu1 = new ToolboxItem(typeof(System.Windows.Forms.MainMenu));
+	|                Component comp1 = (Component)toolMainMenu1.CreateComponents(OneScriptFormsDesigner.DesignerHost)[0];
+	|                return comp1.Site.Name;
+	|            }
+	|            else if (type1 == typeof(osfDesigner.Form))
+	|            {
+	|                Component comp1 = OneScriptFormsDesigner.RootComponent;
+	|                return comp1.Site.Name;
+	|            }
+	|            else if (type1 == typeof(osfDesigner.Timer))
+	|            {
+	|                ToolboxItem toolTimer1 = new ToolboxItem(typeof(osfDesigner.Timer));
+	|                Component comp1 = (Component)toolTimer1.CreateComponents(OneScriptFormsDesigner.DesignerHost)[0];
+	|                return comp1.Site.Name;
+	|            }
+	|            else if (type1 == typeof(osfDesigner.ToolTip))
+	|            {
+	|                ToolboxItem toolToolTip1 = new ToolboxItem(typeof(osfDesigner.ToolTip));
+	|                Component comp1 = (Component)toolToolTip1.CreateComponents(OneScriptFormsDesigner.DesignerHost)[0];
+	|                return comp1.Site.Name;
+	|            }
+	|            else if (type1 == typeof(osfDesigner.ImageList))
+	|            {
+	|                ToolboxItem toolImageList1 = new ToolboxItem(typeof(System.Windows.Forms.ImageList));
+	|                Component comp1 = (Component)toolImageList1.CreateComponents(OneScriptFormsDesigner.DesignerHost)[0];
+	|                return comp1.Site.Name;
+	|            }
+	|            else if (type1 == typeof(osfDesigner.FolderBrowserDialog))
+	|            {
+	|                ToolboxItem toolFolderBrowserDialog1 = new ToolboxItem(typeof(osfDesigner.FolderBrowserDialog));
+	|                Component comp1 = (Component)toolFolderBrowserDialog1.CreateComponents(OneScriptFormsDesigner.DesignerHost)[0];
+	|                return comp1.Site.Name;
+	|            }
+	|            else if (type1 == typeof(osfDesigner.ColorDialog))
+	|            {
+	|                ToolboxItem toolColorDialog1 = new ToolboxItem(typeof(osfDesigner.ColorDialog));
+	|                Component comp1 = (Component)toolColorDialog1.CreateComponents(OneScriptFormsDesigner.DesignerHost)[0];
+	|                return comp1.Site.Name;
+	|            }
+	|            else if (type1 == typeof(osfDesigner.FontDialog))
+	|            {
+	|                ToolboxItem toolFontDialog1 = new ToolboxItem(typeof(osfDesigner.FontDialog));
+	|                Component comp1 = (Component)toolFontDialog1.CreateComponents(OneScriptFormsDesigner.DesignerHost)[0];
+	|                return comp1.Site.Name;
+	|            }
+	|            else if (type1 == typeof(osfDesigner.OpenFileDialog))
+	|            {
+	|                ToolboxItem toolOpenFileDialog1 = new ToolboxItem(typeof(osfDesigner.OpenFileDialog));
+	|                Component comp1 = (Component)toolOpenFileDialog1.CreateComponents(OneScriptFormsDesigner.DesignerHost)[0];
+	|                return comp1.Site.Name;
+	|            }
+	|            else if (type1 == typeof(osfDesigner.SaveFileDialog))
+	|            {
+	|                ToolboxItem toolSaveFileDialog1 = new ToolboxItem(typeof(osfDesigner.SaveFileDialog));
+	|                Component comp1 = (Component)toolSaveFileDialog1.CreateComponents(OneScriptFormsDesigner.DesignerHost)[0];
+	|                return comp1.Site.Name;
+	|            }
+	|            else if (type1 == typeof(osfDesigner.NotifyIcon))
+	|            {
+	|                ToolboxItem toolNotifyIcon1 = new ToolboxItem(typeof(osfDesigner.NotifyIcon));
+	|                Component comp1 = (Component)toolNotifyIcon1.CreateComponents(OneScriptFormsDesigner.DesignerHost)[0];
+	|                return comp1.Site.Name;
+	|            }
+	|            else if (type1 == typeof(osfDesigner.FileSystemWatcher))
+	|            {
+	|                ToolboxItem toolFileSystemWatcher1 = new ToolboxItem(typeof(osfDesigner.FileSystemWatcher));
+	|                Component comp1 = (Component)toolFileSystemWatcher1.CreateComponents(OneScriptFormsDesigner.DesignerHost)[0];
+	|                return comp1.Site.Name;
+	|            }
+	|            else if (type1 == typeof(osfDesigner.TabPage))
+	|            {
+	|                // Сначала создадим панель вкладок.
+	|                string NameTabControl = AddControlMethod(""ПанельВкладок"");
+	|                // Найдем и выделим компонент с именем NameTabControl.
+	|                Component Component1 = (Component)OneScriptFormsDesigner.GetComponentByName(NameTabControl);
+	|                // У панели вкладок уже есть автоматически созданные две вкладки. Добавим ещё одну.
+	|                ToolboxItem toolTabPage1 = new ToolboxItem(typeof(System.Windows.Forms.TabPage));
+	|                Component compTabPage = (Component)toolTabPage1.CreateComponents(OneScriptFormsDesigner.DesignerHost)[0];
+	|                // Для comp1 уже создан дублер, получим его.
+	|                osfDesigner.TabPage SimilarObj = OneScriptFormsDesigner.RevertSimilarObj(compTabPage);
+	|                SimilarObj.OriginalObj = (System.Windows.Forms.TabPage)compTabPage;
+	|                OneScriptFormsDesigner.PassProperties(compTabPage, SimilarObj); // Передадим свойства.
+	|
+	|                ((System.Windows.Forms.TabControl)Component1).TabPages.Add((System.Windows.Forms.TabPage)compTabPage);
+	|
+	|                OneScriptFormsDesigner.PropertyGrid.SelectedObject = SimilarObj;
+	|                SimilarObj.DefaultValues = OneScriptFormsDesigner.GetDefaultValues(SimilarObj, OneScriptFormsDesigner.PropertyGrid);
+	|
+	|                return compTabPage.Site.Name;
+	|            }
+	|            else
+	|            {
+	|                IDesignerHost idh = (IDesignerHost)surface.GetIDesignerHost();
+	|                IToolboxUser itu = (IToolboxUser)idh.GetDesigner(idh.RootComponent);
+	|                itu.ToolPicked(new ToolboxItem(type1));
+	|                // Выберем указанный элемент.
+	|                // Элемент управления только что размещен в области конструктора (в DesignSurface), поэтому он остается выбранным.
+	|                // Получим SelectionService.
+	|                ISelectionService selectionService = (ISelectionService)(idh.GetService(typeof(ISelectionService)));
+	|                object objCtrlJustPlaced = selectionService.PrimarySelection;
+	|                // Мы знаем, что это элемент управления (то есть тип Control).
+	|                Control ctrlJustPlaced = (Control)objCtrlJustPlaced;
+	|                ctrlJustPlaced.Location = new Point(50, 50);
+	|
+	|                OneScriptFormsDesigner.PropertyGrid.SelectedObject = idh.RootComponent;
+	|
+	|                ISelectionService iSel = (ISelectionService)OneScriptFormsDesigner.DesignerHost.GetService(typeof(ISelectionService));
+	|                if (iSel != null)
+	|                {
+	|                    iSel.SetSelectedComponents(new IComponent[] { ctrlJustPlaced });
+	|                    OneScriptFormsDesigner.PropertyGridHost.ReloadTreeView();
+	|                    OneScriptFormsDesigner.PropertyGridHost.ChangeSelectNode((Component)ctrlJustPlaced);
+	|                }
+	|                return ctrlJustPlaced.Site.Name;
+	|            }
+	|        }
+	|
+	|        public void TrySetPropertyValue(System.Type componentType, string propertyNameEn, Component Comp1, dynamic propertyValue)
+	|        {
+	|            try
+	|            {
+	|                componentType.GetProperty(propertyNameEn).SetValue(Comp1, propertyValue);
+	|            }
+	|            catch
+	|            {
+	|                componentType.BaseType.GetProperty(propertyNameEn).SetValue(Comp1, propertyValue);
 	|            }
 	|        }
 	|
@@ -12075,6 +17285,10 @@
 	|            ToolboxItem toolDataGrid = new ToolboxItem(typeof(DataGrid));
 	|            toolDataGrid.DisplayName = ""СеткаДанных (DataGrid)"";
 	|            listBox1.Items.Add(toolDataGrid);
+	|	
+	|            ToolboxItem toolDataGridView = new ToolboxItem(typeof(DataGridView));
+	|            toolDataGridView.DisplayName = ""Таблица (DataGridView)"";
+	|            listBox1.Items.Add(toolDataGridView);
 	|
 	|            ToolboxItem toolDateTimePicker = new ToolboxItem(typeof(DateTimePicker));
 	|            toolDateTimePicker.DisplayName = ""ПолеКалендаря (DateTimePicker)"";
@@ -12131,7 +17345,11 @@
 	|            ToolboxItem toolMainMenu = new ToolboxItem(typeof(System.Windows.Forms.MainMenu));
 	|            toolMainMenu.DisplayName = ""ГлавноеМеню (MainMenu)"";
 	|            listBox1.Items.Add(toolMainMenu);
-	|
+	|	
+	|            ToolboxItem toolMaskedTextBox = new ToolboxItem(typeof(MaskedTextBox));
+	|            toolMaskedTextBox.DisplayName = ""МаскаПоляВвода (MaskedTextBox)"";
+	|            listBox1.Items.Add(toolMaskedTextBox);
+	|	
 	|            ToolboxItem toolMonthCalendar = new ToolboxItem(typeof(MonthCalendar));
 	|            toolMonthCalendar.DisplayName = ""Календарь (MonthCalendar)"";
 	|            listBox1.Items.Add(toolMonthCalendar);
@@ -12392,7 +17610,13 @@
 	|            {
 	|                return;
 	|            }
-	|            string strFile = File.ReadAllText(OpenFileDialog1.FileName);
+	|
+	|            LoadForm_Click(OpenFileDialog1.FileName, true);
+	|        }
+	|
+	|        public void LoadForm_Click(string fileName, bool choosingName)
+	|        {
+	|            string strFile = File.ReadAllText(fileName);	
 	|            //string strOSDBefore = File.ReadAllText(""C:\\444\\Форма1сохран\\Форма1сохран.osd"");
 	|
 	|            OneScriptFormsDesigner.block2 = true;
@@ -12406,10 +17630,12 @@
 	|            result = strFile.Split(stringSeparators, StringSplitOptions.RemoveEmptyEntries);
 	|            for (int i = 0; i < result.Length; i++)
 	|            {
+	|                // Для этих свойств пробелы в части строки после знака равно, не удаляем.
 	|                string strres = result[i];
 	|                if (strres.Contains("".ВыбранныйПуть = \u0022"") || 
 	|                    strres.Contains("".Заголовок = \u0022"") || 
 	|                    strres.Contains("".ИмяФайла = \u0022"") || 
+	|                    strres.Contains("".Маска = \u0022"") || 
 	|                    strres.Contains("".НачальныйКаталог = \u0022"") || 
 	|                    strres.Contains("".Описание = \u0022"") || 
 	|                    strres.Contains("".ПолныйПуть = \u0022"") || 
@@ -12425,6 +17651,16 @@
 	|                    string strBefore = OneScriptFormsDesigner.ParseBetween(strres, null, "" = \u0022"");
 	|                    string strAfter = OneScriptFormsDesigner.ParseBetween(strres, ""= \u0022"", null);
 	|                    strOSD = strOSD + strBefore.Replace("" "", """") + ""=\u0022"" + strAfter + Environment.NewLine;
+	|                }
+	|                else if (strres.Contains("".УстановитьПодсказку(""))
+	|                {
+	|                    string strBefore = OneScriptFormsDesigner.ParseBetween(strres, null, "", \u0022"");
+	|                    string strAfter = OneScriptFormsDesigner.ParseBetween(strres, "", \u0022"", null);
+	|                    strOSD = strOSD + strBefore.Replace("" "", """") + "", \u0022"" + strAfter + Environment.NewLine;
+	|                }
+	|                else if (strres.Contains("".Элементы.Добавить(Ф.ЭлементСписка(""))
+	|                {
+	|                    strOSD = strOSD + strres.Replace(""\u0022, "", ""\u0022,"") + Environment.NewLine;
 	|                }
 	|                else
 	|                {
@@ -12455,9 +17691,17 @@
 	|            result = null;
 	|
 	|            // Добавим вкладку и создадим на ней загружаемую форму.
-	|            DesignSurfaceExt2 var1 = IpDesignerCore.AddDesignSurface<Form>(670, 600, AlignmentModeEnum.SnapLines, new Size(1, 1), CompNames[0]);
+	|            DesignSurfaceExt2 var1 = null;
+	|            if (choosingName)
+	|            {
+	|                var1 = IpDesignerCore.AddDesignSurface<Form>(670, 600, AlignmentModeEnum.SnapLines, new Size(1, 1), CompNames[0]);
+	|            }
+	|            else
+	|            {
+	|                var1 = IpDesignerCore.AddDesignSurface<Form>(670, 600, AlignmentModeEnum.SnapLines, new Size(1, 1), """");
+	|            }
 	|            Component rootComponent = (Component)var1.ComponentContainer.Components[0];
-	|            ((Form)rootComponent).Path = OpenFileDialog1.FileName;
+	|            ((Form)rootComponent).Path = fileName;	
 	|
 	|            dictObjects[CompNames[0]] = rootComponent;
 	|
@@ -12620,11 +17864,20 @@
 	|                                    }
 	|                                    else
 	|                                    {
-	|                                        string displayName = OneScriptFormsDesigner.ParseBetween(strCurrent, componentName + ""."", ""."");
-	|                                        string strPropertyValue = OneScriptFormsDesigner.ParseBetween(strCurrent, ""Дата("", ""))"");
-	|                                        string parentName = OneScriptFormsDesigner.ParseBetween(ComponentBlok, componentName + @"".Родитель="", @"";"");
-	|                                        Control parent = (Control)dictObjects[parentName];
-	|                                        PropValueConverter.SetPropValue(control, displayName, strPropertyValue, parent);
+	|                                        if (strCurrent.Contains(""УстановитьПодсказку""))
+	|                                        {
+	|                                            string displayName = ""ToolTip на "" + OneScriptFormsDesigner.ParseBetween(strCurrent, null, "".УстановитьПодсказку"");
+	|                                            string strPropertyValue = strCurrent;
+	|                                            PropValueConverter.SetPropValue(control, displayName, strPropertyValue, null);
+	|                                        }
+	|                                        else
+	|                                        {
+	|                                            string displayName = OneScriptFormsDesigner.ParseBetween(strCurrent, componentName + ""."", ""."");
+	|                                            string strPropertyValue = OneScriptFormsDesigner.ParseBetween(strCurrent, ""Дата("", ""))"");
+	|                                            string parentName = OneScriptFormsDesigner.ParseBetween(ComponentBlok, componentName + @"".Родитель="", @"";"");
+	|                                            Control parent = (Control)dictObjects[parentName];
+	|                                            PropValueConverter.SetPropValue(control, displayName, strPropertyValue, parent);
+	|                                        }
 	|                                    }
 	|                                }
 	|                                else if (componentName.Contains(""ГлавноеМеню""))
@@ -12794,7 +18047,15 @@
 	|                                    control.GetType() == typeof(osfDesigner.Timer))
 	|                                {
 	|                                    string displayName = OneScriptFormsDesigner.ParseBetween(strCurrent, componentName + ""."", ""="");
-	|                                    string strPropertyValue = OneScriptFormsDesigner.ParseBetween(strCurrent, ""="", "";"");
+	|                                    string strPropertyValue = OneScriptFormsDesigner.ParseBetween(strCurrent, ""="");
+	|                                    if (strPropertyValue.Substring(strPropertyValue.Length - 2) == ""\u0022;"")
+	|                                    {
+	|                                        strPropertyValue = strPropertyValue.Remove(strPropertyValue.Length - 2);
+	|                                    }
+	|                                    else
+	|                                    {
+	|                                        strPropertyValue = strPropertyValue.Remove(strPropertyValue.Length - 1);
+	|                                    }
 	|                                    PropValueConverter.SetPropValue(control, displayName, strPropertyValue, null);
 	|                                }
 	|                                else if (strCurrent.StartsWith(""Подсказка""))
@@ -12888,7 +18149,8 @@
 	|Стиль == СтандартнаяТрехмерная
 	|Текст == 
 	|ТекстПодсказки == 
-	|(Name) == "";
+	|(Name) == 
+	|"";
 	|                                    }
 	|                                    else if (!header.Contains(""Кн"")) // Обрабатываем как свойство панели инструментов.
 	|                                    {
@@ -12953,7 +18215,8 @@
 	|Шрифт == Microsoft Sans Serif; 7,8pt
 	|Подэлементы == (Коллекция)
 	|ИндексИзображения == -1
-	|(Name) == "";
+	|(Name) == 
+	|"";
 	|                                        }
 	|                                        else if (strCurrent.Contains(""Ф.ПодэлементСпискаЭлементов();"")) // Создаем подэлемент списка элементов.
 	|                                        {
@@ -12966,7 +18229,8 @@
 	|Текст == 
 	|ЦветФона == Окно
 	|Шрифт == Microsoft Sans Serif; 7,8pt
-	|(Name) == "";
+	|(Name) == 
+	|"";
 	|                                        }
 	|                                        else if (strCurrent.Contains(""Ф.Колонка();"")) // Создаем колонку списка элементов.
 	|                                        {
@@ -12979,7 +18243,8 @@
 	|Текст == 
 	|ТипСортировки == Текст
 	|Ширина == 60
-	|(Name) == "";
+	|(Name) == 
+	|"";
 	|                                        }
 	|                                        else if (strCurrent.Contains("".Подэлементы.Добавить("")) // Добавляем подэлемент списка элементов.
 	|                                        {
@@ -13061,7 +18326,8 @@
 	|                                        }
 	|                                        else // Тип Число.
 	|                                        {
-	|                                            ListItemListBox1.Value = Int32.Parse(itemValue);
+	|                                            itemValue = itemValue.Replace(""."", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
+	|                                            ListItemListBox1.Value = Decimal.Parse(itemValue);
 	|                                            ListItemListBox1.ValueType = DataType.Число;
 	|                                        }
 	|                                        ((ListBox)control).Items.Add(ListItemListBox1);
@@ -13138,7 +18404,8 @@
 	|                                        }
 	|                                        else // Это тип Число.
 	|                                        {
-	|                                            ListItemComboBox1.Value = Int32.Parse(itemValue);
+	|                                            itemValue = itemValue.Replace(""."", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
+	|                                            ListItemComboBox1.Value = Decimal.Parse(itemValue);
 	|                                            ListItemComboBox1.ValueType = DataType.Число;
 	|                                        }
 	|                                        ((ComboBox)control).Items.Add(ListItemComboBox1);
@@ -13197,7 +18464,8 @@
 	|ЦветСетки == ЛицеваяЭлемента
 	|ЦветФона == Окно
 	|ЦветФонаЗаголовков == ЛицеваяЭлемента
-	|ЦветФонаНечетныхСтрок == Окно"";
+	|ЦветФонаНечетныхСтрок == Окно
+	|"";
 	|                                        }
 	|                                        else if (strCurrent.Contains(""Ф.СтильКолонкиБулево();""))
 	|                                        {
@@ -13211,7 +18479,8 @@
 	|ТекстЗаголовка == 
 	|ИмяОтображаемого == 
 	|Текст == 
-	|ТолькоЧтение == Ложь"";
+	|ТолькоЧтение == Ложь
+	|"";
 	|                                        }
 	|                                        else if (strCurrent.Contains(""Ф.СтильКолонкиПолеВвода();""))
 	|                                        {
@@ -13226,7 +18495,8 @@
 	|ДвойноеНажатие == 
 	|ИмяОтображаемого == 
 	|Текст == 
-	|ТолькоЧтение == Ложь"";
+	|ТолькоЧтение == Ложь
+	|"";
 	|                                        }
 	|                                        else if (strCurrent.Contains(""Ф.СтильКолонкиПолеВыбора();""))
 	|                                        {
@@ -13240,7 +18510,8 @@
 	|ТекстЗаголовка == 
 	|ИмяОтображаемого == 
 	|Текст == 
-	|ТолькоЧтение == Ложь"";
+	|ТолькоЧтение == Ложь
+	|"";
 	|                                        }
 	|                                        else if (strCurrent.Contains("".СтилиКолонкиСеткиДанных.Добавить(""))
 	|                                        {
@@ -13292,6 +18563,464 @@
 	|                                            string displayName = ""Узлы"";
 	|                                            PropValueConverter.SetPropValue(control, displayName, strCurrent, null);
 	|                                        }
+	|                                    }
+	|                                }
+	|                                else if (componentName.Contains(""Таблица""))
+	|                                {
+	|                                    osfDesigner.DataGridView DataGridView1 = (osfDesigner.DataGridView)control;
+	|                                    string controlName = DataGridView1.Name;
+	|                                    // Обработаем КолонкаПолеВвода =======================================================================================
+	|                                    if (strCurrent.Contains(""=Ф.КолонкаПолеВвода();""))
+	|                                    {
+	|                                        string nameObj = OneScriptFormsDesigner.ParseBetween(strCurrent, null, ""="");
+	|                                        DataGridViewTextBoxColumn DataGridViewTextBoxColumn1 = new DataGridViewTextBoxColumn();
+	|                                        dictObjects.Add(nameObj, DataGridViewTextBoxColumn1);
+	|                                        DataGridViewTextBoxColumn1.Name = nameObj.Replace(controlName, """");
+	|                                        DataGridViewTextBoxColumn1.NameColumn = nameObj;
+	|
+	|                                        DataGridViewTextBoxColumn1.DefaultValues = @""
+	|Отображать == Истина
+	|ТекстЗаголовка == КолонкаПолеВвода0
+	|ТекстПодсказки == 
+	|ИмяСвойстваДанных == 
+	|ВесЗаполнения == 100
+	|Закреплено == Ложь
+	|МинимальнаяШирина == 5
+	|РежимАвтоРазмера == НеУстановлено
+	|Ширина == 100
+	|ШиринаРазделителя == 0
+	|ИзменяемыйРазмер == Истина
+	|МаксимальнаяДлина == 32767
+	|РежимСортировки == Автоматически
+	|ТолькоЧтение == Ложь
+	|ИмяКолонки == Таблица1КолонкаПолеВвода0
+	|"";
+	|                                    }
+	|                                    else if (strCurrent.Contains(""КолонкаПолеВвода"") &&
+	|                                        !(strCurrent.Contains(""=Ф.КолонкаПолеВвода();"") || 
+	|                                        strCurrent.Contains(""=Ф.СтильЯчейки();"") || 
+	|                                        strCurrent.Contains(""Колонки.Добавить("")
+	|                                        )) // Обрабатываем как свойство КолонкаПолеВвода
+	|                                    {
+	|                                        string displayName = OneScriptFormsDesigner.ParseBetween(strCurrent, ""."", ""="");
+	|                                        string nameObj = OneScriptFormsDesigner.ParseBetween(strCurrent, null, ""."");
+	|                                        object control2 = dictObjects[nameObj];
+	|                                        string strPropertyValue = OneScriptFormsDesigner.ParseBetween(strCurrent, ""="", "";"");
+	|                                        PropValueConverter.SetPropValue(control2, displayName, strPropertyValue, null);
+	|                                    }
+	|                                    else if (strCurrent.Contains("".Колонки.Добавить("") && strCurrent.Contains(""КолонкаПолеВвода""))
+	|                                    {
+	|                                        string nameColumn = OneScriptFormsDesigner.ParseBetween(strCurrent, ""("", "")"");
+	|                                        DataGridViewTextBoxColumn column = (DataGridViewTextBoxColumn)dictObjects[nameColumn];
+	|                                        DataGridView1.Columns.Add((DataGridViewTextBoxColumn)column);
+	|                                    }
+	|                                    // Закончили КолонкаПолеВвода =======================================================================================
+	|
+	|                                    // Обработаем КолонкаКартинка =======================================================================================
+	|                                    else if(strCurrent.Contains(""=Ф.КолонкаКартинка();""))
+	|                                    {
+	|                                        string nameObj = OneScriptFormsDesigner.ParseBetween(strCurrent, null, ""="");
+	|                                        DataGridViewImageColumn DataGridViewImageColumn1 = new DataGridViewImageColumn();
+	|                                        dictObjects.Add(nameObj, DataGridViewImageColumn1);
+	|                                        DataGridViewImageColumn1.Name = nameObj.Replace(controlName, """");
+	|                                        DataGridViewImageColumn1.NameColumn = nameObj;
+	|
+	|                                        DataGridViewImageColumn1.DefaultValues = @""
+	|Описание == 
+	|Отображать == Истина
+	|РазмещениеИзображения == Стандартное
+	|ТекстЗаголовка == КолонкаКартинка0
+	|ТекстПодсказки == 
+	|ИмяСвойстваДанных == 
+	|ВесЗаполнения == 100
+	|Закреплено == Ложь
+	|МинимальнаяШирина == 5
+	|РежимАвтоРазмера == НеУстановлено
+	|Ширина == 100
+	|ШиринаРазделителя == 0
+	|ИзменяемыйРазмер == Истина
+	|РежимСортировки == НеСортируемый
+	|ТолькоЧтение == Ложь
+	|ИмяКолонки == Таблица1КолонкаКартинка0
+	|Картинка == 
+	|"";
+	|                                    }
+	|                                    else if (strCurrent.Contains(""КолонкаКартинка"") &&
+	|                                        !(strCurrent.Contains(""=Ф.КолонкаКартинка();"") ||
+	|                                        strCurrent.Contains(""=Ф.СтильЯчейки();"") ||
+	|                                        strCurrent.Contains(""Колонки.Добавить("")
+	|                                        )) // Обрабатываем как свойство КолонкаКартинка
+	|                                    {
+	|                                        string displayName = OneScriptFormsDesigner.ParseBetween(strCurrent, ""."", ""="");
+	|                                        string nameObj = OneScriptFormsDesigner.ParseBetween(strCurrent, null, ""."");
+	|                                        object control2 = dictObjects[nameObj];
+	|                                        string strPropertyValue = OneScriptFormsDesigner.ParseBetween(strCurrent, ""="", "";"");
+	|                                        PropValueConverter.SetPropValue(control2, displayName, strPropertyValue, null);
+	|                                    }
+	|                                    else if (strCurrent.Contains("".Колонки.Добавить("") && strCurrent.Contains(""КолонкаКартинка""))
+	|                                    {
+	|                                        string nameColumn = OneScriptFormsDesigner.ParseBetween(strCurrent, ""("", "")"");
+	|                                        DataGridViewImageColumn column = (DataGridViewImageColumn)dictObjects[nameColumn];
+	|                                        DataGridView1.Columns.Add((DataGridViewImageColumn)column);
+	|                                    }
+	|                                    // Закончили КолонкаКартинка =======================================================================================
+	|
+	|                                    // Обработаем КолонкаКнопка =======================================================================================
+	|                                    else if (strCurrent.Contains(""=Ф.КолонкаКнопка();""))
+	|                                    {
+	|                                        string nameObj = OneScriptFormsDesigner.ParseBetween(strCurrent, null, ""="");
+	|                                        DataGridViewButtonColumn DataGridViewButtonColumn1 = new DataGridViewButtonColumn();
+	|                                        dictObjects.Add(nameObj, DataGridViewButtonColumn1);
+	|                                        DataGridViewButtonColumn1.Name = nameObj.Replace(controlName, """");
+	|                                        DataGridViewButtonColumn1.NameColumn = nameObj;
+	|
+	|                                        DataGridViewButtonColumn1.DefaultValues = @""
+	|ИспользоватьТекстКакЗначение == Ложь
+	|Отображать == Истина
+	|ПлоскийСтиль == Стандартный
+	|Текст == 
+	|ТекстЗаголовка == КолонкаКнопка0
+	|ТекстПодсказки == 
+	|ИмяСвойстваДанных == 
+	|ВесЗаполнения == 100
+	|Закреплено == Ложь
+	|МинимальнаяШирина == 5
+	|РежимАвтоРазмера == НеУстановлено
+	|Ширина == 100
+	|ШиринаРазделителя == 0
+	|ИзменяемыйРазмер == Истина
+	|РежимСортировки == НеСортируемый
+	|ТолькоЧтение == Ложь
+	|ИмяКолонки == Таблица1КолонкаКнопка0
+	|"";
+	|                                    }
+	|                                    else if (strCurrent.Contains(""КолонкаКнопка"") &&
+	|                                        !(strCurrent.Contains(""=Ф.КолонкаКнопка();"") ||
+	|                                        strCurrent.Contains(""=Ф.СтильЯчейки();"") ||
+	|                                        strCurrent.Contains(""Колонки.Добавить("")
+	|                                        )) // Обрабатываем как свойство КолонкаКнопка
+	|                                    {
+	|                                        string displayName = OneScriptFormsDesigner.ParseBetween(strCurrent, ""."", ""="");
+	|                                        string nameObj = OneScriptFormsDesigner.ParseBetween(strCurrent, null, ""."");
+	|                                        object control2 = dictObjects[nameObj];
+	|                                        string strPropertyValue = OneScriptFormsDesigner.ParseBetween(strCurrent, ""="", "";"");
+	|                                        PropValueConverter.SetPropValue(control2, displayName, strPropertyValue, null);
+	|                                    }
+	|                                    else if (strCurrent.Contains("".Колонки.Добавить("") && strCurrent.Contains(""КолонкаКнопка""))
+	|                                    {
+	|                                        string nameColumn = OneScriptFormsDesigner.ParseBetween(strCurrent, ""("", "")"");
+	|                                        DataGridViewButtonColumn column = (DataGridViewButtonColumn)dictObjects[nameColumn];
+	|                                        DataGridView1.Columns.Add((DataGridViewButtonColumn)column);
+	|                                    }
+	|                                    // Закончили КолонкаКнопка =======================================================================================
+	|
+	|                                    // Обработаем КолонкаПолеВыбора =======================================================================================
+	|                                    else if (strCurrent.Contains(""=Ф.КолонкаПолеВыбора();""))
+	|                                    {
+	|                                        string nameObj = OneScriptFormsDesigner.ParseBetween(strCurrent, null, ""="");
+	|                                        DataGridViewComboBoxColumn DataGridViewComboBoxColumn1 = new DataGridViewComboBoxColumn();
+	|                                        dictObjects.Add(nameObj, DataGridViewComboBoxColumn1);
+	|                                        DataGridViewComboBoxColumn1.Name = nameObj.Replace(controlName, """");
+	|                                        DataGridViewComboBoxColumn1.NameColumn = nameObj;
+	|
+	|                                        DataGridViewComboBoxColumn1.DefaultValues = @""
+	|Отображать == Истина
+	|ПлоскийСтиль == Стандартный
+	|СтильОтображения == КнопкаСписка
+	|ТекстЗаголовка == КолонкаПолеВыбора0
+	|ТекстПодсказки == 
+	|ИмяСвойстваДанных == 
+	|Элементы == (Коллекция)
+	|ВесЗаполнения == 100
+	|Закреплено == Ложь
+	|МинимальнаяШирина == 5
+	|РежимАвтоРазмера == НеУстановлено
+	|Ширина == 100
+	|ШиринаРазделителя == 0
+	|ИзменяемыйРазмер == Истина
+	|МаксимумЭлементов == 8
+	|Отсортирован == Ложь
+	|РежимСортировки == НеСортируемый
+	|ТолькоЧтение == Ложь
+	|ИмяКолонки == Таблица1КолонкаПолеВыбора0
+	|"";
+	|                                    }
+	|                                    else if (strCurrent.Contains(""КолонкаПолеВыбора"") &&
+	|                                        !(strCurrent.Contains(""=Ф.КолонкаПолеВыбора();"") ||
+	|                                        strCurrent.Contains(""=Ф.СтильЯчейки();"") ||
+	|                                        strCurrent.Contains(""Колонки.Добавить("") ||
+	|                                        strCurrent.Contains(""Элементы.Добавить("")	
+	|                                        )) // Обрабатываем как свойство КолонкаПолеВыбора
+	|                                    {
+	|                                        string displayName = OneScriptFormsDesigner.ParseBetween(strCurrent, ""."", ""="");
+	|                                        string nameObj = OneScriptFormsDesigner.ParseBetween(strCurrent, null, ""."");
+	|                                        object control2 = dictObjects[nameObj];
+	|                                        string strPropertyValue = OneScriptFormsDesigner.ParseBetween(strCurrent, ""="", "";"");
+	|                                        PropValueConverter.SetPropValue(control2, displayName, strPropertyValue, null);
+	|                                    }
+	|                                    else if (strCurrent.Contains("".Колонки.Добавить("") && strCurrent.Contains(""КолонкаПолеВыбора""))
+	|                                    {
+	|                                        string nameColumn = OneScriptFormsDesigner.ParseBetween(strCurrent, ""("", "")"");
+	|                                        DataGridViewComboBoxColumn column = (DataGridViewComboBoxColumn)dictObjects[nameColumn];
+	|                                        DataGridView1.Columns.Add((DataGridViewComboBoxColumn)column);
+	|                                    }
+	|                                    else if (strCurrent.Contains("".Элементы.Добавить("") && strCurrent.Contains(""КолонкаПолеВыбора"")) // Добавляем элемент поля выбора.
+	|                                    {
+	|                                        string nameColumn = OneScriptFormsDesigner.ParseBetween(strCurrent, null, ""."");
+	|                                        DataGridViewComboBoxColumn column = (DataGridViewComboBoxColumn)dictObjects[nameColumn];
+	|
+	|                                        // Определяем тип элемента списка и создаем его.
+	|                                        string strPropertyValue = OneScriptFormsDesigner.ParseBetween(strCurrent, "".Элементы.Добавить("", "");"");
+	|                                        string itemText = strPropertyValue;
+	|                                        string itemValue = strPropertyValue;
+	|
+	|                                        osfDesigner.ListItemComboBox ListItemComboBox1 = new ListItemComboBox();
+	|                                        ListItemComboBox1.Text = itemText;
+	|
+	|                                        if (itemValue.StartsWith(""\u0022"") && itemValue.EndsWith(""\u0022"")) // Тип Строка.
+	|                                        {
+	|                                            itemValue = itemValue.Replace(""\u0022"", """");
+	|                                            ListItemComboBox1.Value = itemValue;
+	|                                            ListItemComboBox1.ValueType = DataType.Строка;
+	|                                        }
+	|                                        else if (strPropertyValue.Contains(""Ложь"") || strPropertyValue.Contains(""Истина"")) // Тип Булево.
+	|                                        {
+	|                                            ListItemComboBox1.Value = true;
+	|                                            ListItemComboBox1.ValueType = DataType.Булево;
+	|                                            if (itemValue == ""Ложь"")
+	|                                            {
+	|                                                ListItemComboBox1.Value = false;
+	|                                            }
+	|                                        }
+	|                                        else if (strPropertyValue.Contains(""Дата("")) // Тип Дата.
+	|                                        {
+	|                                            DateTime rez1 = new DateTime();
+	|                                            string[] result1 = OneScriptFormsDesigner.ParseBetween(strPropertyValue, ""Дата("", "")"").Split(new string[] { "","" }, StringSplitOptions.RemoveEmptyEntries);
+	|                                            for (int i2 = 0; i2 < result1.Length; i2++)
+	|                                            {
+	|                                                if (i2 == 0)
+	|                                                {
+	|                                                    rez1 = rez1.AddYears(Int32.Parse(result1[0]) - 1);
+	|                                                }
+	|                                                if (i2 == 1)
+	|                                                {
+	|                                                    rez1 = rez1.AddMonths(Int32.Parse(result1[1]) - 1);
+	|                                                }
+	|                                                if (i2 == 2)
+	|                                                {
+	|                                                    rez1 = rez1.AddDays(Int32.Parse(result1[2]) - 1);
+	|                                                }
+	|                                                if (i2 == 3)
+	|                                                {
+	|                                                    rez1 = rez1.AddHours(Int32.Parse(result1[3]));
+	|                                                }
+	|                                                if (i2 == 4)
+	|                                                {
+	|                                                    rez1 = rez1.AddMinutes(Int32.Parse(result1[4]));
+	|                                                }
+	|                                                if (i2 == 5)
+	|                                                {
+	|                                                    rez1 = rez1.AddSeconds(Int32.Parse(result1[5]));
+	|                                                }
+	|                                            }
+	|                                            ListItemComboBox1.Value = rez1;
+	|                                            ListItemComboBox1.ValueType = DataType.Дата;
+	|                                        }
+	|                                        else // Это тип Число.
+	|                                        {
+	|                                            itemValue = itemValue.Replace(""."", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
+	|                                            ListItemComboBox1.Value = Decimal.Parse(itemValue);
+	|                                            ListItemComboBox1.ValueType = DataType.Число;
+	|                                        }
+	|                                        column.Items.Add(ListItemComboBox1);
+	|                                    }	
+	|                                    // Закончили КолонкаПолеВыбора =======================================================================================
+	|
+	|                                    // Обработаем КолонкаСсылка =======================================================================================
+	|                                    else if (strCurrent.Contains(""=Ф.КолонкаСсылка();""))
+	|                                    {
+	|                                        string nameObj = OneScriptFormsDesigner.ParseBetween(strCurrent, null, ""="");
+	|                                        DataGridViewLinkColumn DataGridViewLinkColumn1 = new DataGridViewLinkColumn();
+	|                                        dictObjects.Add(nameObj, DataGridViewLinkColumn1);
+	|                                        DataGridViewLinkColumn1.Name = nameObj.Replace(controlName, """");
+	|                                        DataGridViewLinkColumn1.NameColumn = nameObj;
+	|
+	|                                        DataGridViewLinkColumn1.DefaultValues = @""
+	|ИспользоватьТекстКакСсылку == Ложь
+	|Отображать == Истина
+	|Текст == 
+	|ТекстЗаголовка == КолонкаСсылка0
+	|ТекстПодсказки == 
+	|ЦветАктивнойСсылки == Красный
+	|ЦветПосещеннойСсылки == 128; 0; 128
+	|ЦветСсылки == 0; 0; 255
+	|ИмяСвойстваДанных == 
+	|ВесЗаполнения == 100
+	|Закреплено == Ложь
+	|МинимальнаяШирина == 5
+	|РежимАвтоРазмера == НеУстановлено
+	|Ширина == 100
+	|ШиринаРазделителя == 0
+	|ИзменяемыйРазмер == Истина
+	|ПоведениеСсылки == СистемныйПоУмолчанию
+	|РежимСортировки == НеСортируемый
+	|ТолькоЧтение == Ложь
+	|ЦветПосещеннойИзменяется == Истина
+	|ИмяКолонки == Таблица1КолонкаСсылка0
+	|"";
+	|                                    }
+	|                                    else if (strCurrent.Contains(""КолонкаСсылка"") &&
+	|                                        !(strCurrent.Contains(""=Ф.КолонкаСсылка();"") ||
+	|                                        strCurrent.Contains(""=Ф.СтильЯчейки();"") ||
+	|                                        strCurrent.Contains(""Колонки.Добавить("")
+	|                                        )) // Обрабатываем как свойство КолонкаСсылка
+	|                                    {
+	|                                        string displayName = OneScriptFormsDesigner.ParseBetween(strCurrent, ""."", ""="");
+	|                                        string nameObj = OneScriptFormsDesigner.ParseBetween(strCurrent, null, ""."");
+	|                                        object control2 = dictObjects[nameObj];
+	|                                        string strPropertyValue = OneScriptFormsDesigner.ParseBetween(strCurrent, ""="", "";"");
+	|                                        PropValueConverter.SetPropValue(control2, displayName, strPropertyValue, null);
+	|                                    }
+	|                                    else if (strCurrent.Contains("".Колонки.Добавить("") && strCurrent.Contains(""КолонкаСсылка""))
+	|                                    {
+	|                                        string nameColumn = OneScriptFormsDesigner.ParseBetween(strCurrent, ""("", "")"");
+	|                                        DataGridViewLinkColumn column = (DataGridViewLinkColumn)dictObjects[nameColumn];
+	|                                        DataGridView1.Columns.Add((DataGridViewLinkColumn)column);
+	|                                    }
+	|                                    // Закончили КолонкаСсылка =======================================================================================
+	|
+	|                                    // Обработаем КолонкаФлажок =======================================================================================
+	|                                    else if (strCurrent.Contains(""=Ф.КолонкаФлажок();""))
+	|                                    {
+	|                                        string nameObj = OneScriptFormsDesigner.ParseBetween(strCurrent, null, ""="");
+	|                                        DataGridViewCheckBoxColumn DataGridViewCheckBoxColumn1 = new DataGridViewCheckBoxColumn();
+	|                                        dictObjects.Add(nameObj, DataGridViewCheckBoxColumn1);
+	|                                        DataGridViewCheckBoxColumn1.Name = nameObj.Replace(controlName, """");
+	|                                        DataGridViewCheckBoxColumn1.NameColumn = nameObj;
+	|
+	|                                        DataGridViewCheckBoxColumn1.DefaultValues = @""
+	|Отображать == Истина
+	|ПлоскийСтиль == Стандартный
+	|ТекстЗаголовка == КолонкаФлажок0
+	|ТекстПодсказки == 
+	|ИмяСвойстваДанных == 
+	|ВесЗаполнения == 100
+	|Закреплено == Ложь
+	|МинимальнаяШирина == 5
+	|РежимАвтоРазмера == НеУстановлено
+	|Ширина == 100
+	|ШиринаРазделителя == 0
+	|ИзменяемыйРазмер == Истина
+	|РежимСортировки == НеСортируемый
+	|ТолькоЧтение == Ложь
+	|ТриСостояния == Ложь
+	|ИмяКолонки == Таблица1КолонкаФлажок0
+	|"";
+	|                                    }
+	|                                    else if (strCurrent.Contains(""КолонкаФлажок"") &&
+	|                                        !(strCurrent.Contains(""=Ф.КолонкаФлажок();"") ||
+	|                                        strCurrent.Contains(""=Ф.СтильЯчейки();"") ||
+	|                                        strCurrent.Contains(""Колонки.Добавить("")
+	|                                        )) // Обрабатываем как свойство КолонкаФлажок
+	|                                    {
+	|                                        string displayName = OneScriptFormsDesigner.ParseBetween(strCurrent, ""."", ""="");
+	|                                        string nameObj = OneScriptFormsDesigner.ParseBetween(strCurrent, null, ""."");
+	|                                        object control2 = dictObjects[nameObj];
+	|                                        string strPropertyValue = OneScriptFormsDesigner.ParseBetween(strCurrent, ""="", "";"");
+	|                                        PropValueConverter.SetPropValue(control2, displayName, strPropertyValue, null);
+	|                                    }
+	|                                    else if (strCurrent.Contains("".Колонки.Добавить("") && strCurrent.Contains(""КолонкаФлажок""))
+	|                                    {
+	|                                        string nameColumn = OneScriptFormsDesigner.ParseBetween(strCurrent, ""("", "")"");
+	|                                        DataGridViewCheckBoxColumn column = (DataGridViewCheckBoxColumn)dictObjects[nameColumn];
+	|                                        DataGridView1.Columns.Add((DataGridViewCheckBoxColumn)column);
+	|                                    }
+	|                                    // Закончили КолонкаФлажок =======================================================================================
+	|
+	|                                    // Теперь обработаем стили =============================================================================
+	|                                    else if (strCurrent.Contains(""СтильЗаголовковКолонок=Ф.СтильЯчейки();""))	
+	|                                    {
+	|                                        string nameObj = OneScriptFormsDesigner.ParseBetween(strCurrent, null, ""="");
+	|                                        DataGridViewCellStyleHeaders ColumnHeadersDefaultCellStyle1 = DataGridView1.columnHeadersDefaultCellStyle;
+	|                                        dictObjects.Add(nameObj, ColumnHeadersDefaultCellStyle1);
+	|                                        ColumnHeadersDefaultCellStyle1.NameStyle = nameObj;
+	|
+	|                                        ColumnHeadersDefaultCellStyle1.DefaultValues = @""
+	|ОсновнойЦвет == ТекстОкна
+	|ОсновнойЦветВыделенного == ТекстВыбранных
+	|ЦветФона == ЛицеваяЭлемента
+	|ЦветФонаВыделенного == ФонВыбранных
+	|Шрифт == Microsoft Sans Serif; 7,8pt
+	|Выравнивание == СерединаЛево
+	|Заполнение == 0; 0; 0; 0
+	|Перенос == Истина
+	|ИмяСтиля == Таблица1СтильЯчейки
+	|"";
+	|                                    }
+	|                                    else if(strCurrent.Contains(""СтильЗаголовковСтрок=Ф.СтильЯчейки();""))
+	|                                    {
+	|                                        string nameObj = OneScriptFormsDesigner.ParseBetween(strCurrent, null, ""="");
+	|                                        DataGridViewCellStyleHeaders RowHeadersDefaultCellStyle1 = DataGridView1.rowHeadersDefaultCellStyle;
+	|                                        dictObjects.Add(nameObj, RowHeadersDefaultCellStyle1);
+	|                                        RowHeadersDefaultCellStyle1.NameStyle = nameObj;
+	|
+	|                                        RowHeadersDefaultCellStyle1.DefaultValues = @""
+	|ОсновнойЦвет == ТекстОкна
+	|ОсновнойЦветВыделенного == ТекстВыбранных
+	|ЦветФона == ЛицеваяЭлемента
+	|ЦветФонаВыделенного == ФонВыбранных
+	|Шрифт == Microsoft Sans Serif; 7,8pt
+	|Выравнивание == СерединаЛево
+	|Заполнение == 0; 0; 0; 0
+	|Перенос == Истина
+	|ИмяСтиля == Таблица1СтильЯчейки
+	|"";
+	|                                    }
+	|                                    else if (strCurrent.Contains(""СтильЯчейки=Ф.СтильЯчейки();""))
+	|                                    {
+	|                                        // Найдем имя стиля ячейки.
+	|                                        string nameObj = OneScriptFormsDesigner.ParseBetween(strCurrent, null, ""="");
+	|                                        // Найдем имя колонки для которой применяется стиль ячейки.
+	|                                        string nameObjColumn = OneScriptFormsDesigner.ParseBetween(nameObj, null, ""СтильЯчейки"");
+	|                                        // Найдем колонку для которой применяется стиль ячейки.
+	|                                        System.Windows.Forms.DataGridViewColumn control2 = (System.Windows.Forms.DataGridViewColumn)dictObjects[nameObjColumn];
+	|                                        DataGridViewCellStyle DefaultCellStyle1 = new DataGridViewCellStyle(nameObj, DataGridView1);
+	|                                        dictObjects.Add(nameObj, DefaultCellStyle1);
+	|                                        control2.DefaultCellStyle = DefaultCellStyle1;
+	|                                    }
+	|                                    else if (strCurrent.Contains(""СтильЗаголовковКолонок."") || 
+	|                                        strCurrent.Contains(""СтильЗаголовковСтрок."") || 
+	|                                        strCurrent.Contains(""СтильЯчейки.""))
+	|                                    {
+	|                                        string displayName = OneScriptFormsDesigner.ParseBetween(strCurrent, ""."", ""="");
+	|                                        string nameObj = OneScriptFormsDesigner.ParseBetween(strCurrent, null, ""."");
+	|                                        object control2 = dictObjects[nameObj];
+	|                                        string strPropertyValue = OneScriptFormsDesigner.ParseBetween(strCurrent, ""="", "";"");
+	|                                        PropValueConverter.SetPropValue(control2, displayName, strPropertyValue, null);
+	|                                    }
+	|                                    else if (strCurrent.Contains("".СтильЗаголовковКолонок=""))
+	|                                    {
+	|                                        string displayName = OneScriptFormsDesigner.ParseBetween(strCurrent, componentName + ""."", ""="");
+	|                                        string strPropertyValue = OneScriptFormsDesigner.ParseBetween(strCurrent, ""="", "";"");
+	|                                        string parentName = OneScriptFormsDesigner.ParseBetween(ComponentBlok, componentName + @"".Родитель="", @"";"");
+	|                                        Control parent = (Control)dictObjects[parentName];
+	|                                        DataGridView1.ColumnHeadersDefaultCellStyle = (DataGridViewCellStyleHeaders)dictObjects[strPropertyValue];
+	|                                    }
+	|                                    else if (strCurrent.Contains("".СтильЗаголовковСтрок=""))
+	|                                    {
+	|                                        string displayName = OneScriptFormsDesigner.ParseBetween(strCurrent, componentName + ""."", ""="");
+	|                                        string strPropertyValue = OneScriptFormsDesigner.ParseBetween(strCurrent, ""="", "";"");
+	|                                        string parentName = OneScriptFormsDesigner.ParseBetween(ComponentBlok, componentName + @"".Родитель="", @"";"");
+	|                                        Control parent = (Control)dictObjects[parentName];
+	|                                        DataGridView1.RowHeadersDefaultCellStyle = (DataGridViewCellStyleHeaders)dictObjects[strPropertyValue];
+	|                                    }
+	|                                    else // Обрабатываем как свойство таблицы.
+	|                                    {
+	|                                        string displayName = OneScriptFormsDesigner.ParseBetween(strCurrent, componentName + ""."", ""="");
+	|                                        string strPropertyValue = OneScriptFormsDesigner.ParseBetween(strCurrent, ""="", "";"");
+	|                                        string parentName = OneScriptFormsDesigner.ParseBetween(ComponentBlok, componentName + @"".Родитель="", @"";"");
+	|                                        Control parent = (Control)dictObjects[parentName];
+	|                                        PropValueConverter.SetPropValue(control, displayName, strPropertyValue, parent);
 	|                                    }
 	|                                }
 	|                                else
@@ -13650,163 +19379,6 @@
 	ТекстДокХХХ = Новый ТекстовыйДокумент;
 	ТекстДокХХХ.УстановитьТекст(СтрВыгрузки);
 	ТекстДокХХХ.Записать("C:\444\ВыгрузкаДизайнера\pDesignerMainForm.cs");
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	СтрВыгрузки = 
 	"using System.ComponentModel.Design.Serialization;
 	|using System.ComponentModel.Design;
@@ -13951,6 +19523,13 @@
 	|                           );
 	|                        if (fact == System.Windows.Forms.DialogResult.OK || fact == System.Windows.Forms.DialogResult.Yes)
 	|                        {
+	|                            ISelectionService iSel = (ISelectionService)OneScriptFormsDesigner.DesignerHost.GetService(typeof(ISelectionService));
+	|                            if (iSel != null)
+	|                            {
+	|                                ComponentCollection ctrlsExisting = OneScriptFormsDesigner.DesignerHost.Container.Components;
+	|                                iSel.SetSelectedComponents(ctrlsExisting);
+	|                                DeleteOnDesignSurfaceWithoutWarning();
+	|                            }
 	|                            OneScriptFormsDesigner.dictionaryTabPageChanged.Remove(TabControl.SelectedTab);
 	|                            RemoveDesignSurface(DesignSurfaceManager.ActiveDesignSurface);
 	|                        }
@@ -14097,7 +19676,11 @@
 	|            rootComponent = surface.CreateRootComponent(typeof(TT), new Size(startingFormWidth, startingFormHeight)) as Control;
 	|            // Переименуем размещаемый компонент, потому что пользователь может добавить более одной формы
 	|            // и каждая новая форма будет называться ""Form1"", если мы не зададим её имя (Name).
-	|            if (formName != null)
+	|            if (formName == """")
+	|            {
+	|                rootComponent.Site.Name = ""Форма_0"";
+	|            }
+	|            else if (formName != null)
 	|            {
 	|                // Организуем вопрос об имени загружаемой формы.
 	|                form = new System.Windows.Forms.Form();
@@ -14199,6 +19782,7 @@
 	|                    if (OriginalObj.GetType() == typeof(System.Windows.Forms.ImageList) || 
 	|                    OriginalObj.GetType() == typeof(osfDesigner.TreeView) || 
 	|                    OriginalObj.GetType() == typeof(osfDesigner.DataGrid) || 
+	|                    OriginalObj.GetType() == typeof(osfDesigner.DataGridView) || 
 	|                    OriginalObj.GetType() == typeof(osfDesigner.RichTextBox))
 	|                    {
 	|                        IDesignerHost designerHost = DesignSurfaceManager.ActiveDesignSurface.GetIDesignerHost();
@@ -14213,6 +19797,8 @@
 	|                    }
 	|
 	|                    if (OriginalObj.GetType() == typeof(osfDesigner.DataGrid) ||
+	|                    OriginalObj.GetType() == typeof(osfDesigner.MaskedTextBox) ||
+	|                    OriginalObj.GetType() == typeof(osfDesigner.DataGridView) || 
 	|                    OriginalObj.GetType() == typeof(osfDesigner.TabControl))
 	|                    {
 	|                        IDesignerHost designerHost = DesignSurfaceManager.ActiveDesignSurface.GetIDesignerHost();
@@ -14236,11 +19822,17 @@
 	|                        dynamic SimilarObj = OneScriptFormsDesigner.RevertSimilarObj(OriginalObj);
 	|                        DesignSurfaceManager.PropertyGridHost.PropertyGrid.SelectedObject = SimilarObj;
 	|                        SimilarObj.DefaultValues = OneScriptFormsDesigner.GetDefaultValues(SimilarObj, DesignSurfaceManager.PropertyGridHost.PropertyGrid);
+	|
+	|                        //System.Windows.Forms.MessageBox.Show(""OriginalObj.DefaultValues = "" + SimilarObj.DefaultValues + ""\r\n"" + """");
+	|                        //System.Windows.Forms.Clipboard.SetText(SimilarObj.DefaultValues);
 	|                    }
 	|                    else
 	|                    {
 	|                        DesignSurfaceManager.PropertyGridHost.PropertyGrid.SelectedObject = OriginalObj;
 	|                        OriginalObj.DefaultValues = OneScriptFormsDesigner.GetDefaultValues(OriginalObj, DesignSurfaceManager.PropertyGridHost.PropertyGrid);
+	|
+	|                        //System.Windows.Forms.MessageBox.Show(""OriginalObj.DefaultValues = "" + OriginalObj.DefaultValues + ""\r\n"" + """");
+	|                        //System.Windows.Forms.Clipboard.SetText(OriginalObj.DefaultValues);
 	|                    }
 	|
 	|                    PropertyGridHost.ReloadTreeView();
@@ -14398,6 +19990,24 @@
 	|                isurf.DoAction(""Paste"");
 	|            }
 	|        }
+	|	
+	|        public void DeleteOnDesignSurfaceWithoutWarning()
+	|        {
+	|            IDesignSurfaceExt isurf = DesignSurfaceManager.ActiveDesignSurface;
+	|            if (null != isurf)
+	|            {
+	|                try
+	|                {
+	|                    SplitContainer SplitContainer1 = (SplitContainer)ActiveControl;
+	|                    osfDesigner.PropertyGridHost PropertyGridHost1 = (osfDesigner.PropertyGridHost)SplitContainer1.ActiveControl;
+	|                    bool ToolbarVisible1 = PropertyGridHost1.PropertyGrid.ToolbarVisible;
+	|                }
+	|                catch
+	|                {
+	|                    isurf.DoAction(""Delete"");
+	|                }
+	|            }
+	|        }	
 	|
 	|        public void DeleteOnDesignSurface()
 	|        {
@@ -14806,6 +20416,7 @@
 	|        void CopyOnDesignSurface();
 	|        void PasteOnDesignSurface();
 	|        void DeleteOnDesignSurface();
+	|        void DeleteOnDesignSurfaceWithoutWarning();
 	|        void SwitchTabOrder();
 	|
 	|        //* 17.12.2021 perfolenta
@@ -22543,6 +28154,102 @@
 	|            thread.Join();
 	|        }
 	|	
+	|        [ContextMethod(""ПолучитьЗначениеСвойства"", ""GetPropertyValue"")]
+	|        public IValue GetPropertyValue(string controlName, string propertyName)
+	|        {
+	|            osfDesigner.pDesignerMainForm Form1 = (osfDesigner.pDesignerMainForm)osfDesigner.Program.pDesignerMainForm1;
+	|            IValue propertyValue = (IValue)Form1.Invoke(new osfDesigner.pDesignerMainForm.GetPropertyValue(Form1.GetPropertyValueMethod), controlName, propertyName);
+	|            return propertyValue;
+	|        }
+	|
+	|        [ContextMethod(""ПолучитьТипСвойства"", ""GetPropertyType"")]
+	|        public string GetPropertyType(string controlName, string propertyName)
+	|        {
+	|            osfDesigner.pDesignerMainForm Form1 = (osfDesigner.pDesignerMainForm)osfDesigner.Program.pDesignerMainForm1;
+	|            string typeName = (string)Form1.Invoke(new osfDesigner.pDesignerMainForm.GetPropertyType(Form1.GetPropertyTypeMethod), controlName, propertyName);
+	|            return typeName;
+	|        }
+	|
+	|        [ContextMethod(""ЗакрытьДизайнер"", ""CloseDesigner"")]
+	|        public void CloseDesigner()
+	|        {
+	|            osfDesigner.pDesignerMainForm Form1 = (osfDesigner.pDesignerMainForm)osfDesigner.Program.pDesignerMainForm1;
+	|            Form1.Invoke(new osfDesigner.pDesignerMainForm.CloseDesigner(Form1.CloseDesignerMethod));
+	|        }
+	|
+	|        [ContextMethod(""ОткрытьФорму"", ""LoadForm"")]
+	|        public void LoadForm(string fileName)
+	|        {
+	|            osfDesigner.pDesignerMainForm Form1 = (osfDesigner.pDesignerMainForm)osfDesigner.Program.pDesignerMainForm1;
+	|            Form1.Invoke(new osfDesigner.pDesignerMainForm.LoadForm(Form1.LoadFormMethod), fileName);
+	|        }
+	|
+	|        [ContextMethod(""ЗапуститьСценарий"", ""RunScript"")]
+	|        public void RunScript()
+	|        {
+	|            osfDesigner.pDesignerMainForm Form1 = (osfDesigner.pDesignerMainForm)osfDesigner.Program.pDesignerMainForm1;
+	|            Form1.Invoke(new osfDesigner.pDesignerMainForm.RunScript(Form1.RunScriptMethod));
+	|        }
+	|
+	|        [ContextMethod(""СформироватьСценарий"", ""GenerateScript"")]
+	|        public void GenerateScript(string fileName)
+	|        {
+	|            osfDesigner.pDesignerMainForm Form1 = (osfDesigner.pDesignerMainForm)osfDesigner.Program.pDesignerMainForm1;
+	|            Form1.Invoke(new osfDesigner.pDesignerMainForm.GenerateScript(Form1.GenerateScriptMethod), fileName);
+	|        }
+	|
+	|        [ContextMethod(""СохранитьФорму"", ""UnloadForm"")]
+	|        public void UnloadForm(string fileName)
+	|        {
+	|            osfDesigner.pDesignerMainForm Form1 = (osfDesigner.pDesignerMainForm)osfDesigner.Program.pDesignerMainForm1;
+	|            Form1.Invoke(new osfDesigner.pDesignerMainForm.UnloadForm(Form1.UnloadFormMethod), fileName);
+	|        }
+	|
+	|        [ContextMethod(""УстановитьСвойство"", ""SetProperty"")]
+	|        public void SetProperty(string controlName, string propertyName, IValue propertyValue)
+	|        {
+	|            osfDesigner.pDesignerMainForm Form1 = (osfDesigner.pDesignerMainForm)osfDesigner.Program.pDesignerMainForm1;
+	|            Form1.Invoke(new osfDesigner.pDesignerMainForm.SetProperty(Form1.SetPropertyMethod), controlName, propertyName, propertyValue);
+	|        }
+	|
+	|        [ContextMethod(""ДобавитьКонтрол"", ""AddControl"")]
+	|        public string AddControl(string controlName)
+	|        {
+	|            osfDesigner.pDesignerMainForm Form1 = (osfDesigner.pDesignerMainForm)osfDesigner.Program.pDesignerMainForm1;
+	|            string name1 = (string)Form1.Invoke(new osfDesigner.pDesignerMainForm.AddControl(Form1.AddControlMethod), controlName);
+	|            return name1;
+	|        }
+	|	
+	|        [ContextMethod(""УдалитьКонтролы"", ""RemoveControls"")]
+	|        public void RemoveControls()
+	|        {
+	|            osfDesigner.pDesignerMainForm Form1 = (osfDesigner.pDesignerMainForm)osfDesigner.Program.pDesignerMainForm1;
+	|            string name1 = (string)Form1.Invoke(new osfDesigner.pDesignerMainForm.RemoveControls(Form1.RemoveControlsMethod));
+	|        }
+	|
+	|        [ContextProperty(""ВизуальныеСтилиФормВключены"", ""FormVisualStylesTurnOn"")]
+	|        public bool FormVisualStylesTurnOn
+	|        {
+	|            get
+	|            {
+	|                if ((bool)osfDesigner.Properties.Settings.Default[""visualSyleForms""])
+	|                {
+	|                    return true;
+	|                }
+	|                return false;
+	|            }
+	|        }	
+	|
+	|        [ContextMethod(""ДизайнерОткрыт"", ""DesignerOpen"")]
+	|        public bool DesignerOpen()
+	|        {
+	|            if (osfDesigner.Program.pDesignerMainForm1.GetmainForm().Visible)
+	|            {
+	|                return true;
+	|            }
+	|            return false;
+	|        }	
+	|	
 	|        public static void PassProperties(dynamic p1, dynamic p2)
 	|        {
 	|            // p1 - исходный объект (OriginalObj).
@@ -23058,6 +28765,73 @@
 	|                return newName;
 	|            }
 	|            return null;
+	|        }
+	|	
+	|        public static string RevertDataGridViewColumnName(dynamic p1, dynamic p2)
+	|        {
+	|            // p1 - таблица.
+	|            // p2 - колонка таблицы.
+	|            osfDesigner.DataGridView DataGridView1 = p1;
+	|            string name = """";
+	|            if (p2.GetType() == typeof(osfDesigner.DataGridViewTextBoxColumn))
+	|            {
+	|                name = ""КолонкаПолеВвода"";
+	|            }
+	|            else if (p2.GetType() == typeof(osfDesigner.DataGridViewLinkColumn))
+	|            {
+	|                name = ""КолонкаСсылка"";
+	|            }
+	|            else if (p2.GetType() == typeof(osfDesigner.DataGridViewImageColumn))
+	|            {
+	|                name = ""КолонкаКартинка"";
+	|            }
+	|            else if (p2.GetType() == typeof(osfDesigner.DataGridViewComboBoxColumn))
+	|            {
+	|                name = ""КолонкаПолеВыбора"";
+	|            }
+	|            else if (p2.GetType() == typeof(osfDesigner.DataGridViewCheckBoxColumn))
+	|            {
+	|                name = ""КолонкаФлажок"";
+	|            }
+	|            else if (p2.GetType() == typeof(osfDesigner.DataGridViewButtonColumn))
+	|            {
+	|                name = ""КолонкаКнопка"";
+	|            }
+	|            else
+	|            {
+	|                return null;
+	|            }
+	|
+	|            int max = 0;
+	|            int num = 0;
+	|            string newName = name + Convert.ToString(max);
+	|            ArrayList ArrayList1 = new ArrayList();
+	|            for (int i = 0; i < DataGridView1.Columns.Count; i++)
+	|            {
+	|                string Name = ((dynamic)DataGridView1.Columns[i]).Name;
+	|                if (Name != null)
+	|                {
+	|                    if (Name.Contains(name))
+	|                    {
+	|                        ArrayList1.Add(Name);
+	|                        num = Int32.Parse(ParseBetween(Name, name, null));
+	|                        if ((num + 1) > max)
+	|                        {
+	|                            max = num + 1;
+	|                        }
+	|                    }
+	|                }
+	|            }
+	|
+	|            for (int i = -1; i < max; i++)
+	|            {
+	|                newName = name + Convert.ToString(i + 1);
+	|                if (!ArrayList1.Contains(newName))
+	|                {
+	|                    return newName;
+	|                }
+	|            }
+	|            return newName;
 	|        }
 	|
 	|        public static void AddToDictionary(dynamic p1, dynamic p2)
@@ -23593,6 +29367,7 @@
 	|                {""CheckBox"", ""Флажок""},
 	|                {""ColorDialog"", ""ДиалогВыбораЦвета""},
 	|                {""ComboBox"", ""ПолеВыбора""},
+	|                {""DataGridView"", ""Таблица""},
 	|                {""DataGrid"", ""СеткаДанных""},
 	|                {""DateTimePicker"", ""ПолеКалендаря""},
 	|                {""FileSystemWatcher"", ""НаблюдательФайловойСистемы""},
@@ -23607,6 +29382,7 @@
 	|                {""ListBox"", ""ПолеСписка""},
 	|                {""ListView"", ""СписокЭлементов""},
 	|                {""MainMenu"", ""ГлавноеМеню""},
+	|                {""MaskedTextBox"", ""МаскаПоляВвода""},
 	|                {""MonthCalendar"", ""Календарь""},
 	|                {""NotifyIcon"", ""ЗначокУведомления""},
 	|                {""NumericUpDown"", ""РегуляторВверхВниз""},
@@ -23638,6 +29414,7 @@
 	|                {""Флажок"", ""CheckBox""},
 	|                {""ДиалогВыбораЦвета"", ""ColorDialog""},
 	|                {""ПолеВыбора"", ""ComboBox""},
+	|                {""Таблица"", ""DataGridView""},
 	|                {""СеткаДанных"", ""DataGrid""},
 	|                {""ПолеКалендаря"", ""DateTimePicker""},
 	|                {""НаблюдательФайловойСистемы"", ""FileSystemWatcher""},
@@ -23652,6 +29429,7 @@
 	|                {""ПолеСписка"", ""ListBox""},
 	|                {""СписокЭлементов"", ""ListView""},
 	|                {""ГлавноеМеню"", ""MainMenu""},
+	|                {""МаскаПоляВвода"", ""MaskedTextBox""},
 	|                {""Календарь"", ""MonthCalendar""},
 	|                {""ЗначокУведомления"", ""NotifyIcon""},
 	|                {""РегуляторВверхВниз"", ""NumericUpDown""},
@@ -23680,9 +29458,10 @@
 	|            {
 	|                {""АвтоРазмерПанелиСтрокиСостояния"", ""StatusBarPanelAutoSize""},
 	|                {""АктивацияЭлемента"", ""ItemActivation""},
-	|                {""ВыравниваниеВкладок"", ""TabAlignment""},
 	|                {""ВыравниваниеВСпискеЭлементов"", ""ListViewAlignment""},
+	|                {""ВыравниваниеВкладок"", ""TabAlignment""},
 	|                {""ВыравниваниеСодержимого"", ""ContentAlignment""},
+	|                {""ВыравниваниеСодержимогоЯчейки"", ""DataGridViewContentAlignment""},
 	|                {""ВыравниваниеТекстаВПанелиИнструментов"", ""ToolBarTextAlign""},
 	|                {""ГлубинаЦвета"", ""ColorDepth""},
 	|                {""ГоризонтальноеВыравнивание"", ""HorizontalAlignment""},
@@ -23708,12 +29487,21 @@
 	|                {""ПорядокСортировки"", ""SortOrder""},
 	|                {""ПричинаЗакрытия"", ""CloseReason""},
 	|                {""РазмещениеИзображения"", ""ImageLayout""},
+	|                {""РазмещениеИзображенияЯчейки"", ""DataGridViewImageCellLayout""},	
 	|                {""РегистрСимволов"", ""CharacterCasing""},
+	|                {""РежимАвтоРазмераКолонки"", ""DataGridViewAutoSizeColumnMode""},
+	|                {""РежимАвтоРазмераКолонок"", ""DataGridViewAutoSizeColumnsMode""},
+	|                {""РежимАвтоРазмераСтрок"", ""DataGridViewAutoSizeRowsMode""},
+	|                {""РежимВставки"", ""InsertKeyMode""},
 	|                {""РежимВыбора"", ""SelectionMode""},
+	|                {""РежимВыбораТаблицы"", ""DataGridViewSelectionMode""},
+	|                {""РежимВысотыЗаголовковКолонок"", ""DataGridViewColumnHeadersHeightSizeMode""},
 	|                {""РежимОтображения"", ""View""},
 	|                {""РежимРазмераВкладок"", ""TabSizeMode""},
 	|                {""РежимРазмераПоляКартинки"", ""PictureBoxSizeMode""},
 	|                {""РежимРисования"", ""DrawMode""},
+	|                {""РежимСортировки"", ""DataGridViewColumnSortMode""},	
+	|                {""РежимШириныЗаголовковСтрок"", ""DataGridViewRowHeadersWidthSizeMode""},
 	|                {""РезультатДиалога"", ""DialogResult""},
 	|                {""СлияниеМеню"", ""MenuMerge""},
 	|                {""СортировкаСвойств"", ""PropertySort""},
@@ -23729,6 +29517,7 @@
 	|                {""СтильКнопокПанелиИнструментов"", ""ToolBarButtonStyle""},
 	|                {""СтильОкнаПроцесса"", ""ProcessWindowStyle""},
 	|                {""СтильПоляВыбора"", ""ComboBoxStyle""},
+	|                {""СтильПоляВыбораЯчейки"", ""DataGridViewComboBoxDisplayStyle""},
 	|                {""СтильСтыковки"", ""DockStyle""},
 	|                {""СтильШрифта"", ""FontStyle""},
 	|                {""СтильШтриховки"", ""HatchStyle""},
@@ -23737,12 +29526,14 @@
 	|                {""ТипСобытияПрокрутки"", ""ScrollEventType""},
 	|                {""ТипСортировки"", ""SortType""},
 	|                {""ТипЭлементаСетки"", ""GridItemType""},
+	|                {""ТриСостояния"", ""DataGridViewTriState""},
 	|                {""ФильтрыУведомления"", ""NotifyFilters""},
 	|                {""ФлагиМыши"", ""MouseFlags""},
-	|                {""ФорматированноеПолеВводаПоиск"", ""RichTextBoxFinds""},
-	|                {""ФорматированноеПолеВводаТипыПотоков"", ""RichTextBoxStreamType""},
+	|                {""ФорматМаски"", ""MaskFormat""},
+	|                {""ФорматПикселей"", ""PixelFormat""},
 	|                {""ФорматПоляКалендаря"", ""FormatDateTimePicker""},
-	|                {""ФорматПикселей"", ""PixelFormat""}
+	|                {""ФорматированноеПолеВводаПоиск"", ""RichTextBoxFinds""},
+	|                {""ФорматированноеПолеВводаТипыПотоков"", ""RichTextBoxStreamType""}
 	|            };
 	|
 	|        public static Dictionary<string, Cursor> namesCursorRuEn = new Dictionary<string, Cursor>
@@ -24098,6 +29889,16 @@
 	|                                    state = state + propName + "" = "" + Convert.ToString(propValue) + Environment.NewLine;
 	|                                }
 	|                            }
+	|                            else if(propName == ""DefaultCellStyle"" && (
+	|                                obj.GetType() == typeof(osfDesigner.DataGridViewTextBoxColumn) ||
+	|                                obj.GetType() == typeof(osfDesigner.DataGridViewButtonColumn) ||
+	|                                obj.GetType() == typeof(osfDesigner.DataGridViewCheckBoxColumn) ||
+	|                                obj.GetType() == typeof(osfDesigner.DataGridViewComboBoxColumn) ||
+	|                                obj.GetType() == typeof(osfDesigner.DataGridViewImageColumn) ||
+	|                                obj.GetType() == typeof(osfDesigner.DataGridViewLinkColumn)
+	|                                ))
+	|                            {
+	|                            }
 	|                            else
 	|                            {
 	|                                state = state + propName + "" = "" + Convert.ToString(propValue) + Environment.NewLine;
@@ -24236,6 +30037,39 @@
 	|                                GetState(dataGridTableStyle.GridColumnStyles[i2], ref state);
 	|                            }
 	|                        }
+	|                    }
+	|                    if (component.GetType() == typeof(osfDesigner.DataGridView))
+	|                    {
+	|                        DataGridView dataGridView = (osfDesigner.DataGridView)component;
+	|                        TypeConverter Converter1 = new System.Drawing.FontConverter();
+	|
+	|                        for (int i1 = 0; i1 < dataGridView.Columns.Count; i1++)
+	|                        {
+	|                            DataGridViewColumn dataGridViewColumn = dataGridView.Columns[i1];
+	|                            GetState(dataGridViewColumn, ref state);
+	|
+	|                            System.Windows.Forms.DataGridViewCellStyle defaultCellStyle = (System.Windows.Forms.DataGridViewCellStyle)dataGridViewColumn.DefaultCellStyle;
+	|                            GetState(defaultCellStyle, ref state);
+	|
+	|                            state = state + ""DefaultCellStyle_Font = "" + MyFontConverter.ConvertToString(Converter1.ConvertToString(defaultCellStyle.Font)) + Environment.NewLine;
+	|
+	|                            if (dataGridView.Columns[i1].GetType() == typeof(osfDesigner.DataGridViewComboBoxColumn))
+	|                            {
+	|                                osfDesigner.DataGridViewComboBoxColumn dataGridViewComboBoxColumn = (osfDesigner.DataGridViewComboBoxColumn)dataGridView.Columns[i1];
+	|                                System.Windows.Forms.DataGridViewComboBoxCell.ObjectCollection items = dataGridViewComboBoxColumn.Items;
+	|                                for (int i2 = 0; i2 < items.Count; i2++)
+	|                                {
+	|                                    osfDesigner.ListItemComboBox listItem = (osfDesigner.ListItemComboBox)items[i2];
+	|                                    state = state + ""Value = "" + Convert.ToString(listItem.Value.ToString()) + Environment.NewLine;
+	|                                }
+	|                            }
+	|                        }
+	|
+	|                        System.Windows.Forms.DataGridViewCellStyle columnHeadersDefaultCellStyle = dataGridView.ColumnHeadersDefaultCellStyle;
+	|                        state = state + ""ColumnHeadersDefaultCellStyle_Font = "" + MyFontConverter.ConvertToString(Converter1.ConvertToString(columnHeadersDefaultCellStyle.Font)) + Environment.NewLine;
+	|
+	|                        System.Windows.Forms.DataGridViewCellStyle rowHeadersDefaultCellStyle = dataGridView.RowHeadersDefaultCellStyle;
+	|                        state = state + ""RowHeadersDefaultCellStyle_Font = "" + MyFontConverter.ConvertToString(Converter1.ConvertToString(rowHeadersDefaultCellStyle.Font)) + Environment.NewLine;
 	|                    }
 	|                    if (component.GetType() == typeof(osfDesigner.TabControl))
 	|                    {
@@ -25577,6 +31411,33 @@
 	|                return value.ToString();
 	|            }
 	|        }
+	|	
+	|        public static string ConvertColorToString(object value)
+	|        {
+	|            string fact = value.ToString();
+	|            string[] stringSeparators = new string[] { ""["", ""]"" };
+	|            string[] result = fact.Split(stringSeparators, StringSplitOptions.RemoveEmptyEntries);
+	|            // result[1] - это либо имя цвета (Green), либо его RGB значения (A = 255, R = 255, G = 224, B = 192).
+	|            // Меняем result[1] на значение из словаря colors.
+	|            string[] stringSeparators2 = new string[] { "", "" };
+	|            string[] result2 = result[1].Split(stringSeparators2, StringSplitOptions.RemoveEmptyEntries);
+	|            if (result2.Length == 4) // Цвет в ARGB.
+	|            {
+	|                return fact.Replace(""Color"", ""Цвет"");
+	|            }
+	|            else
+	|            {
+	|                try
+	|                {
+	|                    return ""Цвет ["" + OneScriptFormsDesigner.colors[result[1]] + ""]"";
+	|                }
+	|                catch
+	|                {
+	|                    Color Color1 = (Color)value;
+	|                    return ""Цвет [A="" + Color1.A + "", R="" + Color1.R + "", G="" + Color1.G + "", B="" + Color1.B + ""]"";
+	|                }
+	|            }
+	|        }
 	|
 	|        public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
 	|        {
@@ -25841,7 +31702,7 @@
 	|                cursors = new Dictionary<string, string>
 	|                {
 	|                    {""NoMove2D"", ""БезДвижения2D""},
-	|                    {""NoMoveVert"", ""БезДвиженияВекртикально""},
+	|                    {""NoMoveVert"", ""БезДвиженияВертикально""},
 	|                    {""NoMoveHoriz"", ""БезДвиженияГоризонтально""},
 	|                    {""VSplit"", ""ВРазделитель""},
 	|                    {""HSplit"", ""ГРазделитель""},
@@ -25939,7 +31800,7 @@
 	|        public static Dictionary<string, string> cursors = new Dictionary<string, string>
 	|            {
 	|                {""NoMove2D"", ""БезДвижения2D""},
-	|                {""NoMoveVert"", ""БезДвиженияВекртикально""},
+	|                {""NoMoveVert"", ""БезДвиженияВертикально""},
 	|                {""NoMoveHoriz"", ""БезДвиженияГоризонтально""},
 	|                {""VSplit"", ""ВРазделитель""},
 	|                {""HSplit"", ""ГРазделитель""},
@@ -27056,6 +32917,185 @@
 		|        [ReadOnly(true)]
 		|        public new dynamic AcceptButton { get; set; }
 		|";
+	ИначеЕсли ИмяКонтекстКлассаАнгл = "DataGridViewTextBoxColumn" Тогда
+		Стр = Стр + 
+		"        [DisplayName(""ИмяКолонки"")]
+		|        [Category(""Прочее"")]
+		|        [Browsable(true)]
+		|        [ReadOnly(true)]
+		|        public string NameColumn { get; set; }
+		|		
+		|        [Browsable(false)]
+		|        public new dynamic CellTemplate { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic CellType { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic ContextMenuStrip { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic DefaultHeaderCellType { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic HasDefaultCellStyle { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic InheritedAutoSizeMode { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic InheritedStyle { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic IsDataBound { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic Site { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic State { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic Tag { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic ValueType { get; set; }
+		|";
+	ИначеЕсли ИмяКонтекстКлассаАнгл = "DataGridViewLinkColumn" Тогда
+		Стр = Стр + 
+		"        [DisplayName(""ИмяКолонки"")]
+		|        [Category(""Прочее"")]
+		|        [Browsable(true)]
+		|        [ReadOnly(true)]
+		|        public string NameColumn { get; set; }
+		|		
+		|        [Browsable(false)]
+		|        public new dynamic CellTemplate { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic CellType { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic ContextMenuStrip { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic DefaultHeaderCellType { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic HasDefaultCellStyle { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic InheritedAutoSizeMode { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic InheritedStyle { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic IsDataBound { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic Site { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic State { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic Tag { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic ValueType { get; set; }
+		|";
+	ИначеЕсли ИмяКонтекстКлассаАнгл = "DataGridViewImageColumn" Тогда
+		Стр = Стр + 
+		"        [DisplayName(""ИмяКолонки"")]
+		|        [Category(""Прочее"")]
+		|        [Browsable(true)]
+		|        [ReadOnly(true)]
+		|        public string NameColumn { get; set; }
+		|		
+		|        [Browsable(false)]
+		|        public new dynamic CellTemplate { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic CellType { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic ContextMenuStrip { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic DefaultHeaderCellType { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic HasDefaultCellStyle { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic Image { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic InheritedAutoSizeMode { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic InheritedStyle { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic IsDataBound { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic Site { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic State { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic Tag { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic ValueType { get; set; }
+		|";
+	ИначеЕсли ИмяКонтекстКлассаАнгл = "DataGridViewButtonColumn" Тогда
+		Стр = Стр + 
+		"        [DisplayName(""ИмяКолонки"")]
+		|        [Category(""Прочее"")]
+		|        [Browsable(true)]
+		|        [ReadOnly(true)]
+		|        public string NameColumn { get; set; }
+		|		
+		|        [Browsable(false)]
+		|        public new dynamic CellTemplate { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic CellType { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic ContextMenuStrip { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic DefaultHeaderCellType { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic HasDefaultCellStyle { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic InheritedAutoSizeMode { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic InheritedStyle { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic IsDataBound { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic Site { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic State { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic Tag { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic ValueType { get; set; }
+		|";
 	ИначеЕсли ИмяКонтекстКлассаАнгл = "Button" Тогда
 		Стр = Стр + 
 		"        [Browsable(false)]
@@ -27407,6 +33447,121 @@
 		|        [Browsable(false)]
 		|        [ReadOnly(true)]
 		|        public new object Tag { get; set; }
+		|";
+	ИначеЕсли ИмяКонтекстКлассаАнгл = "DataGridViewCheckBoxColumn" Тогда
+		Стр = Стр + 
+		"        [DisplayName(""ИмяКолонки"")]
+		|        [Category(""Прочее"")]
+		|        [Browsable(true)]
+		|        [ReadOnly(true)]
+		|        public string NameColumn { get; set; }
+		|		
+		|		[Browsable(false)]
+		|        public new dynamic IndeterminateValue { get; set; }
+		|
+		|        [Browsable(false)]
+		|        public new dynamic FalseValue { get; set; }
+		|
+		|        [Browsable(false)]
+		|        public new dynamic TrueValue { get; set; }
+		|
+		|        [Browsable(false)]
+		|        public new dynamic CellTemplate { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic CellType { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic ContextMenuStrip { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic DefaultHeaderCellType { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic HasDefaultCellStyle { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic InheritedAutoSizeMode { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic InheritedStyle { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic IsDataBound { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic Site { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic State { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic Tag { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic ValueType { get; set; }
+		|";
+	ИначеЕсли ИмяКонтекстКлассаАнгл = "DataGridViewComboBoxColumn" Тогда
+		Стр = Стр + 
+		"        [DisplayName(""ИмяКолонки"")]
+		|        [Category(""Прочее"")]
+		|        [Browsable(true)]
+		|        [ReadOnly(true)]
+		|        public string NameColumn { get; set; }
+		|		
+		|		[Browsable(false)]
+		|        public new dynamic DisplayMember { get; set; }
+		|
+		|        [Browsable(false)]
+		|        public new dynamic ValueMember { get; set; }
+		|
+		|        [Browsable(false)]
+		|        public new dynamic AutoComplete { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic CellTemplate { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic CellType { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic ContextMenuStrip { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic DataSource { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic DefaultHeaderCellType { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic DisplayStyleForCurrentCellOnly { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic DropDownWidth { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic HasDefaultCellStyle { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic InheritedAutoSizeMode { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic InheritedStyle { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic IsDataBound { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic Site { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic State { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic Tag { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic ValueType { get; set; }
 		|";
 	ИначеЕсли ИмяКонтекстКлассаАнгл = "ToolBar" Тогда
 		Стр = Стр + 
@@ -28277,6 +34432,292 @@
 		|        [Browsable(false)]
 		|        public new LinkArea LinkArea { get; set; }
 		|";
+	ИначеЕсли ИмяКонтекстКлассаАнгл = "DataGridView" Тогда
+		Стр = Стр + 
+		"        [Browsable(false)]
+		|        public new dynamic AutoSizeColumnsMode { get; set; }
+		|		
+		|        [DisplayName(""Шрифт"")]
+		|        [Description(""Возвращает или задает шрифт текста, отображаемый элементом управления."")]
+		|        [Category(""Внешний вид"")]
+		|        [Browsable(true)]
+		|        [TypeConverter(typeof(MyFontConverter))]
+		|        public new Font Font
+		|        {
+		|            get { return base.Font; }
+		|            set { base.Font = value; }
+		|        }
+		|
+		|        [Browsable(false)]
+		|        public new dynamic AccessibilityObject { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic AccessibleDefaultActionDescription { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic AccessibleDescription { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic AccessibleName { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic AccessibleRole { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic AdjustedTopLeftHeaderBorderStyle { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic AdvancedCellBorderStyle { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic AdvancedColumnHeadersBorderStyle { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic AdvancedRowHeadersBorderStyle { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic AllowDrop { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic AllowUserToDeleteRows { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic AllowUserToOrderColumns { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic AlternatingRowsDefaultCellStyle { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic AutoScrollOffset { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic AutoSize { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic BackgroundImageLayout { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic BindingContext { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic BorderStyle { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic CanSelect { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic CausesValidation { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic CellBorderStyle { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic ClipboardCopyMode { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic ColumnHeadersBorderStyle { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic CompanyName { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic Container { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic ContainsFocus { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic ContextMenuStrip { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic Created { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic CurrentCellAddress { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic DataBindings { get; set; }
+		|
+		|        [Browsable(false)]
+		|        public new string DataMember { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic DataSource { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic DefaultCellStyle { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public dynamic DeviceDpi { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic DisplayRectangle { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic Disposing { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic EditingControl { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic EditingPanel { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic EditMode { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic EnableHeadersVisualStyles { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic FirstDisplayedCell { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic FirstDisplayedScrollingColumnHiddenWidth { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic FirstDisplayedScrollingColumnIndex { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic FirstDisplayedScrollingRowIndex { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic GridColor { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic Handle { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic HasChildren { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic HorizontalScrollingOffset { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic ImeMode { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic InvokeRequired { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic IsAccessible { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic IsCurrentCellDirty { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic IsCurrentCellInEditMode { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic IsCurrentRowDirty { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic IsDisposed { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic IsHandleCreated { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic IsMirrored { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public dynamic Item { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic LayoutEngine { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic Margin { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic MaximumSize { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic MinimumSize { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic MultiSelect { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic NewRowIndex { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic Padding { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic PreferredSize { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic RecreatingHandle { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic Region { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic RightToLeft { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic RowHeadersBorderStyle { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic RowHeadersWidthSizeMode { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic RowsDefaultCellStyle { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic RowTemplate { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic SelectedCells { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic SelectedColumns { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic SelectedRows { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic ShowCellErrors { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic ShowCellToolTips { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic ShowEditingIcon { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic ShowRowErrors { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic Site { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic SortedColumn { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic SortOrder { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic StandardTab { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic Tag { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic TopLeftHeaderCell { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic UserSetCursor { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic VerticalScrollingOffset { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic VirtualMode { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic WindowTarget { get; set; }
+		|";
 	ИначеЕсли ИмяКонтекстКлассаАнгл = "DataGrid" Тогда
 		Стр = Стр + 
 		"        [Browsable(false)]
@@ -28545,6 +34986,69 @@
 		|        [Browsable(false)]
 		|        public new dynamic Tag { get; set; }
 		|";
+	ИначеЕсли ИмяКонтекстКлассаАнгл = "DataGridViewCellStyle" Тогда
+		Стр = Стр + 
+		"        [DisplayName(""ИмяСтиля"")]
+		|        [Category(""Прочее"")]
+		|        [Browsable(true)]
+		|        [ReadOnly(true)]
+		|        public string NameStyle { get; set; }
+		|
+		|        [Browsable(false)]
+		|        public new dynamic DataSourceNullValue { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic Format { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic FormatProvider { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic IsDataSourceNullValueDefault { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic IsFormatProviderDefault { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic IsNullValueDefault { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic NullValue { get; set; }
+		|		
+		|        [Browsable(false)]
+		|        public new dynamic Tag { get; set; }
+		|		
+		|        [Browsable(false)]
+		|        public string DefaultValues
+		|        {
+		|            get
+		|            {
+		|                return @""
+		|ОсновнойЦвет == ТекстЭлемента
+		|ОсновнойЦветВыделенного == ТекстВыбранных
+		|ЦветФона == Окно
+		|ЦветФонаВыделенного == ФонВыбранных
+		|Шрифт == Microsoft Sans Serif; 7,8pt
+		|Выравнивание == СерединаЛево
+		|Заполнение == 0; 0; 0; 0
+		|Перенос == Ложь
+		|ИмяСтиля == 
+		|"";
+		|            }
+		|            set { }
+		|        }
+		|		
+		|        [Browsable(false)]
+		|        public string RequiredValues
+		|        {
+		|            get
+		|            {
+		|                return @""
+		|ИмяСтиля ==
+		|"";
+		|            }
+		|        }
+		|";
 		
 		
 		
@@ -28604,7 +35108,698 @@
 
 Функция СвойстваКласса(ИмяКонтекстКлассаАнгл)
 	СортированныйСписок1 = Ф.СортированныйСписок();
-	Если ИмяКонтекстКлассаАнгл = "MainMenu" Тогда
+	
+	Если ИмяКонтекстКлассаАнгл = "DataGridViewCellStyle" Тогда
+		СортированныйСписок1.Добавить("Alignment", "Alignment");
+		СортированныйСписок1.Добавить("BackColor", "BackColor");
+		СортированныйСписок1.Добавить("Font", "Font");
+		СортированныйСписок1.Добавить("ForeColor", "ForeColor");
+		СортированныйСписок1.Добавить("Padding", "Padding");
+		СортированныйСписок1.Добавить("SelectionBackColor", "SelectionBackColor");
+		СортированныйСписок1.Добавить("SelectionForeColor", "SelectionForeColor");
+		СортированныйСписок1.Добавить("Tag", "Tag");
+		СортированныйСписок1.Добавить("WrapMode", "WrapMode");
+	ИначеЕсли ИмяКонтекстКлассаАнгл = "System.Windows.Forms.DataGridViewCellStyle" Тогда
+		СортированныйСписок1.Добавить("Alignment", "Alignment");
+		СортированныйСписок1.Добавить("BackColor", "BackColor");
+		СортированныйСписок1.Добавить("DataSourceNullValue", "DataSourceNullValue");
+		СортированныйСписок1.Добавить("Font", "Font");
+		СортированныйСписок1.Добавить("ForeColor", "ForeColor");
+		СортированныйСписок1.Добавить("Format", "Format");
+		СортированныйСписок1.Добавить("FormatProvider", "FormatProvider");
+		СортированныйСписок1.Добавить("IsDataSourceNullValueDefault", "IsDataSourceNullValueDefault");
+		СортированныйСписок1.Добавить("IsFormatProviderDefault", "IsFormatProviderDefault");
+		СортированныйСписок1.Добавить("IsNullValueDefault", "IsNullValueDefault");
+		СортированныйСписок1.Добавить("NullValue", "NullValue");
+		СортированныйСписок1.Добавить("Padding", "Padding");
+		СортированныйСписок1.Добавить("SelectionBackColor", "SelectionBackColor");
+		СортированныйСписок1.Добавить("SelectionForeColor", "SelectionForeColor");
+		СортированныйСписок1.Добавить("Tag", "Tag");
+		СортированныйСписок1.Добавить("WrapMode", "WrapMode");
+	ИначеЕсли ИмяКонтекстКлассаАнгл = "DataGridViewTextBoxColumn" Тогда
+		СортированныйСписок1.Добавить("AutoSizeMode", "AutoSizeMode");
+		СортированныйСписок1.Добавить("DataGridView", "DataGridView");
+		СортированныйСписок1.Добавить("DataPropertyName", "DataPropertyName");
+		СортированныйСписок1.Добавить("DefaultCellStyle", "DefaultCellStyle");
+		СортированныйСписок1.Добавить("Displayed", "Displayed");
+		СортированныйСписок1.Добавить("DisplayIndex", "DisplayIndex");
+		СортированныйСписок1.Добавить("DividerWidth", "DividerWidth");
+		СортированныйСписок1.Добавить("FillWeight", "FillWeight");
+		СортированныйСписок1.Добавить("Frozen", "Frozen");
+		СортированныйСписок1.Добавить("HeaderCell", "HeaderCell");
+		СортированныйСписок1.Добавить("HeaderText", "HeaderText");
+		СортированныйСписок1.Добавить("Index", "Index");
+		СортированныйСписок1.Добавить("MaxInputLength", "MaxInputLength");
+		СортированныйСписок1.Добавить("MinimumWidth", "MinimumWidth");
+		СортированныйСписок1.Добавить("Name", "Name");
+		СортированныйСписок1.Добавить("ReadOnly", "ReadOnly");
+		СортированныйСписок1.Добавить("Resizable", "Resizable");
+		СортированныйСписок1.Добавить("Selected", "Selected");
+		СортированныйСписок1.Добавить("SortMode", "SortMode");
+		СортированныйСписок1.Добавить("Tag", "Tag");
+		СортированныйСписок1.Добавить("ToolTipText", "ToolTipText");
+		СортированныйСписок1.Добавить("Visible", "Visible");
+		СортированныйСписок1.Добавить("Width", "Width");
+	ИначеЕсли ИмяКонтекстКлассаАнгл = "System.Windows.Forms.DataGridViewTextBoxColumn" Тогда
+		СортированныйСписок1.Добавить("AutoSizeMode", "AutoSizeMode");
+		СортированныйСписок1.Добавить("CellTemplate", "CellTemplate");
+		СортированныйСписок1.Добавить("CellType", "CellType");
+		СортированныйСписок1.Добавить("ContextMenuStrip", "ContextMenuStrip");
+		СортированныйСписок1.Добавить("DataGridView", "DataGridView");
+		СортированныйСписок1.Добавить("DataPropertyName", "DataPropertyName");
+		СортированныйСписок1.Добавить("DefaultCellStyle", "DefaultCellStyle");
+		СортированныйСписок1.Добавить("DefaultHeaderCellType", "DefaultHeaderCellType");
+		СортированныйСписок1.Добавить("Displayed", "Displayed");
+		СортированныйСписок1.Добавить("DisplayIndex", "DisplayIndex");
+		СортированныйСписок1.Добавить("DividerWidth", "DividerWidth");
+		СортированныйСписок1.Добавить("FillWeight", "FillWeight");
+		СортированныйСписок1.Добавить("Frozen", "Frozen");
+		СортированныйСписок1.Добавить("HasDefaultCellStyle", "HasDefaultCellStyle");
+		СортированныйСписок1.Добавить("HeaderCell", "HeaderCell");
+		СортированныйСписок1.Добавить("HeaderText", "HeaderText");
+		СортированныйСписок1.Добавить("Index", "Index");
+		СортированныйСписок1.Добавить("InheritedAutoSizeMode", "InheritedAutoSizeMode");
+		СортированныйСписок1.Добавить("InheritedStyle", "InheritedStyle");
+		СортированныйСписок1.Добавить("IsDataBound", "IsDataBound");
+		СортированныйСписок1.Добавить("MaxInputLength", "MaxInputLength");
+		СортированныйСписок1.Добавить("MinimumWidth", "MinimumWidth");
+		СортированныйСписок1.Добавить("Name", "Name");
+		СортированныйСписок1.Добавить("ReadOnly", "ReadOnly");
+		СортированныйСписок1.Добавить("Resizable", "Resizable");
+		СортированныйСписок1.Добавить("Selected", "Selected");
+		СортированныйСписок1.Добавить("Site", "Site");
+		СортированныйСписок1.Добавить("SortMode", "SortMode");
+		СортированныйСписок1.Добавить("State", "State");
+		СортированныйСписок1.Добавить("Tag", "Tag");
+		СортированныйСписок1.Добавить("ToolTipText", "ToolTipText");
+		СортированныйСписок1.Добавить("ValueType", "ValueType");
+		СортированныйСписок1.Добавить("Visible", "Visible");
+		СортированныйСписок1.Добавить("Width", "Width");
+	ИначеЕсли ИмяКонтекстКлассаАнгл = "DataGridViewLinkColumn" Тогда
+		СортированныйСписок1.Добавить("ActiveLinkColor", "ActiveLinkColor");
+		СортированныйСписок1.Добавить("AutoSizeMode", "AutoSizeMode");
+		СортированныйСписок1.Добавить("DataGridView", "DataGridView");
+		СортированныйСписок1.Добавить("DataPropertyName", "DataPropertyName");
+		СортированныйСписок1.Добавить("DefaultCellStyle", "DefaultCellStyle");
+		СортированныйСписок1.Добавить("Displayed", "Displayed");
+		СортированныйСписок1.Добавить("DisplayIndex", "DisplayIndex");
+		СортированныйСписок1.Добавить("DividerWidth", "DividerWidth");
+		СортированныйСписок1.Добавить("FillWeight", "FillWeight");
+		СортированныйСписок1.Добавить("Frozen", "Frozen");
+		СортированныйСписок1.Добавить("HeaderCell", "HeaderCell");
+		СортированныйСписок1.Добавить("HeaderText", "HeaderText");
+		СортированныйСписок1.Добавить("Index", "Index");
+		СортированныйСписок1.Добавить("LinkBehavior", "LinkBehavior");
+		СортированныйСписок1.Добавить("LinkColor", "LinkColor");
+		СортированныйСписок1.Добавить("MinimumWidth", "MinimumWidth");
+		СортированныйСписок1.Добавить("Name", "Name");
+		СортированныйСписок1.Добавить("ReadOnly", "ReadOnly");
+		СортированныйСписок1.Добавить("Resizable", "Resizable");
+		СортированныйСписок1.Добавить("Selected", "Selected");
+		СортированныйСписок1.Добавить("SortMode", "SortMode");
+		СортированныйСписок1.Добавить("Tag", "Tag");
+		СортированныйСписок1.Добавить("Text", "Text");
+		СортированныйСписок1.Добавить("ToolTipText", "ToolTipText");
+		СортированныйСписок1.Добавить("TrackVisitedState", "TrackVisitedState");
+		СортированныйСписок1.Добавить("UseColumnTextForLinkValue", "UseColumnTextForLinkValue");
+		СортированныйСписок1.Добавить("Visible", "Visible");
+		СортированныйСписок1.Добавить("VisitedLinkColor", "VisitedLinkColor");
+		СортированныйСписок1.Добавить("Width", "Width");
+	ИначеЕсли ИмяКонтекстКлассаАнгл = "System.Windows.Forms.DataGridViewLinkColumn" Тогда
+		СортированныйСписок1.Добавить("ActiveLinkColor", "ActiveLinkColor");
+		СортированныйСписок1.Добавить("AutoSizeMode", "AutoSizeMode");
+		СортированныйСписок1.Добавить("CellTemplate", "CellTemplate");
+		СортированныйСписок1.Добавить("CellType", "CellType");
+		СортированныйСписок1.Добавить("ContextMenuStrip", "ContextMenuStrip");
+		СортированныйСписок1.Добавить("DataGridView", "DataGridView");
+		СортированныйСписок1.Добавить("DataPropertyName", "DataPropertyName");
+		СортированныйСписок1.Добавить("DefaultCellStyle", "DefaultCellStyle");
+		СортированныйСписок1.Добавить("DefaultHeaderCellType", "DefaultHeaderCellType");
+		СортированныйСписок1.Добавить("Displayed", "Displayed");
+		СортированныйСписок1.Добавить("DisplayIndex", "DisplayIndex");
+		СортированныйСписок1.Добавить("DividerWidth", "DividerWidth");
+		СортированныйСписок1.Добавить("FillWeight", "FillWeight");
+		СортированныйСписок1.Добавить("Frozen", "Frozen");
+		СортированныйСписок1.Добавить("HasDefaultCellStyle", "HasDefaultCellStyle");
+		СортированныйСписок1.Добавить("HeaderCell", "HeaderCell");
+		СортированныйСписок1.Добавить("HeaderText", "HeaderText");
+		СортированныйСписок1.Добавить("Index", "Index");
+		СортированныйСписок1.Добавить("InheritedAutoSizeMode", "InheritedAutoSizeMode");
+		СортированныйСписок1.Добавить("InheritedStyle", "InheritedStyle");
+		СортированныйСписок1.Добавить("IsDataBound", "IsDataBound");
+		СортированныйСписок1.Добавить("LinkBehavior", "LinkBehavior");
+		СортированныйСписок1.Добавить("LinkColor", "LinkColor");
+		СортированныйСписок1.Добавить("MinimumWidth", "MinimumWidth");
+		СортированныйСписок1.Добавить("Name", "Name");
+		СортированныйСписок1.Добавить("ReadOnly", "ReadOnly");
+		СортированныйСписок1.Добавить("Resizable", "Resizable");
+		СортированныйСписок1.Добавить("Selected", "Selected");
+		СортированныйСписок1.Добавить("Site", "Site");
+		СортированныйСписок1.Добавить("SortMode", "SortMode");
+		СортированныйСписок1.Добавить("State", "State");
+		СортированныйСписок1.Добавить("Tag", "Tag");
+		СортированныйСписок1.Добавить("Text", "Text");
+		СортированныйСписок1.Добавить("ToolTipText", "ToolTipText");
+		СортированныйСписок1.Добавить("TrackVisitedState", "TrackVisitedState");
+		СортированныйСписок1.Добавить("UseColumnTextForLinkValue", "UseColumnTextForLinkValue");
+		СортированныйСписок1.Добавить("ValueType", "ValueType");
+		СортированныйСписок1.Добавить("Visible", "Visible");
+		СортированныйСписок1.Добавить("VisitedLinkColor", "VisitedLinkColor");
+		СортированныйСписок1.Добавить("Width", "Width");
+	ИначеЕсли ИмяКонтекстКлассаАнгл = "DataGridViewImageColumn" Тогда
+		СортированныйСписок1.Добавить("AutoSizeMode", "AutoSizeMode");
+		СортированныйСписок1.Добавить("Bitmap", "Bitmap");
+		СортированныйСписок1.Добавить("DataGridView", "DataGridView");
+		СортированныйСписок1.Добавить("DataPropertyName", "DataPropertyName");
+		СортированныйСписок1.Добавить("DefaultCellStyle", "DefaultCellStyle");
+		СортированныйСписок1.Добавить("Description", "Description");
+		СортированныйСписок1.Добавить("Displayed", "Displayed");
+		СортированныйСписок1.Добавить("DisplayIndex", "DisplayIndex");
+		СортированныйСписок1.Добавить("DividerWidth", "DividerWidth");
+		СортированныйСписок1.Добавить("FillWeight", "FillWeight");
+		СортированныйСписок1.Добавить("Frozen", "Frozen");
+		СортированныйСписок1.Добавить("HeaderCell", "HeaderCell");
+		СортированныйСписок1.Добавить("HeaderText", "HeaderText");
+		СортированныйСписок1.Добавить("Icon", "Icon");
+		СортированныйСписок1.Добавить("ImageLayout", "ImageLayout");
+		СортированныйСписок1.Добавить("Index", "Index");
+		СортированныйСписок1.Добавить("MinimumWidth", "MinimumWidth");
+		СортированныйСписок1.Добавить("Name", "Name");
+		СортированныйСписок1.Добавить("ReadOnly", "ReadOnly");
+		СортированныйСписок1.Добавить("Resizable", "Resizable");
+		СортированныйСписок1.Добавить("Selected", "Selected");
+		СортированныйСписок1.Добавить("SortMode", "SortMode");
+		СортированныйСписок1.Добавить("Tag", "Tag");
+		СортированныйСписок1.Добавить("ToolTipText", "ToolTipText");
+		СортированныйСписок1.Добавить("ValuesAreIcons", "ValuesAreIcons");
+		СортированныйСписок1.Добавить("Visible", "Visible");
+		СортированныйСписок1.Добавить("Width", "Width");
+	ИначеЕсли ИмяКонтекстКлассаАнгл = "System.Windows.Forms.DataGridViewImageColumn" Тогда
+		СортированныйСписок1.Добавить("AutoSizeMode", "AutoSizeMode");
+		СортированныйСписок1.Добавить("CellTemplate", "CellTemplate");
+		СортированныйСписок1.Добавить("CellType", "CellType");
+		СортированныйСписок1.Добавить("ContextMenuStrip", "ContextMenuStrip");
+		СортированныйСписок1.Добавить("DataGridView", "DataGridView");
+		СортированныйСписок1.Добавить("DataPropertyName", "DataPropertyName");
+		СортированныйСписок1.Добавить("DefaultCellStyle", "DefaultCellStyle");
+		СортированныйСписок1.Добавить("DefaultHeaderCellType", "DefaultHeaderCellType");
+		СортированныйСписок1.Добавить("Description", "Description");
+		СортированныйСписок1.Добавить("Displayed", "Displayed");
+		СортированныйСписок1.Добавить("DisplayIndex", "DisplayIndex");
+		СортированныйСписок1.Добавить("DividerWidth", "DividerWidth");
+		СортированныйСписок1.Добавить("FillWeight", "FillWeight");
+		СортированныйСписок1.Добавить("Frozen", "Frozen");
+		СортированныйСписок1.Добавить("HasDefaultCellStyle", "HasDefaultCellStyle");
+		СортированныйСписок1.Добавить("HeaderCell", "HeaderCell");
+		СортированныйСписок1.Добавить("HeaderText", "HeaderText");
+		СортированныйСписок1.Добавить("Icon", "Icon");
+		СортированныйСписок1.Добавить("Image", "Image");
+		СортированныйСписок1.Добавить("ImageLayout", "ImageLayout");
+		СортированныйСписок1.Добавить("Index", "Index");
+		СортированныйСписок1.Добавить("InheritedAutoSizeMode", "InheritedAutoSizeMode");
+		СортированныйСписок1.Добавить("InheritedStyle", "InheritedStyle");
+		СортированныйСписок1.Добавить("IsDataBound", "IsDataBound");
+		СортированныйСписок1.Добавить("MinimumWidth", "MinimumWidth");
+		СортированныйСписок1.Добавить("Name", "Name");
+		СортированныйСписок1.Добавить("ReadOnly", "ReadOnly");
+		СортированныйСписок1.Добавить("Resizable", "Resizable");
+		СортированныйСписок1.Добавить("Selected", "Selected");
+		СортированныйСписок1.Добавить("Site", "Site");
+		СортированныйСписок1.Добавить("SortMode", "SortMode");
+		СортированныйСписок1.Добавить("State", "State");
+		СортированныйСписок1.Добавить("Tag", "Tag");
+		СортированныйСписок1.Добавить("ToolTipText", "ToolTipText");
+		СортированныйСписок1.Добавить("ValuesAreIcons", "ValuesAreIcons");
+		СортированныйСписок1.Добавить("ValueType", "ValueType");
+		СортированныйСписок1.Добавить("Visible", "Visible");
+		СортированныйСписок1.Добавить("Width", "Width");
+	ИначеЕсли ИмяКонтекстКлассаАнгл = "DataGridViewComboBoxColumn" Тогда
+		СортированныйСписок1.Добавить("AutoSizeMode", "AutoSizeMode");
+		СортированныйСписок1.Добавить("DataGridView", "DataGridView");
+		СортированныйСписок1.Добавить("DataPropertyName", "DataPropertyName");
+		СортированныйСписок1.Добавить("DataSource", "DataSource");
+		СортированныйСписок1.Добавить("DefaultCellStyle", "DefaultCellStyle");
+		СортированныйСписок1.Добавить("Displayed", "Displayed");
+		СортированныйСписок1.Добавить("DisplayIndex", "DisplayIndex");
+		СортированныйСписок1.Добавить("DisplayMember", "DisplayMember");
+		СортированныйСписок1.Добавить("DisplayStyle", "DisplayStyle");
+		СортированныйСписок1.Добавить("DividerWidth", "DividerWidth");
+		СортированныйСписок1.Добавить("FillWeight", "FillWeight");
+		СортированныйСписок1.Добавить("FlatStyle", "FlatStyle");
+		СортированныйСписок1.Добавить("Frozen", "Frozen");
+		СортированныйСписок1.Добавить("HeaderCell", "HeaderCell");
+		СортированныйСписок1.Добавить("HeaderText", "HeaderText");
+		СортированныйСписок1.Добавить("Index", "Index");
+		СортированныйСписок1.Добавить("Items", "Items");
+		СортированныйСписок1.Добавить("MaxDropDownItems", "MaxDropDownItems");
+		СортированныйСписок1.Добавить("MinimumWidth", "MinimumWidth");
+		СортированныйСписок1.Добавить("Name", "Name");
+		СортированныйСписок1.Добавить("ReadOnly", "ReadOnly");
+		СортированныйСписок1.Добавить("Resizable", "Resizable");
+		СортированныйСписок1.Добавить("Selected", "Selected");
+		СортированныйСписок1.Добавить("Sorted", "Sorted");
+		СортированныйСписок1.Добавить("SortMode", "SortMode");
+		СортированныйСписок1.Добавить("Tag", "Tag");
+		СортированныйСписок1.Добавить("ToolTipText", "ToolTipText");
+		СортированныйСписок1.Добавить("ValueMember", "ValueMember");
+		СортированныйСписок1.Добавить("Visible", "Visible");
+		СортированныйСписок1.Добавить("Width", "Width");
+	ИначеЕсли ИмяКонтекстКлассаАнгл = "System.Windows.Forms.DataGridViewComboBoxColumn" Тогда
+		СортированныйСписок1.Добавить("AutoComplete", "AutoComplete");
+		СортированныйСписок1.Добавить("AutoSizeMode", "AutoSizeMode");
+		СортированныйСписок1.Добавить("CellTemplate", "CellTemplate");
+		СортированныйСписок1.Добавить("CellType", "CellType");
+		СортированныйСписок1.Добавить("ContextMenuStrip", "ContextMenuStrip");
+		СортированныйСписок1.Добавить("DataGridView", "DataGridView");
+		СортированныйСписок1.Добавить("DataPropertyName", "DataPropertyName");
+		СортированныйСписок1.Добавить("DataSource", "DataSource");
+		СортированныйСписок1.Добавить("DefaultCellStyle", "DefaultCellStyle");
+		СортированныйСписок1.Добавить("DefaultHeaderCellType", "DefaultHeaderCellType");
+		СортированныйСписок1.Добавить("Displayed", "Displayed");
+		СортированныйСписок1.Добавить("DisplayIndex", "DisplayIndex");
+		СортированныйСписок1.Добавить("DisplayMember", "DisplayMember");
+		СортированныйСписок1.Добавить("DisplayStyle", "DisplayStyle");
+		СортированныйСписок1.Добавить("DisplayStyleForCurrentCellOnly", "DisplayStyleForCurrentCellOnly");
+		СортированныйСписок1.Добавить("DividerWidth", "DividerWidth");
+		СортированныйСписок1.Добавить("DropDownWidth", "DropDownWidth");
+		СортированныйСписок1.Добавить("FillWeight", "FillWeight");
+		СортированныйСписок1.Добавить("FlatStyle", "FlatStyle");
+		СортированныйСписок1.Добавить("Frozen", "Frozen");
+		СортированныйСписок1.Добавить("HasDefaultCellStyle", "HasDefaultCellStyle");
+		СортированныйСписок1.Добавить("HeaderCell", "HeaderCell");
+		СортированныйСписок1.Добавить("HeaderText", "HeaderText");
+		СортированныйСписок1.Добавить("Index", "Index");
+		СортированныйСписок1.Добавить("InheritedAutoSizeMode", "InheritedAutoSizeMode");
+		СортированныйСписок1.Добавить("InheritedStyle", "InheritedStyle");
+		СортированныйСписок1.Добавить("IsDataBound", "IsDataBound");
+		СортированныйСписок1.Добавить("Items", "Items");
+		СортированныйСписок1.Добавить("MaxDropDownItems", "MaxDropDownItems");
+		СортированныйСписок1.Добавить("MinimumWidth", "MinimumWidth");
+		СортированныйСписок1.Добавить("Name", "Name");
+		СортированныйСписок1.Добавить("ReadOnly", "ReadOnly");
+		СортированныйСписок1.Добавить("Resizable", "Resizable");
+		СортированныйСписок1.Добавить("Selected", "Selected");
+		СортированныйСписок1.Добавить("Site", "Site");
+		СортированныйСписок1.Добавить("Sorted", "Sorted");
+		СортированныйСписок1.Добавить("SortMode", "SortMode");
+		СортированныйСписок1.Добавить("State", "State");
+		СортированныйСписок1.Добавить("Tag", "Tag");
+		СортированныйСписок1.Добавить("ToolTipText", "ToolTipText");
+		СортированныйСписок1.Добавить("ValueMember", "ValueMember");
+		СортированныйСписок1.Добавить("ValueType", "ValueType");
+		СортированныйСписок1.Добавить("Visible", "Visible");
+		СортированныйСписок1.Добавить("Width", "Width");
+	ИначеЕсли ИмяКонтекстКлассаАнгл = "DataGridViewCheckBoxColumn" Тогда
+		СортированныйСписок1.Добавить("AutoSizeMode", "AutoSizeMode");
+		СортированныйСписок1.Добавить("DataGridView", "DataGridView");
+		СортированныйСписок1.Добавить("DataPropertyName", "DataPropertyName");
+		СортированныйСписок1.Добавить("DefaultCellStyle", "DefaultCellStyle");
+		СортированныйСписок1.Добавить("Displayed", "Displayed");
+		СортированныйСписок1.Добавить("DisplayIndex", "DisplayIndex");
+		СортированныйСписок1.Добавить("DividerWidth", "DividerWidth");
+		СортированныйСписок1.Добавить("FalseValue", "FalseValue");
+		СортированныйСписок1.Добавить("FillWeight", "FillWeight");
+		СортированныйСписок1.Добавить("FlatStyle", "FlatStyle");
+		СортированныйСписок1.Добавить("Frozen", "Frozen");
+		СортированныйСписок1.Добавить("HeaderCell", "HeaderCell");
+		СортированныйСписок1.Добавить("HeaderText", "HeaderText");
+		СортированныйСписок1.Добавить("IndeterminateValue", "IndeterminateValue");
+		СортированныйСписок1.Добавить("Index", "Index");
+		СортированныйСписок1.Добавить("MinimumWidth", "MinimumWidth");
+		СортированныйСписок1.Добавить("Name", "Name");
+		СортированныйСписок1.Добавить("ReadOnly", "ReadOnly");
+		СортированныйСписок1.Добавить("Resizable", "Resizable");
+		СортированныйСписок1.Добавить("Selected", "Selected");
+		СортированныйСписок1.Добавить("SortMode", "SortMode");
+		СортированныйСписок1.Добавить("Tag", "Tag");
+		СортированныйСписок1.Добавить("ThreeState", "ThreeState");
+		СортированныйСписок1.Добавить("ToolTipText", "ToolTipText");
+		СортированныйСписок1.Добавить("TrueValue", "TrueValue");
+		СортированныйСписок1.Добавить("Visible", "Visible");
+		СортированныйСписок1.Добавить("Width", "Width");
+	ИначеЕсли ИмяКонтекстКлассаАнгл = "System.Windows.Forms.DataGridViewCheckBoxColumn" Тогда
+		СортированныйСписок1.Добавить("AutoSizeMode", "AutoSizeMode");
+		СортированныйСписок1.Добавить("CellTemplate", "CellTemplate");
+		СортированныйСписок1.Добавить("CellType", "CellType");
+		СортированныйСписок1.Добавить("ContextMenuStrip", "ContextMenuStrip");
+		СортированныйСписок1.Добавить("DataGridView", "DataGridView");
+		СортированныйСписок1.Добавить("DataPropertyName", "DataPropertyName");
+		СортированныйСписок1.Добавить("DefaultCellStyle", "DefaultCellStyle");
+		СортированныйСписок1.Добавить("DefaultHeaderCellType", "DefaultHeaderCellType");
+		СортированныйСписок1.Добавить("Displayed", "Displayed");
+		СортированныйСписок1.Добавить("DisplayIndex", "DisplayIndex");
+		СортированныйСписок1.Добавить("DividerWidth", "DividerWidth");
+		СортированныйСписок1.Добавить("FalseValue", "FalseValue");
+		СортированныйСписок1.Добавить("FillWeight", "FillWeight");
+		СортированныйСписок1.Добавить("FlatStyle", "FlatStyle");
+		СортированныйСписок1.Добавить("Frozen", "Frozen");
+		СортированныйСписок1.Добавить("HasDefaultCellStyle", "HasDefaultCellStyle");
+		СортированныйСписок1.Добавить("HeaderCell", "HeaderCell");
+		СортированныйСписок1.Добавить("HeaderText", "HeaderText");
+		СортированныйСписок1.Добавить("IndeterminateValue", "IndeterminateValue");
+		СортированныйСписок1.Добавить("Index", "Index");
+		СортированныйСписок1.Добавить("InheritedAutoSizeMode", "InheritedAutoSizeMode");
+		СортированныйСписок1.Добавить("InheritedStyle", "InheritedStyle");
+		СортированныйСписок1.Добавить("IsDataBound", "IsDataBound");
+		СортированныйСписок1.Добавить("MinimumWidth", "MinimumWidth");
+		СортированныйСписок1.Добавить("Name", "Name");
+		СортированныйСписок1.Добавить("ReadOnly", "ReadOnly");
+		СортированныйСписок1.Добавить("Resizable", "Resizable");
+		СортированныйСписок1.Добавить("Selected", "Selected");
+		СортированныйСписок1.Добавить("Site", "Site");
+		СортированныйСписок1.Добавить("SortMode", "SortMode");
+		СортированныйСписок1.Добавить("State", "State");
+		СортированныйСписок1.Добавить("Tag", "Tag");
+		СортированныйСписок1.Добавить("ThreeState", "ThreeState");
+		СортированныйСписок1.Добавить("ToolTipText", "ToolTipText");
+		СортированныйСписок1.Добавить("TrueValue", "TrueValue");
+		СортированныйСписок1.Добавить("ValueType", "ValueType");
+		СортированныйСписок1.Добавить("Visible", "Visible");
+		СортированныйСписок1.Добавить("Width", "Width");
+	ИначеЕсли ИмяКонтекстКлассаАнгл = "DataGridViewButtonColumn" Тогда
+		СортированныйСписок1.Добавить("AutoSizeMode", "AutoSizeMode");
+		СортированныйСписок1.Добавить("DataGridView", "DataGridView");
+		СортированныйСписок1.Добавить("DataPropertyName", "DataPropertyName");
+		СортированныйСписок1.Добавить("DefaultCellStyle", "DefaultCellStyle");
+		СортированныйСписок1.Добавить("Displayed", "Displayed");
+		СортированныйСписок1.Добавить("DisplayIndex", "DisplayIndex");
+		СортированныйСписок1.Добавить("DividerWidth", "DividerWidth");
+		СортированныйСписок1.Добавить("FillWeight", "FillWeight");
+		СортированныйСписок1.Добавить("FlatStyle", "FlatStyle");
+		СортированныйСписок1.Добавить("Frozen", "Frozen");
+		СортированныйСписок1.Добавить("HeaderCell", "HeaderCell");
+		СортированныйСписок1.Добавить("HeaderText", "HeaderText");
+		СортированныйСписок1.Добавить("Index", "Index");
+		СортированныйСписок1.Добавить("MinimumWidth", "MinimumWidth");
+		СортированныйСписок1.Добавить("Name", "Name");
+		СортированныйСписок1.Добавить("ReadOnly", "ReadOnly");
+		СортированныйСписок1.Добавить("Resizable", "Resizable");
+		СортированныйСписок1.Добавить("Selected", "Selected");
+		СортированныйСписок1.Добавить("SortMode", "SortMode");
+		СортированныйСписок1.Добавить("Tag", "Tag");
+		СортированныйСписок1.Добавить("Text", "Text");
+		СортированныйСписок1.Добавить("ToolTipText", "ToolTipText");
+		СортированныйСписок1.Добавить("UseColumnTextForButtonValue", "UseColumnTextForButtonValue");
+		СортированныйСписок1.Добавить("Visible", "Visible");
+		СортированныйСписок1.Добавить("Width", "Width");
+	ИначеЕсли ИмяКонтекстКлассаАнгл = "System.Windows.Forms.DataGridViewButtonColumn" Тогда
+		СортированныйСписок1.Добавить("AutoSizeMode", "AutoSizeMode");
+		СортированныйСписок1.Добавить("CellTemplate", "CellTemplate");
+		СортированныйСписок1.Добавить("CellType", "CellType");
+		СортированныйСписок1.Добавить("ContextMenuStrip", "ContextMenuStrip");
+		СортированныйСписок1.Добавить("DataGridView", "DataGridView");
+		СортированныйСписок1.Добавить("DataPropertyName", "DataPropertyName");
+		СортированныйСписок1.Добавить("DefaultCellStyle", "DefaultCellStyle");
+		СортированныйСписок1.Добавить("DefaultHeaderCellType", "DefaultHeaderCellType");
+		СортированныйСписок1.Добавить("Displayed", "Displayed");
+		СортированныйСписок1.Добавить("DisplayIndex", "DisplayIndex");
+		СортированныйСписок1.Добавить("DividerWidth", "DividerWidth");
+		СортированныйСписок1.Добавить("FillWeight", "FillWeight");
+		СортированныйСписок1.Добавить("FlatStyle", "FlatStyle");
+		СортированныйСписок1.Добавить("Frozen", "Frozen");
+		СортированныйСписок1.Добавить("HasDefaultCellStyle", "HasDefaultCellStyle");
+		СортированныйСписок1.Добавить("HeaderCell", "HeaderCell");
+		СортированныйСписок1.Добавить("HeaderText", "HeaderText");
+		СортированныйСписок1.Добавить("Index", "Index");
+		СортированныйСписок1.Добавить("InheritedAutoSizeMode", "InheritedAutoSizeMode");
+		СортированныйСписок1.Добавить("InheritedStyle", "InheritedStyle");
+		СортированныйСписок1.Добавить("IsDataBound", "IsDataBound");
+		СортированныйСписок1.Добавить("MinimumWidth", "MinimumWidth");
+		СортированныйСписок1.Добавить("Name", "Name");
+		СортированныйСписок1.Добавить("ReadOnly", "ReadOnly");
+		СортированныйСписок1.Добавить("Resizable", "Resizable");
+		СортированныйСписок1.Добавить("Selected", "Selected");
+		СортированныйСписок1.Добавить("Site", "Site");
+		СортированныйСписок1.Добавить("SortMode", "SortMode");
+		СортированныйСписок1.Добавить("State", "State");
+		СортированныйСписок1.Добавить("Tag", "Tag");
+		СортированныйСписок1.Добавить("Text", "Text");
+		СортированныйСписок1.Добавить("ToolTipText", "ToolTipText");
+		СортированныйСписок1.Добавить("UseColumnTextForButtonValue", "UseColumnTextForButtonValue");
+		СортированныйСписок1.Добавить("ValueType", "ValueType");
+		СортированныйСписок1.Добавить("Visible", "Visible");
+		СортированныйСписок1.Добавить("Width", "Width");
+	ИначеЕсли ИмяКонтекстКлассаАнгл = "DataGridView" Тогда
+		СортированныйСписок1.Добавить("AllowUserToAddRows", "AllowUserToAddRows");
+		СортированныйСписок1.Добавить("AllowUserToResizeColumns", "AllowUserToResizeColumns");
+		СортированныйСписок1.Добавить("AllowUserToResizeRows", "AllowUserToResizeRows");
+		СортированныйСписок1.Добавить("Anchor", "Anchor");
+		СортированныйСписок1.Добавить("ArrowRowHeaders", "ArrowRowHeaders");
+		СортированныйСписок1.Добавить("AutoGenerateColumns", "AutoGenerateColumns");
+		СортированныйСписок1.Добавить("AutoNumberingRows", "AutoNumberingRows");
+		СортированныйСписок1.Добавить("AutoResizeRowHeadersWidth", "AutoResizeRowHeadersWidth");
+		СортированныйСписок1.Добавить("AutoSizeColumnsMode", "AutoSizeColumnsMode");
+		СортированныйСписок1.Добавить("AutoSizeRowsMode", "AutoSizeRowsMode");
+		СортированныйСписок1.Добавить("BackColor", "BackColor");
+		СортированныйСписок1.Добавить("BackgroundColor", "BackgroundColor");
+		СортированныйСписок1.Добавить("BackgroundImage", "BackgroundImage");
+		СортированныйСписок1.Добавить("Bottom", "Bottom");
+		СортированныйСписок1.Добавить("Bounds", "Bounds");
+		СортированныйСписок1.Добавить("CanFocus", "CanFocus");
+		СортированныйСписок1.Добавить("Capture", "Capture");
+		СортированныйСписок1.Добавить("CellBeginEdit", "CellBeginEdit");
+		СортированныйСписок1.Добавить("CellClick", "CellClick");
+		СортированныйСписок1.Добавить("CellContentClick", "CellContentClick");
+		СортированныйСписок1.Добавить("CellDoubleClick", "CellDoubleClick");
+		СортированныйСписок1.Добавить("CellEndEdit", "CellEndEdit");
+		СортированныйСписок1.Добавить("CellEnter", "CellEnter");
+		СортированныйСписок1.Добавить("CellLeave", "CellLeave");
+		СортированныйСписок1.Добавить("CellMouseDown", "CellMouseDown");
+		СортированныйСписок1.Добавить("CellMouseEnter", "CellMouseEnter");
+		СортированныйСписок1.Добавить("CellMouseLeave", "CellMouseLeave");
+		СортированныйСписок1.Добавить("CellMouseMove", "CellMouseMove");
+		СортированныйСписок1.Добавить("CellMouseUp", "CellMouseUp");
+		СортированныйСписок1.Добавить("CellValueChanged", "CellValueChanged");
+		СортированныйСписок1.Добавить("Click", "Click");
+		СортированныйСписок1.Добавить("ClientHeight", "ClientHeight");
+		СортированныйСписок1.Добавить("ClientRectangle", "ClientRectangle");
+		СортированныйСписок1.Добавить("ClientSize", "ClientSize");
+		СортированныйСписок1.Добавить("ClientWidth", "ClientWidth");
+		СортированныйСписок1.Добавить("ColumnCount", "ColumnCount");
+		СортированныйСписок1.Добавить("ColumnHeaderMouseClick", "ColumnHeaderMouseClick");
+		СортированныйСписок1.Добавить("ColumnHeadersDefaultCellStyle", "ColumnHeadersDefaultCellStyle");
+		СортированныйСписок1.Добавить("ColumnHeadersHeight", "ColumnHeadersHeight");
+		СортированныйСписок1.Добавить("ColumnHeadersHeightSizeMode", "ColumnHeadersHeightSizeMode");
+		СортированныйСписок1.Добавить("ColumnHeadersVisible", "ColumnHeadersVisible");
+		СортированныйСписок1.Добавить("Columns", "Columns");
+		СортированныйСписок1.Добавить("ContextMenu", "ContextMenu");
+		СортированныйСписок1.Добавить("ControlAdded", "ControlAdded");
+		СортированныйСписок1.Добавить("ControlRemoved", "ControlRemoved");
+		СортированныйСписок1.Добавить("Controls", "Controls");
+		СортированныйСписок1.Добавить("CurrentCell", "CurrentCell");
+		СортированныйСписок1.Добавить("CurrentCellChanged", "CurrentCellChanged");
+		СортированныйСписок1.Добавить("CurrentRow", "CurrentRow");
+		СортированныйСписок1.Добавить("Cursor", "Cursor");
+		СортированныйСписок1.Добавить("DataMember", "DataMember");
+		СортированныйСписок1.Добавить("DataSource", "DataSource");
+		СортированныйСписок1.Добавить("Dock", "Dock");
+		СортированныйСписок1.Добавить("DoubleClick", "DoubleClick");
+		СортированныйСписок1.Добавить("Enabled", "Enabled");
+		СортированныйСписок1.Добавить("Enter", "Enter");
+		СортированныйСписок1.Добавить("Focused", "Focused");
+		СортированныйСписок1.Добавить("Font", "Font");
+		СортированныйСписок1.Добавить("FontBold", "FontBold");
+		СортированныйСписок1.Добавить("FontHeight", "FontHeight");
+		СортированныйСписок1.Добавить("FontName", "FontName");
+		СортированныйСписок1.Добавить("FontSize", "FontSize");
+		СортированныйСписок1.Добавить("ForeColor", "ForeColor");
+		СортированныйСписок1.Добавить("Height", "Height");
+		СортированныйСписок1.Добавить("KeyDown", "KeyDown");
+		СортированныйСписок1.Добавить("KeyPress", "KeyPress");
+		СортированныйСписок1.Добавить("KeyUp", "KeyUp");
+		СортированныйСписок1.Добавить("Leave", "Leave");
+		СортированныйСписок1.Добавить("Left", "Left");
+		СортированныйСписок1.Добавить("Location", "Location");
+		СортированныйСписок1.Добавить("LocationChanged", "LocationChanged");
+		СортированныйСписок1.Добавить("LostFocus", "LostFocus");
+		СортированныйСписок1.Добавить("MouseButtons", "MouseButtons");
+		СортированныйСписок1.Добавить("MouseDown", "MouseDown");
+		СортированныйСписок1.Добавить("MouseEnter", "MouseEnter");
+		СортированныйСписок1.Добавить("MouseHover", "MouseHover");
+		СортированныйСписок1.Добавить("MouseLeave", "MouseLeave");
+		СортированныйСписок1.Добавить("MouseMove", "MouseMove");
+		СортированныйСписок1.Добавить("MousePosition", "MousePosition");
+		СортированныйСписок1.Добавить("MouseUp", "MouseUp");
+		СортированныйСписок1.Добавить("Move", "Move");
+		СортированныйСписок1.Добавить("Name", "Name");
+		СортированныйСписок1.Добавить("Paint", "Paint");
+		СортированныйСписок1.Добавить("Parent", "Parent");
+		СортированныйСписок1.Добавить("ProductName", "ProductName");
+		СортированныйСписок1.Добавить("ProductVersion", "ProductVersion");
+		СортированныйСписок1.Добавить("ReadOnly", "ReadOnly");
+		СортированныйСписок1.Добавить("Right", "Right");
+		СортированныйСписок1.Добавить("RowCount", "RowCount");
+		СортированныйСписок1.Добавить("RowEnter", "RowEnter");
+		СортированныйСписок1.Добавить("RowHeaderMouseClick", "RowHeaderMouseClick");
+		СортированныйСписок1.Добавить("RowHeadersDefaultCellStyle", "RowHeadersDefaultCellStyle");
+		СортированныйСписок1.Добавить("RowHeadersVisible", "RowHeadersVisible");
+		СортированныйСписок1.Добавить("RowHeadersWidth", "RowHeadersWidth");
+		СортированныйСписок1.Добавить("RowLeave", "RowLeave");
+		СортированныйСписок1.Добавить("Rows", "Rows");
+		СортированныйСписок1.Добавить("ScrollBars", "ScrollBars");
+		СортированныйСписок1.Добавить("SelectionMode", "SelectionMode");
+		СортированныйСписок1.Добавить("Size", "Size");
+		СортированныйСписок1.Добавить("SizeChanged", "SizeChanged");
+		СортированныйСписок1.Добавить("TabIndex", "TabIndex");
+		СортированныйСписок1.Добавить("TabStop", "TabStop");
+		СортированныйСписок1.Добавить("Tag", "Tag");
+		СортированныйСписок1.Добавить("Text", "Text");
+		СортированныйСписок1.Добавить("TextChanged", "TextChanged");
+		СортированныйСписок1.Добавить("Top", "Top");
+		СортированныйСписок1.Добавить("TopLevelControl", "TopLevelControl");
+		СортированныйСписок1.Добавить("Type", "Type");
+		СортированныйСписок1.Добавить("UseWaitCursor", "UseWaitCursor");
+		СортированныйСписок1.Добавить("Visible", "Visible");
+		СортированныйСписок1.Добавить("Width", "Width");
+	ИначеЕсли ИмяКонтекстКлассаАнгл = "System.Windows.Forms.DataGridView" Тогда
+		СортированныйСписок1.Добавить("AccessibilityObject", "AccessibilityObject");
+		СортированныйСписок1.Добавить("AccessibleDefaultActionDescription", "AccessibleDefaultActionDescription");
+		СортированныйСписок1.Добавить("AccessibleDescription", "AccessibleDescription");
+		СортированныйСписок1.Добавить("AccessibleName", "AccessibleName");
+		СортированныйСписок1.Добавить("AccessibleRole", "AccessibleRole");
+		СортированныйСписок1.Добавить("AdjustedTopLeftHeaderBorderStyle", "AdjustedTopLeftHeaderBorderStyle");
+		СортированныйСписок1.Добавить("AdvancedCellBorderStyle", "AdvancedCellBorderStyle");
+		СортированныйСписок1.Добавить("AdvancedColumnHeadersBorderStyle", "AdvancedColumnHeadersBorderStyle");
+		СортированныйСписок1.Добавить("AdvancedRowHeadersBorderStyle", "AdvancedRowHeadersBorderStyle");
+		СортированныйСписок1.Добавить("AllowDrop", "AllowDrop");
+		СортированныйСписок1.Добавить("AllowUserToAddRows", "AllowUserToAddRows");
+		СортированныйСписок1.Добавить("AllowUserToDeleteRows", "AllowUserToDeleteRows");
+		СортированныйСписок1.Добавить("AllowUserToOrderColumns", "AllowUserToOrderColumns");
+		СортированныйСписок1.Добавить("AllowUserToResizeColumns", "AllowUserToResizeColumns");
+		СортированныйСписок1.Добавить("AllowUserToResizeRows", "AllowUserToResizeRows");
+		СортированныйСписок1.Добавить("AlternatingRowsDefaultCellStyle", "AlternatingRowsDefaultCellStyle");
+		СортированныйСписок1.Добавить("Anchor", "Anchor");
+		СортированныйСписок1.Добавить("AutoGenerateColumns", "AutoGenerateColumns");
+		СортированныйСписок1.Добавить("AutoScrollOffset", "AutoScrollOffset");
+		СортированныйСписок1.Добавить("AutoSize", "AutoSize");
+		СортированныйСписок1.Добавить("AutoSizeColumnsMode", "AutoSizeColumnsMode");
+		СортированныйСписок1.Добавить("AutoSizeRowsMode", "AutoSizeRowsMode");
+		СортированныйСписок1.Добавить("BackColor", "BackColor");
+		СортированныйСписок1.Добавить("BackgroundColor", "BackgroundColor");
+		СортированныйСписок1.Добавить("BackgroundImage", "BackgroundImage");
+		СортированныйСписок1.Добавить("BackgroundImageLayout", "BackgroundImageLayout");
+		СортированныйСписок1.Добавить("BindingContext", "BindingContext");
+		СортированныйСписок1.Добавить("BorderStyle", "BorderStyle");
+		СортированныйСписок1.Добавить("Bottom", "Bottom");
+		СортированныйСписок1.Добавить("Bounds", "Bounds");
+		СортированныйСписок1.Добавить("CanFocus", "CanFocus");
+		СортированныйСписок1.Добавить("CanSelect", "CanSelect");
+		СортированныйСписок1.Добавить("Capture", "Capture");
+		СортированныйСписок1.Добавить("CausesValidation", "CausesValidation");
+		СортированныйСписок1.Добавить("CellBorderStyle", "CellBorderStyle");
+		СортированныйСписок1.Добавить("ClientRectangle", "ClientRectangle");
+		СортированныйСписок1.Добавить("ClientSize", "ClientSize");
+		СортированныйСписок1.Добавить("ClipboardCopyMode", "ClipboardCopyMode");
+		СортированныйСписок1.Добавить("ColumnCount", "ColumnCount");
+		СортированныйСписок1.Добавить("ColumnHeadersBorderStyle", "ColumnHeadersBorderStyle");
+		СортированныйСписок1.Добавить("ColumnHeadersDefaultCellStyle", "ColumnHeadersDefaultCellStyle");
+		СортированныйСписок1.Добавить("ColumnHeadersHeight", "ColumnHeadersHeight");
+		СортированныйСписок1.Добавить("ColumnHeadersHeightSizeMode", "ColumnHeadersHeightSizeMode");
+		СортированныйСписок1.Добавить("ColumnHeadersVisible", "ColumnHeadersVisible");
+		СортированныйСписок1.Добавить("Columns", "Columns");
+		СортированныйСписок1.Добавить("CompanyName", "CompanyName");
+		СортированныйСписок1.Добавить("Container", "Container");
+		СортированныйСписок1.Добавить("ContainsFocus", "ContainsFocus");
+		СортированныйСписок1.Добавить("ContextMenu", "ContextMenu");
+		СортированныйСписок1.Добавить("ContextMenuStrip", "ContextMenuStrip");
+		СортированныйСписок1.Добавить("Controls", "Controls");
+		СортированныйСписок1.Добавить("Created", "Created");
+		СортированныйСписок1.Добавить("CurrentCell", "CurrentCell");
+		СортированныйСписок1.Добавить("CurrentCellAddress", "CurrentCellAddress");
+		СортированныйСписок1.Добавить("CurrentRow", "CurrentRow");
+		СортированныйСписок1.Добавить("Cursor", "Cursor");
+		СортированныйСписок1.Добавить("DataBindings", "DataBindings");
+		СортированныйСписок1.Добавить("DataMember", "DataMember");
+		СортированныйСписок1.Добавить("DataSource", "DataSource");
+		СортированныйСписок1.Добавить("DefaultCellStyle", "DefaultCellStyle");
+		СортированныйСписок1.Добавить("DeviceDpi", "DeviceDpi");
+		СортированныйСписок1.Добавить("DisplayRectangle", "DisplayRectangle");
+		СортированныйСписок1.Добавить("Disposing", "Disposing");
+		СортированныйСписок1.Добавить("Dock", "Dock");
+		СортированныйСписок1.Добавить("EditingControl", "EditingControl");
+		СортированныйСписок1.Добавить("EditingPanel", "EditingPanel");
+		СортированныйСписок1.Добавить("EditMode", "EditMode");
+		СортированныйСписок1.Добавить("Enabled", "Enabled");
+		СортированныйСписок1.Добавить("EnableHeadersVisualStyles", "EnableHeadersVisualStyles");
+		СортированныйСписок1.Добавить("FirstDisplayedCell", "FirstDisplayedCell");
+		СортированныйСписок1.Добавить("FirstDisplayedScrollingColumnHiddenWidth", "FirstDisplayedScrollingColumnHiddenWidth");
+		СортированныйСписок1.Добавить("FirstDisplayedScrollingColumnIndex", "FirstDisplayedScrollingColumnIndex");
+		СортированныйСписок1.Добавить("FirstDisplayedScrollingRowIndex", "FirstDisplayedScrollingRowIndex");
+		СортированныйСписок1.Добавить("Focused", "Focused");
+		СортированныйСписок1.Добавить("Font", "Font");
+		СортированныйСписок1.Добавить("ForeColor", "ForeColor");
+		СортированныйСписок1.Добавить("GridColor", "GridColor");
+		СортированныйСписок1.Добавить("Handle", "Handle");
+		СортированныйСписок1.Добавить("HasChildren", "HasChildren");
+		СортированныйСписок1.Добавить("Height", "Height");
+		СортированныйСписок1.Добавить("HorizontalScrollingOffset", "HorizontalScrollingOffset");
+		СортированныйСписок1.Добавить("ImeMode", "ImeMode");
+		СортированныйСписок1.Добавить("InvokeRequired", "InvokeRequired");
+		СортированныйСписок1.Добавить("IsAccessible", "IsAccessible");
+		СортированныйСписок1.Добавить("IsCurrentCellDirty", "IsCurrentCellDirty");
+		СортированныйСписок1.Добавить("IsCurrentCellInEditMode", "IsCurrentCellInEditMode");
+		СортированныйСписок1.Добавить("IsCurrentRowDirty", "IsCurrentRowDirty");
+		СортированныйСписок1.Добавить("IsDisposed", "IsDisposed");
+		СортированныйСписок1.Добавить("IsHandleCreated", "IsHandleCreated");
+		СортированныйСписок1.Добавить("IsMirrored", "IsMirrored");
+		СортированныйСписок1.Добавить("Item", "Item");
+		СортированныйСписок1.Добавить("LayoutEngine", "LayoutEngine");
+		СортированныйСписок1.Добавить("Left", "Left");
+		СортированныйСписок1.Добавить("Location", "Location");
+		СортированныйСписок1.Добавить("Margin", "Margin");
+		СортированныйСписок1.Добавить("MaximumSize", "MaximumSize");
+		СортированныйСписок1.Добавить("MinimumSize", "MinimumSize");
+		СортированныйСписок1.Добавить("MultiSelect", "MultiSelect");
+		СортированныйСписок1.Добавить("Name", "Name");
+		СортированныйСписок1.Добавить("NewRowIndex", "NewRowIndex");
+		СортированныйСписок1.Добавить("Padding", "Padding");
+		СортированныйСписок1.Добавить("Parent", "Parent");
+		СортированныйСписок1.Добавить("PreferredSize", "PreferredSize");
+		СортированныйСписок1.Добавить("ProductName", "ProductName");
+		СортированныйСписок1.Добавить("ProductVersion", "ProductVersion");
+		СортированныйСписок1.Добавить("ReadOnly", "ReadOnly");
+		СортированныйСписок1.Добавить("RecreatingHandle", "RecreatingHandle");
+		СортированныйСписок1.Добавить("Region", "Region");
+		СортированныйСписок1.Добавить("Right", "Right");
+		СортированныйСписок1.Добавить("RightToLeft", "RightToLeft");
+		СортированныйСписок1.Добавить("RowCount", "RowCount");
+		СортированныйСписок1.Добавить("RowHeadersBorderStyle", "RowHeadersBorderStyle");
+		СортированныйСписок1.Добавить("RowHeadersDefaultCellStyle", "RowHeadersDefaultCellStyle");
+		СортированныйСписок1.Добавить("RowHeadersVisible", "RowHeadersVisible");
+		СортированныйСписок1.Добавить("RowHeadersWidth", "RowHeadersWidth");
+		СортированныйСписок1.Добавить("RowHeadersWidthSizeMode", "RowHeadersWidthSizeMode");
+		СортированныйСписок1.Добавить("Rows", "Rows");
+		СортированныйСписок1.Добавить("RowsDefaultCellStyle", "RowsDefaultCellStyle");
+		СортированныйСписок1.Добавить("RowTemplate", "RowTemplate");
+		СортированныйСписок1.Добавить("ScrollBars", "ScrollBars");
+		СортированныйСписок1.Добавить("SelectedCells", "SelectedCells");
+		СортированныйСписок1.Добавить("SelectedColumns", "SelectedColumns");
+		СортированныйСписок1.Добавить("SelectedRows", "SelectedRows");
+		СортированныйСписок1.Добавить("SelectionMode", "SelectionMode");
+		СортированныйСписок1.Добавить("ShowCellErrors", "ShowCellErrors");
+		СортированныйСписок1.Добавить("ShowCellToolTips", "ShowCellToolTips");
+		СортированныйСписок1.Добавить("ShowEditingIcon", "ShowEditingIcon");
+		СортированныйСписок1.Добавить("ShowRowErrors", "ShowRowErrors");
+		СортированныйСписок1.Добавить("Site", "Site");
+		СортированныйСписок1.Добавить("Size", "Size");
+		СортированныйСписок1.Добавить("SortedColumn", "SortedColumn");
+		СортированныйСписок1.Добавить("SortOrder", "SortOrder");
+		СортированныйСписок1.Добавить("StandardTab", "StandardTab");
+		СортированныйСписок1.Добавить("TabIndex", "TabIndex");
+		СортированныйСписок1.Добавить("TabStop", "TabStop");
+		СортированныйСписок1.Добавить("Tag", "Tag");
+		СортированныйСписок1.Добавить("Text", "Text");
+		СортированныйСписок1.Добавить("Top", "Top");
+		СортированныйСписок1.Добавить("TopLeftHeaderCell", "TopLeftHeaderCell");
+		СортированныйСписок1.Добавить("TopLevelControl", "TopLevelControl");
+		СортированныйСписок1.Добавить("UserSetCursor", "UserSetCursor");
+		СортированныйСписок1.Добавить("UseWaitCursor", "UseWaitCursor");
+		СортированныйСписок1.Добавить("VerticalScrollingOffset", "VerticalScrollingOffset");
+		СортированныйСписок1.Добавить("VirtualMode", "VirtualMode");
+		СортированныйСписок1.Добавить("Visible", "Visible");
+		СортированныйСписок1.Добавить("Width", "Width");
+		СортированныйСписок1.Добавить("WindowTarget", "WindowTarget");
+	ИначеЕсли ИмяКонтекстКлассаАнгл = "MainMenu" Тогда
 		СортированныйСписок1.Добавить("MenuItems", "MenuItems");
 	ИначеЕсли ИмяКонтекстКлассаАнгл = "System.Windows.Forms.MainMenu" Тогда
 		СортированныйСписок1.Добавить("Container", "Container");
@@ -28615,7 +35810,208 @@
 		СортированныйСписок1.Добавить("Name", "Name");
 		СортированныйСписок1.Добавить("RightToLeft", "RightToLeft");
 		СортированныйСписок1.Добавить("Site", "Site");
-		СортированныйСписок1.Добавить("Tag", "Tag");	
+		СортированныйСписок1.Добавить("Tag", "Tag");
+	ИначеЕсли ИмяКонтекстКлассаАнгл = "MaskedTextBox" Тогда
+		СортированныйСписок1.Добавить("AllowPromptAsInput", "AllowPromptAsInput");
+		СортированныйСписок1.Добавить("Anchor", "Anchor");
+		СортированныйСписок1.Добавить("AsciiOnly", "AsciiOnly");
+		СортированныйСписок1.Добавить("AutoSize", "AutoSize");
+		СортированныйСписок1.Добавить("BackColor", "BackColor");
+		СортированныйСписок1.Добавить("BeepOnError", "BeepOnError");
+		СортированныйСписок1.Добавить("BorderStyle", "BorderStyle");
+		СортированныйСписок1.Добавить("Bottom", "Bottom");
+		СортированныйСписок1.Добавить("Bounds", "Bounds");
+		СортированныйСписок1.Добавить("CanFocus", "CanFocus");
+		СортированныйСписок1.Добавить("Capture", "Capture");
+		СортированныйСписок1.Добавить("Click", "Click");
+		СортированныйСписок1.Добавить("ClientRectangle", "ClientRectangle");
+		СортированныйСписок1.Добавить("ClientSize", "ClientSize");
+		СортированныйСписок1.Добавить("ContextMenu", "ContextMenu");
+		СортированныйСписок1.Добавить("ControlAdded", "ControlAdded");
+		СортированныйСписок1.Добавить("ControlRemoved", "ControlRemoved");
+		СортированныйСписок1.Добавить("Controls", "Controls");
+		СортированныйСписок1.Добавить("Cursor", "Cursor");
+		СортированныйСписок1.Добавить("CutCopyMaskFormat", "CutCopyMaskFormat");
+		СортированныйСписок1.Добавить("Dock", "Dock");
+		СортированныйСписок1.Добавить("DoubleClick", "DoubleClick");
+		СортированныйСписок1.Добавить("Enabled", "Enabled");
+		СортированныйСписок1.Добавить("Enter", "Enter");
+		СортированныйСписок1.Добавить("Focused", "Focused");
+		СортированныйСписок1.Добавить("Font", "Font");
+		СортированныйСписок1.Добавить("FontHeight", "FontHeight");
+		СортированныйСписок1.Добавить("ForeColor", "ForeColor");
+		СортированныйСписок1.Добавить("Height", "Height");
+		СортированныйСписок1.Добавить("HidePromptOnLeave", "HidePromptOnLeave");
+		СортированныйСписок1.Добавить("HideSelection", "HideSelection");
+		СортированныйСписок1.Добавить("InsertKeyMode", "InsertKeyMode");
+		СортированныйСписок1.Добавить("IsOverwriteMode", "IsOverwriteMode");
+		СортированныйСписок1.Добавить("KeyDown", "KeyDown");
+		СортированныйСписок1.Добавить("KeyPress", "KeyPress");
+		СортированныйСписок1.Добавить("KeyUp", "KeyUp");
+		СортированныйСписок1.Добавить("Leave", "Leave");
+		СортированныйСписок1.Добавить("Left", "Left");
+		СортированныйСписок1.Добавить("Location", "Location");
+		СортированныйСписок1.Добавить("LocationChanged", "LocationChanged");
+		СортированныйСписок1.Добавить("LostFocus", "LostFocus");
+		СортированныйСписок1.Добавить("Mask", "Mask");
+		СортированныйСписок1.Добавить("MaskCompleted", "MaskCompleted");
+		СортированныйСписок1.Добавить("MaskFull", "MaskFull");
+		СортированныйСписок1.Добавить("MaskInputRejected", "MaskInputRejected");
+		СортированныйСписок1.Добавить("Modified", "Modified");
+		СортированныйСписок1.Добавить("MouseDown", "MouseDown");
+		СортированныйСписок1.Добавить("MouseEnter", "MouseEnter");
+		СортированныйСписок1.Добавить("MouseHover", "MouseHover");
+		СортированныйСписок1.Добавить("MouseLeave", "MouseLeave");
+		СортированныйСписок1.Добавить("MouseMove", "MouseMove");
+		СортированныйСписок1.Добавить("MouseUp", "MouseUp");
+		СортированныйСписок1.Добавить("Move", "Move");
+		СортированныйСписок1.Добавить("Name", "Name");
+		СортированныйСписок1.Добавить("Paint", "Paint");
+		СортированныйСписок1.Добавить("Parent", "Parent");
+		СортированныйСписок1.Добавить("PasswordChar", "PasswordChar");
+		СортированныйСписок1.Добавить("PreferredHeight", "PreferredHeight");
+		СортированныйСписок1.Добавить("ProductName", "ProductName");
+		СортированныйСписок1.Добавить("ProductVersion", "ProductVersion");
+		СортированныйСписок1.Добавить("PromptChar", "PromptChar");
+		СортированныйСписок1.Добавить("ReadOnly", "ReadOnly");
+		СортированныйСписок1.Добавить("ResetOnPrompt", "ResetOnPrompt");
+		СортированныйСписок1.Добавить("ResetOnSpace", "ResetOnSpace");
+		СортированныйСписок1.Добавить("Right", "Right");
+		СортированныйСписок1.Добавить("SelectedText", "SelectedText");
+		СортированныйСписок1.Добавить("SelectionLength", "SelectionLength");
+		СортированныйСписок1.Добавить("SelectionStart", "SelectionStart");
+		СортированныйСписок1.Добавить("Size", "Size");
+		СортированныйСписок1.Добавить("SizeChanged", "SizeChanged");
+		СортированныйСписок1.Добавить("SkipLiterals", "SkipLiterals");
+		СортированныйСписок1.Добавить("TabIndex", "TabIndex");
+		СортированныйСписок1.Добавить("TabStop", "TabStop");
+		СортированныйСписок1.Добавить("Tag", "Tag");
+		СортированныйСписок1.Добавить("Text", "Text");
+		СортированныйСписок1.Добавить("TextAlign", "TextAlign");
+		СортированныйСписок1.Добавить("TextChanged", "TextChanged");
+		СортированныйСписок1.Добавить("TextLength", "TextLength");
+		СортированныйСписок1.Добавить("TextMaskFormat", "TextMaskFormat");
+		СортированныйСписок1.Добавить("Top", "Top");
+		СортированныйСписок1.Добавить("TopLevelControl", "TopLevelControl");
+		СортированныйСписок1.Добавить("UseSystemPasswordChar", "UseSystemPasswordChar");
+		СортированныйСписок1.Добавить("UseWaitCursor", "UseWaitCursor");
+		СортированныйСписок1.Добавить("Visible", "Visible");
+		СортированныйСписок1.Добавить("Width", "Width");
+	ИначеЕсли ИмяКонтекстКлассаАнгл = "System.Windows.Forms.MaskedTextBox" Тогда
+		СортированныйСписок1.Добавить("AcceptsTab", "AcceptsTab");
+		СортированныйСписок1.Добавить("AccessibilityObject", "AccessibilityObject");
+		СортированныйСписок1.Добавить("AccessibleDefaultActionDescription", "AccessibleDefaultActionDescription");
+		СортированныйСписок1.Добавить("AccessibleDescription", "AccessibleDescription");
+		СортированныйСписок1.Добавить("AccessibleName", "AccessibleName");
+		СортированныйСписок1.Добавить("AccessibleRole", "AccessibleRole");
+		СортированныйСписок1.Добавить("AllowDrop", "AllowDrop");
+		СортированныйСписок1.Добавить("AllowPromptAsInput", "AllowPromptAsInput");
+		СортированныйСписок1.Добавить("Anchor", "Anchor");
+		СортированныйСписок1.Добавить("AsciiOnly", "AsciiOnly");
+		СортированныйСписок1.Добавить("AutoScrollOffset", "AutoScrollOffset");
+		СортированныйСписок1.Добавить("AutoSize", "AutoSize");
+		СортированныйСписок1.Добавить("BackColor", "BackColor");
+		СортированныйСписок1.Добавить("BackgroundImage", "BackgroundImage");
+		СортированныйСписок1.Добавить("BackgroundImageLayout", "BackgroundImageLayout");
+		СортированныйСписок1.Добавить("BeepOnError", "BeepOnError");
+		СортированныйСписок1.Добавить("BindingContext", "BindingContext");
+		СортированныйСписок1.Добавить("BorderStyle", "BorderStyle");
+		СортированныйСписок1.Добавить("Bottom", "Bottom");
+		СортированныйСписок1.Добавить("Bounds", "Bounds");
+		СортированныйСписок1.Добавить("CanFocus", "CanFocus");
+		СортированныйСписок1.Добавить("CanSelect", "CanSelect");
+		СортированныйСписок1.Добавить("CanUndo", "CanUndo");
+		СортированныйСписок1.Добавить("Capture", "Capture");
+		СортированныйСписок1.Добавить("CausesValidation", "CausesValidation");
+		СортированныйСписок1.Добавить("ClientRectangle", "ClientRectangle");
+		СортированныйСписок1.Добавить("ClientSize", "ClientSize");
+		СортированныйСписок1.Добавить("CompanyName", "CompanyName");
+		СортированныйСписок1.Добавить("Container", "Container");
+		СортированныйСписок1.Добавить("ContainsFocus", "ContainsFocus");
+		СортированныйСписок1.Добавить("ContextMenu", "ContextMenu");
+		СортированныйСписок1.Добавить("ContextMenuStrip", "ContextMenuStrip");
+		СортированныйСписок1.Добавить("Controls", "Controls");
+		СортированныйСписок1.Добавить("Created", "Created");
+		СортированныйСписок1.Добавить("Culture", "Culture");
+		СортированныйСписок1.Добавить("Cursor", "Cursor");
+		СортированныйСписок1.Добавить("CutCopyMaskFormat", "CutCopyMaskFormat");
+		СортированныйСписок1.Добавить("DataBindings", "DataBindings");
+		СортированныйСписок1.Добавить("DeviceDpi", "DeviceDpi");
+		СортированныйСписок1.Добавить("DisplayRectangle", "DisplayRectangle");
+		СортированныйСписок1.Добавить("Disposing", "Disposing");
+		СортированныйСписок1.Добавить("Dock", "Dock");
+		СортированныйСписок1.Добавить("Enabled", "Enabled");
+		СортированныйСписок1.Добавить("Focused", "Focused");
+		СортированныйСписок1.Добавить("Font", "Font");
+		СортированныйСписок1.Добавить("ForeColor", "ForeColor");
+		СортированныйСписок1.Добавить("FormatProvider", "FormatProvider");
+		СортированныйСписок1.Добавить("Handle", "Handle");
+		СортированныйСписок1.Добавить("HasChildren", "HasChildren");
+		СортированныйСписок1.Добавить("Height", "Height");
+		СортированныйСписок1.Добавить("HidePromptOnLeave", "HidePromptOnLeave");
+		СортированныйСписок1.Добавить("HideSelection", "HideSelection");
+		СортированныйСписок1.Добавить("ImeMode", "ImeMode");
+		СортированныйСписок1.Добавить("InsertKeyMode", "InsertKeyMode");
+		СортированныйСписок1.Добавить("InvokeRequired", "InvokeRequired");
+		СортированныйСписок1.Добавить("IsAccessible", "IsAccessible");
+		СортированныйСписок1.Добавить("IsDisposed", "IsDisposed");
+		СортированныйСписок1.Добавить("IsHandleCreated", "IsHandleCreated");
+		СортированныйСписок1.Добавить("IsMirrored", "IsMirrored");
+		СортированныйСписок1.Добавить("IsOverwriteMode", "IsOverwriteMode");
+		СортированныйСписок1.Добавить("LayoutEngine", "LayoutEngine");
+		СортированныйСписок1.Добавить("Left", "Left");
+		СортированныйСписок1.Добавить("Lines", "Lines");
+		СортированныйСписок1.Добавить("Location", "Location");
+		СортированныйСписок1.Добавить("Margin", "Margin");
+		СортированныйСписок1.Добавить("Mask", "Mask");
+		СортированныйСписок1.Добавить("MaskCompleted", "MaskCompleted");
+		СортированныйСписок1.Добавить("MaskedTextProvider", "MaskedTextProvider");
+		СортированныйСписок1.Добавить("MaskFull", "MaskFull");
+		СортированныйСписок1.Добавить("MaximumSize", "MaximumSize");
+		СортированныйСписок1.Добавить("MaxLength", "MaxLength");
+		СортированныйСписок1.Добавить("MinimumSize", "MinimumSize");
+		СортированныйСписок1.Добавить("Modified", "Modified");
+		СортированныйСписок1.Добавить("Multiline", "Multiline");
+		СортированныйСписок1.Добавить("Name", "Name");
+		СортированныйСписок1.Добавить("Padding", "Padding");
+		СортированныйСписок1.Добавить("Parent", "Parent");
+		СортированныйСписок1.Добавить("PasswordChar", "PasswordChar");
+		СортированныйСписок1.Добавить("PreferredHeight", "PreferredHeight");
+		СортированныйСписок1.Добавить("PreferredSize", "PreferredSize");
+		СортированныйСписок1.Добавить("ProductName", "ProductName");
+		СортированныйСписок1.Добавить("ProductVersion", "ProductVersion");
+		СортированныйСписок1.Добавить("PromptChar", "PromptChar");
+		СортированныйСписок1.Добавить("ReadOnly", "ReadOnly");
+		СортированныйСписок1.Добавить("RecreatingHandle", "RecreatingHandle");
+		СортированныйСписок1.Добавить("Region", "Region");
+		СортированныйСписок1.Добавить("RejectInputOnFirstFailure", "RejectInputOnFirstFailure");
+		СортированныйСписок1.Добавить("ResetOnPrompt", "ResetOnPrompt");
+		СортированныйСписок1.Добавить("ResetOnSpace", "ResetOnSpace");
+		СортированныйСписок1.Добавить("Right", "Right");
+		СортированныйСписок1.Добавить("RightToLeft", "RightToLeft");
+		СортированныйСписок1.Добавить("SelectedText", "SelectedText");
+		СортированныйСписок1.Добавить("SelectionLength", "SelectionLength");
+		СортированныйСписок1.Добавить("SelectionStart", "SelectionStart");
+		СортированныйСписок1.Добавить("ShortcutsEnabled", "ShortcutsEnabled");
+		СортированныйСписок1.Добавить("Site", "Site");
+		СортированныйСписок1.Добавить("Size", "Size");
+		СортированныйСписок1.Добавить("SkipLiterals", "SkipLiterals");
+		СортированныйСписок1.Добавить("TabIndex", "TabIndex");
+		СортированныйСписок1.Добавить("TabStop", "TabStop");
+		СортированныйСписок1.Добавить("Tag", "Tag");
+		СортированныйСписок1.Добавить("Text", "Text");
+		СортированныйСписок1.Добавить("TextAlign", "TextAlign");
+		СортированныйСписок1.Добавить("TextLength", "TextLength");
+		СортированныйСписок1.Добавить("TextMaskFormat", "TextMaskFormat");
+		СортированныйСписок1.Добавить("Top", "Top");
+		СортированныйСписок1.Добавить("TopLevelControl", "TopLevelControl");
+		СортированныйСписок1.Добавить("UseSystemPasswordChar", "UseSystemPasswordChar");
+		СортированныйСписок1.Добавить("UseWaitCursor", "UseWaitCursor");
+		СортированныйСписок1.Добавить("ValidatingType", "ValidatingType");
+		СортированныйСписок1.Добавить("Visible", "Visible");
+		СортированныйСписок1.Добавить("Width", "Width");
+		СортированныйСписок1.Добавить("WindowTarget", "WindowTarget");
+		СортированныйСписок1.Добавить("WordWrap", "WordWrap");		
 	ИначеЕсли ИмяКонтекстКлассаАнгл = "StatusBarPanel" Тогда
 		СортированныйСписок1.Добавить("AutoSize", "AutoSize");
 		СортированныйСписок1.Добавить("BorderStyle", "BorderStyle");
@@ -34164,7 +41560,688 @@
 
 Функция ДанныеДляДизайнера(КлассАнгл, СвойствоАнгл)
 	Стр1 = "";
-	Если КлассАнгл = "System.Windows.Forms.MainMenu" и СвойствоАнгл = "MenuItems" Тогда
+	
+	Если КлассАнгл = "System.Windows.Forms.DataGridViewCellStyle" и СвойствоАнгл = "Alignment" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewCellStyle" и СвойствоАнгл = "Padding" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewCellStyle" и СвойствоАнгл = "ForeColor" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Внешний вид~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewCellStyle" и СвойствоАнгл = "SelectionForeColor" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Внешний вид~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewCellStyle" и СвойствоАнгл = "WrapMode" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewCellStyle" и СвойствоАнгл = "BackColor" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Внешний вид~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewCellStyle" и СвойствоАнгл = "SelectionBackColor" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Внешний вид~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewCellStyle" и СвойствоАнгл = "Font" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Внешний вид~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewCheckBoxColumn" и СвойствоАнгл = "FillWeight" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewCheckBoxColumn" и СвойствоАнгл = "Selected" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Прочее~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewCheckBoxColumn" и СвойствоАнгл = "HeaderCell" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Прочее~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewCheckBoxColumn" и СвойствоАнгл = "Frozen" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewCheckBoxColumn" и СвойствоАнгл = "Resizable" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Поведение~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewCheckBoxColumn" и СвойствоАнгл = "Name" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Прочее~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewCheckBoxColumn" и СвойствоАнгл = "DataPropertyName" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Данные~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewCheckBoxColumn" и СвойствоАнгл = "Index" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Прочее~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewCheckBoxColumn" и СвойствоАнгл = "DisplayIndex" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Прочее~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewCheckBoxColumn" и СвойствоАнгл = "MinimumWidth" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewCheckBoxColumn" и СвойствоАнгл = "Displayed" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Прочее~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewCheckBoxColumn" и СвойствоАнгл = "Visible" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Внешний вид~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewCheckBoxColumn" и СвойствоАнгл = "FlatStyle" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Внешний вид~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewCheckBoxColumn" и СвойствоАнгл = "AutoSizeMode" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewCheckBoxColumn" и СвойствоАнгл = "SortMode" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Поведение~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewCheckBoxColumn" и СвойствоАнгл = "IndeterminateValue" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Данные~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewCheckBoxColumn" и СвойствоАнгл = "FalseValue" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Данные~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewCheckBoxColumn" и СвойствоАнгл = "TrueValue" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Данные~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewCheckBoxColumn" и СвойствоАнгл = "DefaultCellStyle" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Внешний вид~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewCheckBoxColumn" и СвойствоАнгл = "DataGridView" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Прочее~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewCheckBoxColumn" и СвойствоАнгл = "HeaderText" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Внешний вид~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewCheckBoxColumn" и СвойствоАнгл = "ToolTipText" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Внешний вид~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewCheckBoxColumn" и СвойствоАнгл = "ReadOnly" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Поведение~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewCheckBoxColumn" и СвойствоАнгл = "ThreeState" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Поведение~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewCheckBoxColumn" и СвойствоАнгл = "Width" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewCheckBoxColumn" и СвойствоАнгл = "DividerWidth" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewTextBoxColumn" и СвойствоАнгл = "FillWeight" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewTextBoxColumn" и СвойствоАнгл = "Selected" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Прочее~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewTextBoxColumn" и СвойствоАнгл = "HeaderCell" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Прочее~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewTextBoxColumn" и СвойствоАнгл = "Frozen" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewTextBoxColumn" и СвойствоАнгл = "Resizable" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Поведение~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewTextBoxColumn" и СвойствоАнгл = "Name" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Прочее~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewTextBoxColumn" и СвойствоАнгл = "DataPropertyName" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Данные~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewTextBoxColumn" и СвойствоАнгл = "Index" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Прочее~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewTextBoxColumn" и СвойствоАнгл = "DisplayIndex" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Прочее~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewTextBoxColumn" и СвойствоАнгл = "MaxInputLength" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Поведение~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewTextBoxColumn" и СвойствоАнгл = "MinimumWidth" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewTextBoxColumn" и СвойствоАнгл = "Displayed" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Прочее~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewTextBoxColumn" и СвойствоАнгл = "Visible" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Внешний вид~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewTextBoxColumn" и СвойствоАнгл = "AutoSizeMode" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewTextBoxColumn" и СвойствоАнгл = "SortMode" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Поведение~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewTextBoxColumn" и СвойствоАнгл = "DefaultCellStyle" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Внешний вид~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewTextBoxColumn" и СвойствоАнгл = "DataGridView" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Прочее~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewTextBoxColumn" и СвойствоАнгл = "HeaderText" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Внешний вид~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewTextBoxColumn" и СвойствоАнгл = "ToolTipText" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Внешний вид~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewTextBoxColumn" и СвойствоАнгл = "ReadOnly" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Поведение~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewTextBoxColumn" и СвойствоАнгл = "Width" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewTextBoxColumn" и СвойствоАнгл = "DividerWidth" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewLinkColumn" и СвойствоАнгл = "FillWeight" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewLinkColumn" и СвойствоАнгл = "Selected" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Прочее~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewLinkColumn" и СвойствоАнгл = "HeaderCell" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Прочее~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewLinkColumn" и СвойствоАнгл = "Frozen" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewLinkColumn" и СвойствоАнгл = "Resizable" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Поведение~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewLinkColumn" и СвойствоАнгл = "Name" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Прочее~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewLinkColumn" и СвойствоАнгл = "DataPropertyName" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Данные~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewLinkColumn" и СвойствоАнгл = "Index" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Прочее~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewLinkColumn" и СвойствоАнгл = "DisplayIndex" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Прочее~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewLinkColumn" и СвойствоАнгл = "UseColumnTextForLinkValue" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Внешний вид~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewLinkColumn" и СвойствоАнгл = "MinimumWidth" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewLinkColumn" и СвойствоАнгл = "Displayed" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Прочее~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewLinkColumn" и СвойствоАнгл = "Visible" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Внешний вид~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewLinkColumn" и СвойствоАнгл = "LinkBehavior" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Поведение~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewLinkColumn" и СвойствоАнгл = "AutoSizeMode" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewLinkColumn" и СвойствоАнгл = "SortMode" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Поведение~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewLinkColumn" и СвойствоАнгл = "DefaultCellStyle" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Внешний вид~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewLinkColumn" и СвойствоАнгл = "DataGridView" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Прочее~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewLinkColumn" и СвойствоАнгл = "Text" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Внешний вид~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewLinkColumn" и СвойствоАнгл = "HeaderText" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Внешний вид~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewLinkColumn" и СвойствоАнгл = "ToolTipText" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Внешний вид~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewLinkColumn" и СвойствоАнгл = "ReadOnly" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Поведение~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewLinkColumn" и СвойствоАнгл = "ActiveLinkColor" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Внешний вид~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewLinkColumn" и СвойствоАнгл = "TrackVisitedState" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Поведение~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewLinkColumn" и СвойствоАнгл = "VisitedLinkColor" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Внешний вид~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewLinkColumn" и СвойствоАнгл = "LinkColor" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Внешний вид~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewLinkColumn" и СвойствоАнгл = "Width" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewLinkColumn" и СвойствоАнгл = "DividerWidth" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewImageColumn" и СвойствоАнгл = "FillWeight" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewImageColumn" и СвойствоАнгл = "Selected" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Прочее~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewImageColumn" и СвойствоАнгл = "HeaderCell" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Прочее~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewImageColumn" и СвойствоАнгл = "Frozen" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewImageColumn" и СвойствоАнгл = "Icon" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Прочее~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewImageColumn" и СвойствоАнгл = "Resizable" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Поведение~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewImageColumn" и СвойствоАнгл = "Name" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Прочее~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewImageColumn" и СвойствоАнгл = "DataPropertyName" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Данные~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewImageColumn" и СвойствоАнгл = "Index" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Прочее~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewImageColumn" и СвойствоАнгл = "DisplayIndex" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Прочее~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewImageColumn" и СвойствоАнгл = "Bitmap" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewImageColumn" и СвойствоАнгл = "MinimumWidth" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewImageColumn" и СвойствоАнгл = "Description" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Внешний вид~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewImageColumn" и СвойствоАнгл = "Displayed" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Прочее~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewImageColumn" и СвойствоАнгл = "Visible" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Внешний вид~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewImageColumn" и СвойствоАнгл = "ImageLayout" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Внешний вид~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewImageColumn" и СвойствоАнгл = "AutoSizeMode" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewImageColumn" и СвойствоАнгл = "SortMode" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Поведение~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewImageColumn" и СвойствоАнгл = "DefaultCellStyle" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Внешний вид~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewImageColumn" и СвойствоАнгл = "DataGridView" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Прочее~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewImageColumn" и СвойствоАнгл = "HeaderText" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Внешний вид~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewImageColumn" и СвойствоАнгл = "ToolTipText" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Внешний вид~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewImageColumn" и СвойствоАнгл = "ReadOnly" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Поведение~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewImageColumn" и СвойствоАнгл = "Width" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewImageColumn" и СвойствоАнгл = "DividerWidth" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewImageColumn" и СвойствоАнгл = "ValuesAreIcons" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Прочее~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewComboBoxColumn" и СвойствоАнгл = "FillWeight" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewComboBoxColumn" и СвойствоАнгл = "Selected" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Прочее~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewComboBoxColumn" и СвойствоАнгл = "HeaderCell" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Прочее~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewComboBoxColumn" и СвойствоАнгл = "Frozen" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewComboBoxColumn" и СвойствоАнгл = "Resizable" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Поведение~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewComboBoxColumn" и СвойствоАнгл = "Name" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Прочее~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewComboBoxColumn" и СвойствоАнгл = "DataPropertyName" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Данные~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewComboBoxColumn" и СвойствоАнгл = "Index" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Прочее~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewComboBoxColumn" и СвойствоАнгл = "DisplayIndex" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Прочее~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewComboBoxColumn" и СвойствоАнгл = "DataSource" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Данные~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewComboBoxColumn" и СвойствоАнгл = "MaxDropDownItems" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Поведение~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewComboBoxColumn" и СвойствоАнгл = "MinimumWidth" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewComboBoxColumn" и СвойствоАнгл = "Displayed" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Прочее~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewComboBoxColumn" и СвойствоАнгл = "Visible" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Внешний вид~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewComboBoxColumn" и СвойствоАнгл = "Sorted" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Поведение~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewComboBoxColumn" и СвойствоАнгл = "FlatStyle" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Внешний вид~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewComboBoxColumn" и СвойствоАнгл = "AutoSizeMode" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewComboBoxColumn" и СвойствоАнгл = "SortMode" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Поведение~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewComboBoxColumn" и СвойствоАнгл = "DisplayStyle" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Внешний вид~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewComboBoxColumn" и СвойствоАнгл = "DefaultCellStyle" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Внешний вид~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewComboBoxColumn" и СвойствоАнгл = "DataGridView" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Прочее~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewComboBoxColumn" и СвойствоАнгл = "HeaderText" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Внешний вид~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewComboBoxColumn" и СвойствоАнгл = "ToolTipText" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Внешний вид~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewComboBoxColumn" и СвойствоАнгл = "ReadOnly" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Поведение~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewComboBoxColumn" и СвойствоАнгл = "Width" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewComboBoxColumn" и СвойствоАнгл = "DividerWidth" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewComboBoxColumn" и СвойствоАнгл = "Items" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Данные~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewButtonColumn" и СвойствоАнгл = "FillWeight" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewButtonColumn" и СвойствоАнгл = "Selected" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Прочее~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewButtonColumn" и СвойствоАнгл = "HeaderCell" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Прочее~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewButtonColumn" и СвойствоАнгл = "Frozen" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewButtonColumn" и СвойствоАнгл = "Resizable" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Поведение~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewButtonColumn" и СвойствоАнгл = "Name" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Прочее~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewButtonColumn" и СвойствоАнгл = "DataPropertyName" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Данные~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewButtonColumn" и СвойствоАнгл = "Index" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Прочее~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewButtonColumn" и СвойствоАнгл = "DisplayIndex" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Прочее~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewButtonColumn" и СвойствоАнгл = "UseColumnTextForButtonValue" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Внешний вид~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewButtonColumn" и СвойствоАнгл = "MinimumWidth" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewButtonColumn" и СвойствоАнгл = "Displayed" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Прочее~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewButtonColumn" и СвойствоАнгл = "Visible" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Внешний вид~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewButtonColumn" и СвойствоАнгл = "FlatStyle" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Внешний вид~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewButtonColumn" и СвойствоАнгл = "AutoSizeMode" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewButtonColumn" и СвойствоАнгл = "SortMode" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Поведение~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewButtonColumn" и СвойствоАнгл = "DefaultCellStyle" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Внешний вид~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewButtonColumn" и СвойствоАнгл = "DataGridView" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Прочее~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewButtonColumn" и СвойствоАнгл = "Text" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Внешний вид~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewButtonColumn" и СвойствоАнгл = "HeaderText" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Внешний вид~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewButtonColumn" и СвойствоАнгл = "ToolTipText" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Внешний вид~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewButtonColumn" и СвойствоАнгл = "ReadOnly" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Поведение~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewButtonColumn" и СвойствоАнгл = "Width" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewButtonColumn" и СвойствоАнгл = "DividerWidth" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "AutoNumberingRows" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "AutoGenerateColumns" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Прочее~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "AutoResizeRowHeadersWidth" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "ProductVersion" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Прочее~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "Top" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "Height" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "ColumnHeadersHeight" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Внешний вид~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "Bounds" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "DoubleClick" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "CellDoubleClick" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "AllowUserToAddRows" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Поведение~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "Enabled" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Поведение~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "Capture" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Фокус~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "CellValueChanged" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "AllowUserToResizeColumns" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Поведение~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "AllowUserToResizeRows" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Поведение~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "Name" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Прочее~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "ProductName" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Прочее~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "UseWaitCursor" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Внешний вид~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "KeyUp" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "KeyDown" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "KeyPress" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "ClientRectangle" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "ClientSize" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "ColumnCount" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Прочее~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "RowCount" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Прочее~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "Columns" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Прочее~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "ContextMenu" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Поведение~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "Cursor" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Внешний вид~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "Left" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "MouseEnter" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "CellMouseEnter" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "MouseLeave" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "CellMouseLeave" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "Click" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "CellContentClick" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "CellClick" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "Bottom" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "ForeColor" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Внешний вид~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "Visible" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Поведение~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "ColumnHeadersVisible" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Внешний вид~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "RowHeadersVisible" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Внешний вид~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "Location" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "LocationChanged" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "ScrollBars" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "TabIndex" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Поведение~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "Right" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "Enter" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "RowEnter" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "CellEnter" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "MouseHover" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "ColumnHeaderMouseClick" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "RowHeaderMouseClick" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "MouseDown" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "CellMouseDown" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "MouseUp" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "CellMouseUp" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "Move" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "MouseMove" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "CellMouseMove" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "Paint" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "LostFocus" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "Leave" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "RowLeave" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "CellLeave" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "Size" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "SizeChanged" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "CellEndEdit" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "CellBeginEdit" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "AutoSizeColumnsMode" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "AutoSizeRowsMode" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "SelectionMode" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Поведение~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "ColumnHeadersHeightSizeMode" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Поведение~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "ColumnHeadersDefaultCellStyle" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Внешний вид~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "RowHeadersDefaultCellStyle" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Внешний вид~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "ArrowRowHeaders" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "Rows" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Прочее~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "Dock" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "Focused" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Прочее~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "TabStop" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Поведение~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "Text" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Внешний вид~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "TextChanged" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "CurrentRow" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Прочее~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "CurrentCell" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Прочее~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "CurrentCellChanged" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "ReadOnly" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Поведение~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "CanFocus" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Фокус~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "BackgroundImage" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Внешний вид~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "BackColor" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Внешний вид~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "BackgroundColor" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Внешний вид~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "DataMember" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Данные~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "Width" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "RowHeadersWidth" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "Font" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Внешний вид~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "TopLevelControl" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Поведение~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "ControlAdded" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "ControlRemoved" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridView" и СвойствоАнгл = "Anchor" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.MaskedTextBox" и СвойствоАнгл = "AutoSize" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Поведение~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.MaskedTextBox" и СвойствоАнгл = "MaskInputRejected" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.MaskedTextBox" и СвойствоАнгл = "ProductVersion" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Прочее~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.MaskedTextBox" и СвойствоАнгл = "Top" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.MaskedTextBox" и СвойствоАнгл = "SelectedText" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Внешний вид~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.MaskedTextBox" и СвойствоАнгл = "TextAlign" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Внешний вид~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.MaskedTextBox" и СвойствоАнгл = "Height" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.MaskedTextBox" и СвойствоАнгл = "Bounds" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.MaskedTextBox" и СвойствоАнгл = "DoubleClick" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.MaskedTextBox" и СвойствоАнгл = "SelectionLength" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Внешний вид~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.MaskedTextBox" и СвойствоАнгл = "TextLength" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Прочее~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.MaskedTextBox" и СвойствоАнгл = "Enabled" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Поведение~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.MaskedTextBox" и СвойствоАнгл = "MaskCompleted" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Прочее~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.MaskedTextBox" и СвойствоАнгл = "MaskFull" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Прочее~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.MaskedTextBox" и СвойствоАнгл = "Capture" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Фокус~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.MaskedTextBox" и СвойствоАнгл = "Name" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Прочее~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.MaskedTextBox" и СвойствоАнгл = "ProductName" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Прочее~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.MaskedTextBox" и СвойствоАнгл = "UseWaitCursor" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Внешний вид~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.MaskedTextBox" и СвойствоАнгл = "AllowPromptAsInput" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Поведение~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.MaskedTextBox" и СвойствоАнгл = "UseSystemPasswordChar" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Поведение~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.MaskedTextBox" и СвойствоАнгл = "KeyUp" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.MaskedTextBox" и СвойствоАнгл = "KeyDown" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.MaskedTextBox" и СвойствоАнгл = "KeyPress" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.MaskedTextBox" и СвойствоАнгл = "ClientRectangle" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.MaskedTextBox" и СвойствоАнгл = "ClientSize" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.MaskedTextBox" и СвойствоАнгл = "ContextMenu" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Поведение~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.MaskedTextBox" и СвойствоАнгл = "CutCopyMaskFormat" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Поведение~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.MaskedTextBox" и СвойствоАнгл = "Cursor" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Внешний вид~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.MaskedTextBox" и СвойствоАнгл = "Left" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.MaskedTextBox" и СвойствоАнгл = "Mask" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Поведение~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.MaskedTextBox" и СвойствоАнгл = "Modified" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Поведение~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.MaskedTextBox" и СвойствоАнгл = "MouseEnter" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.MaskedTextBox" и СвойствоАнгл = "MouseLeave" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.MaskedTextBox" и СвойствоАнгл = "Click" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.MaskedTextBox" и СвойствоАнгл = "SelectionStart" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Внешний вид~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.MaskedTextBox" и СвойствоАнгл = "Bottom" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.MaskedTextBox" и СвойствоАнгл = "ForeColor" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Внешний вид~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.MaskedTextBox" и СвойствоАнгл = "Visible" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Поведение~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.MaskedTextBox" и СвойствоАнгл = "Location" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.MaskedTextBox" и СвойствоАнгл = "LocationChanged" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.MaskedTextBox" и СвойствоАнгл = "TabIndex" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Поведение~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.MaskedTextBox" и СвойствоАнгл = "Right" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.MaskedTextBox" и СвойствоАнгл = "PreferredHeight" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.MaskedTextBox" и СвойствоАнгл = "Enter" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.MaskedTextBox" и СвойствоАнгл = "MouseHover" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.MaskedTextBox" и СвойствоАнгл = "MouseDown" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.MaskedTextBox" и СвойствоАнгл = "MouseUp" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.MaskedTextBox" и СвойствоАнгл = "Move" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.MaskedTextBox" и СвойствоАнгл = "MouseMove" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.MaskedTextBox" и СвойствоАнгл = "Paint" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.MaskedTextBox" и СвойствоАнгл = "LostFocus" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.MaskedTextBox" и СвойствоАнгл = "Leave" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.MaskedTextBox" и СвойствоАнгл = "SkipLiterals" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Поведение~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.MaskedTextBox" и СвойствоАнгл = "Size" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.MaskedTextBox" и СвойствоАнгл = "SizeChanged" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.MaskedTextBox" и СвойствоАнгл = "InsertKeyMode" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Поведение~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.MaskedTextBox" и СвойствоАнгл = "IsOverwriteMode" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Прочее~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.MaskedTextBox" и СвойствоАнгл = "ResetOnSpace" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Поведение~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.MaskedTextBox" и СвойствоАнгл = "ResetOnPrompt" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Поведение~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.MaskedTextBox" и СвойствоАнгл = "BeepOnError" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Поведение~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.MaskedTextBox" и СвойствоАнгл = "PasswordChar" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Поведение~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.MaskedTextBox" и СвойствоАнгл = "PromptChar" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Внешний вид~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.MaskedTextBox" и СвойствоАнгл = "HidePromptOnLeave" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Поведение~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.MaskedTextBox" и СвойствоАнгл = "HideSelection" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Поведение~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.MaskedTextBox" и СвойствоАнгл = "BorderStyle" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Внешний вид~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.MaskedTextBox" и СвойствоАнгл = "Dock" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.MaskedTextBox" и СвойствоАнгл = "Focused" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Прочее~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.MaskedTextBox" и СвойствоАнгл = "TabStop" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Поведение~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.MaskedTextBox" и СвойствоАнгл = "Text" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Внешний вид~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.MaskedTextBox" и СвойствоАнгл = "TextChanged" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.MaskedTextBox" и СвойствоАнгл = "AsciiOnly" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Поведение~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.MaskedTextBox" и СвойствоАнгл = "ReadOnly" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Поведение~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.MaskedTextBox" и СвойствоАнгл = "CanFocus" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Фокус~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.MaskedTextBox" и СвойствоАнгл = "TextMaskFormat" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Поведение~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.MaskedTextBox" и СвойствоАнгл = "BackColor" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Внешний вид~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.MaskedTextBox" и СвойствоАнгл = "Width" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.MaskedTextBox" и СвойствоАнгл = "Font" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Внешний вид~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.MaskedTextBox" и СвойствоАнгл = "TopLevelControl" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Поведение~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.MaskedTextBox" и СвойствоАнгл = "ControlAdded" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.MaskedTextBox" и СвойствоАнгл = "ControlRemoved" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.MaskedTextBox" и СвойствоАнгл = "Anchor" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";	
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.MainMenu" и СвойствоАнгл = "MenuItems" Тогда
 		Стр1 = "DisplayName=~Description=~Category=Прочее~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
 	ИначеЕсли КлассАнгл = "System.Windows.Forms.StatusBarPanel" и СвойствоАнгл = "AutoSize" Тогда
 		Стр1 = "DisplayName=~Description=~Category=Внешний вид~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
@@ -38542,16 +46619,19 @@
 Ф = Новый ФормыДляОдноСкрипта();
 
 М_СписокЦветов = СтрРазделить(Ф.СвойстваОбъекта(Ф.Цвет()), Символы.ПС);
-
+ 
 М_Событий = Новый Массив();// массив событий
+М_Событий.Добавить("ВводОтклонен");
 М_Событий.Добавить("ВыбранныйЭлементСеткиИзменен");
 М_Событий.Добавить("ВыделениеИзменено");
 М_Событий.Добавить("ДатаВыбрана");
 М_Событий.Добавить("ДатаИзменена");
 М_Событий.Добавить("ДвойноеНажатие");
+М_Событий.Добавить("ДвойноеНажатиеЯчейки");
 М_Событий.Добавить("Закрыта");
 М_Событий.Добавить("ЗначениеИзменено");
 М_Событий.Добавить("ЗначениеСвойстваИзменено");
+М_Событий.Добавить("ЗначениеЯчейкиИзменено");
 М_Событий.Добавить("ИндексВыбранногоИзменен");
 М_Событий.Добавить("ИндексВыбранногоИзменен");
 М_Событий.Добавить("КлавишаВверх");
@@ -38559,8 +46639,12 @@
 М_Событий.Добавить("КлавишаНажата");
 М_Событий.Добавить("КолонкаНажатие");
 М_Событий.Добавить("МышьНадЭлементом");
+М_Событий.Добавить("МышьНадЯчейкой");
 М_Событий.Добавить("МышьПокинулаЭлемент");
+М_Событий.Добавить("МышьПокинулаЯчейку");
 М_Событий.Добавить("Нажатие");
+М_Событий.Добавить("НажатиеСодержимогоЯчейки");
+М_Событий.Добавить("НажатиеЯчейки");
 М_Событий.Добавить("ПередРазвертыванием");
 М_Событий.Добавить("ПередРедактированиемНадписи");
 М_Событий.Добавить("ПоложениеИзменено");
@@ -38570,18 +46654,25 @@
 М_Событий.Добавить("ПриАктивизации");
 М_Событий.Добавить("ПриАктивизацииЭлемента");
 М_Событий.Добавить("ПриВходе");
+М_Событий.Добавить("ПриВходеВСтроку");
+М_Событий.Добавить("ПриВходеВЯчейку");
 М_Событий.Добавить("ПриВыпадении");
 М_Событий.Добавить("ПриДеактивации");
 М_Событий.Добавить("ПриЗагрузке");
 М_Событий.Добавить("ПриЗадержкеМыши");
 М_Событий.Добавить("ПриЗакрытии");
 М_Событий.Добавить("ПриИзменении");
+М_Событий.Добавить("ПриНажатииЗаголовкаКолонки");
+М_Событий.Добавить("ПриНажатииЗаголовкаСтроки");
 М_Событий.Добавить("ПриНажатииКнопки");
 М_Событий.Добавить("ПриНажатииКнопкиМыши");
 М_Событий.Добавить("ПриОтпусканииМыши");
+М_Событий.Добавить("ПриОтпусканииМышиНадЯчейкой");
 М_Событий.Добавить("ПриПереименовании");
 М_Событий.Добавить("ПриПеремещении");
 М_Событий.Добавить("ПриПеремещенииМыши");
+М_Событий.Добавить("ПриНажатииКнопкиМышиВЯчейке");
+М_Событий.Добавить("ПриПеремещенииМышиНадЯчейкой");
 М_Событий.Добавить("ПриПерерисовке");
 М_Событий.Добавить("ПриПотереФокуса");
 М_Событий.Добавить("ПриПоявлении");
@@ -38590,14 +46681,19 @@
 М_Событий.Добавить("ПриСрабатыванииТаймера");
 М_Событий.Добавить("ПриУдалении");
 М_Событий.Добавить("ПриУходе");
+М_Событий.Добавить("ПриУходеИзСтроки");
+М_Событий.Добавить("ПриУходеИзЯчейки");
 М_Событий.Добавить("РазмерИзменен");
+М_Событий.Добавить("РедактированиеЯчейкиЗавершено");
+М_Событий.Добавить("РедактированиеЯчейкиНачато");
 М_Событий.Добавить("СсылкаНажата");
 М_Событий.Добавить("ТекстИзменен");
+М_Событий.Добавить("ТекстИзменен");
+М_Событий.Добавить("ТекущаяЯчейкаИзменена");
 М_Событий.Добавить("ТекущаяЯчейкаИзменена");
 М_Событий.Добавить("ЭлементДобавлен");
 М_Событий.Добавить("ЭлементПомечен");
 М_Событий.Добавить("ЭлементУдален");
-
 
 ВыгрузкаДляCS();//запускать перед СортировкаКода и связанно
 СортировкаКода();//запускать после ВыгрузкаДляCS и связанно
