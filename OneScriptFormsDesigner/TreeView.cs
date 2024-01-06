@@ -40,17 +40,6 @@ namespace osfDesigner
             Visible_osf = base.Visible;
         }
 
-        [DisplayName("ВыбиратьПодэлементы")]
-        [Description("Возвращает или задает значение, указывающее, распространяется ли выделение выбора на всю ширину элемента управления Дерево (TreeView).")]
-        [Category("Поведение")]
-        [Browsable(true)]
-        [TypeConverter(typeof(MyBooleanConverter))]
-        public new bool FullRowSelect
-        {
-            get { return base.FullRowSelect; }
-            set { base.FullRowSelect = value; }
-        }
-
         [DisplayName("ВысотаЭлемента")]
         [Description("Возвращает или задает высоту каждого узла дерева в элементе управления Дерево (TreeView).")]
         [Category("Внешний вид")]
@@ -270,6 +259,17 @@ namespace osfDesigner
         {
             get { return base.ShowPlusMinus; }
             set { base.ShowPlusMinus = value; }
+        }
+
+        [DisplayName("ПолныйВыборСтроки")]
+        [Description("Возвращает или задает значение, указывающее, распространяется ли выделение выбора на всю ширину строки узла элемента управления Дерево (TreeView).")]
+        [Category("Поведение")]
+        [Browsable(true)]
+        [TypeConverter(typeof(MyBooleanConverter))]
+        public new bool FullRowSelect
+        {
+            get { return base.FullRowSelect; }
+            set { base.FullRowSelect = value; }
         }
 
         [DisplayName("Положение")]
