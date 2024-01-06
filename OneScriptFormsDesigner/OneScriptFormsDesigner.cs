@@ -65,6 +65,102 @@ namespace osfDesigner
             thread.Join();
         }
 	
+        [ContextMethod("ПолучитьЗначениеСвойства", "GetPropertyValue")]
+        public IValue GetPropertyValue(string controlName, string propertyName)
+        {
+            osfDesigner.pDesignerMainForm Form1 = (osfDesigner.pDesignerMainForm)osfDesigner.Program.pDesignerMainForm1;
+            IValue propertyValue = (IValue)Form1.Invoke(new osfDesigner.pDesignerMainForm.GetPropertyValue(Form1.GetPropertyValueMethod), controlName, propertyName);
+            return propertyValue;
+        }
+
+        [ContextMethod("ПолучитьТипСвойства", "GetPropertyType")]
+        public string GetPropertyType(string controlName, string propertyName)
+        {
+            osfDesigner.pDesignerMainForm Form1 = (osfDesigner.pDesignerMainForm)osfDesigner.Program.pDesignerMainForm1;
+            string typeName = (string)Form1.Invoke(new osfDesigner.pDesignerMainForm.GetPropertyType(Form1.GetPropertyTypeMethod), controlName, propertyName);
+            return typeName;
+        }
+
+        [ContextMethod("ЗакрытьДизайнер", "CloseDesigner")]
+        public void CloseDesigner()
+        {
+            osfDesigner.pDesignerMainForm Form1 = (osfDesigner.pDesignerMainForm)osfDesigner.Program.pDesignerMainForm1;
+            Form1.Invoke(new osfDesigner.pDesignerMainForm.CloseDesigner(Form1.CloseDesignerMethod));
+        }
+
+        [ContextMethod("ОткрытьФорму", "LoadForm")]
+        public void LoadForm(string fileName)
+        {
+            osfDesigner.pDesignerMainForm Form1 = (osfDesigner.pDesignerMainForm)osfDesigner.Program.pDesignerMainForm1;
+            Form1.Invoke(new osfDesigner.pDesignerMainForm.LoadForm(Form1.LoadFormMethod), fileName);
+        }
+
+        [ContextMethod("ЗапуститьСценарий", "RunScript")]
+        public void RunScript()
+        {
+            osfDesigner.pDesignerMainForm Form1 = (osfDesigner.pDesignerMainForm)osfDesigner.Program.pDesignerMainForm1;
+            Form1.Invoke(new osfDesigner.pDesignerMainForm.RunScript(Form1.RunScriptMethod));
+        }
+
+        [ContextMethod("СформироватьСценарий", "GenerateScript")]
+        public void GenerateScript(string fileName)
+        {
+            osfDesigner.pDesignerMainForm Form1 = (osfDesigner.pDesignerMainForm)osfDesigner.Program.pDesignerMainForm1;
+            Form1.Invoke(new osfDesigner.pDesignerMainForm.GenerateScript(Form1.GenerateScriptMethod), fileName);
+        }
+
+        [ContextMethod("СохранитьФорму", "UnloadForm")]
+        public void UnloadForm(string fileName)
+        {
+            osfDesigner.pDesignerMainForm Form1 = (osfDesigner.pDesignerMainForm)osfDesigner.Program.pDesignerMainForm1;
+            Form1.Invoke(new osfDesigner.pDesignerMainForm.UnloadForm(Form1.UnloadFormMethod), fileName);
+        }
+
+        [ContextMethod("УстановитьСвойство", "SetProperty")]
+        public void SetProperty(string controlName, string propertyName, IValue propertyValue)
+        {
+            osfDesigner.pDesignerMainForm Form1 = (osfDesigner.pDesignerMainForm)osfDesigner.Program.pDesignerMainForm1;
+            Form1.Invoke(new osfDesigner.pDesignerMainForm.SetProperty(Form1.SetPropertyMethod), controlName, propertyName, propertyValue);
+        }
+
+        [ContextMethod("ДобавитьКонтрол", "AddControl")]
+        public string AddControl(string controlName)
+        {
+            osfDesigner.pDesignerMainForm Form1 = (osfDesigner.pDesignerMainForm)osfDesigner.Program.pDesignerMainForm1;
+            string name1 = (string)Form1.Invoke(new osfDesigner.pDesignerMainForm.AddControl(Form1.AddControlMethod), controlName);
+            return name1;
+        }
+	
+        [ContextMethod("УдалитьКонтролы", "RemoveControls")]
+        public void RemoveControls()
+        {
+            osfDesigner.pDesignerMainForm Form1 = (osfDesigner.pDesignerMainForm)osfDesigner.Program.pDesignerMainForm1;
+            string name1 = (string)Form1.Invoke(new osfDesigner.pDesignerMainForm.RemoveControls(Form1.RemoveControlsMethod));
+        }
+
+        [ContextProperty("ВизуальныеСтилиФормВключены", "FormVisualStylesTurnOn")]
+        public bool FormVisualStylesTurnOn
+        {
+            get
+            {
+                if ((bool)osfDesigner.Properties.Settings.Default["visualSyleForms"])
+                {
+                    return true;
+                }
+                return false;
+            }
+        }	
+
+        [ContextMethod("ДизайнерОткрыт", "DesignerOpen")]
+        public bool DesignerOpen()
+        {
+            if (osfDesigner.Program.pDesignerMainForm1.GetmainForm().Visible)
+            {
+                return true;
+            }
+            return false;
+        }	
+	
         public static void PassProperties(dynamic p1, dynamic p2)
         {
             // p1 - исходный объект (OriginalObj).
@@ -580,6 +676,73 @@ namespace osfDesigner
                 return newName;
             }
             return null;
+        }
+	
+        public static string RevertDataGridViewColumnName(dynamic p1, dynamic p2)
+        {
+            // p1 - таблица.
+            // p2 - колонка таблицы.
+            osfDesigner.DataGridView DataGridView1 = p1;
+            string name = "";
+            if (p2.GetType() == typeof(osfDesigner.DataGridViewTextBoxColumn))
+            {
+                name = "КолонкаПолеВвода";
+            }
+            else if (p2.GetType() == typeof(osfDesigner.DataGridViewLinkColumn))
+            {
+                name = "КолонкаСсылка";
+            }
+            else if (p2.GetType() == typeof(osfDesigner.DataGridViewImageColumn))
+            {
+                name = "КолонкаКартинка";
+            }
+            else if (p2.GetType() == typeof(osfDesigner.DataGridViewComboBoxColumn))
+            {
+                name = "КолонкаПолеВыбора";
+            }
+            else if (p2.GetType() == typeof(osfDesigner.DataGridViewCheckBoxColumn))
+            {
+                name = "КолонкаФлажок";
+            }
+            else if (p2.GetType() == typeof(osfDesigner.DataGridViewButtonColumn))
+            {
+                name = "КолонкаКнопка";
+            }
+            else
+            {
+                return null;
+            }
+
+            int max = 0;
+            int num = 0;
+            string newName = name + Convert.ToString(max);
+            ArrayList ArrayList1 = new ArrayList();
+            for (int i = 0; i < DataGridView1.Columns.Count; i++)
+            {
+                string Name = ((dynamic)DataGridView1.Columns[i]).Name;
+                if (Name != null)
+                {
+                    if (Name.Contains(name))
+                    {
+                        ArrayList1.Add(Name);
+                        num = Int32.Parse(ParseBetween(Name, name, null));
+                        if ((num + 1) > max)
+                        {
+                            max = num + 1;
+                        }
+                    }
+                }
+            }
+
+            for (int i = -1; i < max; i++)
+            {
+                newName = name + Convert.ToString(i + 1);
+                if (!ArrayList1.Contains(newName))
+                {
+                    return newName;
+                }
+            }
+            return newName;
         }
 
         public static void AddToDictionary(dynamic p1, dynamic p2)
@@ -1115,6 +1278,7 @@ namespace osfDesigner
                 {"CheckBox", "Флажок"},
                 {"ColorDialog", "ДиалогВыбораЦвета"},
                 {"ComboBox", "ПолеВыбора"},
+                {"DataGridView", "Таблица"},
                 {"DataGrid", "СеткаДанных"},
                 {"DateTimePicker", "ПолеКалендаря"},
                 {"FileSystemWatcher", "НаблюдательФайловойСистемы"},
@@ -1129,6 +1293,7 @@ namespace osfDesigner
                 {"ListBox", "ПолеСписка"},
                 {"ListView", "СписокЭлементов"},
                 {"MainMenu", "ГлавноеМеню"},
+                {"MaskedTextBox", "МаскаПоляВвода"},
                 {"MonthCalendar", "Календарь"},
                 {"NotifyIcon", "ЗначокУведомления"},
                 {"NumericUpDown", "РегуляторВверхВниз"},
@@ -1160,6 +1325,7 @@ namespace osfDesigner
                 {"Флажок", "CheckBox"},
                 {"ДиалогВыбораЦвета", "ColorDialog"},
                 {"ПолеВыбора", "ComboBox"},
+                {"Таблица", "DataGridView"},
                 {"СеткаДанных", "DataGrid"},
                 {"ПолеКалендаря", "DateTimePicker"},
                 {"НаблюдательФайловойСистемы", "FileSystemWatcher"},
@@ -1174,6 +1340,7 @@ namespace osfDesigner
                 {"ПолеСписка", "ListBox"},
                 {"СписокЭлементов", "ListView"},
                 {"ГлавноеМеню", "MainMenu"},
+                {"МаскаПоляВвода", "MaskedTextBox"},
                 {"Календарь", "MonthCalendar"},
                 {"ЗначокУведомления", "NotifyIcon"},
                 {"РегуляторВверхВниз", "NumericUpDown"},
@@ -1202,9 +1369,10 @@ namespace osfDesigner
             {
                 {"АвтоРазмерПанелиСтрокиСостояния", "StatusBarPanelAutoSize"},
                 {"АктивацияЭлемента", "ItemActivation"},
-                {"ВыравниваниеВкладок", "TabAlignment"},
                 {"ВыравниваниеВСпискеЭлементов", "ListViewAlignment"},
+                {"ВыравниваниеВкладок", "TabAlignment"},
                 {"ВыравниваниеСодержимого", "ContentAlignment"},
+                {"ВыравниваниеСодержимогоЯчейки", "DataGridViewContentAlignment"},
                 {"ВыравниваниеТекстаВПанелиИнструментов", "ToolBarTextAlign"},
                 {"ГлубинаЦвета", "ColorDepth"},
                 {"ГоризонтальноеВыравнивание", "HorizontalAlignment"},
@@ -1230,12 +1398,21 @@ namespace osfDesigner
                 {"ПорядокСортировки", "SortOrder"},
                 {"ПричинаЗакрытия", "CloseReason"},
                 {"РазмещениеИзображения", "ImageLayout"},
+                {"РазмещениеИзображенияЯчейки", "DataGridViewImageCellLayout"},	
                 {"РегистрСимволов", "CharacterCasing"},
+                {"РежимАвтоРазмераКолонки", "DataGridViewAutoSizeColumnMode"},
+                {"РежимАвтоРазмераКолонок", "DataGridViewAutoSizeColumnsMode"},
+                {"РежимАвтоРазмераСтрок", "DataGridViewAutoSizeRowsMode"},
+                {"РежимВставки", "InsertKeyMode"},
                 {"РежимВыбора", "SelectionMode"},
+                {"РежимВыбораТаблицы", "DataGridViewSelectionMode"},
+                {"РежимВысотыЗаголовковКолонок", "DataGridViewColumnHeadersHeightSizeMode"},
                 {"РежимОтображения", "View"},
                 {"РежимРазмераВкладок", "TabSizeMode"},
                 {"РежимРазмераПоляКартинки", "PictureBoxSizeMode"},
                 {"РежимРисования", "DrawMode"},
+                {"РежимСортировки", "DataGridViewColumnSortMode"},	
+                {"РежимШириныЗаголовковСтрок", "DataGridViewRowHeadersWidthSizeMode"},
                 {"РезультатДиалога", "DialogResult"},
                 {"СлияниеМеню", "MenuMerge"},
                 {"СортировкаСвойств", "PropertySort"},
@@ -1251,6 +1428,7 @@ namespace osfDesigner
                 {"СтильКнопокПанелиИнструментов", "ToolBarButtonStyle"},
                 {"СтильОкнаПроцесса", "ProcessWindowStyle"},
                 {"СтильПоляВыбора", "ComboBoxStyle"},
+                {"СтильПоляВыбораЯчейки", "DataGridViewComboBoxDisplayStyle"},
                 {"СтильСтыковки", "DockStyle"},
                 {"СтильШрифта", "FontStyle"},
                 {"СтильШтриховки", "HatchStyle"},
@@ -1259,12 +1437,14 @@ namespace osfDesigner
                 {"ТипСобытияПрокрутки", "ScrollEventType"},
                 {"ТипСортировки", "SortType"},
                 {"ТипЭлементаСетки", "GridItemType"},
+                {"ТриСостояния", "DataGridViewTriState"},
                 {"ФильтрыУведомления", "NotifyFilters"},
                 {"ФлагиМыши", "MouseFlags"},
-                {"ФорматированноеПолеВводаПоиск", "RichTextBoxFinds"},
-                {"ФорматированноеПолеВводаТипыПотоков", "RichTextBoxStreamType"},
+                {"ФорматМаски", "MaskFormat"},
+                {"ФорматПикселей", "PixelFormat"},
                 {"ФорматПоляКалендаря", "FormatDateTimePicker"},
-                {"ФорматПикселей", "PixelFormat"}
+                {"ФорматированноеПолеВводаПоиск", "RichTextBoxFinds"},
+                {"ФорматированноеПолеВводаТипыПотоков", "RichTextBoxStreamType"}
             };
 
         public static Dictionary<string, Cursor> namesCursorRuEn = new Dictionary<string, Cursor>
@@ -1620,6 +1800,16 @@ namespace osfDesigner
                                     state = state + propName + " = " + Convert.ToString(propValue) + Environment.NewLine;
                                 }
                             }
+                            else if(propName == "DefaultCellStyle" && (
+                                obj.GetType() == typeof(osfDesigner.DataGridViewTextBoxColumn) ||
+                                obj.GetType() == typeof(osfDesigner.DataGridViewButtonColumn) ||
+                                obj.GetType() == typeof(osfDesigner.DataGridViewCheckBoxColumn) ||
+                                obj.GetType() == typeof(osfDesigner.DataGridViewComboBoxColumn) ||
+                                obj.GetType() == typeof(osfDesigner.DataGridViewImageColumn) ||
+                                obj.GetType() == typeof(osfDesigner.DataGridViewLinkColumn)
+                                ))
+                            {
+                            }
                             else
                             {
                                 state = state + propName + " = " + Convert.ToString(propValue) + Environment.NewLine;
@@ -1758,6 +1948,39 @@ namespace osfDesigner
                                 GetState(dataGridTableStyle.GridColumnStyles[i2], ref state);
                             }
                         }
+                    }
+                    if (component.GetType() == typeof(osfDesigner.DataGridView))
+                    {
+                        DataGridView dataGridView = (osfDesigner.DataGridView)component;
+                        TypeConverter Converter1 = new System.Drawing.FontConverter();
+
+                        for (int i1 = 0; i1 < dataGridView.Columns.Count; i1++)
+                        {
+                            DataGridViewColumn dataGridViewColumn = dataGridView.Columns[i1];
+                            GetState(dataGridViewColumn, ref state);
+
+                            System.Windows.Forms.DataGridViewCellStyle defaultCellStyle = (System.Windows.Forms.DataGridViewCellStyle)dataGridViewColumn.DefaultCellStyle;
+                            GetState(defaultCellStyle, ref state);
+
+                            state = state + "DefaultCellStyle_Font = " + MyFontConverter.ConvertToString(Converter1.ConvertToString(defaultCellStyle.Font)) + Environment.NewLine;
+
+                            if (dataGridView.Columns[i1].GetType() == typeof(osfDesigner.DataGridViewComboBoxColumn))
+                            {
+                                osfDesigner.DataGridViewComboBoxColumn dataGridViewComboBoxColumn = (osfDesigner.DataGridViewComboBoxColumn)dataGridView.Columns[i1];
+                                System.Windows.Forms.DataGridViewComboBoxCell.ObjectCollection items = dataGridViewComboBoxColumn.Items;
+                                for (int i2 = 0; i2 < items.Count; i2++)
+                                {
+                                    osfDesigner.ListItemComboBox listItem = (osfDesigner.ListItemComboBox)items[i2];
+                                    state = state + "Value = " + Convert.ToString(listItem.Value.ToString()) + Environment.NewLine;
+                                }
+                            }
+                        }
+
+                        System.Windows.Forms.DataGridViewCellStyle columnHeadersDefaultCellStyle = dataGridView.ColumnHeadersDefaultCellStyle;
+                        state = state + "ColumnHeadersDefaultCellStyle_Font = " + MyFontConverter.ConvertToString(Converter1.ConvertToString(columnHeadersDefaultCellStyle.Font)) + Environment.NewLine;
+
+                        System.Windows.Forms.DataGridViewCellStyle rowHeadersDefaultCellStyle = dataGridView.RowHeadersDefaultCellStyle;
+                        state = state + "RowHeadersDefaultCellStyle_Font = " + MyFontConverter.ConvertToString(Converter1.ConvertToString(rowHeadersDefaultCellStyle.Font)) + Environment.NewLine;
                     }
                     if (component.GetType() == typeof(osfDesigner.TabControl))
                     {

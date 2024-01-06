@@ -247,7 +247,7 @@ namespace osfDesigner
             checkBox1.Text = "Включить визуальные стили для дизайнера. ( Требуется перезапуск дизайнера! )";
             checkBox1.Checked = (bool)Settings.Default["visualSyleDesigner"];
 
-             checkBox2 = new System.Windows.Forms.CheckBox();
+            checkBox2 = new System.Windows.Forms.CheckBox();
             checkBox2.Parent = groupBox3;
             checkBox2.Left = 10;
             checkBox2.Top = radioButton1.Bottom + 15;
