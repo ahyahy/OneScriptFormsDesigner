@@ -9,12 +9,12 @@ namespace osfDesigner
     public class MonthCalendar : System.Windows.Forms.MonthCalendar
     {
 
-        MyBoldedDatesList _boldedDates = new MyBoldedDatesList();
+        public MyBoldedDatesList _boldedDates = new MyBoldedDatesList();
         private string _DateSelected_osf;
         private string _DateChanged_osf;
         private string _DoubleClick_osf;
-        MyAnnuallyBoldedDatesList _annuallyBoldedDates = new MyAnnuallyBoldedDatesList();
-        MyMonthlyBoldedDatesList _monthlyBoldedDates = new MyMonthlyBoldedDatesList();
+        public MyAnnuallyBoldedDatesList _annuallyBoldedDates = new MyAnnuallyBoldedDatesList();
+        public MyMonthlyBoldedDatesList _monthlyBoldedDates = new MyMonthlyBoldedDatesList();
         private string _KeyUp_osf;
         private string _KeyDown_osf;
         private string _KeyPress_osf;
@@ -719,6 +719,7 @@ namespace osfDesigner
                 return @"
 Положение ==
 ПорядокОбхода ==
+Размер ==
 ЕжегодныеДаты ==
 ЕжемесячныеДаты ==
 ВыделенныеДаты ==

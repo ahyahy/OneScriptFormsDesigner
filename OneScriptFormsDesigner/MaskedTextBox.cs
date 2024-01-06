@@ -8,23 +8,18 @@ using System;
 
 namespace osfDesigner
 {
-    [Docking(DockingBehavior.Never)]
-    public class ListView : System.Windows.Forms.ListView
+    public class MaskedTextBox : System.Windows.Forms.MaskedTextBox
     {
         private int tic = 0; // Счетчик для правильной работы смарт-тэгов.
+        private string _MaskInputRejected_osf;
         private string _DoubleClick_osf;
-        private string _SelectedIndexChanged_osf;
         private string _KeyUp_osf;
         private string _KeyDown_osf;
         private string _KeyPress_osf;
-        private string _ColumnClick_osf;
         private string _MouseEnter_osf;
         private string _MouseLeave_osf;
         private string _Click_osf;
-        private string _BeforeLabelEdit_osf;
         private string _LocationChanged_osf;
-        private string _AfterLabelEdit_osf;
-        private string _ItemActivate_osf;
         private string _Enter_osf;
         private string _MouseHover_osf;
         private string _MouseDown_osf;
@@ -35,59 +30,34 @@ namespace osfDesigner
         private string _LostFocus_osf;
         private string _Leave_osf;
         private string _SizeChanged_osf;
-        private bool _AllowSorting_osf;
-        private osfDesigner.View _View;
         private string _TextChanged_osf;
         private string _ControlAdded_osf;
-        private string _ItemCheck_osf;
         private string _ControlRemoved_osf;
 
-        public ListView()
+        public MaskedTextBox()
         {
             Enabled_osf = base.Enabled;
             Visible_osf = base.Visible;
         }
 
-        [DisplayName("АвтоУпорядочивание")]
-        [Description("Возвращает или задает значение, определяющее автоматическое упорядочение значков.")]
-        [Category("Поведение")]
+        [DisplayName("ВводОтклонен")]
+        [Description("Возвращает или задает код для выполнения в том случае, если назначенный или введенный пользователем знак не совпадает с соответствующим элементом формата маски ввода.")]
+        [Category("Прочее")]
         [Browsable(true)]
-        [TypeConverter(typeof(MyBooleanConverter))]
-        public new bool AutoArrange
+        public  string MaskInputRejected_osf
         {
-            get { return base.AutoArrange; }
-            set { base.AutoArrange = value; }
+            get { return _MaskInputRejected_osf; }
+            set { _MaskInputRejected_osf = value; }
         }
 
-        [DisplayName("Активация")]
-        [Description("Возвращает или задает тип действия, которое пользователь должен выполнить для активции элемента.")]
-        [Category("Поведение")]
+        [DisplayName("ВыравниваниеТекста")]
+        [Description("Возвращает или задает значение, определяющее способ выравнивания текста.")]
+        [Category("Внешний вид")]
         [Browsable(true)]
-        public new ItemActivation Activation
+        public new HorizontalAlignment TextAlign
         {
-            get { return (ItemActivation)base.Activation; }
-            set { base.Activation = (System.Windows.Forms.ItemActivation)value; }
-        }
-
-        [DisplayName("ВыборПриНаведении")]
-        [Description("Возвращает или задает значение, указывающее, будет ли элемент автоматически выбираться, если указатель мыши задержится на нем нескольких секунд.")]
-        [Category("Поведение")]
-        [Browsable(true)]
-        [TypeConverter(typeof(MyBooleanConverter))]
-        public new bool HoverSelection
-        {
-            get { return base.HoverSelection; }
-            set { base.HoverSelection = value; }
-        }
-
-        [DisplayName("Выравнивание")]
-        [Description("Возвращает или задает выравнивание элементов в элементе управления.")]
-        [Category("Поведение")]
-        [Browsable(true)]
-        public new ListViewAlignment Alignment
-        {
-            get { return (ListViewAlignment)base.Alignment; }
-            set { base.Alignment = (System.Windows.Forms.ListViewAlignment)value; }
+            get { return (HorizontalAlignment)base.TextAlign; }
+            set { base.TextAlign = (System.Windows.Forms.HorizontalAlignment)value; }
         }
 
         [DisplayName("ДвойноеНажатие")]
@@ -110,16 +80,6 @@ namespace osfDesigner
         [Browsable(false)]
         public new bool Enabled { get; set; }
 
-        [DisplayName("ИндексВыбранногоИзменен")]
-        [Description("Возвращает или задает код для выполнения, когда изменились индексы выбранных в элементе управления СписокЭлементов (ListView).")]
-        [Category("Прочее")]
-        [Browsable(true)]
-        public  string SelectedIndexChanged_osf
-        {
-            get { return _SelectedIndexChanged_osf; }
-            set { _SelectedIndexChanged_osf = value; }
-        }
-
         [DisplayName("ИспользоватьКурсорОжидания")]
         [Description("Возвращает или задает значение, указывающее, следует ли использовать курсор ожидания для текущего элемента управления и всех дочерних элементов управления.")]
         [Category("Внешний вид")]
@@ -129,6 +89,28 @@ namespace osfDesigner
         {
             get { return base.UseWaitCursor; }
             set { base.UseWaitCursor = value; }
+        }
+
+        [DisplayName("ИспользоватьСимволПриглашения")]
+        [Description("Возвращает или задает значение, показывающее, может ли символ приглашения вводиться пользователем в качестве допустимых данных.")]
+        [Category("Поведение")]
+        [Browsable(true)]
+        [TypeConverter(typeof(MyBooleanConverter))]
+        public new bool AllowPromptAsInput
+        {
+            get { return base.AllowPromptAsInput; }
+            set { base.AllowPromptAsInput = value; }
+        }
+
+        [DisplayName("ИспользоватьСистемныйСимволПароля")]
+        [Description("Возвращает или задает значение, указывающее, должен ли использоваться символ пароля, предоставляемый операционной системой.")]
+        [Category("Поведение")]
+        [Browsable(true)]
+        [TypeConverter(typeof(MyBooleanConverter))]
+        public new bool UseSystemPasswordChar
+        {
+            get { return base.UseSystemPasswordChar; }
+            set { base.UseSystemPasswordChar = value; }
         }
 
         [DisplayName("КлавишаВверх")]
@@ -161,25 +143,14 @@ namespace osfDesigner
             set { _KeyPress_osf = value; }
         }
 
-        [DisplayName("КолонкаНажатие")]
-        [Description("Возвращает или задает код для выполнения, когда пользователь нажимает кнопку заголовка колонки в элементе управления СписокЭлементов (ListView).")]
-        [Category("Прочее")]
-        [Browsable(true)]
-        public  string ColumnClick_osf
-        {
-            get { return _ColumnClick_osf; }
-            set { _ColumnClick_osf = value; }
-        }
-
-        [DisplayName("Колонки")]
-        [Description("Возвращает коллекцию всех заголовков колонок, которые отображаются в элементе управления.")]
+        [DisplayName("КопироватьМаску")]
+        [Description("Возвращает или задает значение, определяющее, копируются ли литералы и символы приглашения в буфер обмена.")]
         [Category("Поведение")]
         [Browsable(true)]
-        [TypeConverter(typeof(MyCollectionConverter))]
-        [Editor(typeof(MyColumnHeaderCollectionEditor), typeof(UITypeEditor))]
-        public new ColumnHeaderCollection Columns
+        public new MaskFormat CutCopyMaskFormat
         {
-            get { return base.Columns; }
+            get { return (MaskFormat)base.CutCopyMaskFormat; }
+            set { base.CutCopyMaskFormat = (System.Windows.Forms.MaskFormat)value; }
         }
 
         [DisplayName("Курсор")]
@@ -194,15 +165,15 @@ namespace osfDesigner
             set { base.Cursor = value; }
         }
 
-        [DisplayName("МножественныйВыбор")]
-        [Description("Возвращает или задает значение, указывающее, могут ли выбираться несколько элементов.")]
+        [DisplayName("Маска")]
+        [Description("Получает или задает маску ввода для использования во время выполнения.")]
         [Category("Поведение")]
         [Browsable(true)]
-        [TypeConverter(typeof(MyBooleanConverter))]
-        public new bool MultiSelect
+        [Editor(typeof(MyMaskPropertyEditor), typeof(UITypeEditor))]
+        public new string Mask
         {
-            get { return base.MultiSelect; }
-            set { base.MultiSelect = value; }
+            get { return base.Mask; }
+            set { base.Mask = value; }
         }
 
         [DisplayName("МышьНадЭлементом")]
@@ -257,38 +228,6 @@ namespace osfDesigner
         [Browsable(false)]
         public new bool Visible { get; set; }
 
-        [DisplayName("ПередРедактированиемНадписи")]
-        [Description("Возвращает или задает код, выполняемый при начале изменения пользователем надписи элемента.")]
-        [Category("Прочее")]
-        [Browsable(true)]
-        public  string BeforeLabelEdit_osf
-        {
-            get { return _BeforeLabelEdit_osf; }
-            set { _BeforeLabelEdit_osf = value; }
-        }
-
-        [DisplayName("ПереносНадписи")]
-        [Description("Возвращает или задает значение, указывающее, будут ли метки элементов переноситься на другую строку, когда они отображаются в элементе управления в виде значков.")]
-        [Category("Поведение")]
-        [Browsable(true)]
-        [TypeConverter(typeof(MyBooleanConverter))]
-        public new bool LabelWrap
-        {
-            get { return base.LabelWrap; }
-            set { base.LabelWrap = value; }
-        }
-
-        [DisplayName("ПолныйВыборСтроки")]
-        [Description("Возвращает или задает значение, указывающее, выбираются ли при щелчке элемента все его подэлементы.")]
-        [Category("Внешний вид")]
-        [Browsable(true)]
-        [TypeConverter(typeof(MyBooleanConverter))]
-        public new bool FullRowSelect
-        {
-            get { return base.FullRowSelect; }
-            set { base.FullRowSelect = value; }
-        }
-
         [DisplayName("Положение")]
         [Description("Возвращает или задает координаты верхнего левого угла элемента управления относительно верхнего левого угла его контейнера.")]
         [Category("Макет")]
@@ -322,26 +261,6 @@ namespace osfDesigner
         {
             get { return base.TabIndex; }
             set { base.TabIndex = value; }
-        }
-
-        [DisplayName("ПослеРедактированияНадписи")]
-        [Description("Возвращает или задает код для выполнения, если надпись элемента была изменена пользователем.")]
-        [Category("Прочее")]
-        [Browsable(true)]
-        public  string AfterLabelEdit_osf
-        {
-            get { return _AfterLabelEdit_osf; }
-            set { _AfterLabelEdit_osf = value; }
-        }
-
-        [DisplayName("ПриАктивизацииЭлемента")]
-        [Description("Возвращает или задает код для выполнения, когда элемент активируется.")]
-        [Category("Прочее")]
-        [Browsable(true)]
-        public  string ItemActivate_osf
-        {
-            get { return _ItemActivate_osf; }
-            set { _ItemActivate_osf = value; }
         }
 
         [DisplayName("ПриВходе")]
@@ -434,15 +353,15 @@ namespace osfDesigner
             set { _Leave_osf = value; }
         }
 
-        [DisplayName("Прокручиваемый")]
-        [Description("Возвращает или задает значение, указывающее, добавляется ли к этому элементу управления полоса прокрутки, если для отображения всех составляющих элементов не хватает места.")]
+        [DisplayName("ПропускЛитералов")]
+        [Description("Возвращает или задает значение, указывающее, разрешено ли пользователю повторно вводить значения литералов.")]
         [Category("Поведение")]
         [Browsable(true)]
         [TypeConverter(typeof(MyBooleanConverter))]
-        public new bool Scrollable
+        public new bool SkipLiterals
         {
-            get { return base.Scrollable; }
-            set { base.Scrollable = value; }
+            get { return base.SkipLiterals; }
+            set { base.SkipLiterals = value; }
         }
 
         [DisplayName("Размер")]
@@ -467,66 +386,82 @@ namespace osfDesigner
             set { _SizeChanged_osf = value; }
         }
 
-        [DisplayName("РазрешитьПеретаскиваниеКолонок")]
-        [Description("Возвращает или задает значение, указывающее, может ли пользователь перетаскивать заголовки колонок для изменения порядка колонок.")]
+        [DisplayName("РежимВставки")]
+        [Description("Возвращает или задает режим вставки текста.")]
+        [Category("Поведение")]
+        [Browsable(true)]
+        public new InsertKeyMode InsertKeyMode
+        {
+            get { return (InsertKeyMode)base.InsertKeyMode; }
+            set { base.InsertKeyMode = (System.Windows.Forms.InsertKeyMode)value; }
+        }
+
+        [DisplayName("СбросНаПробел")]
+        [Description("Возвращает или задает значение, определяющее способ обработки введенного знака пробела.")]
         [Category("Поведение")]
         [Browsable(true)]
         [TypeConverter(typeof(MyBooleanConverter))]
-        public new bool AllowColumnReorder
+        public new bool ResetOnSpace
         {
-            get { return base.AllowColumnReorder; }
-            set { base.AllowColumnReorder = value; }
+            get { return base.ResetOnSpace; }
+            set { base.ResetOnSpace = value; }
         }
 
-        [DisplayName("РазрешитьСортировку")]
-        [Description("Возвращает или задает значение, указывающее, можно ли выполнить повторную сортировку списка, щелкнув заголовок колонки.")]
-        [Category("Прочее")]
-        [Browsable(true)]
-        [TypeConverter(typeof(MyBooleanConverter))]
-        public  bool AllowSorting_osf
-        {
-            get { return _AllowSorting_osf; }
-            set { _AllowSorting_osf = value; }
-        }
-
-        [DisplayName("РедактированиеНадписи")]
-        [Description("Возвращает или задает значение, указывающее, может ли пользователь редактировать надписи элементов.")]
+        [DisplayName("СбросНаСимволПриглашения")]
+        [Description("Возвращает или задает значение, определяющее способ обработки введенного символа, совпадающего с символом приглашения.")]
         [Category("Поведение")]
         [Browsable(true)]
         [TypeConverter(typeof(MyBooleanConverter))]
-        public new bool LabelEdit
+        public new bool ResetOnPrompt
         {
-            get { return base.LabelEdit; }
-            set { base.LabelEdit = value; }
+            get { return base.ResetOnPrompt; }
+            set { base.ResetOnPrompt = value; }
         }
 
-        [DisplayName("РежимОтображения")]
-        [Description("Возвращает или задает способ отображения элементов в элементе управления.")]
-        [Category("Внешний вид")]
-        [Browsable(true)]
-        public View View_osf
-        {
-            get { return _View; }
-            set
-            {
-                base.View = (System.Windows.Forms.View)value;
-                _View = value;
-            }
-        }
-
-        [DisplayName("Сетка")]
-        [Description("Возвращает или задает значение, показывающее, отображаются ли линии сетки между строками и колонками, содержащими элементы и подэлементы.")]
-        [Category("Внешний вид")]
+        [DisplayName("СигналОтклоненного")]
+        [Description("Возвращает или задает значение, указывающее, подает ли элемент управления МаскаПоляВвода (MaskedTextBox) звуковой сигнал для каждого отклоненного нажатия клавиши.")]
+        [Category("Поведение")]
         [Browsable(true)]
         [TypeConverter(typeof(MyBooleanConverter))]
-        public new bool GridLines
+        public new bool BeepOnError
         {
-            get { return base.GridLines; }
-            set { base.GridLines = value; }
+            get { return base.BeepOnError; }
+            set { base.BeepOnError = value; }
+        }
+
+        [DisplayName("СимволПароля")]
+        [Description("Возвращает или задает символ, отображаемый в качестве замены для данных, вводимых пользователем.")]
+        [Category("Поведение")]
+        [Browsable(true)]
+        public new Char PasswordChar
+        {
+            get { return base.PasswordChar; }
+            set { base.PasswordChar = value; }
+        }
+
+        [DisplayName("СимволПриглашения")]
+        [Description("Возвращает или задает символ, представляющий отсутствие данных, введенных пользователем в элемент управления МаскаПоляВвода (MaskedTextBox).")]
+        [Category("Внешний вид")]
+        [Browsable(true)]
+        public new Char PromptChar
+        {
+            get { return base.PromptChar; }
+            set { base.PromptChar = value; }
+        }
+
+        [DisplayName("СкрыватьМаскуПриУходе")]
+        [Description("Возвращает или задает значение, указывающее, скрываются ли символы подсказки в маске ввода, когда фокус покидает элемент управления МаскаПоляВвода (MaskedTextBox).")]
+        [Category("Поведение")]
+        [Browsable(true)]
+        [TypeConverter(typeof(MyBooleanConverter))]
+        public new bool HidePromptOnLeave
+        {
+            get { return base.HidePromptOnLeave; }
+            set { base.HidePromptOnLeave = value; }
         }
 
         [DisplayName("СкрытьВыделение")]
-        [Description("Возвращает или задает значение, указывающее, остается ли выделенным выбранный элемент, когда элемент управления теряет фокус.")]
+        [Description("Возвращает или задает значение, указывающее, остается ли выделенный текст в ПолеВвода (TextBox) выделенным, когда фокус ввода в  форме переходит с данного элемента управления на другой.")]
         [Category("Поведение")]
         [Browsable(true)]
         [TypeConverter(typeof(MyBooleanConverter))]
@@ -536,56 +471,14 @@ namespace osfDesigner
             set { base.HideSelection = value; }
         }
 
-        [DisplayName("Сортировка")]
-        [Description("Возвращает или задает порядок сортировки составляющих элементов в данном элементе управления.")]
-        [Category("Поведение")]
-        [Browsable(true)]
-        public new SortOrder Sorting
-        {
-            get { return (SortOrder)base.Sorting; }
-            set { base.Sorting = (System.Windows.Forms.SortOrder)value; }
-        }
-
-        [DisplayName("СписокБольшихИзображений")]
-        [Description("Возвращает или задает СписокИзображений (ImageList), используемый при отображении элементов как большие значки.")]
-        [Category("Поведение")]
-        [Browsable(true)]
-        [TypeConverter(typeof(MyImageListConverter))]
-        public new System.Windows.Forms.ImageList LargeImageList
-        {
-            get { return base.LargeImageList; }
-            set { base.LargeImageList = value; }
-        }
-
-        [DisplayName("СписокМаленькихИзображений")]
-        [Description("Возвращает или задает СписокИзображений (ImageList), используемый при отображении элементов как маленькие значки.")]
-        [Category("Поведение")]
-        [Browsable(true)]
-        [TypeConverter(typeof(MyImageListConverter))]
-        public new System.Windows.Forms.ImageList SmallImageList
-        {
-            get { return base.SmallImageList; }
-            set { base.SmallImageList = value; }
-        }
-
         [DisplayName("СтильГраницы")]
-        [Description("Возвращает или задает стиль рамки в элементе управления СписокЭлементов (ListView).")]
+        [Description("Возвращает или задает тип границы элемента управления ПолеВвода (TextBox).")]
         [Category("Внешний вид")]
         [Browsable(true)]
         public new BorderStyle BorderStyle
         {
             get { return (BorderStyle)base.BorderStyle; }
             set { base.BorderStyle = (System.Windows.Forms.BorderStyle)value; }
-        }
-
-        [DisplayName("СтильЗаголовка")]
-        [Description("Возвращает или задает стиль заголовка колонки.")]
-        [Category("Поведение")]
-        [Browsable(true)]
-        public new ColumnHeaderStyle HeaderStyle
-        {
-            get { return (ColumnHeaderStyle)base.HeaderStyle; }
-            set { base.HeaderStyle = (System.Windows.Forms.ColumnHeaderStyle)value; }
         }
 
         [DisplayName("Стыковка")]
@@ -610,6 +503,16 @@ namespace osfDesigner
             set { base.TabStop = value; }
         }
 
+        [DisplayName("Текст")]
+        [Description("Возвращает или задает текст, отображаемый в текущий момент.")]
+        [Category("Внешний вид")]
+        [Browsable(true)]
+        public new string Text
+        {
+            get { return base.Text; }
+            set { base.Text = value; }
+        }
+
         [DisplayName("ТекстИзменен")]
         [Description("Возвращает или задает код для выполнения, при изменении свойства Текст (Text).")]
         [Category("Прочее")]
@@ -620,28 +523,36 @@ namespace osfDesigner
             set { _TextChanged_osf = value; }
         }
 
-        [DisplayName("Флажки")]
-        [Description("Возвращает или задает значение, указывающее, будет ли отображаться флажок рядом с каждым элементом.")]
-        [Category("Внешний вид")]
+        [DisplayName("ТолькоASCII")]
+        [Description("Возвращает или задает значение, показывающее, принимает ли элемент управления МаскаПоляВвода (MaskedTextBox) символы, не принадлежащие кодировке ASCII.")]
+        [Category("Поведение")]
         [Browsable(true)]
         [TypeConverter(typeof(MyBooleanConverter))]
-        public new bool CheckBoxes
+        public new bool AsciiOnly
         {
-            get { return base.CheckBoxes; }
-            set { base.CheckBoxes = value; }
+            get { return base.AsciiOnly; }
+            set { base.AsciiOnly = value; }
         }
 
-        [DisplayName("ФоновоеИзображение")]
-        [Description("Возвращает или задает фоновое изображение, отображаемое в элементе управления.")]
-        [Category("Внешний вид")]
+        [DisplayName("ТолькоЧтение")]
+        [Description("Возвращает  или задает значение, указывающее, является ли текст в текстовом поле доступным только для чтения.")]
+        [Category("Поведение")]
         [Browsable(true)]
-        [TypeConverter(typeof(MyImageConverter))]
-        [Editor(typeof(MyImageFileNameEditor), typeof(UITypeEditor))]
-        [DefaultValue(null)]
-        public new Bitmap BackgroundImage
+        [TypeConverter(typeof(MyBooleanConverter))]
+        public new bool ReadOnly
         {
-            get { return (Bitmap)base.BackgroundImage; }
-            set { base.BackgroundImage = value; }
+            get { return base.ReadOnly; }
+            set { base.ReadOnly = value; }
+        }
+
+        [DisplayName("ФорматМаски")]
+        [Description("Возвращает или задает значение, определяющее, включаются ли литералы и символы приглашения в форматированную строку.")]
+        [Category("Поведение")]
+        [Browsable(true)]
+        public new MaskFormat TextMaskFormat
+        {
+            get { return (MaskFormat)base.TextMaskFormat; }
+            set { base.TextMaskFormat = (System.Windows.Forms.MaskFormat)value; }
         }
 
         [DisplayName("ЦветФона")]
@@ -677,16 +588,6 @@ namespace osfDesigner
             set { _ControlAdded_osf = value; }
         }
 
-        [DisplayName("ЭлементПомечен")]
-        [Description("Возвращает или задает код для выполнения, когда состояние флажка изменяется.")]
-        [Category("Прочее")]
-        [Browsable(true)]
-        public  string ItemCheck_osf
-        {
-            get { return _ItemCheck_osf; }
-            set { _ItemCheck_osf = value; }
-        }
-
         [DisplayName("ЭлементУдален")]
         [Description("Возвращает или задает код для выполнения при удалении элемента управления из ЭлементыУправления (ControlCollection).")]
         [Category("Прочее")]
@@ -695,17 +596,6 @@ namespace osfDesigner
         {
             get { return _ControlRemoved_osf; }
             set { _ControlRemoved_osf = value; }
-        }
-
-        [DisplayName("Элементы")]
-        [Description("Возвращает коллекцию, содержащую все элементы элемента управления.")]
-        [Category("Поведение")]
-        [Browsable(true)]
-        [TypeConverter(typeof(MyCollectionConverter))]
-        [Editor(typeof(MyListViewItemCollectionEditor), typeof(UITypeEditor))]
-        public new ListViewItemCollection Items
-        {
-            get { return base.Items; }
         }
 
         [DisplayName("Якорь")]
@@ -719,6 +609,9 @@ namespace osfDesigner
             set { base.Anchor = (System.Windows.Forms.AnchorStyles)value; }
         }
 
+        [Browsable(false)]
+        public new dynamic AcceptsTab { get; set; }
+        
         [Browsable(false)]
         public new dynamic AccessibilityObject { get; set; }
         
@@ -741,13 +634,10 @@ namespace osfDesigner
         public new dynamic AutoScrollOffset { get; set; }
         
         [Browsable(false)]
-        public new dynamic AutoSize { get; set; }
+        public new dynamic BackgroundImage { get; set; }
         
         [Browsable(false)]
         public new dynamic BackgroundImageLayout { get; set; }
-        
-        [Browsable(false)]
-        public new dynamic BackgroundImageTiled { get; set; }
         
         [Browsable(false)]
         public new dynamic BindingContext { get; set; }
@@ -756,10 +646,10 @@ namespace osfDesigner
         public new dynamic CanSelect { get; set; }
         
         [Browsable(false)]
-        public new dynamic CausesValidation { get; set; }
+        public new dynamic CanUndo { get; set; }
         
         [Browsable(false)]
-        public new dynamic CheckedIndices { get; set; }
+        public new dynamic CausesValidation { get; set; }
         
         [Browsable(false)]
         public new dynamic CompanyName { get; set; }
@@ -777,6 +667,9 @@ namespace osfDesigner
         public new dynamic Created { get; set; }
         
         [Browsable(false)]
+        public new dynamic Culture { get; set; }
+        
+        [Browsable(false)]
         public new dynamic DataBindings { get; set; }
         
         [Browsable(false)]
@@ -789,7 +682,7 @@ namespace osfDesigner
         public new dynamic Disposing { get; set; }
         
         [Browsable(false)]
-        public new dynamic Groups { get; set; }
+        public new dynamic FormatProvider { get; set; }
         
         [Browsable(false)]
         public new dynamic Handle { get; set; }
@@ -798,13 +691,7 @@ namespace osfDesigner
         public new dynamic HasChildren { get; set; }
         
         [Browsable(false)]
-        public new dynamic HotTracking { get; set; }
-        
-        [Browsable(false)]
         public new dynamic ImeMode { get; set; }
-        
-        [Browsable(false)]
-        public new dynamic InsertionMark { get; set; }
         
         [Browsable(false)]
         public new dynamic InvokeRequired { get; set; }
@@ -825,19 +712,25 @@ namespace osfDesigner
         public new dynamic LayoutEngine { get; set; }
         
         [Browsable(false)]
-        public new dynamic ListViewItemSorter { get; set; }
+        public new dynamic Lines { get; set; }
         
         [Browsable(false)]
         public new dynamic Margin { get; set; }
         
         [Browsable(false)]
+        public new dynamic MaskedTextProvider { get; set; }
+        
+        [Browsable(false)]
         public new dynamic MaximumSize { get; set; }
+        
+        [Browsable(false)]
+        public new dynamic MaxLength { get; set; }
         
         [Browsable(false)]
         public new dynamic MinimumSize { get; set; }
         
         [Browsable(false)]
-        public new dynamic OwnerDraw { get; set; }
+        public new dynamic Multiline { get; set; }
         
         [Browsable(false)]
         public new dynamic Padding { get; set; }
@@ -852,50 +745,29 @@ namespace osfDesigner
         public new dynamic Region { get; set; }
         
         [Browsable(false)]
+        public new dynamic RejectInputOnFirstFailure { get; set; }
+        
+        [Browsable(false)]
         public new dynamic RightToLeft { get; set; }
         
         [Browsable(false)]
-        public new dynamic RightToLeftLayout { get; set; }
-        
-        [Browsable(false)]
-        public new dynamic SelectedIndices { get; set; }
-        
-        [Browsable(false)]
-        public new dynamic ShowGroups { get; set; }
-        
-        [Browsable(false)]
-        public new dynamic ShowItemToolTips { get; set; }
+        public new dynamic ShortcutsEnabled { get; set; }
         
         [Browsable(false)]
         public new dynamic Site { get; set; }
         
         [Browsable(false)]
-        public new dynamic StateImageList { get; set; }
-        
-        [Browsable(false)]
         public new dynamic Tag { get; set; }
         
         [Browsable(false)]
-        public new dynamic TileSize { get; set; }
-        
-        [Browsable(false)]
-        public new dynamic TopItem { get; set; }
-        
-        [Browsable(false)]
-        public new dynamic UseCompatibleStateImageBehavior { get; set; }
-        
-        [Browsable(false)]
-        public new dynamic VirtualListSize { get; set; }
-        
-        [Browsable(false)]
-        public new dynamic VirtualMode { get; set; }
+        public new dynamic ValidatingType { get; set; }
         
         [Browsable(false)]
         public new dynamic WindowTarget { get; set; }
-
+        
         [Browsable(false)]
-        public new dynamic View { get; set; }
-
+        public new dynamic WordWrap { get; set; }
+        
         protected override void OnHandleCreated(EventArgs e)
         {
             base.OnHandleCreated(e);
@@ -910,7 +782,7 @@ namespace osfDesigner
                         if (tic < 1)
                         {
                             designer.ActionLists.Clear();
-                            designer.ActionLists.Add(new ListViewActionList(designer));
+                            designer.ActionLists.Add(new MaskedTextBoxActionList(designer));
                             tic = tic + 1;
                         }
                     }
@@ -918,14 +790,14 @@ namespace osfDesigner
             }
         }
 
-        public class ListViewActionList : DesignerActionList
+        public class MaskedTextBoxActionList : DesignerActionList
         {
-            private ListView _control;
+            private MaskedTextBox _control;
             private DesignerActionUIService designerActionUISvc = null;
 
-            public ListViewActionList(ControlDesigner designer) : base(designer.Component)
+            public MaskedTextBoxActionList(ControlDesigner designer) : base(designer.Component)
             {
-                _control = (ListView)designer.Component;
+                _control = (MaskedTextBox)designer.Component;
                 designerActionUISvc = GetService(typeof(DesignerActionUIService)) as DesignerActionUIService;
             }
 
@@ -934,68 +806,20 @@ namespace osfDesigner
                 return TypeDescriptor.GetProperties(_control)[propName];
             }
 
-            public View View_osf
+            private void SetMask()
             {
-                get { return _control.View_osf; }
-                set
-                {
-                    GetPropertyByName("View_osf").SetValue(_control, value);
-                    designerActionUISvc.Refresh(Component);
-                }
-            }
-
-            [TypeConverter(typeof(MyImageListConverter))]
-            public System.Windows.Forms.ImageList SmallImageList
-            {
-                get { return _control.SmallImageList; }
-                set
-                {
-                    GetPropertyByName("SmallImageList").SetValue(_control, value);
-                    designerActionUISvc.Refresh(Component);
-                }
-            }
-
-            [TypeConverter(typeof(MyImageListConverter))]
-            public System.Windows.Forms.ImageList LargeImageList
-            {
-                get { return _control.LargeImageList; }
-                set
-                {
-                    GetPropertyByName("LargeImageList").SetValue(_control, value);
-                    designerActionUISvc.Refresh(Component);
-                }
-            }
-
-            private void EditItems()
-            {
-                PropertyDescriptor pd = TypeDescriptor.GetProperties(_control)["Items"];
+                PropertyDescriptor pd = TypeDescriptor.GetProperties(_control)["Mask"];
                 UITypeEditor editor = (UITypeEditor)pd.GetEditor(typeof(UITypeEditor));
                 MyRuntimeServiceProvider serviceProvider = new MyRuntimeServiceProvider(_control);
-                object fact = editor.EditValue(serviceProvider, serviceProvider, _control.Items);
-                GetPropertyByName("Items").SetValue(_control, fact);
-                designerActionUISvc.Refresh(Component);
-            }
-
-            private void EditColumns()
-            {
-                PropertyDescriptor pd = TypeDescriptor.GetProperties(_control)["Columns"];
-                UITypeEditor editor = (UITypeEditor)pd.GetEditor(typeof(UITypeEditor));
-                MyRuntimeServiceProvider serviceProvider = new MyRuntimeServiceProvider(_control);
-                object fact = editor.EditValue(serviceProvider, serviceProvider, _control.Columns);
-                GetPropertyByName("Columns").SetValue(_control, fact);
+                object fact = editor.EditValue(serviceProvider, serviceProvider, _control.Mask);
+                GetPropertyByName("Mask").SetValue(_control, fact);
                 designerActionUISvc.Refresh(Component);
             }
 
             public override DesignerActionItemCollection GetSortedActionItems()
             {
                 var items = new DesignerActionItemCollection();
-                items.Add(new DesignerActionMethodItem(this, "EditItems", "Изменить элементы...", "", true));
-                items.Add(new DesignerActionMethodItem(this, "EditColumns", "Изменить колонки...", "", true));
-
-                items.Add(new DesignerActionPropertyItem("View_osf", "Режим отображения:"));
-                items.Add(new DesignerActionPropertyItem("SmallImageList", "Список маленьких изображений:"));
-                items.Add(new DesignerActionPropertyItem("LargeImageList", "Список больших изображений:"));
-
+                items.Add(new DesignerActionMethodItem(this, "SetMask", "Установка маски...", "", true));
                 return items;
             }
         }
@@ -1020,8 +844,6 @@ namespace osfDesigner
 Положение ==
 ПорядокОбхода ==
 Размер ==
-Колонки ==
-Элементы ==
 ";
             }
         }

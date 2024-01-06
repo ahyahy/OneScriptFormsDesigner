@@ -13,7 +13,7 @@ namespace osfDesigner
         public static Dictionary<string, string> cursors = new Dictionary<string, string>
             {
                 {"NoMove2D", "БезДвижения2D"},
-                {"NoMoveVert", "БезДвиженияВекртикально"},
+                {"NoMoveVert", "БезДвиженияВертикально"},
                 {"NoMoveHoriz", "БезДвиженияГоризонтально"},
                 {"VSplit", "ВРазделитель"},
                 {"HSplit", "ГРазделитель"},

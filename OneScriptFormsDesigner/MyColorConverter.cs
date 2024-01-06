@@ -55,6 +55,33 @@ namespace osfDesigner
                 return value.ToString();
             }
         }
+	
+        public static string ConvertColorToString(object value)
+        {
+            string fact = value.ToString();
+            string[] stringSeparators = new string[] { "[", "]" };
+            string[] result = fact.Split(stringSeparators, StringSplitOptions.RemoveEmptyEntries);
+            // result[1] - это либо имя цвета (Green), либо его RGB значения (A = 255, R = 255, G = 224, B = 192).
+            // Меняем result[1] на значение из словаря colors.
+            string[] stringSeparators2 = new string[] { ", " };
+            string[] result2 = result[1].Split(stringSeparators2, StringSplitOptions.RemoveEmptyEntries);
+            if (result2.Length == 4) // Цвет в ARGB.
+            {
+                return fact.Replace("Color", "Цвет");
+            }
+            else
+            {
+                try
+                {
+                    return "Цвет [" + OneScriptFormsDesigner.colors[result[1]] + "]";
+                }
+                catch
+                {
+                    Color Color1 = (Color)value;
+                    return "Цвет [A=" + Color1.A + ", R=" + Color1.R + ", G=" + Color1.G + ", B=" + Color1.B + "]";
+                }
+            }
+        }
 
         public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
         {
