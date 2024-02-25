@@ -1,0 +1,50 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD><TITLE>Сохранение в osd</TITLE>
+<META content="text/html; charset=Windows-1252" http-equiv="Content-Type">
+<LINK rel="stylesheet" type="text/css" href="mainstyle.css"></HEAD>
+<BODY id=bodyID class=dtBODY>
+<DIV id=nsbanner>
+<DIV id=bannerrow1>
+<TABLE class=bannerparthead cellSpacing=0>
+  <TBODY>
+  <TR id=hdr>
+    <TD class=runninghead></TD>
+    <TD class=product></TD></TR></TBODY></TABLE></DIV>
+<DIV id=TitleRow>
+<H1 class=dtH1>Сохранение формы в файл os</H1></DIV></DIV>
+<DIV id=nstext>
+<P>Начиная с версии 1.2.0.0 есть возможность загружать в дизайнер формы из сохраненного файла сценария <B>"*.os"</B>.
+Не любого сценария, а именно сохраненного из дизайнера.</P>
+<P>При сохранении в формате <B>"*.os"</B> будет промежуточно создан текст файла <B>"*.osd"</B>, закодирован в строку <B>Base64</B>,
+которая будет присвоена переменной <B>osdText</B> и помещена как комментарий в 
+процедуру <B>Процедура&nbsp;ПодготовкаКомпонентов()</B> или <B>Процедура&nbsp;ПриСозданииФормы(_Форма)&nbsp;Экспорт</B>.</P>
+<PRE class="code">
+Перем Ф;
+Перем Форма_0;
+
+Процедура ПодготовкаКомпонентов()
+    // ВАЖНО: Необходимая процедура для поддержки конструктора — не изменяйте содержимое этой процедуры с помощью редактора кода.
+    // osdText = "WzzQmtC+0L3RgdGC0YDRg9C60YLQvtGA0YtdDQrQpNC+0YDQvNCwXzAgPSDQpC7QpNC+0YDQvNCwKCk7DQpb0JrQvtC90YHRgtGA0YPQutGC0L7RgNGLPl0NCls80KHQstC+0LnRgdGC0LLQsF0NCls80KTQvtGA0LzQsF8wXQ0K0KTQvtGA0LzQsF8wLtCg0LDQt9C80LXRgCA9INCkLtCg0LDQt9C80LXRgCg2NDAsIDQ4MCk7DQrQpNC+0YDQvNCwXzAu0J/Rg9GC0YwgPSAiQzpcNDQ0XNCg0LDQt9GA0LDQsdC+0YLQutCwXDIyMi5vcyI7DQrQpNC+0YDQvNCwXzAu0KHRgtC40LvRjNCh0LrRgNC40L/RgtCwID0gItCh0YLQuNC70YzQodC60YDQuNC/0YLQsCI7DQrQpNC+0YDQvNCwXzAu0KLQtdC60YHRgiA9ICLQpNC+0YDQvNCwXzAiOw0K0KTQvtGA0LzQsF8wLtCY0LzRj9Ce0LHRitC10LrRgtCw0KTQvtGA0LzRi9CU0LvRj9Ce0LTQvdC+0KHQutGA0LjQv9GC0LAgPSAi0KQiOw0KW9Ck0L7RgNC80LBfMD5dDQpb0KHQstC+0LnRgdGC0LLQsD5dDQo=";
+    ПодключитьВнешнююКомпоненту("C:\444\111\OneScriptForms\OneScriptForms\bin\Debug\OneScriptForms.dll");
+    Ф = Новый ФормыДляОдноСкрипта();
+
+    Форма_0 = Ф.Форма();
+    Форма_0.Отображать = Истина;
+    Форма_0.Показать();
+    Форма_0.Активизировать();
+
+    Форма_0.Размер = Ф.Размер(640, 480);
+    Форма_0.Текст = "Форма_0";
+
+КонецПроцедуры
+
+ПодготовкаКомпонентов();
+
+// ...
+
+Ф.ЗапуститьОбработкуСобытий();
+</PRE>
+<P>Процедура <B>Процедура&nbsp;ПодготовкаКомпонентов()</B> или <B>Процедура&nbsp;ПриСозданииФормы(_Форма)&nbsp;Экспорт</B> (зависит от свойства формы СтильСкрипта)
+является автоматически сформированной. Не изменяйте её содержимое. Впрочем если вы даже удалите её, дизайнер при сохранении её воссоздаст.</P>
+<P></P>
+</DIV></BODY></HTML>

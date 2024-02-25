@@ -89,8 +89,7 @@ namespace osfDesigner
                 }
                 catch { }
             }
-            string s = "";
-            s = ((osfDesigner.ListItemComboBox)SelectedItem).Text;
+            string s = ((osfDesigner.ListItemComboBox)SelectedItem).Text;
             e.Graphics.DrawString(s, base.Font, new SolidBrush(foreColor), (float)e.Bounds.X, (float)e.Bounds.Y);
         }
         

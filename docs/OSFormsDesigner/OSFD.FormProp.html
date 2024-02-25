@@ -1,0 +1,144 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD><TITLE>Сохранение в osd</TITLE>
+<META content="text/html; charset=Windows-1252" http-equiv="Content-Type">
+<LINK rel="stylesheet" type="text/css" href="mainstyle.css"></HEAD>
+<BODY id=bodyID class=dtBODY>
+<DIV id=nsbanner>
+<DIV id=bannerrow1>
+<TABLE class=bannerparthead cellSpacing=0>
+  <TBODY>
+  <TR id=hdr>
+    <TD class=runninghead></TD>
+    <TD class=product></TD></TR></TBODY></TABLE></DIV>
+<DIV id=TitleRow>
+<H1 class=dtH1>Некоторые свойства формы</H1></DIV></DIV>
+<DIV id=nstext>
+<P>Следует обратить внимание на следующие свойства формы.</P>
+<H4 class=dtH4>Путь</H4>
+<P>Свойство формы <B>Путь</B> недоступно для редактирования, оно заполняется программой. У только что созданной формы это свойство не заполнено.</P>
+<P>При сохранении формы в свойство будет записан полный путь до файла скрипта.</P>
+<H4 class=dtH4>СтильСкрипта</H4>
+<P>Свойство имеет значение перечисления. Возможные варианты - <B>СтильСкрипта</B> и <B>СтильПриложения</B>.</P>
+<P><B>СтильСкрипта</B> подразумевает работу сценария без 
+использования <A href="https://oscript.io/library" target="_blank"><B>соглашения&nbsp;об&nbsp;устройстве&nbsp;библиотеки&nbsp;односкрипта</B></A>. В этом случае 
+при инициализации формы будет задействована конструкция:</P>
+<PRE class="code">
+//...
+Процедура ПодготовкаКомпонентов()
+    // ВАЖНО: Необходимая процедура для поддержки конструктора — не изменяйте содержимое этой процедуры с помощью редактора кода.
+    // osdText = "WzzQmtC+0L3RgdGC0YDRg9C60YLQvtGA0YtdDQrQpNC+0YDQvNCwXzAgPSDQpC7QpNC+0YDQvNCwKCk7DQpb0JrQvtC90YHRgtGA0YPQutGC0L7RgNGLPl0NCls80KHQstC+0LnRgdGC0LLQsF0NCls80KTQvtGA0LzQsF8wXQ0K0KTQvtGA0LzQsF8wLtCg0LDQt9C80LXRgCA9INCkLtCg0LDQt9C80LXRgCg2NDAsIDQ4MCk7DQrQpNC+0YDQvNCwXzAu0J/Rg9GC0YwgPSAiQzpcNDQ0XNCg0LDQt9GA0LDQsdC+0YLQutCwXDIyMi5vcyI7DQrQpNC+0YDQvNCwXzAu0KHRgtC40LvRjNCh0LrRgNC40L/RgtCwID0gItCh0YLQuNC70YzQodC60YDQuNC/0YLQsCI7DQrQpNC+0YDQvNCwXzAu0KLQtdC60YHRgiA9ICLQpNC+0YDQvNCwXzAiOw0K0KTQvtGA0LzQsF8wLtCY0LzRj9Ce0LHRitC10LrRgtCw0KTQvtGA0LzRi9CU0LvRj9Ce0LTQvdC+0KHQutGA0LjQv9GC0LAgPSAi0KQiOw0KW9Ck0L7RgNC80LBfMD5dDQpb0KHQstC+0LnRgdGC0LLQsD5dDQo=";
+    ПодключитьВнешнююКомпоненту("C:\444\111\OneScriptForms\OneScriptForms\bin\Debug\OneScriptForms.dll");
+    Ф = Новый ФормыДляОдноСкрипта();
+
+    Форма_0 = Ф.Форма();
+    Форма_0.Отображать = Истина;
+    Форма_0.Показать();
+    Форма_0.Активизировать();
+
+    Форма_0.Размер = Ф.Размер(640, 480);
+    Форма_0.Текст = "Форма_0";
+
+КонецПроцедуры
+
+ПодготовкаКомпонентов();
+//...
+</PRE>
+<P>При этом так же можно будет подключать и другие скрипты:</P>
+<PRE class="code">
+//...
+ПодключитьСценарий("..\ГлавнаяФорма.os", "ГлавнаяФорма");
+Сценарий1 = Новый ГлавнаяФорма();
+Сценарий1.Форма.Текст = Сценарий1.Форма.Текст + " " + ТекущаяДата();
+//...
+</PRE>
+<br>
+<hr style="border-color: lightgray;">
+<br>
+<P>При стиле <B>СтильПриложения</B> подразумевается использование 
+<A href="https://oscript.io/library" target="_blank"><B>соглашения&nbsp;об&nbsp;устройстве&nbsp;библиотеки&nbsp;односкрипта</B></A>.
+В этом случае при инициализации формы будет задействована конструкция:</P>
+<PRE class="code">
+//...
+Процедура ПриСозданииФормы(_Форма) Экспорт
+    // ВАЖНО: Необходимая процедура для поддержки конструктора — не изменяйте содержимое этой процедуры с помощью редактора кода.
+    // osdText = "WzzQmtC+0L3RgdGC0YDRg9C60YLQvtGA0YtdDQrQpNC+0YDQvNCwXzAgPSDQpC7QpNC+0YDQvNCwKCk7DQpb0JrQvtC90YHRgtGA0YPQutGC0L7RgNGLPl0NCls80KHQstC+0LnRgdGC0LLQsF0NCls80KTQvtGA0LzQsF8wXQ0K0KTQvtGA0LzQsF8wLtCg0LDQt9C80LXRgCA9INCkLtCg0LDQt9C80LXRgCg2NDAsIDQ4MCk7DQrQpNC+0YDQvNCwXzAu0J/Rg9GC0YwgPSAiQzpcNDQ0XNCg0LDQt9GA0LDQsdC+0YLQutCwXDIyMi5vcyI7DQrQpNC+0YDQvNCwXzAu0KHRgtC40LvRjNCh0LrRgNC40L/RgtCwID0gItCh0YLQuNC70YzQn9GA0LjQu9C+0LbQtdC90LjRjyI7DQrQpNC+0YDQvNCwXzAu0KLQtdC60YHRgiA9ICLQpNC+0YDQvNCwXzAiOw0K0KTQvtGA0LzQsF8wLtCY0LzRj9Ce0LHRitC10LrRgtCw0KTQvtGA0LzRi9CU0LvRj9Ce0LTQvdC+0KHQutGA0LjQv9GC0LAgPSAi0KQiOw0KW9Ck0L7RgNC80LBfMD5dDQpb0KHQstC+0LnRgdGC0LLQsD5dDQo=";
+    ПодключитьВнешнююКомпоненту("C:\444\111\OneScriptForms\OneScriptForms\bin\Debug\OneScriptForms.dll");
+    Ф = Новый ФормыДляОдноСкрипта();
+
+    Форма_0 = Ф.Форма();
+    Форма_0.Отображать = Истина;
+    Форма_0.Показать();
+    Форма_0.Активизировать();
+
+    Форма_0.Размер = Ф.Размер(640, 480);
+    Форма_0.Текст = "Форма_0";
+
+КонецПроцедуры
+//...
+</PRE>
+<P>А подключение этой формы будет выглядеть так:</P>
+<PRE class="code">
+//...
+#Использовать ".\" 
+
+ПодключитьВнешнююКомпоненту("..\OneScriptForms.dll");
+Ф = Новый ФормыДляОдноСкрипта();
+
+ГлавнаяФорма1 = Ф.СоздатьФорму(Новый ГлавнаяФорма());
+// В расположенном рядом с текущим исполняющимся сценарием каталоге "Классы" должен находиться сценарий <B>ГлавнаяФорма.os</B>.
+ГлавнаяФорма1.Показать();
+ГлавнаяФорма1.Активизировать();
+//...
+</PRE>
+<P></P>
+<H4 class=dtH4>ИмяОбъектаФормыДляОдноСкрипта</H4>
+<P>Это свойство позволяет задать для объекта <B>Ф = Новый ФормыДляОдноСкрипта();</B> имя переменной отличное от имени по умолчанию <B>Ф</B>.</P>
+<P>Желательно установить значение этого свойства в самом начале проектирования формы, до её первого сохранения. Хотя это правило не обязательное.</P>
+<P>Вот для сравнения два сценария с именем по умолчанию и другим именем переменной.</P>
+<PRE class="code">
+Перем Ф;
+Перем Форма_0;
+
+Процедура ПриСозданииФормы(_Форма) Экспорт
+    // ВАЖНО: Необходимая процедура для поддержки конструктора — не изменяйте содержимое этой процедуры с помощью редактора кода.
+    // osdText = "WzzQmtC+0L3RgdGC0YDRg9C60YLQvtGA0YtdDQrQpNC+0YDQvNCwXzAgPSDQpC7QpNC+0YDQvNCwKCk7DQpb0JrQvtC90YHRgtGA0YPQutGC0L7RgNGLPl0NCls80KHQstC+0LnRgdGC0LLQsF0NCls80KTQvtGA0LzQsF8wXQ0K0KTQvtGA0LzQsF8wLtCg0LDQt9C80LXRgCA9INCkLtCg0LDQt9C80LXRgCg2NDAsIDQ4MCk7DQrQpNC+0YDQvNCwXzAu0J/Rg9GC0YwgPSAiQzpcNDQ0XNCg0LDQt9GA0LDQsdC+0YLQutCwXDIyMi5vcyI7DQrQpNC+0YDQvNCwXzAu0KHRgtC40LvRjNCh0LrRgNC40L/RgtCwID0gItCh0YLQuNC70YzQn9GA0LjQu9C+0LbQtdC90LjRjyI7DQrQpNC+0YDQvNCwXzAu0KLQtdC60YHRgiA9ICLQpNC+0YDQvNCwXzAiOw0K0KTQvtGA0LzQsF8wLtCY0LzRj9Ce0LHRitC10LrRgtCw0KTQvtGA0LzRi9CU0LvRj9Ce0LTQvdC+0KHQutGA0LjQv9GC0LAgPSAi0KQiOw0KW9Ck0L7RgNC80LBfMD5dDQpb0KHQstC+0LnRgdGC0LLQsD5dDQo=";
+    ПодключитьВнешнююКомпоненту("C:\444\111\OneScriptForms\OneScriptForms\bin\Debug\OneScriptForms.dll");
+    Ф = Новый ФормыДляОдноСкрипта();
+
+    Форма_0 = Ф.Форма();
+    Форма_0.Отображать = Истина;
+    Форма_0.Показать();
+    Форма_0.Активизировать();
+
+    Форма_0.Размер = Ф.Размер(640, 480);
+    Форма_0.Текст = "Форма_0";
+
+КонецПроцедуры
+
+// ...
+</PRE>
+<P></P>
+<PRE class="code">
+Перем Формы125;
+Перем Форма_0;
+
+Процедура ПриСозданииФормы(_Форма) Экспорт
+    // ВАЖНО: Необходимая процедура для поддержки конструктора — не изменяйте содержимое этой процедуры с помощью редактора кода.
+    // osdText = "WzzQmtC+0L3RgdGC0YDRg9C60YLQvtGA0YtdDQrQpNC+0YDQvNCwXzAgPSDQpNC+0YDQvNGLMTI1LtCk0L7RgNC80LAoKTsNClvQmtC+0L3RgdGC0YDRg9C60YLQvtGA0Ys+XQ0KWzzQodCy0L7QudGB0YLQstCwXQ0KWzzQpNC+0YDQvNCwXzBdDQrQpNC+0YDQvNCwXzAu0KDQsNC30LzQtdGAID0g0KTQvtGA0LzRizEyNS7QoNCw0LfQvNC10YAoNjcwLCA2MDApOw0K0KTQvtGA0LzQsF8wLtCf0YPRgtGMID0gIkM6XDQ0NFzQoNCw0LfRgNCw0LHQvtGC0LrQsFwyMjIub3MiOw0K0KTQvtGA0LzQsF8wLtCh0YLQuNC70YzQodC60YDQuNC/0YLQsCA9ICLQodGC0LjQu9GM0J/RgNC40LvQvtC20LXQvdC40Y8iOw0K0KTQvtGA0LzQsF8wLtCi0LXQutGB0YIgPSAi0KTQvtGA0LzQsF8wIjsNCtCk0L7RgNC80LBfMC7QmNC80Y/QntCx0YrQtdC60YLQsNCk0L7RgNC80YvQlNC70Y/QntC00L3QvtCh0LrRgNC40L/RgtCwID0gItCk0L7RgNC80YsxMjUiOw0KW9Ck0L7RgNC80LBfMD5dDQpb0KHQstC+0LnRgdGC0LLQsD5dDQo=";
+    ПодключитьВнешнююКомпоненту("C:\444\111\OneScriptForms\OneScriptForms\bin\Debug\OneScriptForms.dll");
+    Формы125 = Новый ФормыДляОдноСкрипта();
+
+    Форма_0 = Формы125.Форма();
+    Форма_0.Отображать = Истина;
+    Форма_0.Показать();
+    Форма_0.Активизировать();
+
+    Форма_0.Размер = Формы125.Размер(670, 600);
+    Форма_0.Текст = "Форма_0";
+
+КонецПроцедуры
+
+// ...
+</PRE>
+<P></P>
+</DIV></BODY></HTML>

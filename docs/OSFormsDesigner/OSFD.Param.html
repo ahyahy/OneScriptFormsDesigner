@@ -24,15 +24,6 @@
 	  <div id="caption">Параметры - Файлы</div>
 	</div>
 </figure>
-<P>В окне <B>Параметры</B>, строке <B>Стиль сценария</B> укажите стиль формируемого сценария.</P>
-<figure class="pic">
-	<img id="myImg02" src="Params2.png" alt="Параметры - Стиль сценария"><figcaption>Параметры - Стиль сценария</figcaption>
-	<div id="myModal02" class="modal">
-	  <span id="close02" class="close">×</span>
-	  <img id="img02" class="modal-content">
-	  <div id="caption">Параметры - Стиль сценария</div>
-	</div>
-</figure>
 <P>В окне <B>Параметры</B>, строке <B>Визуальные стили</B> укажите включать ли визуальные стили для окна дизайнера и для разрабатываемой формы.</P>
 <figure class="pic">
 	<img id="myImg03" src="Params3.png" alt="Параметры - Визуальные стили"><figcaption>Параметры - Визуальные стили</figcaption>
@@ -125,18 +116,6 @@ img01.onclick = function(){
 var span01 = document.getElementById("close01");
 span01.onclick = function(){ 
     modal01.style.display = "none";
-}
-
-var img02 = document.getElementById('myImg02');
-var modal02 = document.getElementById('myModal02');
-var modalImg02 = document.getElementById("img02");
-img02.onclick = function(){
-    modal02.style.display = "block";
-    modalImg02.src = img02.src;
-}
-var span02 = document.getElementById("close02");
-span02.onclick = function(){ 
-    modal02.style.display = "none";
 }
 
 var img03 = document.getElementById('myImg03');
