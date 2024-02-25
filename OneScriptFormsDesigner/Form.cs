@@ -39,6 +39,7 @@ namespace osfDesigner
 
         public Form()
         {
+            NameObjectOneScriptForms = "Ф";
             Enabled_osf = base.Enabled;
             Visible_osf = base.Visible;
         }
@@ -648,12 +649,25 @@ namespace osfDesigner
         }
 
         [DisplayName("Путь")]
-        [Description("Путь до файла osd этой формы.")]
+        [Description("Путь до файла os или osd этой формы.")]
         [Category("Прочее")]
         [Browsable(true)]
         [DefaultValue(typeof(String), null)]
         [ReadOnly(true)]
         public string Path { get; set; }
+		
+        [DisplayName("СтильСкрипта")]
+        [Description("Стиль скрипта (СтильСкрипта или СтильПриложения).")]
+        [Category("Прочее")]
+        [Browsable(true)]
+        [DefaultValue(ScriptStyle.СтильСкрипта)]
+        public ScriptStyle ScriptStyle { get; set; }
+		
+        [DisplayName("ИмяОбъектаФормыДляОдноСкрипта")]
+        [Description("Вами установленное имя переменной для объекта ФормыДляОдноСкрипта. Например: Ф = Новый ФормыДляОдноСкрипта();")]
+        [Category("Прочее")]
+        [Browsable(true)]
+        public string NameObjectOneScriptForms { get; set; }		
 		
         [Browsable(false)]
         [ReadOnly(true)]
@@ -815,9 +829,11 @@ namespace osfDesigner
             get
             {
                 return @"
+ИмяОбъектаФормыДляОдноСкрипта ==
 Положение ==
 ПорядокОбхода ==
 Размер ==
+СтильСкрипта ==
 Текст ==
 ";
             }

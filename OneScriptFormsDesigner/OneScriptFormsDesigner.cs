@@ -1510,6 +1510,31 @@ namespace osfDesigner
                 {"Arrow", "Стрелка"},
                 {"UpArrow", "СтрелкаВверх"}
             };
+	
+        // Удалим повторы пустых строк. Больше одной пустой строки не собираться.
+        public static string DeleteDoubleEmptyLines(string str) 
+        {
+            str += Environment.NewLine;
+            string res = null;
+            ArrayList ArrayList1 = new ArrayList(); // Массив строк без повторов.
+            string[] stringSeparators = new string[] { Environment.NewLine };
+            string[] result = str.Split(stringSeparators, StringSplitOptions.None);
+            for (int i1 = 0; i1 < result.Length - 1; i1++)
+            {
+                string strCurrent = result[i1];
+                string strAfter = result[i1 + 1];
+                if (!(strCurrent.Trim().Length == 0 && strAfter.Trim().Length == 0))
+                {
+                    ArrayList1.Add(strCurrent);
+                }
+            }
+            for (int i2 = 0; i2 < ArrayList1.Count; i2++)
+            {
+                res = res + ArrayList1[i2] + Environment.NewLine;
+            }
+            res = res.TrimEnd() + Environment.NewLine;
+            return res;
+        }	
 
         public static ArrayList StrFindBetween(string p1, string p2 = null, string p3 = null, bool p4 = true, bool p5 = true)
         {

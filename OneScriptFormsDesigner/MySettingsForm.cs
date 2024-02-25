@@ -14,10 +14,7 @@ namespace osfDesigner
         private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.CheckBox checkBox2;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.RadioButton radioButton1;
-        private System.Windows.Forms.RadioButton radioButton2;
         private System.Windows.Forms.Label label_os;
         private System.Windows.Forms.Label label_dll;
         private System.Windows.Forms.TextBox textBox_osPath;
@@ -169,50 +166,6 @@ namespace osfDesigner
                 System.Windows.Forms.AnchorStyles.Right;
             button_dllPath.Click += Button_dllPath_Click;
             //
-            //stylesPanel
-            //
-            System.Windows.Forms.Panel stylesPanel = new System.Windows.Forms.Panel();
-            stylesPanel.Parent = setPanel;
-            stylesPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            stylesPanel.BringToFront();
-            stylesPanel.BackColor = Color.Gainsboro;
-            TreeNode stylesNode = setTreeView.Nodes.Add("Стиль сценария");
-            stylesNode.Tag = stylesPanel;
-            stylesPanel.Hide();
-
-            groupBox2 = new System.Windows.Forms.GroupBox();
-            groupBox2.Parent = stylesPanel;
-            groupBox2.Text = "Стиль формируемого сценария";
-            groupBox2.Anchor = System.Windows.Forms.AnchorStyles.Left |
-                System.Windows.Forms.AnchorStyles.Top |
-                System.Windows.Forms.AnchorStyles.Right;
-            groupBox2.Left = 15;
-            groupBox2.Top = 15;
-            groupBox2.Width = 550;
-            groupBox2.Height = 100;
-
-            radioButton1 = new System.Windows.Forms.RadioButton();
-            radioButton1.Parent = groupBox2;
-            radioButton1.Left = 10;
-            radioButton1.Top = 25;
-            radioButton1.Width = groupBox2.Width - 20;
-            radioButton1.Anchor = System.Windows.Forms.AnchorStyles.Left |
-                System.Windows.Forms.AnchorStyles.Top |
-                System.Windows.Forms.AnchorStyles.Right;
-            radioButton1.Text = "Стиль скрипта.";
-            radioButton1.Checked = (bool)Settings.Default["styleScript"];
-
-            radioButton2 = new System.Windows.Forms.RadioButton();
-            radioButton2.Parent = groupBox2;
-            radioButton2.Left = label_dll.Left;
-            radioButton2.Top = radioButton1.Bottom + 5;
-            radioButton2.Width = radioButton1.Width;
-            radioButton2.Anchor = System.Windows.Forms.AnchorStyles.Left |
-                System.Windows.Forms.AnchorStyles.Top |
-                System.Windows.Forms.AnchorStyles.Right;
-            radioButton2.Text = "Стиль приложения.";
-            radioButton2.Checked = !(bool)Settings.Default["styleScript"];
-            //
             //visualStylesPanel
             //
             System.Windows.Forms.Panel visualStylesPanel = new System.Windows.Forms.Panel();
@@ -222,7 +175,6 @@ namespace osfDesigner
             visualStylesPanel.BackColor = Color.Gainsboro;
             TreeNode visualStylesNode = setTreeView.Nodes.Add("Визуальные стили");
             visualStylesNode.Tag = visualStylesPanel;
-            stylesPanel.Hide();
 
             groupBox3 = new System.Windows.Forms.GroupBox();
             groupBox3.Parent = visualStylesPanel;
@@ -250,7 +202,7 @@ namespace osfDesigner
             checkBox2 = new System.Windows.Forms.CheckBox();
             checkBox2.Parent = groupBox3;
             checkBox2.Left = 10;
-            checkBox2.Top = radioButton1.Bottom + 15;
+            checkBox2.Top = 65;
             checkBox2.Width = groupBox3.Width - 20;
             checkBox2.Anchor = System.Windows.Forms.AnchorStyles.Left |
                 System.Windows.Forms.AnchorStyles.Top |
@@ -279,11 +231,6 @@ namespace osfDesigner
         public string DLLPath
         {
             get { return textBox_dllPath.Text; }
-        }
-
-        public bool StyleScript
-        {
-            get { return radioButton1.Checked; }
         }
 
         private void Button_dllPath_Click(object sender, EventArgs e)

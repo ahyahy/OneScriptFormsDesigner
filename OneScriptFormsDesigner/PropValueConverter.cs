@@ -15,9 +15,12 @@ namespace osfDesigner
         public static void SetPropValue(
             object component,
             string displayName, 
-            string valProp, 
+            string valProp,
+            string nameObjectOneScriptForms,
             Control parent = null)
         {
+            string NameObjectOneScriptForms = nameObjectOneScriptForms;
+
             dynamic control = null;
             if (component.GetType().ToString() == "osfDesigner.ColorDialog" ||
                 component.GetType().ToString() == "osfDesigner.ColumnHeader" ||
@@ -93,7 +96,7 @@ namespace osfDesigner
             {
                 if (valProp != null)
                 {
-                    int start = Int32.Parse(OneScriptFormsDesigner.ParseBetween(valProp, "Ф.ОбластьСсылки(", ","));
+                    int start = Int32.Parse(OneScriptFormsDesigner.ParseBetween(valProp, "" + NameObjectOneScriptForms + @".ОбластьСсылки(", ","));
                     int length = Int32.Parse(OneScriptFormsDesigner.ParseBetween(valProp, ",", ")"));
                     System.Windows.Forms.LinkArea LinkArea1 = new LinkArea(start, length);
 
@@ -447,7 +450,7 @@ namespace osfDesigner
                 DateTime rez1 = new DateTime();
                 DateTime rez2 = new DateTime();
 
-                string[] result1 = OneScriptFormsDesigner.ParseBetween(valProp, "Ф.ВыделенныйДиапазон(Дата(", "),Дата(").Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+                string[] result1 = OneScriptFormsDesigner.ParseBetween(valProp, "" + NameObjectOneScriptForms + @".ВыделенныйДиапазон(Дата(", "),Дата(").Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
                 string[] result2 = OneScriptFormsDesigner.ParseBetween(valProp, "),Дата(", "))").Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
 
                 for (int i = 0; i < result1.Length; i++)
@@ -727,6 +730,9 @@ namespace osfDesigner
                 displayName == "ИмяСвойстваДанных" ||
                 displayName == "ИмяСтиля" ||
                 displayName == "Маска" ||
+
+                displayName == "ИмяОбъектаФормыДляОдноСкрипта" ||
+
                 displayName == "ИмяФайла" ||
                 displayName == "НачальныйКаталог" ||
                 displayName == "Описание" ||
@@ -737,16 +743,30 @@ namespace osfDesigner
                 displayName == "РасширениеПоУмолчанию" ||
                 displayName == "СимволПароля" ||
                 displayName == "СимволПриглашения" ||
+                displayName == "СтильСкрипта" ||
                 displayName == "Текст" ||
                 displayName == "ТекстЗаголовка" ||
                 displayName == "ТекстПодсказки" ||
                 displayName == "Фильтр")
             {
-                if (valProp.Contains("Ф.Окружение().НоваяСтрока"))
+                if (displayName == "СтильСкрипта")
                 {
                     valProp = valProp.Replace("\u0022", "");
-                    valProp = valProp.Replace("+Ф.Окружение().НоваяСтрока+", Environment.NewLine);
-                    valProp = valProp.Replace(" + Ф.Окружение().НоваяСтрока + ", Environment.NewLine);
+                    if (valProp == "СтильСкрипта")
+                    {
+                        control.ScriptStyle = ScriptStyle.СтильСкрипта;
+                    }
+                    else
+                    {
+                        control.ScriptStyle = ScriptStyle.СтильПриложения;
+                    }
+                    return;
+                }
+                if (valProp.Contains("" + NameObjectOneScriptForms + @".Окружение().НоваяСтрока"))
+                {
+                    valProp = valProp.Replace("\u0022", "");
+                    valProp = valProp.Replace("+" + NameObjectOneScriptForms + @".Окружение().НоваяСтрока+", Environment.NewLine);
+                    valProp = valProp.Replace(" + " + NameObjectOneScriptForms + @".Окружение().НоваяСтрока + ", Environment.NewLine);
                 }
                 else
                 {
@@ -840,7 +860,7 @@ namespace osfDesigner
                 displayName == "РазмерЭлемента")
             {
                 Size Size1 = new Size();
-                Size1.Width = Int32.Parse(OneScriptFormsDesigner.ParseBetween(valProp, "Ф.Размер(", ","));
+                Size1.Width = Int32.Parse(OneScriptFormsDesigner.ParseBetween(valProp, "" + NameObjectOneScriptForms + @".Размер(", ","));
                 Size1.Height = Int32.Parse(OneScriptFormsDesigner.ParseBetween(valProp, ",", ")"));
 
                 string propertyName = OneScriptFormsDesigner.GetPropName(control, displayName);
@@ -851,7 +871,7 @@ namespace osfDesigner
             if (displayName == "Положение")
             {
                 Point Point1 = new Point();
-                Point1.X = Int32.Parse(OneScriptFormsDesigner.ParseBetween(valProp, "Ф.Точка(", ","));
+                Point1.X = Int32.Parse(OneScriptFormsDesigner.ParseBetween(valProp, "" + NameObjectOneScriptForms + @".Точка(", ","));
                 Point1.Y = Int32.Parse(OneScriptFormsDesigner.ParseBetween(valProp, ",", ")"));
 
                 try
@@ -870,7 +890,7 @@ namespace osfDesigner
             }
             if (displayName == "Курсор")
             {
-                string propNameRu = OneScriptFormsDesigner.ParseBetween(valProp, "Ф.Курсоры().", null);
+                string propNameRu = OneScriptFormsDesigner.ParseBetween(valProp, "" + NameObjectOneScriptForms + @".Курсоры().", null);
                 System.Windows.Forms.Cursor cursor = null;
 
                 PropertyInfo[] myPropertyInfo = typeof(System.Windows.Forms.Cursors).GetProperties();
@@ -937,7 +957,7 @@ namespace osfDesigner
                 displayName == "ФорматМаски" ||
                 displayName == "Якорь")
             {
-                string enumName = OneScriptFormsDesigner.ParseBetween(valProp, "Ф.", ".");
+                string enumName = OneScriptFormsDesigner.ParseBetween(valProp, "" + NameObjectOneScriptForms + @".", ".");
                 string type_Name = "osfDesigner." + OneScriptFormsDesigner.namesEnum[enumName];
                 Type enumType = Type.GetType(type_Name);
                 var names = Enum.GetNames(enumType);
@@ -1056,7 +1076,7 @@ namespace osfDesigner
             }
             if (displayName == "Заполнение" && (control.GetType() == typeof(osfDesigner.DataGridViewCellStyle) || (control.GetType() == typeof(osfDesigner.DataGridViewCellStyleHeaders))))
             {
-                string[] result = valProp.Replace("Ф.Заполнение(", "").Replace(")", "").Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+                string[] result = valProp.Replace("" + NameObjectOneScriptForms + @".Заполнение(", "").Replace(")", "").Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
                 int left = 0;
                 int top = 0;
                 int right = 0;
@@ -1105,6 +1125,9 @@ namespace osfDesigner
 
         public static void SetNodePropValue(MyTreeNode control, string displayName, string valProp)
         {
+            Form savedForm = (Form)OneScriptFormsDesigner.DesignerHost.RootComponent;
+            string NameObjectOneScriptForms = savedForm.NameObjectOneScriptForms;
+
             if (displayName == "Помечен")
             {
                 bool bool1 = false;
@@ -1126,11 +1149,11 @@ namespace osfDesigner
             if (displayName == "ПолныйПуть" ||
                 displayName == "Текст")
             {
-                if (valProp.Contains("Ф.Окружение().НоваяСтрока"))
+                if (valProp.Contains("" + NameObjectOneScriptForms + @".Окружение().НоваяСтрока"))
                 {
                     valProp = valProp.Replace("\u0022", "");
-                    valProp = valProp.Replace("+Ф.Окружение().НоваяСтрока+", Environment.NewLine);
-                    valProp = valProp.Replace(" + Ф.Окружение().НоваяСтрока + ", Environment.NewLine);
+                    valProp = valProp.Replace("+" + NameObjectOneScriptForms + @".Окружение().НоваяСтрока+", Environment.NewLine);
+                    valProp = valProp.Replace(" + " + NameObjectOneScriptForms + @".Окружение().НоваяСтрока + ", Environment.NewLine);
                 }
                 else
                 {

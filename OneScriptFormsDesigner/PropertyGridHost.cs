@@ -240,6 +240,21 @@ namespace osfDesigner
                     }
                 }
 	
+                if (Label1 == "ИмяОбъектаФормыДляОдноСкрипта")
+                {
+                    System.ComponentModel.Design.Serialization.INameCreationService iName = OneScriptFormsDesigner.ActiveDesignSurface.GetIDesignerHost().GetService(typeof(System.ComponentModel.Design.Serialization.INameCreationService)) as System.ComponentModel.Design.Serialization.INameCreationService;
+                    if (iName != null)
+                    {
+                        if (!iName.IsValidName(selectedObject.NameObjectOneScriptForms))
+                        {
+                            MessageBox.Show("Имя не должно быть пустым, должно начинаться с буквы, не должно содержать пробелы.");
+                            PropertyDescriptor pd = TypeDescriptor.GetProperties(selectedObject)["NameObjectOneScriptForms"];
+                            pd.SetValue(((Form)selectedObject), (string)e.OldValue);
+                            return;
+                        }
+                    }
+                }	
+	
                 if (Label1 == "(Name)" && selectedObject.GetType() != typeof(Form))
                 {
                     MessageBox.Show(

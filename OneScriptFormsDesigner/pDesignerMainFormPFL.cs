@@ -900,7 +900,7 @@ namespace osfDesigner
                             if (displayName != "КнопкаОтмена" && displayName != "КнопкаПринять" && !strCurrent.Contains("Подсказка"))
                             {
                                 string strPropertyValue = OneScriptFormsDesigner.ParseBetween(strCurrent, "=", ";");
-                                PropValueConverter.SetPropValue(rootComponent, displayName, strPropertyValue);
+                                //PropValueConverter.SetPropValue(rootComponent, displayName, strPropertyValue);
                             }
                         }
                     }
@@ -1000,13 +1000,13 @@ namespace osfDesigner
                                     {
                                         string displayName = OneScriptFormsDesigner.ParseBetween(strCurrent, componentName + ".", "=");
                                         string strPropertyValue = OneScriptFormsDesigner.ParseBetween(strCurrent, "=", ";");
-                                        PropValueConverter.SetPropValue(control, displayName, strPropertyValue, null);
+                                        //PropValueConverter.SetPropValue(control, displayName, strPropertyValue, null);
                                     }
                                     else
                                     {
                                         string displayName = OneScriptFormsDesigner.ParseBetween(strCurrent, componentName + ".", ".");
                                         string strPropertyValue = OneScriptFormsDesigner.ParseBetween(strCurrent, "Ф.Картинка(\u0022", "\u0022)");
-                                        PropValueConverter.SetPropValue(control, displayName, strPropertyValue, null);
+                                        //PropValueConverter.SetPropValue(control, displayName, strPropertyValue, null);
                                     }
                                 }
                                 else if (componentName.Contains("Календарь"))
@@ -1017,7 +1017,7 @@ namespace osfDesigner
                                         string strPropertyValue = OneScriptFormsDesigner.ParseBetween(strCurrent, "=", ";");
                                         string parentName = OneScriptFormsDesigner.ParseBetween(ComponentBlok, componentName + @".Родитель=", @";");
                                         Control parent = (Control)dictComponents[parentName];
-                                        PropValueConverter.SetPropValue(control, displayName, strPropertyValue, parent);
+                                        //PropValueConverter.SetPropValue(control, displayName, strPropertyValue, parent);
                                     }
                                     else
                                     {
@@ -1026,7 +1026,7 @@ namespace osfDesigner
                                         string strPropertyValue = OneScriptFormsDesigner.ParseBetween(strCurrent, "Дата(", "))");
                                         string parentName = OneScriptFormsDesigner.ParseBetween(ComponentBlok, componentName + @".Родитель=", @";");
                                         Control parent = (Control)dictComponents[parentName];
-                                        PropValueConverter.SetPropValue(control, displayName, strPropertyValue, parent);
+                                        //PropValueConverter.SetPropValue(control, displayName, strPropertyValue, parent);
                                     }
                                 }
                                 else if (componentName.Contains("ГлавноеМеню"))
@@ -1037,7 +1037,7 @@ namespace osfDesigner
                                     {
                                         string displayName = OneScriptFormsDesigner.ParseBetween(strCurrent, ".", ".Добавить(Ф.ЭлементМеню(");
                                         string strPropertyValue = strCurrent;
-                                        PropValueConverter.SetPropValue(control, displayName, strPropertyValue, null);
+                                        //PropValueConverter.SetPropValue(control, displayName, strPropertyValue, null);
                                     }
                                 }
                                 else if (control.GetType() == typeof(osfDesigner.FileSystemWatcher) ||
@@ -1052,7 +1052,7 @@ namespace osfDesigner
                                 {
                                     string displayName = OneScriptFormsDesigner.ParseBetween(strCurrent, componentName + ".", "=");
                                     string strPropertyValue = OneScriptFormsDesigner.ParseBetween(strCurrent, "=", ";");
-                                    PropValueConverter.SetPropValue(control, displayName, strPropertyValue, null);
+                                    //PropValueConverter.SetPropValue(control, displayName, strPropertyValue, null);
                                 }
                                 else if (strCurrent.Contains("Подсказка"))
                                 {
@@ -1060,7 +1060,7 @@ namespace osfDesigner
 
                                     string displayName = "ToolTip на " + OneScriptFormsDesigner.ParseBetween(strCurrent, null, ".УстановитьПодсказку");
                                     string strPropertyValue = strCurrent;
-                                    PropValueConverter.SetPropValue(control, displayName, strPropertyValue, null);
+                                    //PropValueConverter.SetPropValue(control, displayName, strPropertyValue, null);
                                 }
 
                                 //else if (componentName.Contains("НаблюдательФайловойСистемы"))
@@ -1078,7 +1078,7 @@ namespace osfDesigner
                                         {
                                             //Узел0 = Дерево1.Узлы.Добавить("Узел0");
                                             string displayName = OneScriptFormsDesigner.ParseBetween(strCurrent, ".", ".");
-                                            PropValueConverter.SetPropValue(control, displayName, strCurrent, null);
+                                            //PropValueConverter.SetPropValue(control, displayName, strCurrent, null);
                                         }
                                         else
                                         {
@@ -1086,7 +1086,7 @@ namespace osfDesigner
                                             string strPropertyValue = OneScriptFormsDesigner.ParseBetween(strCurrent, "=", ";");
                                             string parentName = OneScriptFormsDesigner.ParseBetween(ComponentBlok, componentName + @".Родитель=", @";");
                                             Control parent = (Control)dictComponents[parentName];
-                                            PropValueConverter.SetPropValue(control, displayName, strPropertyValue, parent);
+                                            //PropValueConverter.SetPropValue(control, displayName, strPropertyValue, parent);
                                         }
                                     }
                                     else// обрабатываем как свойство узла
@@ -1095,13 +1095,13 @@ namespace osfDesigner
                                         {
                                             //Узел1 = Узел0.Узлы.Добавить("Узел1");
                                             string displayName = OneScriptFormsDesigner.ParseBetween(strCurrent, ".", ".");
-                                            PropValueConverter.SetPropValue(control, displayName, strCurrent, null);
+                                            //PropValueConverter.SetPropValue(control, displayName, strCurrent, null);
                                         }
                                         else
                                         {
                                             //Узел3.ШрифтУзла = Ф.Шрифт("Microsoft Sans Serif", 7.8, Ф.СтильШрифта.Жирный);
-                                            string displayName = "Узлы";
-                                            PropValueConverter.SetPropValue(control, displayName, strCurrent, null);
+                                            //string displayName = "Узлы";
+                                            //PropValueConverter.SetPropValue(control, displayName, strCurrent, null);
                                         }
                                     }
                                 }
@@ -1111,7 +1111,7 @@ namespace osfDesigner
                                     string strPropertyValue = OneScriptFormsDesigner.ParseBetween(strCurrent, "=", ";");
                                     string parentName = OneScriptFormsDesigner.ParseBetween(ComponentBlok, componentName + @".Родитель=", @";");
                                     Control parent = (Control)dictComponents[parentName];
-                                    PropValueConverter.SetPropValue(control, displayName, strPropertyValue, parent);
+                                    //PropValueConverter.SetPropValue(control, displayName, strPropertyValue, parent);
                                 }
                             }
                         }
@@ -1172,14 +1172,14 @@ namespace osfDesigner
                             if (displayName == "КнопкаОтмена" || displayName == "КнопкаПринять")
                             {
                                 string strPropertyValue = OneScriptFormsDesigner.ParseBetween(strCurrent, "=", ";");
-                                PropValueConverter.SetPropValue(rootComponent, displayName, strPropertyValue);
+                                //PropValueConverter.SetPropValue(rootComponent, displayName, strPropertyValue);
                             }
 
                             if (strCurrent.Contains("Подсказка"))
                             {
                                 displayName = "ToolTip на " + OneScriptFormsDesigner.ParseBetween(strCurrent, null, ".УстановитьПодсказку");
                                 string strPropertyValue = strCurrent;
-                                PropValueConverter.SetPropValue(rootComponent, displayName, strPropertyValue);
+                                //PropValueConverter.SetPropValue(rootComponent, displayName, strPropertyValue);
                             }
                         }
                     }
