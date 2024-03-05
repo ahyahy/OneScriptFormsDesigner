@@ -5,11 +5,10 @@ using System.Windows.Forms;
 
 namespace osfDesigner
 {
-    public class NumericUpDown : System.Windows.Forms.NumericUpDown
+    public class CheckBox : System.Windows.Forms.CheckBox
     {
 
         private string _DoubleClick_osf;
-        private string _ValueChanged_osf;
         private string _KeyUp_osf;
         private string _KeyDown_osf;
         private string _KeyPress_osf;
@@ -17,6 +16,7 @@ namespace osfDesigner
         private string _MouseLeave_osf;
         private string _Click_osf;
         private string _LocationChanged_osf;
+        private string _CheckChanged_osf;
         private string _Enter_osf;
         private string _MouseHover_osf;
         private string _MouseDown_osf;
@@ -31,10 +31,53 @@ namespace osfDesigner
         private string _ControlAdded_osf;
         private string _ControlRemoved_osf;
 
-        public NumericUpDown()
+        public CheckBox()
         {
             Enabled_osf = base.Enabled;
             Visible_osf = base.Visible;
+        }
+
+        [DisplayName("АвтоПометка")]
+        [Description("Возвращает или задает значение, указывающее, изменяются ли значения Флажок.Помечен (CheckBox.Checked) или Флажок.СостояниеФлажка (CheckBox.CheckState) и внешний вид флажка автоматически при нажатии флажка.")]
+        [Category("Поведение")]
+        [Browsable(true)]
+        [TypeConverter(typeof(MyBooleanConverter))]
+        public new bool AutoCheck
+        {
+            get { return base.AutoCheck; }
+            set { base.AutoCheck = value; }
+        }
+
+        [DisplayName("ВыравниваниеИзображения")]
+        [Description("Возвращает или задает выравнивание изображения на элементе управления Кнопка (Button).")]
+        [Category("Внешний вид")]
+        [Browsable(true)]
+        [Editor(typeof(MyContentAlignmentEditor), typeof(UITypeEditor))]
+        public new ContentAlignment ImageAlign
+        {
+            get { return (ContentAlignment)base.ImageAlign; }
+            set { base.ImageAlign = (System.Drawing.ContentAlignment)value; }
+        }
+
+        [DisplayName("ВыравниваниеПометки")]
+        [Description("Возвращает или задает горизонтальное и вертикальное выравнивание флажка.")]
+        [Category("Внешний вид")]
+        [Browsable(true)]
+        public new ContentAlignment CheckAlign
+        {
+            get { return (ContentAlignment)base.CheckAlign; }
+            set { base.CheckAlign = (System.Drawing.ContentAlignment)value; }
+        }
+
+        [DisplayName("ВыравниваниеТекста")]
+        [Description("Возвращает или задает выравнивание текста на элементе управления Кнопка (Button).")]
+        [Category("Внешний вид")]
+        [Browsable(true)]
+        [Editor(typeof(MyContentAlignmentEditor), typeof(UITypeEditor))]
+        public new ContentAlignment TextAlign
+        {
+            get { return (ContentAlignment)base.TextAlign; }
+            set { base.TextAlign = (System.Drawing.ContentAlignment)value; }
         }
 
         [DisplayName("ДвойноеНажатие")]
@@ -57,24 +100,28 @@ namespace osfDesigner
         [Browsable(false)]
         public new bool Enabled { get; set; }
 
-        [DisplayName("Значение")]
-        [Description("Возвращает или задает значение, назначенное регулятору РегуляторВверхВниз (NumericUpDown) (также известному как элемент управления 'вверх-вниз').")]
+        [DisplayName("Изображение")]
+        [Description("Возвращает или задает изображение, отображаемое на элементе управления Кнопка (Button).")]
         [Category("Внешний вид")]
         [Browsable(true)]
-        public new decimal Value
+        [TypeConverter(typeof(MyImageConverter))]
+        [Editor(typeof(MyImageFileNameEditor), typeof(UITypeEditor))]
+        [DefaultValue(null)]
+        public new Bitmap Image
         {
-            get { return base.Value; }
-            set { base.Value = value; }
+            get { return (Bitmap)base.Image; }
+            set { base.Image = value; }
         }
 
-        [DisplayName("ЗначениеИзменено")]
-        [Description("Возвращает или задает код для выполнения, когда свойство РегуляторВверхВниз.Значение (NumericUpDown.Value) было изменено.")]
-        [Category("Прочее")]
+        [DisplayName("ИндексИзображения")]
+        [Description("Возвращает или задает значение индекса изображения для изображения, отображаемого на кнопке.")]
+        [Category("Внешний вид")]
         [Browsable(true)]
-        public  string ValueChanged_osf
+        [TypeConverter(typeof(MyImageIndexConverter))]
+        public new int ImageIndex
         {
-            get { return _ValueChanged_osf; }
-            set { _ValueChanged_osf = value; }
+            get { return base.ImageIndex; }
+            set { base.ImageIndex = value; }
         }
 
         [DisplayName("ИспользоватьКурсорОжидания")]
@@ -130,26 +177,6 @@ namespace osfDesigner
             set { base.Cursor = value; }
         }
 
-        [DisplayName("Максимум")]
-        [Description("Возвращает или задает максимальное значение для элемента управления РегуляторВверхВниз (NumericUpDown).")]
-        [Category("Данные")]
-        [Browsable(true)]
-        public new decimal Maximum
-        {
-            get { return base.Maximum; }
-            set { base.Maximum = value; }
-        }
-
-        [DisplayName("Минимум")]
-        [Description("Возвращает или задает минимальное значение для элемента управления РегуляторВверхВниз (NumericUpDown).")]
-        [Category("Данные")]
-        [Browsable(true)]
-        public new decimal Minimum
-        {
-            get { return base.Minimum; }
-            set { base.Minimum = value; }
-        }
-
         [DisplayName("МышьНадЭлементом")]
         [Description("Возвращает или задает код для выполнения, когда указатель мыши находится над элементом управления.")]
         [Category("Прочее")]
@@ -202,6 +229,26 @@ namespace osfDesigner
         [Browsable(false)]
         public new bool Visible { get; set; }
 
+        [DisplayName("Оформление")]
+        [Description("Возвращает или задает значение, определяющее внешний вид флажка.")]
+        [Category("Внешний вид")]
+        [Browsable(true)]
+        public new Appearance Appearance
+        {
+            get { return (Appearance)base.Appearance; }
+            set { base.Appearance = (System.Windows.Forms.Appearance)value; }
+        }
+
+        [DisplayName("ПлоскийСтиль")]
+        [Description("Возвращает или задает внешний вид кнопки.")]
+        [Category("Внешний вид")]
+        [Browsable(true)]
+        public new FlatStyle FlatStyle
+        {
+            get { return (FlatStyle)base.FlatStyle; }
+            set { base.FlatStyle = (System.Windows.Forms.FlatStyle)value; }
+        }
+
         [DisplayName("Положение")]
         [Description("Возвращает или задает координаты верхнего левого угла элемента управления относительно верхнего левого угла его контейнера.")]
         [Category("Макет")]
@@ -225,6 +272,27 @@ namespace osfDesigner
         {
             get { return _LocationChanged_osf; }
             set { _LocationChanged_osf = value; }
+        }
+
+        [DisplayName("ПометкаИзменена")]
+        [Description("Возвращает или задает код для выполнения, когда значение свойства Помечен (Checked) изменилось.")]
+        [Category("Прочее")]
+        [Browsable(true)]
+        public  string CheckChanged_osf
+        {
+            get { return _CheckChanged_osf; }
+            set { _CheckChanged_osf = value; }
+        }
+
+        [DisplayName("Помечен")]
+        [Description("Возвращает или задает значение, указывающее, помечен ли флажок.")]
+        [Category("Внешний вид")]
+        [Browsable(true)]
+        [TypeConverter(typeof(MyBooleanConverter))]
+        public new bool Checked
+        {
+            get { return base.Checked; }
+            set { base.Checked = value; }
         }
 
         [DisplayName("ПорядокОбхода")]
@@ -349,24 +417,25 @@ namespace osfDesigner
             set { _SizeChanged_osf = value; }
         }
 
-        [DisplayName("Разрядность")]
-        [Description("Возвращает или задает число десятичных разрядов для отображения в элементе управления РегуляторВверхВниз (NumericUpDown).")]
-        [Category("Данные")]
-        [Browsable(true)]
-        public new int DecimalPlaces
-        {
-            get { return base.DecimalPlaces; }
-            set { base.DecimalPlaces = value; }
-        }
-
-        [DisplayName("СтильГраницы")]
-        [Description("Возвращает или задает стиль границы для объекта РегуляторВверхВниз (NumericUpDown) (также известного как элемент управления 'вверх-вниз').")]
+        [DisplayName("СостояниеФлажка")]
+        [Description("Возвращает или задает состояние флажка.")]
         [Category("Внешний вид")]
         [Browsable(true)]
-        public new BorderStyle BorderStyle
+        public new CheckState CheckState
         {
-            get { return (BorderStyle)base.BorderStyle; }
-            set { base.BorderStyle = (System.Windows.Forms.BorderStyle)value; }
+            get { return (CheckState)base.CheckState; }
+            set { base.CheckState = (System.Windows.Forms.CheckState)value; }
+        }
+
+        [DisplayName("СписокИзображений")]
+        [Description("Возвращает или задает СписокИзображений (ImageList) который содержит объекты Картинка (Bitmap), отображаемые на кнопке.")]
+        [Category("Внешний вид")]
+        [Browsable(true)]
+        [TypeConverter(typeof(MyImageListConverter))]
+        public new System.Windows.Forms.ImageList ImageList
+        {
+            get { return base.ImageList; }
+            set { base.ImageList = value; }
         }
 
         [DisplayName("Стыковка")]
@@ -391,6 +460,16 @@ namespace osfDesigner
             set { base.TabStop = value; }
         }
 
+        [DisplayName("Текст")]
+        [Description("Возвращает или задает текст, связанный с этим элементом управления.")]
+        [Category("Внешний вид")]
+        [Browsable(true)]
+        public new string Text
+        {
+            get { return base.Text; }
+            set { base.Text = value; }
+        }
+
         [DisplayName("ТекстИзменен")]
         [Description("Возвращает или задает код для выполнения, при изменении свойства Текст (Text).")]
         [Category("Прочее")]
@@ -401,25 +480,17 @@ namespace osfDesigner
             set { _TextChanged_osf = value; }
         }
 
-        [DisplayName("ТолькоЧтение")]
-        [Description("Возвращает или задает значение, указывающее, можно ли изменить текст, пользуясь только кнопками 'СТРЕЛКА ВВЕРХ' и 'СТРЕЛКА ВНИЗ'.")]
-        [Category("Поведение")]
+        [DisplayName("ФоновоеИзображение")]
+        [Description("Возвращает или задает фоновое изображение, отображаемое в элементе управления.")]
+        [Category("Внешний вид")]
         [Browsable(true)]
-        [TypeConverter(typeof(MyBooleanConverter))]
-        public new bool ReadOnly
+        [TypeConverter(typeof(MyImageConverter))]
+        [Editor(typeof(MyImageFileNameEditor), typeof(UITypeEditor))]
+        [DefaultValue(null)]
+        public new Bitmap BackgroundImage
         {
-            get { return base.ReadOnly; }
-            set { base.ReadOnly = value; }
-        }
-
-        [DisplayName("Увеличение")]
-        [Description("Возвращает или задает величину увеличения или уменьшения для элемента управления РегуляторВверхВниз (NumericUpDown) при нажатии кнопки ВВЕРХ или ВНИЗ.")]
-        [Category("Данные")]
-        [Browsable(true)]
-        public new decimal Increment
-        {
-            get { return base.Increment; }
-            set { base.Increment = value; }
+            get { return (Bitmap)base.BackgroundImage; }
+            set { base.BackgroundImage = value; }
         }
 
         [DisplayName("ЦветФона")]
@@ -477,9 +548,6 @@ namespace osfDesigner
         }
 
         [Browsable(false)]
-        public new dynamic Accelerations { get; set; }
-        
-        [Browsable(false)]
         public new dynamic AccessibilityObject { get; set; }
         
         [Browsable(false)]
@@ -498,25 +566,13 @@ namespace osfDesigner
         public new dynamic AllowDrop { get; set; }
         
         [Browsable(false)]
-        public new dynamic AutoScaleDimensions { get; set; }
-        
-        [Browsable(false)]
-        public new dynamic AutoScaleMode { get; set; }
-        
-        [Browsable(false)]
-        public new dynamic AutoScrollMinSize { get; set; }
+        public new dynamic AutoEllipsis { get; set; }
         
         [Browsable(false)]
         public new dynamic AutoScrollOffset { get; set; }
         
         [Browsable(false)]
-        public new dynamic AutoScrollPosition { get; set; }
-        
-        [Browsable(false)]
         public new dynamic AutoSize { get; set; }
-        
-        [Browsable(false)]
-        public new dynamic AutoValidate { get; set; }
         
         [Browsable(false)]
         public new dynamic BackgroundImageLayout { get; set; }
@@ -546,9 +602,6 @@ namespace osfDesigner
         public new dynamic Created { get; set; }
         
         [Browsable(false)]
-        public new dynamic CurrentAutoScaleDimensions { get; set; }
-        
-        [Browsable(false)]
         public new dynamic DataBindings { get; set; }
         
         [Browsable(false)]
@@ -561,22 +614,19 @@ namespace osfDesigner
         public new dynamic Disposing { get; set; }
         
         [Browsable(false)]
+        public new dynamic FlatAppearance { get; set; }
+        
+        [Browsable(false)]
         public new dynamic Handle { get; set; }
         
         [Browsable(false)]
         public new dynamic HasChildren { get; set; }
         
         [Browsable(false)]
-        public new dynamic Hexadecimal { get; set; }
-        
-        [Browsable(false)]
-        public new dynamic HorizontalScroll { get; set; }
+        public new dynamic ImageKey { get; set; }
         
         [Browsable(false)]
         public new dynamic ImeMode { get; set; }
-        
-        [Browsable(false)]
-        public new dynamic InterceptArrowKeys { get; set; }
         
         [Browsable(false)]
         public new dynamic InvokeRequired { get; set; }
@@ -609,12 +659,6 @@ namespace osfDesigner
         public new dynamic Padding { get; set; }
         
         [Browsable(false)]
-        public new dynamic ParentForm { get; set; }
-        
-        [Browsable(false)]
-        public new dynamic PreferredHeight { get; set; }
-        
-        [Browsable(false)]
         public new dynamic PreferredSize { get; set; }
         
         [Browsable(false)]
@@ -633,16 +677,19 @@ namespace osfDesigner
         public new dynamic Tag { get; set; }
         
         [Browsable(false)]
-        public new dynamic TextAlign { get; set; }
+        public new dynamic TextImageRelation { get; set; }
         
         [Browsable(false)]
-        public new dynamic ThousandsSeparator { get; set; }
+        public new dynamic ThreeState { get; set; }
         
         [Browsable(false)]
-        public new dynamic UpDownAlign { get; set; }
+        public new dynamic UseCompatibleTextRendering { get; set; }
         
         [Browsable(false)]
-        public new dynamic VerticalScroll { get; set; }
+        public new dynamic UseMnemonic { get; set; }
+        
+        [Browsable(false)]
+        public new dynamic UseVisualStyleBackColor { get; set; }
         
         [Browsable(false)]
         public new dynamic WindowTarget { get; set; }
