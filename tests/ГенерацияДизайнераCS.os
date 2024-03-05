@@ -6722,7 +6722,7 @@
 	|            result = null;
 	|
 	|            // Добавим вкладку и создадим на ней загружаемую форму.
-	|            DesignSurfaceExt2 var1 = IpDesignerCore.AddDesignSurface<Form>(670, 600, AlignmentModeEnum.SnapLines, new Size(1, 1), CompNames[0]);
+	|            DesignSurfaceExt2 var1 = IpDesignerCore.AddDesignSurface<Form>(640, 480, AlignmentModeEnum.SnapLines, new Size(1, 1), CompNames[0]);
 	|            Component rootComponent = (Component)var1.ComponentContainer.Components[0];
 	|
 	|            dictComponents[CompNames[0]] = rootComponent;
@@ -10716,12 +10716,25 @@
 	|                    }
 	|                    if (comp.GetType() == typeof(Form))
 	|                    {
-	|                        strForm = ""// блок Форма"" + Environment.NewLine +
-	|                                Indent1 + comp.Site.Name + "" = "" + NameObjectOneScriptForms + @"".Форма();"" + Environment.NewLine +
-	|                                Indent1 + comp.Site.Name + "".Отображать = Истина;"" + Environment.NewLine +
-	|                                Indent1 + comp.Site.Name + "".Показать();"" + Environment.NewLine +
-	|                                Indent1 + comp.Site.Name + "".Активизировать();"" + Environment.NewLine +
-	|                                ""    // блок конецФорма"";
+	|                        Form Form1 = (Form)comp;
+	|                        if (Form1.ScriptStyle == ScriptStyle.СтильПриложения)
+	|                        {
+	|                            strForm = ""// блок Форма"" + Environment.NewLine +
+	|                                    Indent1 + comp.Site.Name + "" = "" + @""_Форма;"" + Environment.NewLine +
+	|                                    Indent1 + comp.Site.Name + "".Отображать = Истина;"" + Environment.NewLine +
+	|                                    Indent1 + comp.Site.Name + "".Показать();"" + Environment.NewLine +
+	|                                    Indent1 + comp.Site.Name + "".Активизировать();"" + Environment.NewLine +
+	|                                    ""    // блок конецФорма"";
+	|                        }
+	|                        else
+	|                        {
+	|                            strForm = ""// блок Форма"" + Environment.NewLine +
+	|                                    Indent1 + comp.Site.Name + "" = "" + NameObjectOneScriptForms + @"".Форма();"" + Environment.NewLine +
+	|                                    Indent1 + comp.Site.Name + "".Отображать = Истина;"" + Environment.NewLine +
+	|                                    Indent1 + comp.Site.Name + "".Показать();"" + Environment.NewLine +
+	|                                    Indent1 + comp.Site.Name + "".Активизировать();"" + Environment.NewLine +
+	|                                    ""    // блок конецФорма"";
+	|                        }	
 	|                    }
 	|                    else
 	|                    {
@@ -15034,8 +15047,8 @@
 	|            // Создадим Форму.
 	|            pDesignerMainForm f = new pDesignerMainForm();
 	|            pDesignerMainForm1 = f;
-	|            f.Size = new Size(1200, 800);
-	|            (f.pDesignerCore as IpDesigner).AddDesignSurface<Form>(670, 600, AlignmentModeEnum.SnapLines, new Size(1, 1));
+	|            f.Size = new Size(1200, 760);
+	|            (f.pDesignerCore as IpDesigner).AddDesignSurface<Form>(640, 480, AlignmentModeEnum.SnapLines, new Size(1, 1));
 	|
 	|            // Запускаем дизайнер.
 	|            f.ShowDialog();
@@ -15058,8 +15071,8 @@
 	|            // Создадим Форму.
 	|            pDesignerMainFormPFL f = new pDesignerMainFormPFL();
 	|            pDesignerMainForm1 = f;
-	|            f.Size = new Size(1200, 800);
-	|            (f.pDesignerCore as IpDesigner).AddDesignSurface<Form>(670, 600, AlignmentModeEnum.SnapLines, new Size(1, 1));
+	|            f.Size = new Size(1200, 760);
+	|            (f.pDesignerCore as IpDesigner).AddDesignSurface<Form>(640, 480, AlignmentModeEnum.SnapLines, new Size(1, 1));
 	|
 	|            // Запускаем дизайнер.
 	|            f.ShowDialog();
@@ -17671,13 +17684,38 @@
 	|
 	|            string strFile = File.ReadAllText(OpenFileDialog1.FileName);
 	|            string base64Text = OneScriptFormsDesigner.ParseBetween(strFile, ""osdText = \u0022"", ""\u0022;"");
-	|            var base64EncodedBytes = System.Convert.FromBase64String(base64Text);
-	|            string osdText = System.Text.Encoding.UTF8.GetString(base64EncodedBytes);
-	|	
-	|            // Возможно открываемый сценарий был сохранен из дизайнера не в том каталоге где сейчас находится.
-	|            // В любом случае меняем путь записанный в свойстве Путь сценария на текущий путь открываемого сценария.
-	|            string _path = OneScriptFormsDesigner.ParseBetween(osdText, "".Путь = \u0022"", ""\u0022;"");
-	|            osdText = osdText.Replace(_path, OpenFileDialog1.FileName);	
+	|            if (base64Text == null)
+	|            {
+	|                MessageBox.Show(
+	|                    ""Не найдена закомментированная переменная osdText в процедуре инициализации сценария."",
+	|                    """",
+	|                    MessageBoxButtons.OK,
+	|                    MessageBoxIcon.Exclamation,
+	|                    MessageBoxDefaultButton.Button1
+	|                    );
+	|                return;
+	|            }
+	|            string osdText;
+	|            try
+	|            {
+	|                var base64EncodedBytes = System.Convert.FromBase64String(base64Text);
+	|                osdText = System.Text.Encoding.UTF8.GetString(base64EncodedBytes);
+	|                // Возможно открываемый сценарий был сохранен из дизайнера не в том каталоге где сейчас находится.
+	|                // В любом случае меняем путь записанный в свойстве Путь сценария на текущий путь открываемого сценария.
+	|                string _path = OneScriptFormsDesigner.ParseBetween(osdText, "".Путь = \u0022"", ""\u0022;"");
+	|                osdText = osdText.Replace(_path, OpenFileDialog1.FileName);
+	|            }
+	|            catch
+	|            {
+	|                MessageBox.Show(
+	|                    ""Не удалось восстановить форму из переменной osdText в процедуре инициализации сценария. Возможно строка повреждена."",
+	|                    """",
+	|                    MessageBoxButtons.OK,
+	|                    MessageBoxIcon.Exclamation,
+	|                    MessageBoxDefaultButton.Button1
+	|                    );
+	|                return;
+	|            }
 	|
 	|            LoadForm_Click(OpenFileDialog1.FileName, true, osdText);
 	|        }
@@ -18066,7 +18104,11 @@
 	|
 	|            if (path != null)
 	|            {
-	|                oldScriptText = File.ReadAllText(path);
+	|                try
+	|                {
+	|                    oldScriptText = File.ReadAllText(path);
+	|                }
+	|                catch { }
 	|            }
 	|
 	|            string strScript = GenerateScriptCode(oldScriptText, savedForm.Path);
@@ -18185,13 +18227,47 @@
 	|                    @"""" + savedForm.NameObjectOneScriptForms + @"".ЗапуститьОбработкуСобытий();"" + Environment.NewLine;
 	|                }
 	|
+	|                // #Использовать "".\"" 
+	|                string directiva1 = savedForm.Path.Substring(0, savedForm.Path.LastIndexOf('\\') + 1);
+	|                strScript = strScript.Replace(""#Использовать \u0022.\\\u0022"", ""#Использовать \u0022"" + directiva1 + ""\u0022"");
+	|
 	|                string strTempFile = String.Format(Path.GetTempPath() + ""oscript_{0}_{1}.os"", DateTime.Now.ToString(""yyyyMMddHHmmssfff""), Guid.NewGuid().ToString().Replace(""-"", """"));
 	|                File.WriteAllText(strTempFile, strScript, Encoding.UTF8);
 	|
-	|                System.Diagnostics.ProcessStartInfo psi = new System.Diagnostics.ProcessStartInfo();
-	|                psi.Arguments = strTempFile;
-	|                psi.FileName = (string)Settings.Default[""osPath""];
-	|                System.Diagnostics.Process.Start(psi);
+	|                string strTempFile2 = String.Format(Path.GetTempPath() + ""oscript_{0}_{1}.os"", DateTime.Now.ToString(""yyyyMMddHHmmssfff""), Guid.NewGuid().ToString().Replace(""-"", """"));
+	|                string strScript2 = @""
+	|Проц = СоздатьПроцесс(""""""""""""C:\Program Files\OneScript\bin\oscript.exe"""""""" """""""""" + strTempFile + @"""""""""""""",,Истина,Истина);"" + @""
+	|Проц.Запустить();
+	|Проц.ОжидатьЗавершения();
+	|ПотокВывода = Проц.ПотокВывода;
+	|СтрПотокВывода = """""""";
+	|Если ПотокВывода.ЕстьДанные Тогда
+	|    Пока ПотокВывода.ЕстьДанные Цикл
+	|        СтрПотокВывода = СтрПотокВывода + ПотокВывода.ПрочитатьСтроку();
+	|    КонецЦикла;
+	|Иначе
+	|КонецЕсли;
+	|Если СтрНайти(СтрПотокВывода, """"{"""") > 0 Тогда
+	|    Сообщить(СтрПотокВывода);
+	|КонецЕсли;
+	|"";
+	|                File.WriteAllText(strTempFile2, strScript2, Encoding.UTF8);
+	|                string output;
+	|                using (System.Diagnostics.Process process = new System.Diagnostics.Process())
+	|                {
+	|                    process.StartInfo.Arguments = strTempFile2;
+	|                    process.StartInfo.FileName = (string)Settings.Default[""osPath""];
+	|                    process.StartInfo.UseShellExecute = false;
+	|                    process.StartInfo.RedirectStandardOutput = true;
+	|                    process.Start();
+	|
+	|                    StreamReader reader = process.StandardOutput;
+	|                    output = reader.ReadToEnd();
+	|                }
+	|                if (output.Contains(""{""))
+	|                {
+	|                    MessageBox.Show(output);
+	|                }
 	|            }
 	|        }
 	|
@@ -18204,7 +18280,6 @@
 	|                //Записываем значения в Settings.
 	|                Settings.Default[""osPath""] = settingsForm.OSPath;
 	|                Settings.Default[""dllPath""] = settingsForm.DLLPath;
-	|                //Settings.Default[""styleScript""] = settingsForm.StyleScript;
 	|                Settings.Default[""visualSyleDesigner""] = settingsForm.SyleDesigner;
 	|                Settings.Default[""visualSyleForms""] = settingsForm.SyleForms;
 	|                Settings.Default.Save();
@@ -18383,11 +18458,11 @@
 	|            DesignSurfaceExt2 var1 = null;
 	|            if (choosingName)
 	|            {
-	|                var1 = IpDesignerCore.AddDesignSurface<Form>(670, 600, AlignmentModeEnum.SnapLines, new Size(1, 1), CompNames[0]);
+	|                var1 = IpDesignerCore.AddDesignSurface<Form>(640, 480, AlignmentModeEnum.SnapLines, new Size(1, 1), CompNames[0]);
 	|            }
 	|            else
 	|            {
-	|                var1 = IpDesignerCore.AddDesignSurface<Form>(670, 600, AlignmentModeEnum.SnapLines, new Size(1, 1), """");
+	|                var1 = IpDesignerCore.AddDesignSurface<Form>(640, 480, AlignmentModeEnum.SnapLines, new Size(1, 1), """");
 	|            }
 	|            Component rootComponent = (Component)var1.ComponentContainer.Components[0];
 	|            ((Form)rootComponent).Path = fileName;	
