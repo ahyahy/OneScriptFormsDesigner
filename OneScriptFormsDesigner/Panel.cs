@@ -5,7 +5,8 @@ using System.Windows.Forms;
 
 namespace osfDesigner
 {
-    public class RadioButton : System.Windows.Forms.RadioButton
+    [Docking(DockingBehavior.Never)]
+    public class Panel : System.Windows.Forms.Panel
     {
 
         private string _DoubleClick_osf;
@@ -16,7 +17,6 @@ namespace osfDesigner
         private string _MouseLeave_osf;
         private string _Click_osf;
         private string _LocationChanged_osf;
-        private string _CheckChanged_osf;
         private string _Enter_osf;
         private string _MouseHover_osf;
         private string _MouseDown_osf;
@@ -31,54 +31,21 @@ namespace osfDesigner
         private string _ControlAdded_osf;
         private string _ControlRemoved_osf;
 
-        public RadioButton()
+        public Panel()
         {
-            TabStop = true; // Для корректного тестирования свойства ТабФокус (TabStop).
             Enabled_osf = base.Enabled;
             Visible_osf = base.Visible;
         }
 
-        [DisplayName("АвтоПометка")]
-        [Description("Возвращает или задает значение, указывающее, изменяется ли значение Переключатель.Помечен (RadioButton.Checked) и внешний вид переключателя автоматически при нажатии переключателя.")]
-        [Category("Поведение")]
+        [DisplayName("АвтоПрокрутка")]
+        [Description("Возвращает или задает значение, указывающее, позволит ли контейнер пользователю прокручивать любые элементы управления, размещенные за пределами его видимых границ.")]
+        [Category("Макет")]
         [Browsable(true)]
         [TypeConverter(typeof(MyBooleanConverter))]
-        public new bool AutoCheck
+        public new bool AutoScroll
         {
-            get { return base.AutoCheck; }
-            set { base.AutoCheck = value; }
-        }
-
-        [DisplayName("ВыравниваниеИзображения")]
-        [Description("Возвращает или задает выравнивание изображения на элементе управления Кнопка (Button).")]
-        [Category("Внешний вид")]
-        [Browsable(true)]
-        [Editor(typeof(MyContentAlignmentEditor), typeof(UITypeEditor))]
-        public new ContentAlignment ImageAlign
-        {
-            get { return (ContentAlignment)base.ImageAlign; }
-            set { base.ImageAlign = (System.Drawing.ContentAlignment)value; }
-        }
-
-        [DisplayName("ВыравниваниеПометки")]
-        [Description("Возвращает или задает расположение флажка в переключателе.")]
-        [Category("Внешний вид")]
-        [Browsable(true)]
-        public new ContentAlignment CheckAlign
-        {
-            get { return (ContentAlignment)base.CheckAlign; }
-            set { base.CheckAlign = (System.Drawing.ContentAlignment)value; }
-        }
-
-        [DisplayName("ВыравниваниеТекста")]
-        [Description("Возвращает или задает выравнивание текста на элементе управления Кнопка (Button).")]
-        [Category("Внешний вид")]
-        [Browsable(true)]
-        [Editor(typeof(MyContentAlignmentEditor), typeof(UITypeEditor))]
-        public new ContentAlignment TextAlign
-        {
-            get { return (ContentAlignment)base.TextAlign; }
-            set { base.TextAlign = (System.Drawing.ContentAlignment)value; }
+            get { return base.AutoScroll; }
+            set { base.AutoScroll = value; }
         }
 
         [DisplayName("ДвойноеНажатие")]
@@ -100,30 +67,6 @@ namespace osfDesigner
 				
         [Browsable(false)]
         public new bool Enabled { get; set; }
-
-        [DisplayName("Изображение")]
-        [Description("Возвращает или задает изображение, отображаемое на элементе управления Кнопка (Button).")]
-        [Category("Внешний вид")]
-        [Browsable(true)]
-        [TypeConverter(typeof(MyImageConverter))]
-        [Editor(typeof(MyImageFileNameEditor), typeof(UITypeEditor))]
-        [DefaultValue(null)]
-        public new Bitmap Image
-        {
-            get { return (Bitmap)base.Image; }
-            set { base.Image = value; }
-        }
-
-        [DisplayName("ИндексИзображения")]
-        [Description("Возвращает или задает значение индекса изображения для изображения, отображаемого на кнопке.")]
-        [Category("Внешний вид")]
-        [Browsable(true)]
-        [TypeConverter(typeof(MyImageIndexConverter))]
-        public new int ImageIndex
-        {
-            get { return base.ImageIndex; }
-            set { base.ImageIndex = value; }
-        }
 
         [DisplayName("ИспользоватьКурсорОжидания")]
         [Description("Возвращает или задает значение, указывающее, следует ли использовать курсор ожидания для текущего элемента управления и всех дочерних элементов управления.")]
@@ -230,26 +173,6 @@ namespace osfDesigner
         [Browsable(false)]
         public new bool Visible { get; set; }
 
-        [DisplayName("Оформление")]
-        [Description("Возвращает или задает значение, определяющее внешний вид переключателя.")]
-        [Category("Внешний вид")]
-        [Browsable(true)]
-        public new Appearance Appearance
-        {
-            get { return (Appearance)base.Appearance; }
-            set { base.Appearance = (System.Windows.Forms.Appearance)value; }
-        }
-
-        [DisplayName("ПлоскийСтиль")]
-        [Description("Возвращает или задает внешний вид кнопки.")]
-        [Category("Внешний вид")]
-        [Browsable(true)]
-        public new FlatStyle FlatStyle
-        {
-            get { return (FlatStyle)base.FlatStyle; }
-            set { base.FlatStyle = (System.Windows.Forms.FlatStyle)value; }
-        }
-
         [DisplayName("Положение")]
         [Description("Возвращает или задает координаты верхнего левого угла элемента управления относительно верхнего левого угла его контейнера.")]
         [Category("Макет")]
@@ -273,27 +196,6 @@ namespace osfDesigner
         {
             get { return _LocationChanged_osf; }
             set { _LocationChanged_osf = value; }
-        }
-
-        [DisplayName("ПометкаИзменена")]
-        [Description("Возвращает или задает код для выполнения при изменении значения свойства Помечен (Checked).")]
-        [Category("Прочее")]
-        [Browsable(true)]
-        public  string CheckChanged_osf
-        {
-            get { return _CheckChanged_osf; }
-            set { _CheckChanged_osf = value; }
-        }
-
-        [DisplayName("Помечен")]
-        [Description("Возвращает или задает значение, указывающее, выбран ли данный элемент управления.")]
-        [Category("Внешний вид")]
-        [Browsable(true)]
-        [TypeConverter(typeof(MyBooleanConverter))]
-        public new bool Checked
-        {
-            get { return base.Checked; }
-            set { base.Checked = value; }
         }
 
         [DisplayName("ПорядокОбхода")]
@@ -418,15 +320,26 @@ namespace osfDesigner
             set { _SizeChanged_osf = value; }
         }
 
-        [DisplayName("СписокИзображений")]
-        [Description("Возвращает или задает СписокИзображений (ImageList) который содержит объекты Картинка (Bitmap), отображаемые на кнопке.")]
+        [DisplayName("РазмерПоляАвтоПрокрутки")]
+        [Description("Возвращает или задает размер поля автоматической прокрутки.")]
+        [Category("Макет")]
+        [Browsable(true)]
+        [TypeConverter(typeof(MySizeConverter))]
+        [Editor(typeof(MySizeEditor), typeof(UITypeEditor))]
+        public new Size AutoScrollMargin
+        {
+            get { return base.AutoScrollMargin; }
+            set { base.AutoScrollMargin = value; }
+        }
+
+        [DisplayName("СтильГраницы")]
+        [Description("Указывает стиль границы элемента управления.")]
         [Category("Внешний вид")]
         [Browsable(true)]
-        [TypeConverter(typeof(MyImageListConverter))]
-        public new System.Windows.Forms.ImageList ImageList
+        public new BorderStyle BorderStyle
         {
-            get { return base.ImageList; }
-            set { base.ImageList = value; }
+            get { return (BorderStyle)base.BorderStyle; }
+            set { base.BorderStyle = (System.Windows.Forms.BorderStyle)value; }
         }
 
         [DisplayName("Стыковка")]
@@ -449,16 +362,6 @@ namespace osfDesigner
         {
             get { return base.TabStop; }
             set { base.TabStop = value; }
-        }
-
-        [DisplayName("Текст")]
-        [Description("Возвращает или задает текст, связанный с этим элементом управления.")]
-        [Category("Внешний вид")]
-        [Browsable(true)]
-        public new string Text
-        {
-            get { return base.Text; }
-            set { base.Text = value; }
         }
 
         [DisplayName("ТекстИзменен")]
@@ -539,148 +442,76 @@ namespace osfDesigner
         }
 
         [Browsable(false)]
-        public new dynamic AccessibilityObject { get; set; }
-        
+        [ReadOnly(true)]
+        public new string AccessibleDescription { get; set; }
+
         [Browsable(false)]
-        public new dynamic AccessibleDefaultActionDescription { get; set; }
-        
+        [ReadOnly(true)]
+        public new string AccessibleName { get; set; }
+
         [Browsable(false)]
-        public new dynamic AccessibleDescription { get; set; }
-        
+        [ReadOnly(true)]
+        public new System.Windows.Forms.AccessibleRole AccessibleRole { get; set; }
+
         [Browsable(false)]
-        public new dynamic AccessibleName { get; set; }
-        
+        [ReadOnly(true)]
+        public new bool AllowDrop { get; set; }
+
         [Browsable(false)]
-        public new dynamic AccessibleRole { get; set; }
-        
+        [ReadOnly(true)]
+        public new Size AutoScrollMinSize { get; set; }
+
         [Browsable(false)]
-        public new dynamic AllowDrop { get; set; }
-        
+        [ReadOnly(true)]
+        public new bool AutoSize { get; set; }
+
         [Browsable(false)]
-        public new dynamic AutoEllipsis { get; set; }
-        
+        [ReadOnly(true)]
+        public new System.Windows.Forms.AutoSizeMode AutoSizeMode { get; set; }
+
         [Browsable(false)]
-        public new dynamic AutoScrollOffset { get; set; }
-        
+        [ReadOnly(true)]
+        public new System.Windows.Forms.ImageLayout BackgroundImageLayout { get; set; }
+
         [Browsable(false)]
-        public new dynamic AutoSize { get; set; }
-        
+        [ReadOnly(true)]
+        public new bool CausesValidation { get; set; }
+
         [Browsable(false)]
-        public new dynamic BackgroundImageLayout { get; set; }
-        
+        [ReadOnly(true)]
+        public new System.Windows.Forms.ContextMenuStrip ContextMenuStrip { get; set; }
+		
         [Browsable(false)]
-        public new dynamic BindingContext { get; set; }
-        
+        [ReadOnly(true)]
+        public new System.Windows.Forms.ControlBindingsCollection DataBindings { get; set; }
+
         [Browsable(false)]
-        public new dynamic CanSelect { get; set; }
-        
+        [ReadOnly(true)]
+        public new System.Windows.Forms.ImeMode ImeMode { get; set; }
+
         [Browsable(false)]
-        public new dynamic CausesValidation { get; set; }
-        
+        [ReadOnly(true)]
+        public new System.Windows.Forms.Padding Margin { get; set; }
+
         [Browsable(false)]
-        public new dynamic CompanyName { get; set; }
-        
+        [ReadOnly(true)]
+        public new Size MaximumSize { get; set; }
+
         [Browsable(false)]
-        public new dynamic Container { get; set; }
-        
+        [ReadOnly(true)]
+        public new Size MinimumSize { get; set; }
+
         [Browsable(false)]
-        public new dynamic ContainsFocus { get; set; }
-        
+        [ReadOnly(true)]
+        public new System.Windows.Forms.Padding Padding { get; set; }
+
         [Browsable(false)]
-        public new dynamic ContextMenuStrip { get; set; }
-        
+        [ReadOnly(true)]
+        public new System.Windows.Forms.RightToLeft RightToLeft { get; set; }
+
         [Browsable(false)]
-        public new dynamic Created { get; set; }
-        
-        [Browsable(false)]
-        public new dynamic DataBindings { get; set; }
-        
-        [Browsable(false)]
-        public dynamic DeviceDpi { get; set; }
-        
-        [Browsable(false)]
-        public new dynamic DisplayRectangle { get; set; }
-        
-        [Browsable(false)]
-        public new dynamic Disposing { get; set; }
-        
-        [Browsable(false)]
-        public new dynamic FlatAppearance { get; set; }
-        
-        [Browsable(false)]
-        public new dynamic Handle { get; set; }
-        
-        [Browsable(false)]
-        public new dynamic HasChildren { get; set; }
-        
-        [Browsable(false)]
-        public new dynamic ImageKey { get; set; }
-        
-        [Browsable(false)]
-        public new dynamic ImeMode { get; set; }
-        
-        [Browsable(false)]
-        public new dynamic InvokeRequired { get; set; }
-        
-        [Browsable(false)]
-        public new dynamic IsAccessible { get; set; }
-        
-        [Browsable(false)]
-        public new dynamic IsDisposed { get; set; }
-        
-        [Browsable(false)]
-        public new dynamic IsHandleCreated { get; set; }
-        
-        [Browsable(false)]
-        public new dynamic IsMirrored { get; set; }
-        
-        [Browsable(false)]
-        public new dynamic LayoutEngine { get; set; }
-        
-        [Browsable(false)]
-        public new dynamic Margin { get; set; }
-        
-        [Browsable(false)]
-        public new dynamic MaximumSize { get; set; }
-        
-        [Browsable(false)]
-        public new dynamic MinimumSize { get; set; }
-        
-        [Browsable(false)]
-        public new dynamic Padding { get; set; }
-        
-        [Browsable(false)]
-        public new dynamic PreferredSize { get; set; }
-        
-        [Browsable(false)]
-        public new dynamic RecreatingHandle { get; set; }
-        
-        [Browsable(false)]
-        public new dynamic Region { get; set; }
-        
-        [Browsable(false)]
-        public new dynamic RightToLeft { get; set; }
-        
-        [Browsable(false)]
-        public new dynamic Site { get; set; }
-        
-        [Browsable(false)]
-        public new dynamic Tag { get; set; }
-        
-        [Browsable(false)]
-        public new dynamic TextImageRelation { get; set; }
-        
-        [Browsable(false)]
-        public new dynamic UseCompatibleTextRendering { get; set; }
-        
-        [Browsable(false)]
-        public new dynamic UseMnemonic { get; set; }
-        
-        [Browsable(false)]
-        public new dynamic UseVisualStyleBackColor { get; set; }
-        
-        [Browsable(false)]
-        public new dynamic WindowTarget { get; set; }
+        [ReadOnly(true)]
+        public new object Tag { get; set; }
 
         private System.Collections.Hashtable toolTip = new System.Collections.Hashtable();
         [Browsable(false)]

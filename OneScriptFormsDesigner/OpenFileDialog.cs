@@ -2,10 +2,10 @@
 
 namespace osfDesigner
 {
-    public class SaveFileDialog : System.Windows.Forms.Timer
+    public class OpenFileDialog : System.Windows.Forms.Timer
     {
 
-        public SaveFileDialog()
+        public OpenFileDialog()
         {
         }
 
@@ -47,19 +47,19 @@ namespace osfDesigner
         [Browsable(true)]
         public  string InitialDirectory { get; set; }
 
-        [DisplayName("ПодтверждениеПерезаписи")]
-        [Description("Возвращает или задает значение, указывающее, отображается ли в диалоговом окне ДиалогСохраненияФайла (SaveFileDialog) предупреждение, если пользователь указывает имя файла, которое уже существует.")]
+        [DisplayName("ПоказатьТолькоДляЧтения")]
+        [Description("Возвращает или задает значение, указывающее, имеется ли в диалоговом окне флажок 'доступно только для чтения'.")]
         [Category("Поведение")]
         [Browsable(true)]
         [TypeConverter(typeof(MyBooleanConverter))]
-        public  bool OverwritePrompt { get; set; }
+        public  bool ShowReadOnly { get; set; }
 
-        [DisplayName("ПодтверждениеСоздания")]
-        [Description("Возвращает или задает значение, указывающее, запрашивает ли диалоговое окно разрешение пользователя на создание файла, если пользователь указывает несуществующий файл.")]
+        [DisplayName("ПомеченТолькоЧтение")]
+        [Description("Возвращает или задает значение, указывающее, установлен ли флажок доступности 'только для чтения'.")]
         [Category("Поведение")]
         [Browsable(true)]
         [TypeConverter(typeof(MyBooleanConverter))]
-        public  bool CreatePrompt { get; set; }
+        public  bool ReadOnlyChecked { get; set; }
 
         [DisplayName("ПроверятьСуществованиеПути")]
         [Description("Возвращает или задает значение, указывающее, будет ли диалоговое окно отображать предупреждение, если пользователь указывает путь, который не существует.")]
@@ -69,7 +69,7 @@ namespace osfDesigner
         public  bool CheckPathExists { get; set; }
 
         [DisplayName("ПроверятьСуществованиеФайла")]
-        [Description("Возвращает или задает значение, указывающее, будет ли диалоговое окно отображать предупреждение, если пользователь указывает имя не существующего файла.")]
+        [Description("Возвращает или задает значение, указывающее, отображает ли диалоговое окно предупреждение, если пользователь указывает несуществующий путь.")]
         [Category("Поведение")]
         [Browsable(true)]
         [TypeConverter(typeof(MyBooleanConverter))]
