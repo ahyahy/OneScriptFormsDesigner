@@ -7520,7 +7520,10 @@
 	|                                string nameToolTip = (string)de.Key;
 	|                                string compValue = (string)de.Value;
 	|                                compValue = compValue.Replace(Environment.NewLine, ""\u0022 + "" + NameObjectOneScriptForms + @"".Окружение().НоваяСтрока + "" + ""\u0022"");
-	|                                AddToScript(nameToolTip + "".УстановитьПодсказку("" + compName + "", \u0022"" + compValue + ""\u0022);"");
+	|                                if (compValue.Trim() != """")
+	|                                {
+	|                                    AddToScript(nameToolTip + "".УстановитьПодсказку("" + compName + "", \u0022"" + compValue + ""\u0022);"");
+	|                                }
 	|                            }
 	|                        }
 	|                    }
@@ -10862,7 +10865,10 @@
 	|                                string nameToolTip = (string)de.Key;
 	|                                string compValue = (string)de.Value;
 	|                                compValue = compValue.Replace(Environment.NewLine, ""\u0022 + "" + NameObjectOneScriptForms + @"".Окружение().НоваяСтрока + "" + ""\u0022"");
-	|                                AddToScript(nameToolTip + "".УстановитьПодсказку("" + compName + "", \u0022"" + compValue + ""\u0022);"");
+	|                                if (compValue.Trim() != """")
+	|                                {
+	|                                    AddToScript(nameToolTip + "".УстановитьПодсказку("" + compName + "", \u0022"" + compValue + ""\u0022);"");
+	|                                }
 	|                            }
 	|                        }
 	|                    }
@@ -29005,14 +29011,21 @@
 	|            }
 	|        }	
 	|
-	|        [ContextMethod(""ДизайнерОткрыт"", ""DesignerOpen"")]
-	|        public bool DesignerOpen()
+	|        [ContextProperty(""ДизайнерОткрыт"", ""DesignerOpen"")]
+	|        public bool DesignerOpen
 	|        {
-	|            if (osfDesigner.Program.pDesignerMainForm1.GetmainForm().Visible)
+	|            get
 	|            {
-	|                return true;
+	|                try
+	|                {
+	|                    if (osfDesigner.Program.pDesignerMainForm1.GetmainForm().Visible)
+	|                    {
+	|                        return true;
+	|                    }
+	|                }
+	|                catch { }
+	|                return false;
 	|            }
-	|            return false;
 	|        }	
 	|	
 	|        public static void PassProperties(dynamic p1, dynamic p2)
