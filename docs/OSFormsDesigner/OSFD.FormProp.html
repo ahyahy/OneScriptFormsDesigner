@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<HTML><HEAD><TITLE>Сохранение в osd</TITLE>
+<HTML><HEAD><TITLE>Свойства формы</TITLE>
 <META content="text/html; charset=Windows-1252" http-equiv="Content-Type">
 <LINK rel="stylesheet" type="text/css" href="mainstyle.css"></HEAD>
 <BODY id=bodyID class=dtBODY>
@@ -85,6 +85,8 @@
 Ф = Новый ФормыДляОдноСкрипта();
 
 // В расположенном рядом с текущим исполняющимся сценарием каталоге "Классы" должен находиться сценарий <B>ГлавнаяФорма.os</B>.
+// Директива Использовать подключит все сценарии, находящиеся в каталоге "Классы".
+// Дизайнер умеет работать с этой директивой только в таком виде - <B>#Использовать ".\"</B>
 ГлавнаяФорма1 = Ф.СоздатьФорму(Новый ГлавнаяФорма());
 //...
 </PRE>

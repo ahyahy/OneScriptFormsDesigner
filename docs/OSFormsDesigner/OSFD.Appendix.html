@@ -1,0 +1,41 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD><TITLE>Дополнения</TITLE>
+<META content="text/html; charset=Windows-1252" http-equiv="Content-Type">
+<LINK rel="stylesheet" type="text/css" href="mainstyle.css"></HEAD>
+<BODY id=bodyID class=dtBODY>
+<DIV id=nsbanner>
+<DIV id=bannerrow1>
+<TABLE class=bannerparthead cellSpacing=0>
+  <TBODY>
+  <TR id=hdr>
+    <TD class=runninghead></TD>
+    <TD class=product></TD></TR></TBODY></TABLE></DIV>
+<DIV id=TitleRow>
+<H1 class=dtH1>Дополнения</H1></DIV></DIV>
+<DIV id=nstext>
+<H4 class=dtH4>Расширение файла не так важно</H4>
+<P><B>OneScript</B> выполнит сценарий если расширение файла вы зададите отличное от <B>os</B>, например <B>zip</B>.
+Кодовую страницу оставьте <B>UTF-8</B>, а расширение файла можете совсем не указывать. Сценарий всё равно сработает.</P>
+<H4 class=dtH4>Свойства и методы дизайнера</H4>
+<P>У класса <B>ДизайнерФормДляОдноСкрипта</B> есть свойство и методы для организации автоматического тестирования.</P>
+<PRE class="code">
+Свойство:
+ВизуальныеСтилиФормВключены (FormVisualStylesTurnOn)
+
+Методы:
+ДизайнерОткрыт (DesignerOpen)
+ДобавитьКонтрол (AddControl)
+ЗакрытьДизайнер (CloseDesigner)
+ОткрытьФорму (LoadForm)
+ПолучитьЗначениеСвойства (GetPropertyValue)
+ПолучитьТипСвойства (GetPropertyType)
+СохранитьФорму (UnloadForm)
+СформироватьСценарий (GenerateScript)
+УдалитьКонтролы (RemoveControls)
+УстановитьСвойство (SetProperty)
+</PRE>
+<P>В справке они не описаны. Приведу только ссылку на сценарий тестирования компонентов для версии дизайнера 1.2.0.0 в 
+котором они задействованы (<A href="https://github.com/ahyahy/OneScriptFormsDesigner/blob/main/tests/ТестДизайнера.os" target="_blank"><B>ТестДизайнера.os</B></A>).</P>
+<P>Таким образом размещать на форме компоненты, устанавливать значения свойств можно и программно.</P>
+<P></P>
+</DIV></BODY></HTML>
