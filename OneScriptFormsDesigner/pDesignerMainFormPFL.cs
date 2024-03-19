@@ -621,6 +621,10 @@ namespace osfDesigner
             toolUserControl.DisplayName = "ПользовательскийЭлементУправления (UserControl)";
             listBox1.Items.Add(toolUserControl);
 
+            ToolboxItem toolCircularProgressBar = new ToolboxItem(typeof(CircularProgressBar));
+            toolCircularProgressBar.DisplayName = "КольцевойИндикатор (CircularProgressBar)";
+            listBox1.Items.Add(toolCircularProgressBar);
+
             ToolboxItem toolVScrollBar = new ToolboxItem(typeof(VScrollBar));
             toolVScrollBar.DisplayName = "ВертикальнаяПрокрутка (VScrollBar)";
             listBox1.Items.Add(toolVScrollBar);

@@ -372,6 +372,13 @@ namespace osfDesigner
                     {
                         DesignSurfaceManager.PropertyGridHost.PropertyGrid.SelectedObject = e.Component;
                     }
+                    if (OriginalObj.GetType() == typeof(osfDesigner.CircularProgressBar))
+                    {
+                        if (OriginalObj.Width < 33 || OriginalObj.Height < 33)
+                        {
+                            OriginalObj.Size = new System.Drawing.Size(33, 33);
+                        }
+                    }
 
                     PropertyGridHost.ReloadTreeView();
                     PropertyGridHost.ChangeSelectNode((Component)e.Component);

@@ -283,6 +283,27 @@ namespace osfDesigner
                         selectedObject.ToolTip[nameToolTip] = (string)pgrdPropertyGrid.SelectedGridItem.Value;
                     }
                 }
+                if (Label1 == "Размер")
+                {
+                    if (selectedObject.GetType() == typeof(osfDesigner.CircularProgressBar))
+                    {
+                        if (selectedObject.Width < 33 || selectedObject.Height < 33)
+                        {
+                            PropertyDescriptor pd = TypeDescriptor.GetProperties(selectedObject)["Size"];
+                            pd.SetValue(selectedObject, new System.Drawing.Size(33, 33));
+                        }
+                        int old_si = pgrdComboBox.SelectedIndex;
+                        try
+                        {
+                            pgrdComboBox.SelectedIndex = old_si + 1;
+                        }
+                        catch
+                        {
+                            pgrdComboBox.SelectedIndex = old_si - 1;
+                        }
+                        pgrdComboBox.SelectedIndex = old_si;
+                    }
+                }
             };
 
             // Каждый раз, когда кто-либо выбирает новый объект внутри ComboBox

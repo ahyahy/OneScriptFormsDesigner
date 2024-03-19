@@ -137,6 +137,7 @@
 		ИмяКонтекстКлассаАнгл = "StatusBar" или 
 		ИмяКонтекстКлассаАнгл = "DataGridViewCellStyle" или 
 		ИмяКонтекстКлассаАнгл = "DataGridView" или 
+		ИмяКонтекстКлассаАнгл = "CircularProgressBar" или 
 		ИмяКонтекстКлассаАнгл = "TabControl" Тогда
 		Стр = 
 		"using System.ComponentModel;
@@ -298,6 +299,11 @@
 		"    public class " + Пар1 + " : System.Diagnostics." + Пар1 + Символы.ПС + 
 		"    {";
 		Возврат Стр;
+	ИначеЕсли Пар1 = "CircularProgressBar" Тогда
+		Стр = Стр + 
+		"    public class " + Пар1 + " : System.Windows.Forms.UserControl" + Символы.ПС + 
+		"    {";
+		Возврат Стр;
 		
 		
 	КонецЕсли;
@@ -392,6 +398,21 @@
 		"
 		|        public " + ИмяКласса + "()
 		|        {
+		|        }
+		|";
+	ИначеЕсли ИмяКласса = "CircularProgressBar" Тогда 
+		Стр = 
+		"
+		|        public CircularProgressBar()
+		|        {
+		|            Clockwise = true;
+		|            Maximum = 100;
+		|            Text = """";
+		|            MinimumSize = new System.Drawing.Size(33, 33);
+		|            CircleColor = base.BackColor;
+		|            DoubleBuffered = true;
+		|            Width = 33;
+		|            Height = 33;
 		|        }
 		|";
 	ИначеЕсли ИмяКласса = "Form" Тогда 
@@ -975,7 +996,7 @@
 			EditorAttribute = "//[Editor(typeof(), typeof(UITypeEditor))]";
 			// [Editor(typeof(MyContentAlignmentEditor), typeof(UITypeEditor))]
 			
-			
+			Сообщить("" + (ТипЛево + ИмяКонтекстКлассаАнгл) + " СвойствоАнгл = " + СвойствоАнгл);
 			ДанныеДляДизайнера = ДанныеДляДизайнера(ТипЛево + ИмяКонтекстКлассаАнгл, СвойствоАнгл);
 			// // // ДанныеДляДизайнера = Ф.ДанныеДляДизайнера(ТипЛево + ИмяКонтекстКлассаАнгл, СвойствоАнгл);
 			// // // Сообщить("	ИначеЕсли КлассАнгл = """ + (ТипЛево + ИмяКонтекстКлассаАнгл) + """ и СвойствоАнгл = """ + СвойствоАнгл + """ Тогда");
@@ -1056,6 +1077,10 @@
 					(СвойствоАнгл = "HeaderBackColor") или 
 					(СвойствоАнгл = "AlternatingBackColor") или 
 					(СвойствоАнгл = "TransparencyKey") или 
+					(СвойствоАнгл = "FinalColor") или 
+					(СвойствоАнгл = "InitialColor") или 
+					(СвойствоАнгл = "CircleColor") или 
+					(СвойствоАнгл = "LineColor") или 
 					(СвойствоАнгл = "BackColor") Тогда
 				TypeConverterAttribute = СтрЗаменить(TypeConverterAttribute, "typeof()", "typeof(MyColorConverter)");
 				TypeConverterAttribute = СтрЗаменить(TypeConverterAttribute, "//", "");
@@ -1361,6 +1386,10 @@
 					(СвойствоАнгл = "HeaderBackColor") или 
 					(СвойствоАнгл = "AlternatingBackColor") или 
 					(СвойствоАнгл = "TransparencyKey") или 
+					(СвойствоАнгл = "FinalColor") или 
+					(СвойствоАнгл = "InitialColor") или 
+					(СвойствоАнгл = "CircleColor") или 
+					(СвойствоАнгл = "LineColor") или 
 					(СвойствоАнгл = "BackColor") Тогда
 				EditorAttribute = СтрЗаменить(EditorAttribute, "typeof()", "typeof(MyColorEditor)");
 				EditorAttribute = СтрЗаменить(EditorAttribute, "//", "");
@@ -2114,14 +2143,73 @@
 				|";
 				Стр = Стр + Символы.ПС;
 				Продолжить;
+			ИначеЕсли (СвойствоРус = "Значение") и (ИмяКонтекстКлассаАнгл = "CircularProgressBar") Тогда
+				Стр = Стр + 
+				"        public int Value { get; set; }
+				|";
+				Стр = Стр + Символы.ПС;
+				Продолжить;
+			ИначеЕсли (СвойствоРус = "КонечныйЦвет") и (ИмяКонтекстКлассаАнгл = "CircularProgressBar") Тогда
+				Стр = Стр + 
+				"        public Color FinalColor { get; set; }
+				|";
+				Стр = Стр + Символы.ПС;
+				Продолжить;
+			ИначеЕсли (СвойствоРус = "Максимум") и (ИмяКонтекстКлассаАнгл = "CircularProgressBar") Тогда
+				Стр = Стр + 
+				"        public int Maximum { get; set; }
+				|";
+				Стр = Стр + Символы.ПС;
+				Продолжить;
+			ИначеЕсли (СвойствоРус = "НачальныйЦвет") и (ИмяКонтекстКлассаАнгл = "CircularProgressBar") Тогда
+				Стр = Стр + 
+				"        public Color InitialColor { get; set; }
+				|";
+				Стр = Стр + Символы.ПС;
+				Продолжить;
+			ИначеЕсли (СвойствоРус = "ПоЧасовой") и (ИмяКонтекстКлассаАнгл = "CircularProgressBar") Тогда
+				Стр = Стр + 
+				"        public bool Clockwise { get; set; }
+				|";
+				Стр = Стр + Символы.ПС;
+				Продолжить;
+			ИначеЕсли (СвойствоРус = "РежимТекста") и (ИмяКонтекстКлассаАнгл = "CircularProgressBar") Тогда
+				Стр = Стр + 
+				"        public TextMode TextMode { get; set; }
+				|";
+				Стр = Стр + Символы.ПС;
+				Продолжить;
+			ИначеЕсли (СвойствоРус = "ФормаИндикатора") и (ИмяКонтекстКлассаАнгл = "CircularProgressBar") Тогда
+				Стр = Стр + 
+				"        public ProgressShape ProgressShape { get; set; }
+				|";
+				Стр = Стр + Символы.ПС;
+				Продолжить;
+			ИначеЕсли (СвойствоРус = "ЦветКруга") и (ИмяКонтекстКлассаАнгл = "CircularProgressBar") Тогда
+				Стр = Стр + 
+				"        public Color CircleColor { get; set; }
+				|";
+				Стр = Стр + Символы.ПС;
+				Продолжить;
+			ИначеЕсли (СвойствоРус = "ЦветЛинии") и (ИмяКонтекстКлассаАнгл = "CircularProgressBar") Тогда
+				Стр = Стр + 
+				"        public Color LineColor { get; set; }
+				|";
+				Стр = Стр + Символы.ПС;
+				Продолжить;
+			ИначеЕсли (СвойствоРус = "ШиринаЛинии") и (ИмяКонтекстКлассаАнгл = "CircularProgressBar") Тогда
+				Стр = Стр + 
+				"        public int LineWidth { get; set; }
+				|";
+				Стр = Стр + Символы.ПС;
+				Продолжить;
+			ИначеЕсли (СвойствоРус = "ШиринаПолосы") и (ИмяКонтекстКлассаАнгл = "CircularProgressBar") Тогда
+				Стр = Стр + 
+				"        public int BarWidth { get; set; }
+				|";
+				Стр = Стр + Символы.ПС;
+				Продолжить;
 			КонецЕсли;
-			
-			
-			
-			
-			
-			
-			
 			
 			
 			
@@ -2446,6 +2534,7 @@
 	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.ToolTip.html");
 	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.TreeView.html");   
 	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.UserControl.html");
+	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.CircularProgressBar.html");
 	ВыбранныеФайлы.Добавить("C:\444\OneScriptFormsru\OneScriptForms.VScrollBar.html");
 	
 	Для А = 0 По ВыбранныеФайлы.ВГраница() Цикл
@@ -2774,16 +2863,6 @@
 			|";
 			СтрВыгрузки = СтрЗаменить(СтрВыгрузки, ПодстрокаПоиска, ПодстрокаЗамены);
 		КонецЕсли;
-
-
-
-
-
-
-		
-		
-		
-		
 		Если ИмяКонтекстКлассаАнгл = "ListView" Тогда
 			ПодстрокаПоиска = СтрПодвал;
 			ПодстрокаЗамены = 
@@ -3257,6 +3336,7 @@
 			ИмяКонтекстКлассаАнгл = "NumericUpDown" или 
 			ИмяКонтекстКлассаАнгл = "GroupBox" или 
 			ИмяКонтекстКлассаАнгл = "UserControl" или 
+			ИмяКонтекстКлассаАнгл = "CircularProgressBar" или 
 			ИмяКонтекстКлассаАнгл = "PictureBox" или 
 			ИмяКонтекстКлассаАнгл = "DateTimePicker" или 
 			ИмяКонтекстКлассаАнгл = "TextBox" или 
@@ -3469,6 +3549,35 @@
 	
 	
 	
+	СтрВыгрузки = 
+	"namespace osfDesigner
+	|{
+	|    public enum ProgressShape
+	|    {
+	|        Плоский = 1,
+	|        Круглый = 0
+	|    }
+	|}
+	|";
+	ТекстДокХХХ = Новый ТекстовыйДокумент;
+	ТекстДокХХХ.УстановитьТекст(СтрВыгрузки);
+	ТекстДокХХХ.Записать("C:\444\ВыгрузкаДизайнера\ProgressShape.cs");
+	
+	СтрВыгрузки = 
+	"namespace osfDesigner
+	|{
+	|    public enum TextMode
+	|    {
+	|        Значение = 1,
+	|        Отсутствие = 0,
+	|        Пользовательский = 3,
+	|        Проценты = 2
+	|    }
+	|}
+	|";
+	ТекстДокХХХ = Новый ТекстовыйДокумент;
+	ТекстДокХХХ.УстановитьТекст(СтрВыгрузки);
+	ТекстДокХХХ.Записать("C:\444\ВыгрузкаДизайнера\TextMode.cs");
 	
 	СтрВыгрузки = 
 	"namespace osfDesigner
@@ -6466,6 +6575,10 @@
 	|            toolUserControl.DisplayName = ""ПользовательскийЭлементУправления (UserControl)"";
 	|            listBox1.Items.Add(toolUserControl);
 	|
+	|            ToolboxItem toolCircularProgressBar = new ToolboxItem(typeof(CircularProgressBar));
+	|            toolCircularProgressBar.DisplayName = ""КольцевойИндикатор (CircularProgressBar)"";
+	|            listBox1.Items.Add(toolCircularProgressBar);
+	|
 	|            ToolboxItem toolVScrollBar = new ToolboxItem(typeof(VScrollBar));
 	|            toolVScrollBar.DisplayName = ""ВертикальнаяПрокрутка (VScrollBar)"";
 	|            listBox1.Items.Add(toolVScrollBar);
@@ -8558,12 +8671,16 @@
 	|                return;
 	|            }
 	|            // Если это цвет.
-	|            if (valueName == ""ОсновнойЦвет"" ||
+	|            if (valueName == ""КонечныйЦвет"" ||
+	|                valueName == ""НачальныйЦвет"" || 
+	|                valueName == ""ОсновнойЦвет"" ||
 	|                valueName == ""ОсновнойЦветВыделенного"" ||
 	|                valueName == ""ОсновнойЦветЗаголовков"" ||
 	|                valueName == ""ПрозрачныйЦвет"" ||
 	|                valueName == ""Цвет"" ||
 	|                valueName == ""ЦветАктивнойСсылки"" ||
+	|                valueName == ""ЦветКруга"" ||
+	|                valueName == ""ЦветЛинии"" ||
 	|                valueName == ""ЦветПосещеннойСсылки"" ||
 	|                valueName == ""ЦветСетки"" ||
 	|                valueName == ""ЦветСсылки"" ||
@@ -8726,6 +8843,7 @@
 	|                valueName == ""ГоризонтальнаяМера"" ||
 	|                valueName == ""ЗадержкаОчередногоПоказа"" ||
 	|                valueName == ""ЗадержкаПоявления"" ||
+	|                (valueName == ""Значение"" && val.GetType() == typeof(osfDesigner.CircularProgressBar)) ||
 	|                (valueName == ""Значение"" && val.GetType() == typeof(osfDesigner.HProgressBar)) ||
 	|                (valueName == ""Значение"" && val.GetType() == typeof(osfDesigner.VProgressBar)) ||
 	|                (valueName == ""Значение"" && val.GetType() == typeof(osfDesigner.HScrollBar)) ||
@@ -8759,6 +8877,8 @@
 	|                valueName == ""ШиринаВыпадающегоСписка"" ||
 	|                valueName == ""ШиринаЗаголовковСтрок"" ||
 	|                valueName == ""ШиринаКолонки"" ||
+	|                valueName == ""ШиринаЛинии"" ||
+	|                valueName == ""ШиринаПолосы"" ||
 	|                valueName == ""ШиринаРазделителя"")
 	|            {
 	|                AddToScript(compName + ""."" + valueName + "" = "" + compValue.Replace(CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator, ""."") + "";"");
@@ -8815,6 +8935,16 @@
 	|                return;
 	|            }
 	|            // Если это Перечисление.
+	|            if (valueName == ""РежимТекста"")
+	|            {
+	|                AddToScript(compName + ""."" + valueName + "" = "" + """" + NameObjectOneScriptForms + @"".РежимТекста."" + compValue + "";"");
+	|                return;
+	|            }
+	|            if (valueName == ""ФормаИндикатора"")
+	|            {
+	|                AddToScript(compName + ""."" + valueName + "" = "" + """" + NameObjectOneScriptForms + @"".ФормаИндикатора."" + compValue + "";"");
+	|                return;
+	|            }
 	|            if (valueName == ""СтильСкрипта"")
 	|            {
 	|                AddToScript(compName + ""."" + valueName + "" = \u0022"" + compValue + ""\u0022;"");
@@ -9926,12 +10056,16 @@
 	|                return;
 	|            }	
 	|            // Если это цвет.
-	|            if (displayName == ""ОсновнойЦвет"" ||
+	|            if (displayName == ""КонечныйЦвет"" ||
+	|                displayName == ""НачальныйЦвет"" ||
+	|                displayName == ""ОсновнойЦвет"" ||
 	|                displayName == ""ОсновнойЦветВыделенного"" ||
 	|                displayName == ""ОсновнойЦветЗаголовков"" ||
 	|                displayName == ""ПрозрачныйЦвет"" ||
 	|                displayName == ""Цвет"" ||
 	|                displayName == ""ЦветАктивнойСсылки"" ||
+	|                displayName == ""ЦветКруга"" ||
+	|                displayName == ""ЦветЛинии"" ||
 	|                displayName == ""ЦветПосещеннойСсылки"" ||
 	|                displayName == ""ЦветСетки"" ||
 	|                displayName == ""ЦветСсылки"" ||
@@ -10101,9 +10235,7 @@
 	|                displayName == ""ИмяСвойстваДанных"" ||
 	|                displayName == ""ИмяСтиля"" ||
 	|                displayName == ""Маска"" ||
-	|
 	|                displayName == ""ИмяОбъектаФормыДляОдноСкрипта"" ||
-	|
 	|                displayName == ""ИмяФайла"" ||
 	|                displayName == ""НачальныйКаталог"" ||
 	|                displayName == ""Описание"" ||
@@ -10165,6 +10297,7 @@
 	|                displayName == ""ГоризонтальнаяМера"" ||
 	|                displayName == ""ЗадержкаОчередногоПоказа"" ||
 	|                displayName == ""ЗадержкаПоявления"" ||
+	|                (displayName == ""Значение"" && control.GetType() == typeof(osfDesigner.CircularProgressBar)) ||	
 	|                (displayName == ""Значение"" && control.GetType() == typeof(osfDesigner.HProgressBar)) ||
 	|                (displayName == ""Значение"" && control.GetType() == typeof(osfDesigner.VProgressBar)) ||
 	|                (displayName == ""Значение"" && control.GetType() == typeof(osfDesigner.HScrollBar)) ||
@@ -10198,6 +10331,8 @@
 	|                displayName == ""ШиринаВыпадающегоСписка"" ||
 	|                displayName == ""ШиринаЗаголовковСтрок"" ||
 	|                displayName == ""ШиринаКолонки"" ||
+	|                displayName == ""ШиринаЛинии"" ||
+	|                displayName == ""ШиринаПолосы"" ||	
 	|                displayName == ""ШиринаРазделителя"")	
 	|            {
 	|                string propertyName = OneScriptFormsDesigner.GetPropName(control, displayName);
@@ -10311,6 +10446,7 @@
 	|                displayName == ""РежимМасштабирования"" ||
 	|                displayName == ""РежимОтображения"" ||
 	|                displayName == ""РежимРисования"" ||
+	|                displayName == ""РежимТекста"" ||	
 	|                displayName == ""РезультатДиалога"" ||
 	|                displayName == ""Сортировка"" ||
 	|                displayName == ""СортировкаСвойств"" ||
@@ -10325,6 +10461,7 @@
 	|                displayName == ""ТипСлияния"" ||
 	|                displayName == ""ФильтрУведомлений"" ||
 	|                displayName == ""Формат"" ||
+	|                displayName == ""ФормаИндикатора"" ||	
 	|                displayName == ""ФорматМаски"" ||
 	|                displayName == ""Якорь"")
 	|            {
@@ -12029,12 +12166,16 @@
 	|                return;
 	|            }
 	|            // Если это цвет.
-	|            if (valueName == ""ОсновнойЦвет"" ||
+	|            if (valueName == ""КонечныйЦвет"" ||
+	|                valueName == ""НачальныйЦвет"" ||
+	|                valueName == ""ОсновнойЦвет"" ||
 	|                valueName == ""ОсновнойЦветВыделенного"" ||
 	|                valueName == ""ОсновнойЦветЗаголовков"" ||
 	|                valueName == ""ПрозрачныйЦвет"" ||
 	|                valueName == ""Цвет"" ||
 	|                valueName == ""ЦветАктивнойСсылки"" ||
+	|                valueName == ""ЦветКруга"" ||
+	|                valueName == ""ЦветЛинии"" ||
 	|                valueName == ""ЦветПосещеннойСсылки"" ||
 	|                valueName == ""ЦветСетки"" ||
 	|                valueName == ""ЦветСсылки"" ||
@@ -12205,6 +12346,7 @@
 	|                valueName == ""ГоризонтальнаяМера"" ||
 	|                valueName == ""ЗадержкаОчередногоПоказа"" ||
 	|                valueName == ""ЗадержкаПоявления"" ||
+	|                (valueName == ""Значение"" && val.GetType() == typeof(osfDesigner.CircularProgressBar)) ||
 	|                (valueName == ""Значение"" && val.GetType() == typeof(osfDesigner.HProgressBar)) ||
 	|                (valueName == ""Значение"" && val.GetType() == typeof(osfDesigner.VProgressBar)) ||
 	|                (valueName == ""Значение"" && val.GetType() == typeof(osfDesigner.HScrollBar)) ||
@@ -12238,6 +12380,8 @@
 	|                valueName == ""ШиринаВыпадающегоСписка"" ||
 	|                valueName == ""ШиринаЗаголовковСтрок"" ||
 	|                valueName == ""ШиринаКолонки"" ||
+	|                valueName == ""ШиринаЛинии"" ||
+	|                valueName == ""ШиринаПолосы"" ||
 	|                valueName == ""ШиринаРазделителя"")	
 	|            {
 	|                AddToScript(compName + ""."" + valueName + "" = "" + compValue.Replace(CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator, ""."") + "";"");
@@ -12294,6 +12438,16 @@
 	|                return;
 	|            }
 	|            // Если это Перечисление.
+	|            if (valueName == ""РежимТекста"")
+	|            {
+	|                AddToScript(compName + ""."" + valueName + "" = "" + """" + NameObjectOneScriptForms + @"".РежимТекста."" + compValue + "";"");
+	|                return;
+	|            }
+	|            if (valueName == ""ФормаИндикатора"")
+	|            {
+	|                AddToScript(compName + ""."" + valueName + "" = "" + """" + NameObjectOneScriptForms + @"".ФормаИндикатора."" + compValue + "";"");
+	|                return;
+	|            }
 	|            if (valueName == ""РазмещениеИзображения"")
 	|            {
 	|                AddToScript(compName + ""."" + valueName + "" = "" + """" + NameObjectOneScriptForms + @"".РазмещениеИзображенияЯчейки."" + compValue + "";"");
@@ -14548,6 +14702,27 @@
 	|                    {
 	|                        string nameToolTip = Label1.Substring(Label1.LastIndexOf(' ') + 1);
 	|                        selectedObject.ToolTip[nameToolTip] = (string)pgrdPropertyGrid.SelectedGridItem.Value;
+	|                    }
+	|                }
+	|                if (Label1 == ""Размер"")
+	|                {
+	|                    if (selectedObject.GetType() == typeof(osfDesigner.CircularProgressBar))
+	|                    {
+	|                        if (selectedObject.Width < 33 || selectedObject.Height < 33)
+	|                        {
+	|                            PropertyDescriptor pd = TypeDescriptor.GetProperties(selectedObject)[""Size""];
+	|                            pd.SetValue(selectedObject, new System.Drawing.Size(33, 33));
+	|                        }
+	|                        int old_si = pgrdComboBox.SelectedIndex;
+	|                        try
+	|                        {
+	|                            pgrdComboBox.SelectedIndex = old_si + 1;
+	|                        }
+	|                        catch
+	|                        {
+	|                            pgrdComboBox.SelectedIndex = old_si - 1;
+	|                        }
+	|                        pgrdComboBox.SelectedIndex = old_si;
 	|                    }
 	|                }
 	|            };
@@ -17582,6 +17757,10 @@
 	|            toolUserControl.DisplayName = ""ПользовательскийЭлементУправления (UserControl)"";
 	|            listBox1.Items.Add(toolUserControl);
 	|
+	|            ToolboxItem toolCircularProgressBar = new ToolboxItem(typeof(CircularProgressBar));
+	|            toolCircularProgressBar.DisplayName = ""КольцевойИндикатор (CircularProgressBar)"";
+	|            listBox1.Items.Add(toolCircularProgressBar);
+	|
 	|            ToolboxItem toolVScrollBar = new ToolboxItem(typeof(VScrollBar));
 	|            toolVScrollBar.DisplayName = ""ВертикальнаяПрокрутка (VScrollBar)"";
 	|            listBox1.Items.Add(toolVScrollBar);
@@ -18387,7 +18566,12 @@
 	|                strFile = File.ReadAllText(fileName);
 	|            }
 	|
-	|            string NameObjectOneScriptForms = OneScriptFormsDesigner.ParseBetween(strFile, "".ИмяОбъектаФормыДляОдноСкрипта = \u0022"", ""\u0022;"");
+	|            string NameObjectOneScriptForms;
+	|            NameObjectOneScriptForms = OneScriptFormsDesigner.ParseBetween(strFile, "".ИмяОбъектаФормыДляОдноСкрипта = \u0022"", ""\u0022;"");
+	|            if (NameObjectOneScriptForms == null)
+	|            {
+	|                NameObjectOneScriptForms = ""Ф"";
+	|            }
 	|
 	|            OneScriptFormsDesigner.block2 = true;
 	|
@@ -20524,6 +20708,13 @@
 	|                    else
 	|                    {
 	|                        DesignSurfaceManager.PropertyGridHost.PropertyGrid.SelectedObject = e.Component;
+	|                    }
+	|                    if (OriginalObj.GetType() == typeof(osfDesigner.CircularProgressBar))
+	|                    {
+	|                        if (OriginalObj.Width < 33 || OriginalObj.Height < 33)
+	|                        {
+	|                            OriginalObj.Size = new System.Drawing.Size(33, 33);
+	|                        }
 	|                    }
 	|
 	|                    PropertyGridHost.ReloadTreeView();
@@ -30143,6 +30334,7 @@
 	|                {""RadioButton"", ""Переключатель""},
 	|                {""Button"", ""Кнопка""},
 	|                {""CheckBox"", ""Флажок""},
+	|                {""CircularProgressBar"", ""КольцевойИндикатор""},
 	|                {""ColorDialog"", ""ДиалогВыбораЦвета""},
 	|                {""ComboBox"", ""ПолеВыбора""},
 	|                {""DataGridView"", ""Таблица""},
@@ -30190,6 +30382,7 @@
 	|                {""Переключатель"", ""RadioButton""},
 	|                {""Кнопка"", ""Button""},
 	|                {""Флажок"", ""CheckBox""},
+	|                {""КольцевойИндикатор"", ""CircularProgressBar""},
 	|                {""ДиалогВыбораЦвета"", ""ColorDialog""},
 	|                {""ПолеВыбора"", ""ComboBox""},
 	|                {""Таблица"", ""DataGridView""},
@@ -30278,7 +30471,8 @@
 	|                {""РежимРазмераВкладок"", ""TabSizeMode""},
 	|                {""РежимРазмераПоляКартинки"", ""PictureBoxSizeMode""},
 	|                {""РежимРисования"", ""DrawMode""},
-	|                {""РежимСортировки"", ""DataGridViewColumnSortMode""},	
+	|                {""РежимСортировки"", ""DataGridViewColumnSortMode""},
+	|                {""РежимТекста"", ""TextMode""},	
 	|                {""РежимШириныЗаголовковСтрок"", ""DataGridViewRowHeadersWidthSizeMode""},
 	|                {""РезультатДиалога"", ""DialogResult""},
 	|                {""СлияниеМеню"", ""MenuMerge""},
@@ -30307,6 +30501,7 @@
 	|                {""ТриСостояния"", ""DataGridViewTriState""},
 	|                {""ФильтрыУведомления"", ""NotifyFilters""},
 	|                {""ФлагиМыши"", ""MouseFlags""},
+	|                {""ФормаИндикатора"", ""ProgressShape""},	
 	|                {""ФорматМаски"", ""MaskFormat""},
 	|                {""ФорматПикселей"", ""PixelFormat""},
 	|                {""ФорматПоляКалендаря"", ""FormatDateTimePicker""},
@@ -35530,6 +35725,170 @@
 		|        
 		|        [Browsable(false)]
 		|        public new dynamic VirtualMode { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic WindowTarget { get; set; }
+		|";
+	ИначеЕсли ИмяКонтекстКлассаАнгл = "CircularProgressBar" Тогда
+		Стр = Стр + 
+		"        [Browsable(false)]
+		|        public new dynamic AccessibilityObject { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic AccessibleDefaultActionDescription { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic AccessibleDescription { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic AccessibleName { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic AccessibleRole { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic AllowDrop { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic AutoScaleDimensions { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic AutoScaleMode { get; set; }
+		|
+		|        [Browsable(false)]
+		|        public new dynamic AutoScroll { get; set; }
+		|
+		|        [Browsable(false)]
+		|        public new dynamic AutoScrollMargin { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic AutoScrollMinSize { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic AutoScrollOffset { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic AutoScrollPosition { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic AutoSize { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic AutoSizeMode { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic AutoValidate { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic BackgroundImageLayout { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic BindingContext { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic BorderStyle { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic CanSelect { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic CausesValidation { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic CompanyName { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic Container { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic ContainsFocus { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic ContextMenuStrip { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic Created { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic CurrentAutoScaleDimensions { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic DataBindings { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public dynamic DeviceDpi { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic DisplayRectangle { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic Disposing { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic Handle { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic HasChildren { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic HorizontalScroll { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic ImeMode { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic InvokeRequired { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic IsAccessible { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic IsDisposed { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic IsHandleCreated { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic IsMirrored { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic LayoutEngine { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic Margin { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic MaximumSize { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic MinimumSize { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic Padding { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic ParentForm { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic PreferredSize { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic RecreatingHandle { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic Region { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic RightToLeft { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic Site { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic Tag { get; set; }
+		|        
+		|        [Browsable(false)]
+		|        public new dynamic VerticalScroll { get; set; }
 		|        
 		|        [Browsable(false)]
 		|        public new dynamic WindowTarget { get; set; }
@@ -42051,6 +42410,178 @@
 		СортированныйСписок1.Добавить("VisibleCount", "VisibleCount");
 		СортированныйСписок1.Добавить("Width", "Width");
 		СортированныйСписок1.Добавить("WindowTarget", "WindowTarget");
+	ИначеЕсли ИмяКонтекстКлассаАнгл = "CircularProgressBar" Тогда
+		СортированныйСписок1.Добавить("ActiveControl", "ActiveControl");
+		СортированныйСписок1.Добавить("Anchor", "Anchor");
+		СортированныйСписок1.Добавить("AutoScroll", "AutoScroll");
+		СортированныйСписок1.Добавить("AutoScrollMargin", "AutoScrollMargin");
+		СортированныйСписок1.Добавить("BackColor", "BackColor");
+		СортированныйСписок1.Добавить("BackgroundImage", "BackgroundImage");
+		СортированныйСписок1.Добавить("Bottom", "Bottom");
+		СортированныйСписок1.Добавить("Bounds", "Bounds");
+		СортированныйСписок1.Добавить("CanFocus", "CanFocus");
+		СортированныйСписок1.Добавить("Capture", "Capture");
+		СортированныйСписок1.Добавить("Click", "Click");
+		СортированныйСписок1.Добавить("ClientHeight", "ClientHeight");
+		СортированныйСписок1.Добавить("ClientRectangle", "ClientRectangle");
+		СортированныйСписок1.Добавить("ClientSize", "ClientSize");
+		СортированныйСписок1.Добавить("ClientWidth", "ClientWidth");
+		СортированныйСписок1.Добавить("ContextMenu", "ContextMenu");
+		СортированныйСписок1.Добавить("ControlAdded", "ControlAdded");
+		СортированныйСписок1.Добавить("ControlRemoved", "ControlRemoved");
+		СортированныйСписок1.Добавить("Controls", "Controls");
+		СортированныйСписок1.Добавить("Cursor", "Cursor");
+		СортированныйСписок1.Добавить("Dock", "Dock");
+		СортированныйСписок1.Добавить("DockPadding", "DockPadding");
+		СортированныйСписок1.Добавить("DoubleClick", "DoubleClick");
+		СортированныйСписок1.Добавить("Enabled", "Enabled");
+		СортированныйСписок1.Добавить("Enter", "Enter");
+		СортированныйСписок1.Добавить("Focused", "Focused");
+		СортированныйСписок1.Добавить("Font", "Font");
+		СортированныйСписок1.Добавить("FontBold", "FontBold");
+		СортированныйСписок1.Добавить("FontHeight", "FontHeight");
+		СортированныйСписок1.Добавить("FontName", "FontName");
+		СортированныйСписок1.Добавить("FontSize", "FontSize");
+		СортированныйСписок1.Добавить("ForeColor", "ForeColor");
+		СортированныйСписок1.Добавить("Height", "Height");
+		СортированныйСписок1.Добавить("KeyDown", "KeyDown");
+		СортированныйСписок1.Добавить("KeyPress", "KeyPress");
+		СортированныйСписок1.Добавить("KeyUp", "KeyUp");
+		СортированныйСписок1.Добавить("Leave", "Leave");
+		СортированныйСписок1.Добавить("Left", "Left");
+		СортированныйСписок1.Добавить("Location", "Location");
+		СортированныйСписок1.Добавить("LocationChanged", "LocationChanged");
+		СортированныйСписок1.Добавить("LostFocus", "LostFocus");
+		СортированныйСписок1.Добавить("MouseButtons", "MouseButtons");
+		СортированныйСписок1.Добавить("MouseDown", "MouseDown");
+		СортированныйСписок1.Добавить("MouseEnter", "MouseEnter");
+		СортированныйСписок1.Добавить("MouseHover", "MouseHover");
+		СортированныйСписок1.Добавить("MouseLeave", "MouseLeave");
+		СортированныйСписок1.Добавить("MouseMove", "MouseMove");
+		СортированныйСписок1.Добавить("MousePosition", "MousePosition");
+		СортированныйСписок1.Добавить("MouseUp", "MouseUp");
+		СортированныйСписок1.Добавить("Move", "Move");
+		СортированныйСписок1.Добавить("Name", "Name");
+		СортированныйСписок1.Добавить("Paint", "Paint");
+		СортированныйСписок1.Добавить("Parent", "Parent");
+		СортированныйСписок1.Добавить("ProductName", "ProductName");
+		СортированныйСписок1.Добавить("ProductVersion", "ProductVersion");
+		СортированныйСписок1.Добавить("Right", "Right");
+		СортированныйСписок1.Добавить("Size", "Size");
+		СортированныйСписок1.Добавить("SizeChanged", "SizeChanged");
+		СортированныйСписок1.Добавить("TabIndex", "TabIndex");
+		СортированныйСписок1.Добавить("TabStop", "TabStop");
+		СортированныйСписок1.Добавить("Tag", "Tag");
+		СортированныйСписок1.Добавить("Text", "Text");
+		СортированныйСписок1.Добавить("TextChanged", "TextChanged");
+		СортированныйСписок1.Добавить("Top", "Top");
+		СортированныйСписок1.Добавить("TopLevelControl", "TopLevelControl");
+		СортированныйСписок1.Добавить("Type", "Type");
+		СортированныйСписок1.Добавить("UseWaitCursor", "UseWaitCursor");
+		СортированныйСписок1.Добавить("Value", "Value");
+		СортированныйСписок1.Добавить("Visible", "Visible");
+		СортированныйСписок1.Добавить("Width", "Width");
+		СортированныйСписок1.Добавить("FinalColor", "FinalColor");
+		СортированныйСписок1.Добавить("Maximum", "Maximum");
+		СортированныйСписок1.Добавить("InitialColor", "InitialColor");
+		СортированныйСписок1.Добавить("Clockwise", "Clockwise");
+		СортированныйСписок1.Добавить("TextMode", "TextMode");
+		СортированныйСписок1.Добавить("ProgressShape", "ProgressShape");
+		СортированныйСписок1.Добавить("CircleColor", "CircleColor");
+		СортированныйСписок1.Добавить("LineColor", "LineColor");
+		СортированныйСписок1.Добавить("LineWidth", "LineWidth");
+		СортированныйСписок1.Добавить("BarWidth", "BarWidth");
+	ИначеЕсли ИмяКонтекстКлассаАнгл = "System.Windows.Forms.CircularProgressBar" Тогда
+		СортированныйСписок1.Добавить("AccessibilityObject", "AccessibilityObject");
+		СортированныйСписок1.Добавить("AccessibleDefaultActionDescription", "AccessibleDefaultActionDescription");
+		СортированныйСписок1.Добавить("AccessibleDescription", "AccessibleDescription");
+		СортированныйСписок1.Добавить("AccessibleName", "AccessibleName");
+		СортированныйСписок1.Добавить("AccessibleRole", "AccessibleRole");
+		СортированныйСписок1.Добавить("ActiveControl", "ActiveControl");
+		СортированныйСписок1.Добавить("AllowDrop", "AllowDrop");
+		СортированныйСписок1.Добавить("Anchor", "Anchor");
+		СортированныйСписок1.Добавить("AutoScaleDimensions", "AutoScaleDimensions");
+		СортированныйСписок1.Добавить("AutoScaleMode", "AutoScaleMode");
+		СортированныйСписок1.Добавить("AutoScroll", "AutoScroll");
+		СортированныйСписок1.Добавить("AutoScrollMargin", "AutoScrollMargin");
+		СортированныйСписок1.Добавить("AutoScrollMinSize", "AutoScrollMinSize");
+		СортированныйСписок1.Добавить("AutoScrollOffset", "AutoScrollOffset");
+		СортированныйСписок1.Добавить("AutoScrollPosition", "AutoScrollPosition");
+		СортированныйСписок1.Добавить("AutoSize", "AutoSize");
+		СортированныйСписок1.Добавить("AutoSizeMode", "AutoSizeMode");
+		СортированныйСписок1.Добавить("AutoValidate", "AutoValidate");
+		СортированныйСписок1.Добавить("BackColor", "BackColor");
+		СортированныйСписок1.Добавить("BackgroundImage", "BackgroundImage");
+		СортированныйСписок1.Добавить("BackgroundImageLayout", "BackgroundImageLayout");
+		СортированныйСписок1.Добавить("BindingContext", "BindingContext");
+		СортированныйСписок1.Добавить("BorderStyle", "BorderStyle");
+		СортированныйСписок1.Добавить("Bottom", "Bottom");
+		СортированныйСписок1.Добавить("Bounds", "Bounds");
+		СортированныйСписок1.Добавить("CanFocus", "CanFocus");
+		СортированныйСписок1.Добавить("CanSelect", "CanSelect");
+		СортированныйСписок1.Добавить("Capture", "Capture");
+		СортированныйСписок1.Добавить("CausesValidation", "CausesValidation");
+		СортированныйСписок1.Добавить("ClientRectangle", "ClientRectangle");
+		СортированныйСписок1.Добавить("ClientSize", "ClientSize");
+		СортированныйСписок1.Добавить("CompanyName", "CompanyName");
+		СортированныйСписок1.Добавить("Container", "Container");
+		СортированныйСписок1.Добавить("ContainsFocus", "ContainsFocus");
+		СортированныйСписок1.Добавить("ContextMenu", "ContextMenu");
+		СортированныйСписок1.Добавить("ContextMenuStrip", "ContextMenuStrip");
+		СортированныйСписок1.Добавить("Controls", "Controls");
+		СортированныйСписок1.Добавить("Created", "Created");
+		СортированныйСписок1.Добавить("CurrentAutoScaleDimensions", "CurrentAutoScaleDimensions");
+		СортированныйСписок1.Добавить("Cursor", "Cursor");
+		СортированныйСписок1.Добавить("DataBindings", "DataBindings");
+		СортированныйСписок1.Добавить("DeviceDpi", "DeviceDpi");
+		СортированныйСписок1.Добавить("DisplayRectangle", "DisplayRectangle");
+		СортированныйСписок1.Добавить("Disposing", "Disposing");
+		СортированныйСписок1.Добавить("Dock", "Dock");
+		СортированныйСписок1.Добавить("DockPadding", "DockPadding");
+		СортированныйСписок1.Добавить("Enabled", "Enabled");
+		СортированныйСписок1.Добавить("Focused", "Focused");
+		СортированныйСписок1.Добавить("Font", "Font");
+		СортированныйСписок1.Добавить("ForeColor", "ForeColor");
+		СортированныйСписок1.Добавить("Handle", "Handle");
+		СортированныйСписок1.Добавить("HasChildren", "HasChildren");
+		СортированныйСписок1.Добавить("Height", "Height");
+		СортированныйСписок1.Добавить("HorizontalScroll", "HorizontalScroll");
+		СортированныйСписок1.Добавить("ImeMode", "ImeMode");
+		СортированныйСписок1.Добавить("InvokeRequired", "InvokeRequired");
+		СортированныйСписок1.Добавить("IsAccessible", "IsAccessible");
+		СортированныйСписок1.Добавить("IsDisposed", "IsDisposed");
+		СортированныйСписок1.Добавить("IsHandleCreated", "IsHandleCreated");
+		СортированныйСписок1.Добавить("IsMirrored", "IsMirrored");
+		СортированныйСписок1.Добавить("LayoutEngine", "LayoutEngine");
+		СортированныйСписок1.Добавить("Left", "Left");
+		СортированныйСписок1.Добавить("Location", "Location");
+		СортированныйСписок1.Добавить("Margin", "Margin");
+		СортированныйСписок1.Добавить("MaximumSize", "MaximumSize");
+		СортированныйСписок1.Добавить("MinimumSize", "MinimumSize");
+		СортированныйСписок1.Добавить("Name", "Name");
+		СортированныйСписок1.Добавить("Padding", "Padding");
+		СортированныйСписок1.Добавить("Parent", "Parent");
+		СортированныйСписок1.Добавить("ParentForm", "ParentForm");
+		СортированныйСписок1.Добавить("PreferredSize", "PreferredSize");
+		СортированныйСписок1.Добавить("ProductName", "ProductName");
+		СортированныйСписок1.Добавить("ProductVersion", "ProductVersion");
+		СортированныйСписок1.Добавить("RecreatingHandle", "RecreatingHandle");
+		СортированныйСписок1.Добавить("Region", "Region");
+		СортированныйСписок1.Добавить("Right", "Right");
+		СортированныйСписок1.Добавить("RightToLeft", "RightToLeft");
+		СортированныйСписок1.Добавить("Site", "Site");
+		СортированныйСписок1.Добавить("Size", "Size");
+		СортированныйСписок1.Добавить("TabIndex", "TabIndex");
+		СортированныйСписок1.Добавить("TabStop", "TabStop");
+		СортированныйСписок1.Добавить("Tag", "Tag");
+		СортированныйСписок1.Добавить("Text", "Text");
+		СортированныйСписок1.Добавить("Top", "Top");
+		СортированныйСписок1.Добавить("TopLevelControl", "TopLevelControl");
+		СортированныйСписок1.Добавить("UseWaitCursor", "UseWaitCursor");
+		СортированныйСписок1.Добавить("VerticalScroll", "VerticalScroll");
+		СортированныйСписок1.Добавить("Visible", "Visible");
+		СортированныйСписок1.Добавить("Width", "Width");
+		СортированныйСписок1.Добавить("WindowTarget", "WindowTarget");
 	ИначеЕсли ИмяКонтекстКлассаАнгл = "UserControl" Тогда
 		СортированныйСписок1.Добавить("ActiveControl", "ActiveControl");
 		СортированныйСписок1.Добавить("Anchor", "Anchor");
@@ -42377,7 +42908,153 @@
 Функция ДанныеДляДизайнера(КлассАнгл, СвойствоАнгл)
 	Стр1 = "";
 	
-	Если КлассАнгл = "System.Windows.Forms.DataGridViewCellStyle" и СвойствоАнгл = "Alignment" Тогда
+	Если КлассАнгл = "System.Windows.Forms.CircularProgressBar" и СвойствоАнгл = "AutoScroll" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.CircularProgressBar" и СвойствоАнгл = "ActiveControl" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Поведение~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.CircularProgressBar" и СвойствоАнгл = "ProductVersion" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Прочее~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.CircularProgressBar" и СвойствоАнгл = "Top" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.CircularProgressBar" и СвойствоАнгл = "Height" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.CircularProgressBar" и СвойствоАнгл = "Bounds" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.CircularProgressBar" и СвойствоАнгл = "DoubleClick" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.CircularProgressBar" и СвойствоАнгл = "Enabled" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Поведение~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.CircularProgressBar" и СвойствоАнгл = "FontBold" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.CircularProgressBar" и СвойствоАнгл = "DockPadding" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Прочее~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.CircularProgressBar" и СвойствоАнгл = "Capture" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Фокус~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.CircularProgressBar" и СвойствоАнгл = "Name" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Прочее~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.CircularProgressBar" и СвойствоАнгл = "ProductName" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Прочее~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.CircularProgressBar" и СвойствоАнгл = "FontName" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.CircularProgressBar" и СвойствоАнгл = "UseWaitCursor" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Внешний вид~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.CircularProgressBar" и СвойствоАнгл = "KeyUp" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.CircularProgressBar" и СвойствоАнгл = "KeyDown" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.CircularProgressBar" и СвойствоАнгл = "KeyPress" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.CircularProgressBar" и СвойствоАнгл = "ClientHeight" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.CircularProgressBar" и СвойствоАнгл = "ClientRectangle" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.CircularProgressBar" и СвойствоАнгл = "ClientSize" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.CircularProgressBar" и СвойствоАнгл = "ClientWidth" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.CircularProgressBar" и СвойствоАнгл = "ContextMenu" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Поведение~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.CircularProgressBar" и СвойствоАнгл = "Cursor" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Внешний вид~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.CircularProgressBar" и СвойствоАнгл = "Left" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.CircularProgressBar" и СвойствоАнгл = "MouseEnter" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.CircularProgressBar" и СвойствоАнгл = "MouseLeave" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.CircularProgressBar" и СвойствоАнгл = "Click" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.CircularProgressBar" и СвойствоАнгл = "Bottom" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.CircularProgressBar" и СвойствоАнгл = "ForeColor" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Внешний вид~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.CircularProgressBar" и СвойствоАнгл = "Visible" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Поведение~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.CircularProgressBar" и СвойствоАнгл = "Location" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.CircularProgressBar" и СвойствоАнгл = "LocationChanged" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.CircularProgressBar" и СвойствоАнгл = "TabIndex" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Поведение~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.CircularProgressBar" и СвойствоАнгл = "Right" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.CircularProgressBar" и СвойствоАнгл = "Enter" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.CircularProgressBar" и СвойствоАнгл = "MouseHover" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.CircularProgressBar" и СвойствоАнгл = "MouseDown" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.CircularProgressBar" и СвойствоАнгл = "MouseUp" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.CircularProgressBar" и СвойствоАнгл = "Move" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.CircularProgressBar" и СвойствоАнгл = "MouseMove" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.CircularProgressBar" и СвойствоАнгл = "Paint" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.CircularProgressBar" и СвойствоАнгл = "LostFocus" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.CircularProgressBar" и СвойствоАнгл = "Leave" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.CircularProgressBar" и СвойствоАнгл = "Size" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.CircularProgressBar" и СвойствоАнгл = "SizeChanged" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.CircularProgressBar" и СвойствоАнгл = "AutoScrollMargin" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.CircularProgressBar" и СвойствоАнгл = "FontSize" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.CircularProgressBar" и СвойствоАнгл = "Dock" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.CircularProgressBar" и СвойствоАнгл = "Focused" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Прочее~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.CircularProgressBar" и СвойствоАнгл = "TabStop" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Поведение~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.CircularProgressBar" и СвойствоАнгл = "Text" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Внешний вид~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=0~";//
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.CircularProgressBar" и СвойствоАнгл = "TextChanged" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.CircularProgressBar" и СвойствоАнгл = "CanFocus" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Фокус~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.CircularProgressBar" и СвойствоАнгл = "BackgroundImage" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Внешний вид~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.CircularProgressBar" и СвойствоАнгл = "BackColor" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Внешний вид~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.CircularProgressBar" и СвойствоАнгл = "Width" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.CircularProgressBar" и СвойствоАнгл = "Font" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Внешний вид~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.CircularProgressBar" и СвойствоАнгл = "TopLevelControl" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Поведение~Browsable=False~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.CircularProgressBar" и СвойствоАнгл = "ControlAdded" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.CircularProgressBar" и СвойствоАнгл = "ControlRemoved" Тогда
+		Стр1 = "DisplayName=~Description=~Category=~Browsable=Неопределено~ConverterTypeName=~AvailabilityOfTheProperty=0~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.CircularProgressBar" и СвойствоАнгл = "Anchor" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.CircularProgressBar" и СвойствоАнгл = "Value" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Поведение~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.CircularProgressBar" и СвойствоАнгл = "FinalColor" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Внешний вид~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.CircularProgressBar" и СвойствоАнгл = "Maximum" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Поведение~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.CircularProgressBar" и СвойствоАнгл = "InitialColor" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Внешний вид~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.CircularProgressBar" и СвойствоАнгл = "Clockwise" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Поведение~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.CircularProgressBar" и СвойствоАнгл = "TextMode" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Поведение~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.CircularProgressBar" и СвойствоАнгл = "ProgressShape" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Внешний вид~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.CircularProgressBar" и СвойствоАнгл = "CircleColor" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Внешний вид~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.CircularProgressBar" и СвойствоАнгл = "LineColor" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Внешний вид~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.CircularProgressBar" и СвойствоАнгл = "LineWidth" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Поведение~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.CircularProgressBar" и СвойствоАнгл = "BarWidth" Тогда
+		Стр1 = "DisplayName=~Description=~Category=Поведение~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
+	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewCellStyle" и СвойствоАнгл = "Alignment" Тогда
 		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";
 	ИначеЕсли КлассАнгл = "System.Windows.Forms.DataGridViewCellStyle" и СвойствоАнгл = "Padding" Тогда
 		Стр1 = "DisplayName=~Description=~Category=Макет~Browsable=True~ConverterTypeName=~AvailabilityOfTheProperty=1~";

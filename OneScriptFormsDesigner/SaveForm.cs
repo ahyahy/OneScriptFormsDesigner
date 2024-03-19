@@ -1230,12 +1230,16 @@ namespace osfDesigner
                 return;
             }
             // Если это цвет.
-            if (valueName == "ОсновнойЦвет" ||
+            if (valueName == "КонечныйЦвет" ||
+                valueName == "НачальныйЦвет" || 
+                valueName == "ОсновнойЦвет" ||
                 valueName == "ОсновнойЦветВыделенного" ||
                 valueName == "ОсновнойЦветЗаголовков" ||
                 valueName == "ПрозрачныйЦвет" ||
                 valueName == "Цвет" ||
                 valueName == "ЦветАктивнойСсылки" ||
+                valueName == "ЦветКруга" ||
+                valueName == "ЦветЛинии" ||
                 valueName == "ЦветПосещеннойСсылки" ||
                 valueName == "ЦветСетки" ||
                 valueName == "ЦветСсылки" ||
@@ -1398,6 +1402,7 @@ namespace osfDesigner
                 valueName == "ГоризонтальнаяМера" ||
                 valueName == "ЗадержкаОчередногоПоказа" ||
                 valueName == "ЗадержкаПоявления" ||
+                (valueName == "Значение" && val.GetType() == typeof(osfDesigner.CircularProgressBar)) ||
                 (valueName == "Значение" && val.GetType() == typeof(osfDesigner.HProgressBar)) ||
                 (valueName == "Значение" && val.GetType() == typeof(osfDesigner.VProgressBar)) ||
                 (valueName == "Значение" && val.GetType() == typeof(osfDesigner.HScrollBar)) ||
@@ -1431,6 +1436,8 @@ namespace osfDesigner
                 valueName == "ШиринаВыпадающегоСписка" ||
                 valueName == "ШиринаЗаголовковСтрок" ||
                 valueName == "ШиринаКолонки" ||
+                valueName == "ШиринаЛинии" ||
+                valueName == "ШиринаПолосы" ||
                 valueName == "ШиринаРазделителя")
             {
                 AddToScript(compName + "." + valueName + " = " + compValue.Replace(CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator, ".") + ";");
@@ -1487,6 +1494,16 @@ namespace osfDesigner
                 return;
             }
             // Если это Перечисление.
+            if (valueName == "РежимТекста")
+            {
+                AddToScript(compName + "." + valueName + " = " + "" + NameObjectOneScriptForms + @".РежимТекста." + compValue + ";");
+                return;
+            }
+            if (valueName == "ФормаИндикатора")
+            {
+                AddToScript(compName + "." + valueName + " = " + "" + NameObjectOneScriptForms + @".ФормаИндикатора." + compValue + ";");
+                return;
+            }
             if (valueName == "СтильСкрипта")
             {
                 AddToScript(compName + "." + valueName + " = \u0022" + compValue + "\u0022;");

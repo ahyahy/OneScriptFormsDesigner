@@ -2489,6 +2489,10 @@ namespace osfDesigner
             toolUserControl.DisplayName = "ПользовательскийЭлементУправления (UserControl)";
             listBox1.Items.Add(toolUserControl);
 
+            ToolboxItem toolCircularProgressBar = new ToolboxItem(typeof(CircularProgressBar));
+            toolCircularProgressBar.DisplayName = "КольцевойИндикатор (CircularProgressBar)";
+            listBox1.Items.Add(toolCircularProgressBar);
+
             ToolboxItem toolVScrollBar = new ToolboxItem(typeof(VScrollBar));
             toolVScrollBar.DisplayName = "ВертикальнаяПрокрутка (VScrollBar)";
             listBox1.Items.Add(toolVScrollBar);
@@ -3294,7 +3298,12 @@ namespace osfDesigner
                 strFile = File.ReadAllText(fileName);
             }
 
-            string NameObjectOneScriptForms = OneScriptFormsDesigner.ParseBetween(strFile, ".ИмяОбъектаФормыДляОдноСкрипта = \u0022", "\u0022;");
+            string NameObjectOneScriptForms;
+            NameObjectOneScriptForms = OneScriptFormsDesigner.ParseBetween(strFile, ".ИмяОбъектаФормыДляОдноСкрипта = \u0022", "\u0022;");
+            if (NameObjectOneScriptForms == null)
+            {
+                NameObjectOneScriptForms = "Ф";
+            }
 
             OneScriptFormsDesigner.block2 = true;
 

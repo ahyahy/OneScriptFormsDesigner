@@ -555,12 +555,16 @@ namespace osfDesigner
                 return;
             }	
             // Если это цвет.
-            if (displayName == "ОсновнойЦвет" ||
+            if (displayName == "КонечныйЦвет" ||
+                displayName == "НачальныйЦвет" ||
+                displayName == "ОсновнойЦвет" ||
                 displayName == "ОсновнойЦветВыделенного" ||
                 displayName == "ОсновнойЦветЗаголовков" ||
                 displayName == "ПрозрачныйЦвет" ||
                 displayName == "Цвет" ||
                 displayName == "ЦветАктивнойСсылки" ||
+                displayName == "ЦветКруга" ||
+                displayName == "ЦветЛинии" ||
                 displayName == "ЦветПосещеннойСсылки" ||
                 displayName == "ЦветСетки" ||
                 displayName == "ЦветСсылки" ||
@@ -730,9 +734,7 @@ namespace osfDesigner
                 displayName == "ИмяСвойстваДанных" ||
                 displayName == "ИмяСтиля" ||
                 displayName == "Маска" ||
-
                 displayName == "ИмяОбъектаФормыДляОдноСкрипта" ||
-
                 displayName == "ИмяФайла" ||
                 displayName == "НачальныйКаталог" ||
                 displayName == "Описание" ||
@@ -794,6 +796,7 @@ namespace osfDesigner
                 displayName == "ГоризонтальнаяМера" ||
                 displayName == "ЗадержкаОчередногоПоказа" ||
                 displayName == "ЗадержкаПоявления" ||
+                (displayName == "Значение" && control.GetType() == typeof(osfDesigner.CircularProgressBar)) ||	
                 (displayName == "Значение" && control.GetType() == typeof(osfDesigner.HProgressBar)) ||
                 (displayName == "Значение" && control.GetType() == typeof(osfDesigner.VProgressBar)) ||
                 (displayName == "Значение" && control.GetType() == typeof(osfDesigner.HScrollBar)) ||
@@ -827,6 +830,8 @@ namespace osfDesigner
                 displayName == "ШиринаВыпадающегоСписка" ||
                 displayName == "ШиринаЗаголовковСтрок" ||
                 displayName == "ШиринаКолонки" ||
+                displayName == "ШиринаЛинии" ||
+                displayName == "ШиринаПолосы" ||	
                 displayName == "ШиринаРазделителя")	
             {
                 string propertyName = OneScriptFormsDesigner.GetPropName(control, displayName);
@@ -940,6 +945,7 @@ namespace osfDesigner
                 displayName == "РежимМасштабирования" ||
                 displayName == "РежимОтображения" ||
                 displayName == "РежимРисования" ||
+                displayName == "РежимТекста" ||	
                 displayName == "РезультатДиалога" ||
                 displayName == "Сортировка" ||
                 displayName == "СортировкаСвойств" ||
@@ -954,6 +960,7 @@ namespace osfDesigner
                 displayName == "ТипСлияния" ||
                 displayName == "ФильтрУведомлений" ||
                 displayName == "Формат" ||
+                displayName == "ФормаИндикатора" ||	
                 displayName == "ФорматМаски" ||
                 displayName == "Якорь")
             {
