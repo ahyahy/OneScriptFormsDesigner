@@ -5,17 +5,16 @@ using System.Windows.Forms;
 
 namespace osfDesigner
 {
-    [Docking(DockingBehavior.Never)]
-    public class Panel : System.Windows.Forms.Panel
+    public class VScrollBar : System.Windows.Forms.VScrollBar
     {
 
         private string _DoubleClick_osf;
+        private string _ValueChanged_osf;
         private string _KeyUp_osf;
         private string _KeyDown_osf;
         private string _KeyPress_osf;
         private string _MouseEnter_osf;
         private string _MouseLeave_osf;
-        private string _Click_osf;
         private string _LocationChanged_osf;
         private string _Enter_osf;
         private string _MouseHover_osf;
@@ -25,27 +24,27 @@ namespace osfDesigner
         private string _MouseMove_osf;
         private string _Paint_osf;
         private string _LostFocus_osf;
+        private string _Scroll_osf;
         private string _Leave_osf;
         private string _SizeChanged_osf;
         private string _TextChanged_osf;
         private string _ControlAdded_osf;
         private string _ControlRemoved_osf;
 
-        public Panel()
+        public VScrollBar()
         {
             Enabled_osf = base.Enabled;
             Visible_osf = base.Visible;
         }
 
-        [DisplayName("АвтоПрокрутка")]
-        [Description("Возвращает или задает значение, указывающее, позволит ли контейнер пользователю прокручивать любые элементы управления, размещенные за пределами его видимых границ.")]
-        [Category("Макет")]
+        [DisplayName("БольшоеИзменение")]
+        [Description("Возвращает или задает значение, добавляемое или вычитаемое из свойства ПолосаПрокрутки.Значение (ScrollBar.Value) при перемещении ползунка на большое расстояние.")]
+        [Category("Поведение")]
         [Browsable(true)]
-        [TypeConverter(typeof(MyBooleanConverter))]
-        public new bool AutoScroll
+        public new int LargeChange
         {
-            get { return base.AutoScroll; }
-            set { base.AutoScroll = value; }
+            get { return base.LargeChange; }
+            set { base.LargeChange = value; }
         }
 
         [DisplayName("ДвойноеНажатие")]
@@ -67,6 +66,26 @@ namespace osfDesigner
 				
         [Browsable(false)]
         public new bool Enabled { get; set; }
+
+        [DisplayName("Значение")]
+        [Description("Возвращает или задает числовое значение, представляющее текущее положение ползунка на полосе прокрутки.")]
+        [Category("Поведение")]
+        [Browsable(true)]
+        public new int Value
+        {
+            get { return base.Value; }
+            set { base.Value = value; }
+        }
+
+        [DisplayName("ЗначениеИзменено")]
+        [Description("Возвращает или задает код при изменении свойства Значение (Value), либо вследствии события ПриПрокручивании (Scroll), либо программными средствами.")]
+        [Category("Прочее")]
+        [Browsable(true)]
+        public  string ValueChanged_osf
+        {
+            get { return _ValueChanged_osf; }
+            set { _ValueChanged_osf = value; }
+        }
 
         [DisplayName("ИспользоватьКурсорОжидания")]
         [Description("Возвращает или задает значение, указывающее, следует ли использовать курсор ожидания для текущего элемента управления и всех дочерних элементов управления.")]
@@ -121,6 +140,36 @@ namespace osfDesigner
             set { base.Cursor = value; }
         }
 
+        [DisplayName("Максимум")]
+        [Description("Возвращает или задает верхнюю границу значений диапазона прокрутки.")]
+        [Category("Поведение")]
+        [Browsable(true)]
+        public new int Maximum
+        {
+            get { return base.Maximum; }
+            set { base.Maximum = value; }
+        }
+
+        [DisplayName("МалоеИзменение")]
+        [Description("Возвращает или задает значение, добавляемое или вычитаемое из свойства ПолосаПрокрутки.Значение (ScrollBar.Value) при перемещении ползунка на маленькое расстояние.")]
+        [Category("Поведение")]
+        [Browsable(true)]
+        public new int SmallChange
+        {
+            get { return base.SmallChange; }
+            set { base.SmallChange = value; }
+        }
+
+        [DisplayName("Минимум")]
+        [Description("Возвращает или задает нижнюю границу значений диапазона прокрутки.")]
+        [Category("Поведение")]
+        [Browsable(true)]
+        public new int Minimum
+        {
+            get { return base.Minimum; }
+            set { base.Minimum = value; }
+        }
+
         [DisplayName("МышьНадЭлементом")]
         [Description("Возвращает или задает код для выполнения, когда указатель мыши находится над элементом управления.")]
         [Category("Прочее")]
@@ -139,28 +188,6 @@ namespace osfDesigner
         {
             get { return _MouseLeave_osf; }
             set { _MouseLeave_osf = value; }
-        }
-
-        [DisplayName("Нажатие")]
-        [Description("Возвращает или задает код для выполнения при нажатии элемента управления.")]
-        [Category("Прочее")]
-        [Browsable(true)]
-        public  string Click_osf
-        {
-            get { return _Click_osf; }
-            set { _Click_osf = value; }
-        }
-
-        [DisplayName("ОсновнойЦвет")]
-        [Description("Возвращает или задает цвет переднего плана элемента управления.")]
-        [Category("Внешний вид")]
-        [Browsable(true)]
-        [TypeConverter(typeof(MyColorConverter))]
-        [Editor(typeof(MyColorEditor), typeof(UITypeEditor))]
-        public new Color ForeColor
-        {
-            get { return base.ForeColor; }
-            set { base.ForeColor = value; }
         }
 
         [DisplayName("Отображать")]
@@ -288,6 +315,16 @@ namespace osfDesigner
             set { _LostFocus_osf = value; }
         }
 
+        [DisplayName("ПриПрокручивании")]
+        [Description("Возвращает или задает код для выполнения, при перемещении ползунка полосы прокрутки, с помощью мыши или клавиатурой.")]
+        [Category("Прочее")]
+        [Browsable(true)]
+        public  string Scroll_osf
+        {
+            get { return _Scroll_osf; }
+            set { _Scroll_osf = value; }
+        }
+
         [DisplayName("ПриУходе")]
         [Description("Возвращает или задает код для выполнения, когда фокус ввода покидает элемент управления.")]
         [Category("Прочее")]
@@ -318,28 +355,6 @@ namespace osfDesigner
         {
             get { return _SizeChanged_osf; }
             set { _SizeChanged_osf = value; }
-        }
-
-        [DisplayName("РазмерПоляАвтоПрокрутки")]
-        [Description("Возвращает или задает размер поля автоматической прокрутки.")]
-        [Category("Макет")]
-        [Browsable(true)]
-        [TypeConverter(typeof(MySizeConverter))]
-        [Editor(typeof(MySizeEditor), typeof(UITypeEditor))]
-        public new Size AutoScrollMargin
-        {
-            get { return base.AutoScrollMargin; }
-            set { base.AutoScrollMargin = value; }
-        }
-
-        [DisplayName("СтильГраницы")]
-        [Description("Указывает стиль границы элемента управления.")]
-        [Category("Внешний вид")]
-        [Browsable(true)]
-        public new BorderStyle BorderStyle
-        {
-            get { return (BorderStyle)base.BorderStyle; }
-            set { base.BorderStyle = (System.Windows.Forms.BorderStyle)value; }
         }
 
         [DisplayName("Стыковка")]
@@ -374,42 +389,6 @@ namespace osfDesigner
             set { _TextChanged_osf = value; }
         }
 
-        [DisplayName("ФоновоеИзображение")]
-        [Description("Возвращает или задает фоновое изображение, отображаемое в элементе управления.")]
-        [Category("Внешний вид")]
-        [Browsable(true)]
-        [TypeConverter(typeof(MyImageConverter))]
-        [Editor(typeof(MyImageFileNameEditor), typeof(UITypeEditor))]
-        [DefaultValue(null)]
-        public new Bitmap BackgroundImage
-        {
-            get { return (Bitmap)base.BackgroundImage; }
-            set { base.BackgroundImage = value; }
-        }
-
-        [DisplayName("ЦветФона")]
-        [Description("Возвращает или задает цвет фона для элемента управления.")]
-        [Category("Внешний вид")]
-        [Browsable(true)]
-        [TypeConverter(typeof(MyColorConverter))]
-        [Editor(typeof(MyColorEditor), typeof(UITypeEditor))]
-        public new Color BackColor
-        {
-            get { return base.BackColor; }
-            set { base.BackColor = value; }
-        }
-
-        [DisplayName("Шрифт")]
-        [Description("Возвращает или задает шрифт текста, отображаемый элементом управления.")]
-        [Category("Внешний вид")]
-        [Browsable(true)]
-        [TypeConverter(typeof(MyFontConverter))]
-        public new Font Font
-        {
-            get { return base.Font; }
-            set { base.Font = value; }
-        }
-
         [DisplayName("ЭлементДобавлен")]
         [Description("Возвращает или задает код для выполнения при добавлении нового элемента управления в ЭлементыУправления (ControlCollection).")]
         [Category("Прочее")]
@@ -442,76 +421,130 @@ namespace osfDesigner
         }
 
         [Browsable(false)]
-        [ReadOnly(true)]
-        public new string AccessibleDescription { get; set; }
-
+        public new dynamic AccessibilityObject { get; set; }
+        
         [Browsable(false)]
-        [ReadOnly(true)]
-        public new string AccessibleName { get; set; }
-
+        public new dynamic AccessibleDefaultActionDescription { get; set; }
+        
         [Browsable(false)]
-        [ReadOnly(true)]
-        public new System.Windows.Forms.AccessibleRole AccessibleRole { get; set; }
-
+        public new dynamic AccessibleDescription { get; set; }
+        
         [Browsable(false)]
-        [ReadOnly(true)]
-        public new bool AllowDrop { get; set; }
-
+        public new dynamic AccessibleName { get; set; }
+        
         [Browsable(false)]
-        [ReadOnly(true)]
-        public new Size AutoScrollMinSize { get; set; }
-
+        public new dynamic AccessibleRole { get; set; }
+        
         [Browsable(false)]
-        [ReadOnly(true)]
-        public new bool AutoSize { get; set; }
-
+        public new dynamic AllowDrop { get; set; }
+        
         [Browsable(false)]
-        [ReadOnly(true)]
-        public new System.Windows.Forms.AutoSizeMode AutoSizeMode { get; set; }
-
+        public new dynamic AutoScrollOffset { get; set; }
+        
         [Browsable(false)]
-        [ReadOnly(true)]
-        public new System.Windows.Forms.ImageLayout BackgroundImageLayout { get; set; }
-
+        public new dynamic AutoSize { get; set; }
+        
         [Browsable(false)]
-        [ReadOnly(true)]
-        public new bool CausesValidation { get; set; }
-
+        public new dynamic BackgroundImageLayout { get; set; }
+        
         [Browsable(false)]
-        [ReadOnly(true)]
-        public new System.Windows.Forms.ContextMenuStrip ContextMenuStrip { get; set; }
-		
+        public new dynamic BindingContext { get; set; }
+        
         [Browsable(false)]
-        [ReadOnly(true)]
-        public new System.Windows.Forms.ControlBindingsCollection DataBindings { get; set; }
-
+        public new dynamic CanSelect { get; set; }
+        
         [Browsable(false)]
-        [ReadOnly(true)]
-        public new System.Windows.Forms.ImeMode ImeMode { get; set; }
-
+        public new dynamic CausesValidation { get; set; }
+        
         [Browsable(false)]
-        [ReadOnly(true)]
-        public new System.Windows.Forms.Padding Margin { get; set; }
-
+        public new dynamic CompanyName { get; set; }
+        
         [Browsable(false)]
-        [ReadOnly(true)]
-        public new Size MaximumSize { get; set; }
-
+        public new dynamic Container { get; set; }
+        
         [Browsable(false)]
-        [ReadOnly(true)]
-        public new Size MinimumSize { get; set; }
-
+        public new dynamic ContainsFocus { get; set; }
+        
         [Browsable(false)]
-        [ReadOnly(true)]
-        public new System.Windows.Forms.Padding Padding { get; set; }
-
+        public new dynamic ContextMenuStrip { get; set; }
+        
         [Browsable(false)]
-        [ReadOnly(true)]
-        public new System.Windows.Forms.RightToLeft RightToLeft { get; set; }
-
+        public new dynamic Created { get; set; }
+        
         [Browsable(false)]
-        [ReadOnly(true)]
-        public new object Tag { get; set; }
+        public new dynamic DataBindings { get; set; }
+        
+        [Browsable(false)]
+        public dynamic DeviceDpi { get; set; }
+        
+        [Browsable(false)]
+        public new dynamic DisplayRectangle { get; set; }
+        
+        [Browsable(false)]
+        public new dynamic Disposing { get; set; }
+        
+        [Browsable(false)]
+        public new dynamic Handle { get; set; }
+        
+        [Browsable(false)]
+        public new dynamic HasChildren { get; set; }
+        
+        [Browsable(false)]
+        public new dynamic ImeMode { get; set; }
+        
+        [Browsable(false)]
+        public new dynamic InvokeRequired { get; set; }
+        
+        [Browsable(false)]
+        public new dynamic IsAccessible { get; set; }
+        
+        [Browsable(false)]
+        public new dynamic IsDisposed { get; set; }
+        
+        [Browsable(false)]
+        public new dynamic IsHandleCreated { get; set; }
+        
+        [Browsable(false)]
+        public new dynamic IsMirrored { get; set; }
+        
+        [Browsable(false)]
+        public new dynamic LayoutEngine { get; set; }
+        
+        [Browsable(false)]
+        public new dynamic Margin { get; set; }
+        
+        [Browsable(false)]
+        public new dynamic MaximumSize { get; set; }
+        
+        [Browsable(false)]
+        public new dynamic MinimumSize { get; set; }
+        
+        [Browsable(false)]
+        public new dynamic Padding { get; set; }
+        
+        [Browsable(false)]
+        public new dynamic PreferredSize { get; set; }
+        
+        [Browsable(false)]
+        public new dynamic RecreatingHandle { get; set; }
+        
+        [Browsable(false)]
+        public new dynamic Region { get; set; }
+        
+        [Browsable(false)]
+        public new dynamic RightToLeft { get; set; }
+        
+        [Browsable(false)]
+        public dynamic ScaleScrollBarForDpiChange { get; set; }
+        
+        [Browsable(false)]
+        public new dynamic Site { get; set; }
+        
+        [Browsable(false)]
+        public new dynamic Tag { get; set; }
+        
+        [Browsable(false)]
+        public new dynamic WindowTarget { get; set; }
 
         private System.Collections.Hashtable toolTip = new System.Collections.Hashtable();
         [Browsable(false)]

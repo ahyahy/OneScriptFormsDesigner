@@ -1,17 +1,13 @@
-﻿using System.ComponentModel.Design;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Drawing.Design;
 using System.Drawing;
-using System.Windows.Forms.Design;
 using System.Windows.Forms;
-using System;
 
 namespace osfDesigner
 {
-    [Docking(DockingBehavior.Never)]
-    public class PictureBox : System.Windows.Forms.PictureBox
+    public class ToolBar : System.Windows.Forms.ToolBar
     {
-        private int tic = 0; // Счетчик для правильной работы смарт-тэгов.
+
         private string _DoubleClick_osf;
         private string _KeyUp_osf;
         private string _KeyDown_osf;
@@ -22,6 +18,7 @@ namespace osfDesigner
         private string _LocationChanged_osf;
         private string _Enter_osf;
         private string _MouseHover_osf;
+        private string _ButtonClick_osf;
         private string _MouseDown_osf;
         private string _MouseUp_osf;
         private string _Move_osf;
@@ -34,10 +31,31 @@ namespace osfDesigner
         private string _ControlAdded_osf;
         private string _ControlRemoved_osf;
 
-        public PictureBox()
+        public ToolBar()
         {
             Enabled_osf = base.Enabled;
             Visible_osf = base.Visible;
+        }
+
+        [DisplayName("АвтоРазмер")]
+        [Description("Возвращает или задает значение, указывающее, настраивается ли размер панели инструментов автоматически, исходя из размера кнопок и стиля закрепления.")]
+        [Category("Поведение")]
+        [Browsable(true)]
+        [TypeConverter(typeof(MyBooleanConverter))]
+        public new bool AutoSize
+        {
+            get { return base.AutoSize; }
+            set { base.AutoSize = value; }
+        }
+
+        [DisplayName("ВыравниваниеТекста")]
+        [Description("Возвращает или задает выравнивание текста относительно изображений, отображаемых на кнопках панели инструментов.")]
+        [Category("Внешний вид")]
+        [Browsable(true)]
+        public new ToolBarTextAlign TextAlign
+        {
+            get { return (ToolBarTextAlign)base.TextAlign; }
+            set { base.TextAlign = (System.Windows.Forms.ToolBarTextAlign)value; }
         }
 
         [DisplayName("ДвойноеНажатие")]
@@ -59,19 +77,6 @@ namespace osfDesigner
 				
         [Browsable(false)]
         public new bool Enabled { get; set; }
-
-        [DisplayName("Изображение")]
-        [Description("Возвращает или задает изображение, отображаемое ПолеКартинки (PictureBox).")]
-        [Category("Внешний вид")]
-        [Browsable(true)]
-        [TypeConverter(typeof(MyImageConverter))]
-        [Editor(typeof(MyImageFileNameEditor), typeof(UITypeEditor))]
-        [DefaultValue(null)]
-        public new Bitmap Image
-        {
-            get { return (Bitmap)base.Image; }
-            set { base.Image = value; }
-        }
 
         [DisplayName("ИспользоватьКурсорОжидания")]
         [Description("Возвращает или задает значение, указывающее, следует ли использовать курсор ожидания для текущего элемента управления и всех дочерних элементов управления.")]
@@ -112,6 +117,17 @@ namespace osfDesigner
         {
             get { return _KeyPress_osf; }
             set { _KeyPress_osf = value; }
+        }
+
+        [DisplayName("Кнопки")]
+        [Description("Возвращает коллекцию элементов ПанельИнструментов.Кнопки (ToolBar.Buttons) для элемента управления ПанельИнструментов (ToolBar).")]
+        [Category("Поведение")]
+        [Browsable(true)]
+        [TypeConverter(typeof(MyCollectionConverter))]
+        [Editor(typeof(MyToolBarButtonCollectionEditor), typeof(UITypeEditor))]
+        public new ToolBarButtonCollection Buttons
+        {
+            get { return base.Buttons; }
         }
 
         [DisplayName("Курсор")]
@@ -166,6 +182,38 @@ namespace osfDesigner
         [Browsable(false)]
         public new bool Visible { get; set; }
 
+        [DisplayName("Оформление")]
+        [Description("Возвращает или задает значение, которое определяет внешний вид панели инструментов и ее кнопок.")]
+        [Category("Поведение")]
+        [Browsable(true)]
+        public new ToolBarAppearance Appearance
+        {
+            get { return (ToolBarAppearance)base.Appearance; }
+            set { base.Appearance = (System.Windows.Forms.ToolBarAppearance)value; }
+        }
+
+        [DisplayName("Переносить")]
+        [Description("Возвращает или задает значение, указывающее, переносятся ли кнопки панели инструментов на следующую строку, если размер панели инструментов становится недостаточным для отображения всех кнопок в одной строке.")]
+        [Category("Поведение")]
+        [Browsable(true)]
+        [TypeConverter(typeof(MyBooleanConverter))]
+        public new bool Wrappable
+        {
+            get { return base.Wrappable; }
+            set { base.Wrappable = value; }
+        }
+
+        [DisplayName("ПоказатьПодсказку")]
+        [Description("Возвращает или задает значение, указывающее, отображаются ли всплывающие подсказки для каждой кнопки панели инструментов.")]
+        [Category("Поведение")]
+        [Browsable(true)]
+        [TypeConverter(typeof(MyBooleanConverter))]
+        public new bool ShowToolTips
+        {
+            get { return base.ShowToolTips; }
+            set { base.ShowToolTips = value; }
+        }
+
         [DisplayName("Положение")]
         [Description("Возвращает или задает координаты верхнего левого угла элемента управления относительно верхнего левого угла его контейнера.")]
         [Category("Макет")]
@@ -191,6 +239,16 @@ namespace osfDesigner
             set { _LocationChanged_osf = value; }
         }
 
+        [DisplayName("ПорядокОбхода")]
+        [Description("Возвращает или задает последовательность перехода по клавише TAB между элементами управления внутри контейнера.")]
+        [Category("Поведение")]
+        [Browsable(true)]
+        public new int TabIndex
+        {
+            get { return base.TabIndex; }
+            set { base.TabIndex = value; }
+        }
+
         [DisplayName("ПриВходе")]
         [Description("Возвращает или задает код для выполнения при входе в элемент управления.")]
         [Category("Прочее")]
@@ -209,6 +267,16 @@ namespace osfDesigner
         {
             get { return _MouseHover_osf; }
             set { _MouseHover_osf = value; }
+        }
+
+        [DisplayName("ПриНажатииКнопки")]
+        [Description("Возвращает или задает код для выполнения при нажатии кнопки панели инструментов на панели инструментов.")]
+        [Category("Прочее")]
+        [Browsable(true)]
+        public  string ButtonClick_osf
+        {
+            get { return _ButtonClick_osf; }
+            set { _ButtonClick_osf = value; }
         }
 
         [DisplayName("ПриНажатииКнопкиМыши")]
@@ -281,6 +349,17 @@ namespace osfDesigner
             set { _Leave_osf = value; }
         }
 
+        [DisplayName("Разделитель")]
+        [Description("Возвращает или задает значение, указывающее, отображается ли в панели инструментов разделитель.")]
+        [Category("Внешний вид")]
+        [Browsable(true)]
+        [TypeConverter(typeof(MyBooleanConverter))]
+        public new bool Divider
+        {
+            get { return base.Divider; }
+            set { base.Divider = value; }
+        }
+
         [DisplayName("Размер")]
         [Description("Возвращает или задает высоту и ширину элемента управления.")]
         [Category("Макет")]
@@ -303,34 +382,48 @@ namespace osfDesigner
             set { _SizeChanged_osf = value; }
         }
 
-        [DisplayName("РазмещениеФоновогоИзображения")]
-        [Description("Возвращает или задает размещение фонового изображения в соответствии с перечислением РазмещениеИзображения (ImageLayout).")]
+        [DisplayName("РазмерКнопки")]
+        [Description("Возвращает или задает размер кнопок в панели инструментов.")]
         [Category("Внешний вид")]
         [Browsable(true)]
-        public new ImageLayout BackgroundImageLayout
+        [TypeConverter(typeof(MySizeConverter))]
+        [Editor(typeof(MySizeEditor), typeof(UITypeEditor))]
+        public new Size ButtonSize
         {
-            get { return (ImageLayout)base.BackgroundImageLayout; }
-            set { base.BackgroundImageLayout = (System.Windows.Forms.ImageLayout)value; }
+            get { return base.ButtonSize; }
+            set { base.ButtonSize = value; }
         }
 
-        [DisplayName("РежимМасштабирования")]
-        [Description("Указывает способ отображения изображения.")]
+        [DisplayName("СписокИзображений")]
+        [Description("Возвращает или задает коллекцию изображений, доступных для кнопок панели инструментов.")]
         [Category("Поведение")]
         [Browsable(true)]
-        public new PictureBoxSizeMode SizeMode
+        [TypeConverter(typeof(MyImageListConverter))]
+        public new System.Windows.Forms.ImageList ImageList
         {
-            get { return (PictureBoxSizeMode)base.SizeMode; }
-            set { base.SizeMode = (System.Windows.Forms.PictureBoxSizeMode)value; }
+            get { return base.ImageList; }
+            set { base.ImageList = value; }
         }
 
         [DisplayName("СтильГраницы")]
-        [Description("Указывает стиль границы элемента управления.")]
+        [Description("Возвращает или задает стиль границы панели инструментов.")]
         [Category("Внешний вид")]
         [Browsable(true)]
         public new BorderStyle BorderStyle
         {
             get { return (BorderStyle)base.BorderStyle; }
             set { base.BorderStyle = (System.Windows.Forms.BorderStyle)value; }
+        }
+
+        [DisplayName("Стрелки")]
+        [Description("Возвращает или задает значение, указывающее, отображаются ли стрелки на кнопках с раскрывающимися списками.")]
+        [Category("Внешний вид")]
+        [Browsable(true)]
+        [TypeConverter(typeof(MyBooleanConverter))]
+        public new bool DropDownArrows
+        {
+            get { return base.DropDownArrows; }
+            set { base.DropDownArrows = value; }
         }
 
         [DisplayName("Стыковка")]
@@ -344,6 +437,17 @@ namespace osfDesigner
             set { base.Dock = (System.Windows.Forms.DockStyle)value; }
         }
 
+        [DisplayName("ТабФокус")]
+        [Description("Возвращает или задает значение, указывающее, может ли пользователь перевести фокус на данный элемент управления при помощи клавиши TAB.")]
+        [Category("Поведение")]
+        [Browsable(true)]
+        [TypeConverter(typeof(MyBooleanConverter))]
+        public new bool TabStop
+        {
+            get { return base.TabStop; }
+            set { base.TabStop = value; }
+        }
+
         [DisplayName("ТекстИзменен")]
         [Description("Возвращает или задает код для выполнения, при изменении свойства Текст (Text).")]
         [Category("Прочее")]
@@ -354,29 +458,15 @@ namespace osfDesigner
             set { _TextChanged_osf = value; }
         }
 
-        [DisplayName("ФоновоеИзображение")]
-        [Description("Возвращает или задает фоновое изображение, отображаемое в элементе управления.")]
+        [DisplayName("Шрифт")]
+        [Description("Возвращает или задает шрифт текста, отображаемый элементом управления.")]
         [Category("Внешний вид")]
         [Browsable(true)]
-        [TypeConverter(typeof(MyImageConverter))]
-        [Editor(typeof(MyImageFileNameEditor), typeof(UITypeEditor))]
-        [DefaultValue(null)]
-        public new Bitmap BackgroundImage
+        [TypeConverter(typeof(MyFontConverter))]
+        public new Font Font
         {
-            get { return (Bitmap)base.BackgroundImage; }
-            set { base.BackgroundImage = value; }
-        }
-
-        [DisplayName("ЦветФона")]
-        [Description("Возвращает или задает цвет фона для элемента управления.")]
-        [Category("Внешний вид")]
-        [Browsable(true)]
-        [TypeConverter(typeof(MyColorConverter))]
-        [Editor(typeof(MyColorEditor), typeof(UITypeEditor))]
-        public new Color BackColor
-        {
-            get { return base.BackColor; }
-            set { base.BackColor = value; }
+            get { return base.Font; }
+            set { base.Font = value; }
         }
 
         [DisplayName("ЭлементДобавлен")]
@@ -411,204 +501,52 @@ namespace osfDesigner
         }
 
         [Browsable(false)]
-        public new dynamic AccessibilityObject { get; set; }
-        
-        [Browsable(false)]
-        public new dynamic AccessibleDefaultActionDescription { get; set; }
-        
-        [Browsable(false)]
-        public new dynamic AccessibleDescription { get; set; }
-        
-        [Browsable(false)]
-        public new dynamic AccessibleName { get; set; }
-        
-        [Browsable(false)]
-        public new dynamic AccessibleRole { get; set; }
-        
-        [Browsable(false)]
-        public new dynamic AllowDrop { get; set; }
-        
-        [Browsable(false)]
-        public new dynamic AutoScrollOffset { get; set; }
-        
-        [Browsable(false)]
-        public new dynamic AutoSize { get; set; }
-        
-        [Browsable(false)]
-        public new dynamic BindingContext { get; set; }
-        
-        [Browsable(false)]
-        public new dynamic CanSelect { get; set; }
-        
-        [Browsable(false)]
-        public new dynamic CausesValidation { get; set; }
-        
-        [Browsable(false)]
-        public new dynamic CompanyName { get; set; }
-        
-        [Browsable(false)]
-        public new dynamic Container { get; set; }
-        
-        [Browsable(false)]
-        public new dynamic ContainsFocus { get; set; }
-        
-        [Browsable(false)]
-        public new dynamic ContextMenuStrip { get; set; }
-        
-        [Browsable(false)]
-        public new dynamic Created { get; set; }
-        
-        [Browsable(false)]
-        public new dynamic DataBindings { get; set; }
-        
-        [Browsable(false)]
-        public dynamic DeviceDpi { get; set; }
-        
-        [Browsable(false)]
-        public new dynamic DisplayRectangle { get; set; }
-        
-        [Browsable(false)]
-        public new dynamic Disposing { get; set; }
-        
-        [Browsable(false)]
-        public new dynamic ErrorImage { get; set; }
-        
-        [Browsable(false)]
-        public new dynamic Handle { get; set; }
-        
-        [Browsable(false)]
-        public new dynamic HasChildren { get; set; }
-        
-        [Browsable(false)]
-        public new dynamic ImageLocation { get; set; }
-        
-        [Browsable(false)]
-        public new dynamic ImeMode { get; set; }
-        
-        [Browsable(false)]
-        public new dynamic InitialImage { get; set; }
-        
-        [Browsable(false)]
-        public new dynamic InvokeRequired { get; set; }
-        
-        [Browsable(false)]
-        public new dynamic IsAccessible { get; set; }
-        
-        [Browsable(false)]
-        public new dynamic IsDisposed { get; set; }
-        
-        [Browsable(false)]
-        public new dynamic IsHandleCreated { get; set; }
-        
-        [Browsable(false)]
-        public new dynamic IsMirrored { get; set; }
-        
-        [Browsable(false)]
-        public new dynamic LayoutEngine { get; set; }
-        
-        [Browsable(false)]
-        public new dynamic Margin { get; set; }
-        
-        [Browsable(false)]
-        public new dynamic MaximumSize { get; set; }
-        
-        [Browsable(false)]
-        public new dynamic MinimumSize { get; set; }
-        
-        [Browsable(false)]
-        public new dynamic Padding { get; set; }
-        
-        [Browsable(false)]
-        public new dynamic PreferredSize { get; set; }
-        
-        [Browsable(false)]
-        public new dynamic RecreatingHandle { get; set; }
-        
-        [Browsable(false)]
-        public new dynamic Region { get; set; }
-        
-        [Browsable(false)]
-        public new dynamic RightToLeft { get; set; }
-        
-        [Browsable(false)]
-        public new dynamic Site { get; set; }
-        
-        [Browsable(false)]
-        public new dynamic Tag { get; set; }
-        
-        [Browsable(false)]
-        public new dynamic WaitOnLoad { get; set; }
-        
-        [Browsable(false)]
-        public new dynamic WindowTarget { get; set; }
-        
-        protected override void OnHandleCreated(EventArgs e)
-        {
-            base.OnHandleCreated(e);
-            if (DesignMode)
-            {
-                IDesignerHost designerHost = OneScriptFormsDesigner.DesignerHost;
-                if (designerHost != null)
-                {
-                    ControlDesigner designer = (ControlDesigner)designerHost.GetDesigner(this);
-                    if (designer != null)
-                    {
-                        if (tic < 1)
-                        {
-                            designer.ActionLists.Clear();
-                            designer.ActionLists.Add(new PictureBoxActionList(designer));
-                            tic = tic + 1;
-                        }
-                    }
-                }
-            }
-        }
+        [ReadOnly(true)]
+        public new System.Windows.Forms.ControlBindingsCollection DataBindings { get; set; }
 
-        public class PictureBoxActionList : DesignerActionList
-        {
-            private PictureBox _control;
-            private DesignerActionUIService designerActionUISvc = null;
+        [Browsable(false)]
+        [ReadOnly(true)]
+        public new string AccessibleDescription { get; set; }
 
-            public PictureBoxActionList(ControlDesigner designer) : base(designer.Component)
-            {
-                _control = (PictureBox)designer.Component;
-                designerActionUISvc = GetService(typeof(DesignerActionUIService)) as DesignerActionUIService;
-            }
+        [Browsable(false)]
+        [ReadOnly(true)]
+        public new string AccessibleName { get; set; }
 
-            private PropertyDescriptor GetPropertyByName(String propName)
-            {
-                return TypeDescriptor.GetProperties(_control)[propName];
-            }
+        [Browsable(false)]
+        [ReadOnly(true)]
+        public new System.Windows.Forms.AccessibleRole AccessibleRole { get; set; }
 
-            public PictureBoxSizeMode SizeMode
-            {
-                get { return _control.SizeMode; }
-                set
-                {
-                    GetPropertyByName("SizeMode").SetValue(_control, value);
-                    designerActionUISvc.Refresh(Component);
-                }
-            }
+        [Browsable(false)]
+        [ReadOnly(true)]
+        public new bool AllowDrop { get; set; }
 
-            private void EditImage()
-            {
-                PropertyDescriptor pd = TypeDescriptor.GetProperties(_control)["Image"];
-                MyImageFileNameEditor editor = (MyImageFileNameEditor)pd.GetEditor(typeof(UITypeEditor));
-                MyRuntimeServiceProvider serviceProvider = new MyRuntimeServiceProvider(_control);
-                object fact = editor.EditValue(serviceProvider, serviceProvider, _control.Image);
-                GetPropertyByName("Image").SetValue(_control, fact);
-                designerActionUISvc.Refresh(Component);
-            }
+        [Browsable(false)]
+        [ReadOnly(true)]
+        public new bool CausesValidation { get; set; }
 
-            public override DesignerActionItemCollection GetSortedActionItems()
-            {
-                var items = new DesignerActionItemCollection();
-                items.Add(new DesignerActionMethodItem(this, "EditImage", "Выбрать изображение...", "", true));
-                items.Add(new DesignerActionPropertyItem("SizeMode", "Режим масштабирования:"));
+        [Browsable(false)]
+        [ReadOnly(true)]
+        public new System.Windows.Forms.ContextMenuStrip ContextMenuStrip { get; set; }
 
-                return items;
-            }
-        }
+        [Browsable(false)]
+        [ReadOnly(true)]
+        public new System.Windows.Forms.Padding Margin { get; set; }
+
+        [Browsable(false)]
+        [ReadOnly(true)]
+        public new Size MaximumSize { get; set; }
+
+        [Browsable(false)]
+        [ReadOnly(true)]
+        public new Size MinimumSize { get; set; }
+
+        [Browsable(false)]
+        [ReadOnly(true)]
+        public new System.Windows.Forms.Padding Padding { get; set; }
+
+        [Browsable(false)]
+        [ReadOnly(true)]
+        public new object Tag { get; set; }
 
         private System.Collections.Hashtable toolTip = new System.Collections.Hashtable();
         [Browsable(false)]
@@ -629,7 +567,9 @@ namespace osfDesigner
                 return @"
 Положение ==
 ПорядокОбхода ==
+РазмерКнопки ==
 Размер ==
+Кнопки ==
 ";
             }
         }
