@@ -233,6 +233,9 @@
     <Compile Include="MyDataGridViewComboBoxCollectionEditor.cs" />
     <Compile Include="MyDateCollectionConverter.cs" />
     <Compile Include="MyDateCollectionEditor.cs" />
+    <Compile Include="MyDateTimeConverter.cs" />
+    <Compile Include="MyDateTimeEditor.cs" />
+    <Compile Include="MyDecimalConverter.cs" />
     <Compile Include="MyDockEditor.cs" />
     <Compile Include="MyFontConverter.cs" />
     <Compile Include="MyFormMenuConverter.cs" />

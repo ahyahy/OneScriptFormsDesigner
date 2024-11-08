@@ -9566,12 +9566,19 @@
 	|                {
 	|                    if (parent.GetType() == typeof(osfDesigner.TabPage))
 	|                    {
-	|                        control.Parent = ((dynamic)parent).OriginalObj;
+	|                        try
+	|                        {
+	|                            ((osfDesigner.TabPage)parent).OriginalObj.Controls.Add(control);
+	|                        }
+	|                        catch
+	|                        {
+	|                            control.Parent = parent;
+	|                        }
 	|                    }
 	|                    else
 	|                    {
 	|                        control.Parent = parent;
-	|                    }	
+	|                    }
 	|                }
 	|            }
 	|            if (valProp == ""Истина"")
@@ -10281,14 +10288,7 @@
 	|                }
 	|                else
 	|                {
-	|                    if (control.GetType() == typeof(osfDesigner.FolderBrowserDialog))
-	|                    {
-	|                        valProp = valProp.Remove(0, 1);
-	|                    }
-	|                    else
-	|                    {
-	|                        valProp = valProp.Replace(""\u0022"", """");
-	|                    }
+	|                    valProp = valProp.Replace(""\u0022"", """");
 	|                }
 	|                try
 	|                {
@@ -19319,12 +19319,11 @@
 	|                                        string itemText = OneScriptFormsDesigner.ParseBetween(strPropertyValue, ""("", "","").Replace(""\u0022"", """");
 	|                                        string itemValue = OneScriptFormsDesigner.ParseBetween(strPropertyValue, "","", "")"");
 	|                                        osfDesigner.ListItemComboBox ListItemComboBox1 = new ListItemComboBox();
-	|                                        ////////ListItemComboBox1.Text = itemText; // Кажется это не нужно.
+	|                                        ListItemComboBox1.Text = itemText;
 	|
-	|                                        if (itemValue.Contains(""\u0022"")) // Тип Строка.
+	|                                        if (itemValue.StartsWith(""\u0022"") && itemValue.EndsWith(""\u0022"")) // Тип Строка.
 	|                                        {
-	|                                            itemValue = itemValue.Remove(0, 1);
-	|                                            itemValue = itemValue.Remove(itemValue.Length - 1, 1);	
+	|                                            itemValue = itemValue.Replace(""\u0022"", """");
 	|                                            ListItemComboBox1.Value = itemValue;
 	|                                            ListItemComboBox1.ValueType = DataType.Строка;
 	|                                        }
@@ -19382,13 +19381,12 @@
 	|                                    else // Обрабатываем как свойство поля выбора.
 	|                                    {
 	|                                        string displayName = OneScriptFormsDesigner.ParseBetween(strCurrent, componentName + ""."", ""="");
-	|                                        string strPropertyValue = OneScriptFormsDesigner.ParseBetween(strCurrent, ""="", null);
-	|                                        strPropertyValue = strPropertyValue.Remove(strPropertyValue.Length - 1, 1);	
+	|                                        string strPropertyValue = OneScriptFormsDesigner.ParseBetween(strCurrent, ""="", "";"");
 	|                                        string parentName = OneScriptFormsDesigner.ParseBetween(ComponentBlok, componentName + @"".Родитель="", @"";"");
 	|                                        Control parent = (Control)dictObjects[parentName];
 	|                                        PropValueConverter.SetPropValue(control, displayName, strPropertyValue, NameObjectOneScriptForms, parent);
 	|                                    }
-	|                                }
+	|                                }	
 	|                                else if (componentName.Contains(""СеткаДанных""))
 	|                                {
 	|                                    string controlName = ((osfDesigner.DataGrid)control).Name;

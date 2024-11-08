@@ -65,12 +65,19 @@ namespace osfDesigner
                 {
                     if (parent.GetType() == typeof(osfDesigner.TabPage))
                     {
-                        control.Parent = ((dynamic)parent).OriginalObj;
+                        try
+                        {
+                            ((osfDesigner.TabPage)parent).OriginalObj.Controls.Add(control);
+                        }
+                        catch
+                        {
+                            control.Parent = parent;
+                        }
                     }
                     else
                     {
                         control.Parent = parent;
-                    }	
+                    }
                 }
             }
             if (valProp == "Истина")
@@ -780,14 +787,7 @@ namespace osfDesigner
                 }
                 else
                 {
-                    if (control.GetType() == typeof(osfDesigner.FolderBrowserDialog))
-                    {
-                        valProp = valProp.Remove(0, 1);
-                    }
-                    else
-                    {
-                        valProp = valProp.Replace("\u0022", "");
-                    }
+                    valProp = valProp.Replace("\u0022", "");
                 }
                 try
                 {
