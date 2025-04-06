@@ -1,35 +1,105 @@
 ﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<html>
-	<head>
-		<meta content="text/html; charset=Windows-1251" http-equiv="content-type">
-		<title>Документация</title>
-	</head>
+<HTML>
+<HEAD>
+    <TITLE>Документация</TITLE>
+    <META content="text/html; charset=Windows-1252" http-equiv="Content-Type">
+    <LINK rel="stylesheet" type="text/css" href="styleos.css">
+	<script defer src="mobil.js"></script>
+</HEAD>
 <body>
-
-<table style="text-align: left; width: 1000px; height: 816px; margin-left: auto; margin-right: auto; background-color: white;" border="0" cellpadding="2" cellspacing="2">
-	<tbody>
-    <tr>
-		<td style="vertical-align: top; font-weight: bold; text-align: center; font-style: italic; color: rgb(51, 51, 153);"><big><big><big>Дизайнер форм<br><small><small>для сценарного языка</small></small> OneScript </big></big></big></td>
-		<td style="width: 70px; text-align: center; color: rgb(51, 51, 51); vertical-align: top;"><a href="index.html"><button type="button">Главная</button></a><small><br></small></td>
-		<td style="width: 90px; text-align: center; color: rgb(51, 51, 51); vertical-align: top;"><a href="screenshot.html"><button type="button">Скриншоты</button></a><br></td>
-		<td style="width: 130px; text-align: center; color: rgb(51, 51, 51); vertical-align: top;"><a href="howworks.html"><button type="button">Как это работает</button></a><small><br></small></td>
-		<td style="width: 110px; text-align: center; color: rgb(51, 51, 51); vertical-align: top;"><a href="doc.html"><button type="button">Документация</button></a><small><br></small></td>
-		<td style="width: 75px; text-align: center; color: rgb(51, 51, 51); vertical-align: top;"><a href="down.html"><button type="button">Скачать</button></a><small><br></small></td>
-		<th style="width: 75px; text-align: center; color: rgb(51, 51, 51); vertical-align: top; font-weight: normal;"><a href="kont.html"><button type="button">Контакты</button></a><small><br></small></th>
-    </tr>
-    <tr>
-		<td colspan="7" rowspan="1" style="vertical-align: top; height: 747px; background-color: white;">
-		<hr style="border-color: lightgray;">
-		<div>
-			<iframe src="OSFormsDesigner//index.html" height="600" width="984"></iframe>
-		</div>
-		<br>
-		<div style="text-align: right;"><a href="OSFormsDesigner/index.html" target="_blank"><button type="button">Открыть отдельно</button></a><br></div>
-		<p style="margin-left: 40px;"></p>
-		</td>
-	</tr>
-	</tbody>
-</table>
-<br>
-<br>
-</body></html>
+    <header>
+        <section>
+            <div>
+                <div id="logo"><big><big><big>Дизайнер форм<br><small><small>для сценарного языка</small></small> OneScript </big></big></big></div>
+            </div>
+            <div style="direction: rtl; overflow:hidden; padding: 8px 0px 0px 0px; margin-top:-7px;">
+                <DIV id=div22>
+                    <input type="checkbox" id="toggle">
+                    <label id="label1" class="hamburger-icon" onclick="label1click()"><div></div><div></div><div></div></label>
+                </DIV>
+                <nav>
+                    <a onclick="navclick(event)" href="index.html">Главная</a>
+                    <a onclick="navclick(event)" href="screenshot.html">Скриншоты</a>
+                    <a onclick="navclick(event)" href="howworks.html">Как это работает</a>
+                    <a onclick="navclick(event)" href="doc.html">Документация</a>
+                    <a onclick="navclick(event)" href="down.html">Скачать</a>
+                    <a onclick="navclick(event)" href="kont.html">Контакты</a>
+                    <input type="checkbox" id="toggle2">
+                    <a id="mobil" onclick="mobilClick()">`</a>
+                </nav>
+            </div>
+        </section>
+    </header>
+    <div class="cont1">
+        <!-- Секция переключателя -->
+        <input type="checkbox" id="toggle1">
+        <!-- Блок для затемнения справки -->
+        <div class="divmodal"></div>
+        <!-- Сама справка -->
+        <div class="divleft" id="divleftid" onclick="divleftClick(event)">
+            <div id="expandcollapse">
+                <div id="expand" onclick="expand()">развернуть</div>
+                <div id="separator">&nbsp;|&nbsp;</div>
+                <div id="collapse" onclick="collapse()">свернуть</div>
+            </div>
+            <details>
+                <summary class="menu"><a href="OSFormsDesigner/OSFD.Intro.html" target="right">Дизайнер форм для сценарного языка OneScript</a></summary>
+				<p class="konstr"><a href="OSFormsDesigner/OSFD.Set.html" target="right">Установка и запуск</a></p>
+				<p class="konstr"><a href="OSFormsDesigner/OSFD.Param.html" target="right">Настройка</a></p>
+				<p class="konstr"><a href="OSFormsDesigner/OSFD.Controls.html" target="right">Элементы управления дизайнера</a></p>
+				<p class="konstr"><a href="OSFormsDesigner/OSFD.Naming.html" target="right">Имена компонентов</a></p>
+				<p class="konstr"><a href="OSFormsDesigner/OSFD.ThrowProp.html" target="right">Установка изменение сброс значений свойств</a></p>
+				<p class="konstr"><a href="OSFormsDesigner/OSFD.Osd.html" target="right">Сохранение формы в файл osd</a></p>
+				<p class="konstr"><a href="OSFormsDesigner/OSFD.Os.html" target="right">Сохранение формы в файл os</a></p>
+				<p class="konstr"><a href="OSFormsDesigner/OSFD.FormProp.html" target="right">Свойства формы</a></p>
+				<p class="konstr"><a href="OSFormsDesigner/OSFD.FormHelp.html" target="right">Справка библиотеки форм</a></p>
+				<p class="konstr"><a href="OSFormsDesigner/OSFD.Appendix.html" target="right">Дополнения</a></p>
+            </details>
+            <details>
+				<summary class="menu"><a>Классы</a></summary>
+				<details>
+                    <summary class="menu2"><a href="OSFormsDesigner/OSFD.OneScriptFormsDesigner.html" target="right">ДизайнерФормДляОдноСкрипта (OneScriptFormsDesigner) Класс</a></summary>
+					<p class="konstr"><a href="OSFormsDesigner/OSFD.OneScriptFormsDesignerConstructor.html" target="right">Конструктор</a></p>
+                    <p class="members"><a href="OSFormsDesigner/OSFD.OneScriptFormsDesignerMembers.html" target="right">Члены</a></p>
+                    <details>
+                        <summary class="menu3"><a href="OSFormsDesigner/OSFD.OneScriptFormsDesignerProperties.html" target="right">Свойства</a></summary>
+                        <p class="prop"><a href="OSFormsDesigner/OSFD.OneScriptFormsDesigner.FormVisualStylesTurnOn.html" target="right">ВизуальныеСтилиФормВключены (FormVisualStylesTurnOn) Свойство</a></p>
+                        <p class="prop"><a href="OSFormsDesigner/OSFD.OneScriptFormsDesigner.DesignerOpen.html" target="right">ДизайнерОткрыт (DesignerOpen) Свойство</a></p>
+                    </details>
+                    <details>
+                        <summary class="menu3"><a href="OSFormsDesigner/OSFD.OneScriptFormsDesignerMethods.html" target="right">Методы</a></summary>
+                        <p class="method"><a href="OSFormsDesigner/OSFD.OneScriptFormsDesigner.AddControl.html" target="right">ДобавитьКонтрол (AddControl) Метод</a></p>
+                        <p class="method"><a href="OSFormsDesigner/OSFD.OneScriptFormsDesigner.CloseDesigner.html" target="right">ЗакрытьДизайнер (CloseDesigner) Метод</a></p>
+                        <p class="method"><a href="OSFormsDesigner/OSFD.OneScriptFormsDesigner.LoadForm.html" target="right">ОткрытьФорму (LoadForm) Метод</a></p>
+                        <p class="method"><a href="OSFormsDesigner/OSFD.OneScriptFormsDesigner.GetPropertyValue.html" target="right">ПолучитьЗначениеСвойства (GetPropertyValue) Метод</a></p>
+                        <p class="method"><a href="OSFormsDesigner/OSFD.OneScriptFormsDesigner.GetPropertyType.html" target="right">ПолучитьТипСвойства (GetPropertyType) Метод</a></p>
+                        <p class="method"><a href="OSFormsDesigner/OSFD.OneScriptFormsDesigner.UnloadForm.html" target="right">СохранитьФорму (UnloadForm) Метод</a></p>
+                        <p class="method"><a href="OSFormsDesigner/OSFD.OneScriptFormsDesigner.GenerateScript.html" target="right">СформироватьСценарий (GenerateScript) Метод</a></p>
+                        <p class="method"><a href="OSFormsDesigner/OSFD.OneScriptFormsDesigner.RemoveControls.html" target="right">УдалитьКонтролы (RemoveControls) Метод</a></p>
+                        <p class="method"><a href="OSFormsDesigner/OSFD.OneScriptFormsDesigner.SetProperty.html" target="right">УстановитьСвойство (SetProperty) Метод</a></p>
+                    </details>
+                </details>
+            </details>
+        </div>
+        <!-- Конец секции переключателя -->
+        <DIV id=nsbanner>
+            <DIV id=TitleRow>
+                <!-- Секция меню -->
+                <section class="menuFrame">
+                    <DIV id=div2 onclick="disableScroll()">
+                        <div id="menu1"></div>
+                        <label id="label2" for="toggle1" class="hamburger-icon1" onclick="label2click()"><div></div><div></div><div></div></label>
+                    </DIV>
+                    <DIV id=div3>
+                        <H1 class=dtH1 id="titlepage">Дизайнер форм для сценарного языка OneScript</H1>
+                    </DIV>
+                </section>
+                <!-- Конец секции меню -->
+            </DIV>
+        </DIV>
+        <div class="frameright">
+            <iframe name="right" id="iframeid" src="OSFormsDesigner/OSFD.Intro.html"></iframe>
+        </div>
+    </div>
+</body>
+</HTML>
