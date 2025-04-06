@@ -1,285 +1,184 @@
 ﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<html>
-	<head>
-		<meta content="text/html; charset=Windows-1251" http-equiv="content-type">
-		<title>Скриншоты</title>
-		<link href="theme.css" rel="StyleSheet">
-	</head>
+<HTML>
+<HEAD>
+    <TITLE>Скриншоты</TITLE>
+    <META content="text/html; charset=Windows-1252" http-equiv="Content-Type">
+    <LINK rel="stylesheet" type="text/css" href="styleos.css">
+	<script defer src="mobil.js"></script>
+</HEAD>
 <body>
-
-<table style="text-align: left; width: 1000px; height: 816px; margin-left: auto; margin-right: auto; background-color: white;" border="0" cellpadding="2" cellspacing="2">
-	<tbody>
-    <tr>
-		<td style="vertical-align: top; font-weight: bold; text-align: center; font-style: italic; color: rgb(51, 51, 153);"><big><big><big>Дизайнер форм<br><small><small>для сценарного языка</small></small> OneScript </big></big></big></td>
-		<td style="width: 70px; text-align: center; color: rgb(51, 51, 51); vertical-align: top;"><a href="index.html"><button type="button">Главная</button></a><small><br></small></td>
-		<td style="width: 90px; text-align: center; color: rgb(51, 51, 51); vertical-align: top;"><a href="screenshot.html"><button type="button">Скриншоты</button></a><br></td>
-		<td style="width: 130px; text-align: center; color: rgb(51, 51, 51); vertical-align: top;"><a href="howworks.html"><button type="button">Как это работает</button></a><small><br></small></td>
-		<td style="width: 110px; text-align: center; color: rgb(51, 51, 51); vertical-align: top;"><a href="doc.html"><button type="button">Документация</button></a><small><br></small></td>
-		<td style="width: 75px; text-align: center; color: rgb(51, 51, 51); vertical-align: top;"><a href="down.html"><button type="button">Скачать</button></a><small><br></small></td>
-		<th style="width: 75px; text-align: center; color: rgb(51, 51, 51); vertical-align: top; font-weight: normal;"><a href="kont.html"><button type="button">Контакты</button></a><small><br></small></th>
-    </tr>
-    <tr>
-		<td colspan="7" rowspan="1" style="vertical-align: top; height: 747px; background-color: white;">
-		<hr style="border-color: lightgray;">
-		<div class="container">
-			<figure class="photo">
-				<img id="myImg01" src="TreeView.png" alt="Дерево"><figcaption>Дерево</figcaption>
-				<div id="myModal01" class="modal">
-				  <span id="close01" class="close">×</span>
-				  <img id="img01" class="modal-content">
-				  <div id="caption">Дерево</div>
+    <header>
+        <section>
+            <div>
+                <div id="logo"><big><big><big>Дизайнер форм<br><small><small>для сценарного языка</small></small> OneScript </big></big></big></div>
+            </div>
+            <div style="direction: rtl; overflow:hidden; padding: 8px 0px 0px 0px; margin-top:-7px;">
+				<DIV id=div22>
+					<input type="checkbox" id="toggle">
+					<label id="label1" class="hamburger-icon" onclick="label1click()"><div></div><div></div><div></div></label>
+				</DIV>
+                <nav>
+                    <a onclick="navclick(event)" href="index.html">Главная</a>
+                    <a onclick="navclick(event)" href="screenshot.html">Скриншоты</a>
+                    <a onclick="navclick(event)" href="howworks.html">Как это работает</a>
+                    <a onclick="navclick(event)" href="doc.html">Документация</a>
+                    <a onclick="navclick(event)" href="down.html">Скачать</a>
+                    <a onclick="navclick(event)" href="kont.html">Контакты</a>
+					<input type="checkbox" id="toggle2">
+                    <a id="mobil" onclick="mobilClick()">`</a>
+                </nav>
+            </div>
+        </section>
+    </header>
+    <section>
+        <figure>
+			<div style="display: flex; flex-wrap: wrap;">
+				<div style="flex-direction: row;">
+					<div style="flex-direction: column;">
+						<img id="myImg01" src="TreeView.png" alt="Дерево" onclick="clickimg(event)">
+						<div id="myModal01" class="modal">
+							<span id="close01" class="close">×</span>
+							<img id="img01" class="modal-content">
+							<div id="caption">Дерево</div>
+						</div>
+					</div>
+					<div style="flex-direction: column;">Дерево</div>
 				</div>
-			</figure>
-			<figure class="photo">
-				<img id="myImg02" src="MonthCalendar.png" alt="Календарь"><figcaption>Календарь</figcaption>
-				<div id="myModal02" class="modal">
-				  <span id="close02" class="close">×</span>
-				  <img id="img02" class="modal-content">
-				  <div id="caption">Календарь</div>
+				<p></p>
+				<div style="flex-direction: row;">
+					<div style="flex-direction: column;">
+						<img id="myImg02" src="MonthCalendar.png" alt="Календарь" onclick="clickimg(event)">
+						<div id="myModal02" class="modal">
+							<span id="close02" class="close">×</span>
+							<img id="img02" class="modal-content">
+							<div id="caption">Календарь</div>
+						</div>
+					</div>
+					<div style="flex-direction: column;">Календарь</div>
 				</div>
-			</figure>
-			<figure class="photo">
-				<img id="myImg03" src="TabControl.png" alt="ПанельВкладок"><figcaption>ПанельВкладок</figcaption>
-				<div id="myModal03" class="modal">
-				  <span id="close03" class="close">×</span>
-				  <img id="img03" class="modal-content">
-				  <div id="caption">ПанельВкладок</div>
+				<p></p>
+				<div style="flex-direction: row;">
+					<div style="flex-direction: column;">
+						<img id="myImg03" src="TabControl.png" alt="ПанельВкладок" onclick="clickimg(event)">
+						<div id="myModal03" class="modal">
+							<span id="close03" class="close">×</span>
+							<img id="img03" class="modal-content">
+							<div id="caption">ПанельВкладок</div>
+						</div>
+					</div>
+					<div style="flex-direction: column;">ПанельВкладок</div>
 				</div>
-			</figure>
-			<figure class="photo">
-				<img id="myImg04" src="ToolBar.png" alt="ПанельИнструментов"><figcaption>ПанельИнструментов</figcaption>
-				<div id="myModal04" class="modal">
-				  <span id="close04" class="close">×</span>
-				  <img id="img04" class="modal-content">
-				  <div id="caption">ПанельИнструментов</div>
+				<p></p>
+				<div style="flex-direction: row;">
+					<div style="flex-direction: column;">
+						<img id="myImg04" src="ToolBar.png" alt="ПанельИнструментов" onclick="clickimg(event)">
+						<div id="myModal04" class="modal">
+							<span id="close04" class="close">×</span>
+							<img id="img04" class="modal-content">
+							<div id="caption">ПанельИнструментов</div>
+						</div>
+					</div>
+					<div style="flex-direction: column;">ПанельИнструментов</div>
 				</div>
-			</figure>
-			<figure class="photo">
-				<img id="myImg05" src="ComboBox.png" alt="ПолеВыбора"><figcaption>ПолеВыбора</figcaption>
-				<div id="myModal05" class="modal">
-				  <span id="close05" class="close">×</span>
-				  <img id="img05" class="modal-content">
-				  <div id="caption">ПолеВыбора</div>
+				<p></p>
+				<div style="flex-direction: row;">
+					<div style="flex-direction: column;">
+						<img id="myImg05" src="ComboBox.png" alt="ПолеВыбора" onclick="clickimg(event)">
+						<div id="myModal05" class="modal">
+							<span id="close05" class="close">×</span>
+							<img id="img05" class="modal-content">
+							<div id="caption">ПолеВыбора</div>
+						</div>
+					</div>
+					<div style="flex-direction: column;">ПолеВыбора</div>
 				</div>
-			</figure>
-			<figure class="photo">
-				<img id="myImg06" src="PictureBox.png" alt="ПолеКартинки"><figcaption>ПолеКартинки</figcaption>
-				<div id="myModal06" class="modal">
-				  <span id="close06" class="close">×</span>
-				  <img id="img06" class="modal-content">
-				  <div id="caption">ПолеКартинки</div>
+				<p></p>
+				<div style="flex-direction: row;">
+					<div style="flex-direction: column;">
+						<img id="myImg06" src="PictureBox.png" alt="ПолеКартинки" onclick="clickimg(event)">
+						<div id="myModal06" class="modal">
+							<span id="close06" class="close">×</span>
+							<img id="img06" class="modal-content">
+							<div id="caption">ПолеКартинки</div>
+						</div>
+					</div>
+					<div style="flex-direction: column;">ПолеКартинки</div>
 				</div>
-			</figure>
-			<figure class="photo">
-				<img id="myImg07" src="ListBox.png" alt="ПолеСписка"><figcaption>ПолеСписка</figcaption>
-				<div id="myModal07" class="modal">
-				  <span id="close07" class="close">×</span>
-				  <img id="img07" class="modal-content">
-				  <div id="caption">ПолеСписка</div>
+				<p></p>
+				<div style="flex-direction: row;">
+					<div style="flex-direction: column;">
+						<img id="myImg07" src="ListBox.png" alt="ПолеСписка" onclick="clickimg(event)">
+						<div id="myModal07" class="modal">
+							<span id="close07" class="close">×</span>
+							<img id="img07" class="modal-content">
+							<div id="caption">ПолеСписка</div>
+						</div>
+					</div>
+					<div style="flex-direction: column;">ПолеСписка</div>
 				</div>
-			</figure>
-			<figure class="photo">
-				<img id="myImg08" src="ListView.png" alt="СписокЭлементов"><figcaption>СписокЭлементов</figcaption>
-				<div id="myModal08" class="modal">
-				  <span id="close08" class="close">×</span>
-				  <img id="img08" class="modal-content">
-				  <div id="caption">СписокЭлементов</div>
+				<p></p>
+				<div style="flex-direction: row;">
+					<div style="flex-direction: column;">
+						<img id="myImg08" src="ListView.png" alt="СписокЭлементов" onclick="clickimg(event)">
+						<div id="myModal08" class="modal">
+							<span id="close08" class="close">×</span>
+							<img id="img08" class="modal-content">
+							<div id="caption">СписокЭлементов</div>
+						</div>
+					</div>
+					<div style="flex-direction: column;">СписокЭлементов</div>
 				</div>
-			</figure>
-			<figure class="photo">
-				<img id="myImg09" src="ListView2.png" alt="СписокЭлементов2"><figcaption>СписокЭлементов2</figcaption>
-				<div id="myModal09" class="modal">
-				  <span id="close09" class="close">×</span>
-				  <img id="img09" class="modal-content">
-				  <div id="caption">СписокЭлементов2</div>
+				<p></p>
+				<div style="flex-direction: row;">
+					<div style="flex-direction: column;">
+						<img id="myImg09" src="ListView2.png" alt="СписокЭлементов2" onclick="clickimg(event)">
+						<div id="myModal09" class="modal">
+							<span id="close09" class="close">×</span>
+							<img id="img09" class="modal-content">
+							<div id="caption">СписокЭлементов2</div>
+						</div>
+					</div>
+					<div style="flex-direction: column;">СписокЭлементов2</div>
 				</div>
-			</figure>
-			<figure class="photo">
-				<img id="myImg10" src="StatusBar.png" alt="СтрокаСостояния"><figcaption>СтрокаСостояния</figcaption>
-				<div id="myModal10" class="modal">
-				  <span id="close10" class="close">×</span>
-				  <img id="img10" class="modal-content">
-				  <div id="caption">СтрокаСостояния</div>
+				<p></p>
+				<div style="flex-direction: row;">
+					<div style="flex-direction: column;">
+						<img id="myImg10" src="StatusBar.png" alt="СтрокаСостояния" onclick="clickimg(event)">
+						<div id="myModal10" class="modal">
+							<span id="close10" class="close">×</span>
+							<img id="img10" class="modal-content">
+							<div id="caption">СтрокаСостояния</div>
+						</div>
+					</div>
+					<div style="flex-direction: column;">СтрокаСостояния</div>
 				</div>
-			</figure>
-			<figure class="photo">
-				<img id="myImg11" src="RichTextBox.png" alt="ФорматированноеПолеВвода"><figcaption>ФорматированноеПолеВвода</figcaption>
-				<div id="myModal11" class="modal">
-				  <span id="close11" class="close">×</span>
-				  <img id="img11" class="modal-content">
-				  <div id="caption">ФорматированноеПолеВвода</div>
+				<p></p>
+				<div style="flex-direction: row;">
+					<div style="flex-direction: column;">
+						<img id="myImg11" src="RichTextBox.png" alt="ФорматированноеПолеВвода" onclick="clickimg(event)">
+						<div id="myModal11" class="modal">
+							<span id="close11" class="close">×</span>
+							<img id="img11" class="modal-content">
+							<div id="caption">ФорматированноеПолеВвода</div>
+						</div>
+					</div>
+					<div style="flex-direction: column;">ФорматированноеПолеВвода</div>
 				</div>
-			</figure>
-			<figure class="photo">
-				<img id="myImg12" src="Color.png" alt="Цвет"><figcaption>Цвет</figcaption>
-				<div id="myModal12" class="modal">
-				  <span id="close12" class="close">×</span>
-				  <img id="img12" class="modal-content">
-				  <div id="caption">Цвет</div>
+				<p></p>
+				<div style="flex-direction: row;">
+					<div style="flex-direction: column;">
+						<img id="myImg12" src="Color.png" alt="Цвет" onclick="clickimg(event)">
+						<div id="myModal12" class="modal">
+							<span id="close12" class="close">×</span>
+							<img id="img12" class="modal-content">
+							<div id="caption">Цвет</div>
+						</div>
+					</div>
+					<div style="flex-direction: column;">Цвет</div>
 				</div>
-			</figure>
-		</div>
-		</td>
-    </tr>
-	</tbody>
-</table>
-<br>
-<br>
-<script>
-var img01 = document.getElementById('myImg01');
-var modal01 = document.getElementById('myModal01');
-var modalImg01 = document.getElementById("img01");
-img01.onclick = function(){
-    modal01.style.display = "block";
-    modalImg01.src = img01.src;
-}
-var span01 = document.getElementById("close01");
-span01.onclick = function(){ 
-    modal01.style.display = "none";
-}
-
-var img02 = document.getElementById('myImg02');
-var modal02 = document.getElementById('myModal02');
-var modalImg02 = document.getElementById("img02");
-img02.onclick = function(){
-    modal02.style.display = "block";
-    modalImg02.src = img02.src;
-}
-var span02 = document.getElementById("close02");
-span02.onclick = function(){ 
-    modal02.style.display = "none";
-}
-
-var img03 = document.getElementById('myImg03');
-var modal03 = document.getElementById('myModal03');
-var modalImg03 = document.getElementById("img03");
-img03.onclick = function(){
-    modal03.style.display = "block";
-    modalImg03.src = img03.src;
-}
-var span03 = document.getElementById("close03");
-span03.onclick = function(){ 
-    modal03.style.display = "none";
-}
-
-var img04 = document.getElementById('myImg04');
-var modal04 = document.getElementById('myModal04');
-var modalImg04 = document.getElementById("img04");
-img04.onclick = function(){
-    modal04.style.display = "block";
-    modalImg04.src = img04.src;
-}
-var span04 = document.getElementById("close04");
-span04.onclick = function(){ 
-    modal04.style.display = "none";
-}
-
-var img05 = document.getElementById('myImg05');
-var modal05 = document.getElementById('myModal05');
-var modalImg05 = document.getElementById("img05");
-img05.onclick = function(){
-    modal05.style.display = "block";
-    modalImg05.src = img05.src;
-}
-var span05 = document.getElementById("close05");
-span05.onclick = function(){ 
-    modal05.style.display = "none";
-}
-
-var img06 = document.getElementById('myImg06');
-var modal06 = document.getElementById('myModal06');
-var modalImg06 = document.getElementById("img06");
-img06.onclick = function(){
-    modal06.style.display = "block";
-    modalImg06.src = img06.src;
-}
-var span06 = document.getElementById("close06");
-span06.onclick = function(){ 
-    modal06.style.display = "none";
-}
-
-var img07 = document.getElementById('myImg07');
-var modal07 = document.getElementById('myModal07');
-var modalImg07 = document.getElementById("img07");
-img07.onclick = function(){
-    modal07.style.display = "block";
-    modalImg07.src = img07.src;
-}
-var span07 = document.getElementById("close07");
-span07.onclick = function(){ 
-    modal07.style.display = "none";
-}
-
-var img08 = document.getElementById('myImg08');
-var modal08 = document.getElementById('myModal08');
-var modalImg08 = document.getElementById("img08");
-img08.onclick = function(){
-    modal08.style.display = "block";
-    modalImg08.src = img08.src;
-}
-var span08 = document.getElementById("close08");
-span08.onclick = function(){ 
-    modal08.style.display = "none";
-}
-
-var img09 = document.getElementById('myImg09');
-var modal09 = document.getElementById('myModal09');
-var modalImg09 = document.getElementById("img09");
-img09.onclick = function(){
-    modal09.style.display = "block";
-    modalImg09.src = img09.src;
-}
-var span09 = document.getElementById("close09");
-span09.onclick = function(){ 
-    modal09.style.display = "none";
-}
-
-var img10 = document.getElementById('myImg10');
-var modal10 = document.getElementById('myModal10');
-var modalImg10 = document.getElementById("img10");
-img10.onclick = function(){
-    modal10.style.display = "block";
-    modalImg10.src = img10.src;
-}
-var span10 = document.getElementById("close10");
-span10.onclick = function(){ 
-    modal10.style.display = "none";
-}
-
-var img11 = document.getElementById('myImg11');
-var modal11 = document.getElementById('myModal11');
-var modalImg11 = document.getElementById("img11");
-img11.onclick = function(){
-    modal11.style.display = "block";
-    modalImg11.src = img11.src;
-}
-var span11 = document.getElementById("close11");
-span11.onclick = function(){ 
-    modal11.style.display = "none";
-}
-
-var img12 = document.getElementById('myImg12');
-var modal12 = document.getElementById('myModal12');
-var modalImg12 = document.getElementById("img12");
-img12.onclick = function(){
-    modal12.style.display = "block";
-    modalImg12.src = img12.src;
-}
-var span12 = document.getElementById("close12");
-span12.onclick = function(){ 
-    modal12.style.display = "none";
-}
-
-var img13 = document.getElementById('myImg13');
-var modal13 = document.getElementById('myModal13');
-var modalImg13 = document.getElementById("img13");
-img13.onclick = function(){
-    modal13.style.display = "block";
-    modalImg13.src = img13.src;
-}
-var span13 = document.getElementById("close13");
-span13.onclick = function(){ 
-    modal13.style.display = "none";
-}
-</script>
-</body></html>
+				<p></p>
+			</div>
+        </figure>
+    </section>
+</body>
+</HTML>

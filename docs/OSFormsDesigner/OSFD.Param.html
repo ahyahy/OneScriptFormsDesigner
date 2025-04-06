@@ -1,62 +1,65 @@
 ﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<HTML><HEAD><TITLE>Настройка</TITLE>
-<META content="text/html; charset=Windows-1252" http-equiv="Content-Type">
-<LINK rel="stylesheet" type="text/css" href="mainstyle.css"></HEAD>
+<HTML>
+<HEAD>
+    <TITLE>Настройка</TITLE>
+    <META content="text/html; charset=Windows-1252" http-equiv="Content-Type">
+    <LINK rel="stylesheet" type="text/css" href="mainstyle.css">
+	<script defer src="mobilstyle.js"></script>
+</HEAD>
 <BODY id=bodyID class=dtBODY>
-<DIV id=nsbanner>
-<DIV id=bannerrow1>
-<TABLE class=bannerparthead cellSpacing=0>
-  <TBODY>
-  <TR id=hdr>
-    <TD class=runninghead></TD>
-    <TD class=product></TD></TR></TBODY></TABLE></DIV>
-<DIV id=TitleRow>
-<H1 class=dtH1>Настройка</H1></DIV></DIV>
-<DIV id=nstext>
-<P>Вызвав пункт подменю <B>"Параметры"</B> меню <B>"Инструменты"</B> произведите настройку дизайнера.</P>
-<P>В окне <B>Параметры</B>, строке <B>Файлы</B> укажите расположение двух файлов. Исполняемого файла виртуальной машины OneScript <B>oscript.exe</B> и 
-файла библиотеки форм <B>OneScriptForms.dll</B>. Это сделает возможным запуск проектируемой формы через подменю <B>Запуск</B> меню <B>Инструменты</B>.</P>
-<figure class="pic">
-	<img id="myImg01" src="Params.png" alt="Параметры - Файлы"><figcaption>Параметры - Файлы</figcaption>
-	<div id="myModal01" class="modal">
-	  <span id="close01" class="close">×</span>
-	  <img id="img01" class="modal-content">
-	  <div id="caption">Параметры - Файлы</div>
-	</div>
-</figure>
-<P>В окне <B>Параметры</B>, строке <B>Визуальные стили</B> укажите включать ли визуальные стили для окна дизайнера и для разрабатываемой формы.</P>
-<figure class="pic">
-	<img id="myImg03" src="Params3.png" alt="Параметры - Визуальные стили"><figcaption>Параметры - Визуальные стили</figcaption>
-	<div id="myModal03" class="modal">
-	  <span id="close03" class="close">×</span>
-	  <img id="img03" class="modal-content">
-	  <div id="caption">Параметры - Визуальные стили</div>
-	</div>
-</figure>
-<P>.</P>
-<script>
-var img01 = document.getElementById('myImg01');
-var modal01 = document.getElementById('myModal01');
-var modalImg01 = document.getElementById("img01");
-img01.onclick = function(){
-    modal01.style.display = "block";
-    modalImg01.src = img01.src;
-}
-var span01 = document.getElementById("close01");
-span01.onclick = function(){ 
-    modal01.style.display = "none";
-}
-
-var img03 = document.getElementById('myImg03');
-var modal03 = document.getElementById('myModal03');
-var modalImg03 = document.getElementById("img03");
-img03.onclick = function(){
-    modal03.style.display = "block";
-    modalImg03.src = img03.src;
-}
-var span03 = document.getElementById("close03");
-span03.onclick = function(){ 
-    modal03.style.display = "none";
-}
-</script>
-</DIV></BODY></HTML>
+    <DIV id=nsbanner>
+        <DIV id=bannerrow1>
+            <TABLE class=bannerparthead cellSpacing=0>
+                <TBODY>
+                    <TR id=hdr>
+                        <TD class=runninghead></TD>
+                        <TD class=product></TD>
+                    </TR>
+                </TBODY>
+            </TABLE>
+        </DIV>
+        <DIV id=TitleRow>
+            <H1 class=dtH1>Настройка</H1>
+        </DIV>
+    </DIV>
+    <DIV id=nstext>
+        <P>Вызвав пункт подменю <B>"Параметры"</B> меню <B>"Инструменты"</B> произведите настройку дизайнера.</P>
+        <P>
+            В окне <B>Параметры</B>, строке <B>Файлы</B> укажите расположение двух файлов. Исполняемого файла виртуальной машины OneScript <B>oscript.exe</B> и
+            файла библиотеки форм <B>OneScriptForms.dll</B>. Это сделает возможным запуск проектируемой формы через подменю <B>Запуск</B> меню <B>Инструменты</B>.
+        </P>
+        <figure>
+			<div style="display: flex; flex-wrap: wrap;">
+				<div style="flex-direction: row;">
+					<div style="flex-direction: column;">
+						<img class=fitimg id="myImg01" src="Params.png" alt="Параметры - Файлы" onclick="clickimg(event)">
+						<div id="myModal01" class="modal">
+							<span id="close01" class="close">×</span>
+							<img id="img01" class="modal-content">
+							<div id="caption">Параметры - Файлы</div>
+						</div>
+					</div>
+					<div style="flex-direction: column;">Параметры - Файлы</div>
+				</div>
+			</div>
+        </figure>
+        <P>В окне <B>Параметры</B>, строке <B>Визуальные стили</B> укажите включать ли визуальные стили для окна дизайнера и для разрабатываемой формы.</P>
+        <figure>
+			<div style="display: flex; flex-wrap: wrap;">
+				<div style="flex-direction: row;">
+					<div style="flex-direction: column;">
+						<img class=fitimg id="myImg03" src="Params3.png" alt="Параметры - Визуальные стили" onclick="clickimg(event)">
+						<div id="myModal03" class="modal">
+							<span id="close03" class="close">×</span>
+							<img id="img03" class="modal-content">
+							<div id="caption">Параметры - Визуальные стили</div>
+						</div>
+					</div>
+					<div style="flex-direction: column;">Параметры - Визуальные стили</div>
+				</div>
+			</div>
+        </figure>
+        <P>.</P>
+    </DIV>
+</BODY>
+</HTML>
