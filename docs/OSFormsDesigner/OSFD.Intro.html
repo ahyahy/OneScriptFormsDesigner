@@ -1,80 +1,133 @@
 ﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<HTML><HEAD><TITLE>О дизайнере</TITLE>
-<META content="text/html; charset=Windows-1252" http-equiv="Content-Type">
-<LINK rel="stylesheet" type="text/css" href="mainstyle.css"></HEAD>
+<HTML>
+<HEAD>
+    <TITLE>О дизайнере</TITLE>
+    <META content="text/html; charset=Windows-1252" http-equiv="Content-Type">
+    <LINK rel="stylesheet" type="text/css" href="mainstyle.css">
+	<script defer src="mobilstyle.js"></script>
+</HEAD>
 <BODY id=bodyID class=dtBODY>
-<DIV id=nsbanner>
-<DIV id=bannerrow1>
-<TABLE class=bannerparthead cellSpacing=0>
-  <TBODY>
-  <TR id=hdr>
-    <TD class=runninghead></TD>
-    <TD class=product></TD></TR></TBODY></TABLE></DIV>
-<DIV id=TitleRow>
-<H1 class=dtH1>Дизайнер форм для сценарного языка OneScript</H1></DIV></DIV>
-<DIV id=nstext>
-<P></P>
-<P>Дизайнер форм написан в дополнение к <A href="https://infostart.ru/1c/articles/1617468/" target="_blank"><B>графическому&nbsp;интерфейсу</B></A> для сценарного 
-языка <B>OneScript</B>. В нём можно быстро спроектировать экранную форму приложения просто разместив элементы управления с помощью мыши на форме, просмотреть и 
-задать для них значения свойств, определить обработчики событий. Результатом работы будет сгенерированный код сценария, который можно будет исполнить
-<A href="https://oscript.io/" target="_blank"><B>виртуальной&nbsp;машиной&nbsp;OneScript</B>.</A></P>
-<P><B>OneScript</B> разработан Андреем Овсянкиным и развивается группой энтузиастов на безвозмездной основе. Его синтаксис практически повторяет синтаксис 1С. 
-Программисты 1С знакомы с языком, а остальным неравнодушным к программированию нетрудно будет найти в сети массу материала, чтобы освоить синтаксис, переменные, 
-операторы, функции и процедуры. Например вот этот ресурс 
-<A href="https://www.youtube.com/@1CFirstStep/videos/" target="_blank"><B>1CFirstStep</B>.</A> на котором есть также и подробное описание установки <B>OneScript</B> на 
-компьютер.</P>
-<P></P>
-<P>Дизайнер реализован в виде библиотеки <A href="https://github.com/ahyahy/OneScriptFormsDesigner" target="_blank"><B>(OneScriptFormsDesigner.dll)</B></A> и выглядит 
-примерно так.</P>
-<figure class="pic">
-	<img id="myImg01" src="OneScriptFormsDesigner2.png" alt="Дизайнер"><figcaption>Дизайнер, вид - Форма</figcaption>
-	<div id="myModal01" class="modal">
-	  <span id="close01" class="close">×</span>
-	  <img id="img01" class="modal-content">
-	  <div id="caption">Дизайнер, вид - Форма</div>
-	</div>
-	<img id="myImg02" src="OneScriptFormsDesigner3.png" alt="Дизайнер"><figcaption>Дизайнер, вид - Сценарий</figcaption>
-	<div id="myModal02" class="modal">
-	  <span id="close02" class="close">×</span>
-	  <img id="img02" class="modal-content">
-	  <div id="caption">Дизайнер, вид - Сценарий</div>
-	</div>
-</figure>
-<P>Всё на русском языке. Поддерживаются визуальные стили и вид окна будет определяться темой операционной системы, выбранной пользователем.</P>
-<H4 class=dtH4>Модель и её представление.</H4>
-<P>А как же со средой разработки? Подойдет любой текстовый редактор, желательно с подсветкой синтаксиса 1С. Notepad++, VSCode или даже просто блокнот.
-В дизайнере можно будет работать совместно с любым текстовым редактором.</P>
-<P>Есть такой прием - использование модели и её представлений. Дизайнер как раз по этому принципу и работает. 
-<br>Моделью будет файл сценария. 
-<br>Текстовым представлением для редактирования кода будет используемый вами редактор кода. 
-<br>Визуальным представлением для элементов управления будет дизайнер.
-<br>Из обоих представлениях мы будем параллельно изменять нашу модель - файл сценария и тем самым зададим логику исполнения и вид нашего приложения.
-<br>Создавая сценарии придерживайтесь правила - одна форма в одном сценарии.</P>
-<br>
-<P></P>
-<script>
-var img01 = document.getElementById('myImg01');
-var modal01 = document.getElementById('myModal01');
-var modalImg01 = document.getElementById("img01");
-img01.onclick = function(){
-    modal01.style.display = "block";
-    modalImg01.src = img01.src;
-}
-var span01 = document.getElementById("close01");
-span01.onclick = function(){ 
-    modal01.style.display = "none";
-}
+    <DIV id=nsbanner>
+        <DIV id=bannerrow1>
+            <TABLE class=bannerparthead cellSpacing=0>
+                <TBODY>
+                    <TR id=hdr>
+                        <TD class=runninghead></TD>
+                        <TD class=product></TD>
+                    </TR>
+                </TBODY>
+            </TABLE>
+        </DIV>
+        <DIV id=TitleRow>
+            <H1 class=dtH1>Дизайнер форм для сценарного языка OneScript</H1>
+        </DIV>
+    </DIV>
+    <DIV id=nstext>
+        <P></P>
+        <P>
+            Дизайнер форм написан в дополнение к <A href="https://infostart.ru/1c/articles/1617468/" target="_blank"><B>графическому&nbsp;интерфейсу</B></A> для сценарного
+            языка <B>OneScript</B>. В нём можно быстро спроектировать экранную форму приложения просто разместив элементы управления с помощью мыши на форме, просмотреть и
+            задать для них значения свойств, определить обработчики событий. Результатом работы будет сгенерированный код сценария, который можно будет исполнить
+            <A href="https://oscript.io/" target="_blank"><B>виртуальной&nbsp;машиной&nbsp;OneScript</B>.</A>
+        </P>
+        <P>
+            <B>OneScript</B> разработан Андреем Овсянкиным и развивается группой энтузиастов на безвозмездной основе. Его синтаксис практически повторяет синтаксис 1С.
+            Программисты 1С знакомы с языком, а остальным неравнодушным к программированию нетрудно будет найти в сети массу материала, чтобы освоить синтаксис, переменные,
+            операторы, функции и процедуры.
+        </P>
+        <P></P>
+        <P>
+            Дизайнер реализован в виде библиотеки <A href="https://github.com/ahyahy/OneScriptFormsDesigner" target="_blank"><B>(OneScriptFormsDesigner.dll)</B></A> и выглядит
+            примерно так.
+        </P>
+        <!-- <figure class="pic"> -->
+            <!-- <img id="myImg01" src="OneScriptFormsDesigner2.png" alt="Дизайнер"><figcaption>Дизайнер, вид - Форма</figcaption> -->
+            <!-- <div id="myModal01" class="modal"> -->
+                <!-- <span id="close01" class="close">×</span> -->
+                <!-- <img id="img01" class="modal-content"> -->
+                <!-- <div id="caption">Дизайнер, вид - Форма</div> -->
+            <!-- </div> -->
+            <!-- <img id="myImg02" src="OneScriptFormsDesigner3.png" alt="Дизайнер"><figcaption>Дизайнер, вид - Сценарий</figcaption> -->
+            <!-- <div id="myModal02" class="modal"> -->
+                <!-- <span id="close02" class="close">×</span> -->
+                <!-- <img id="img02" class="modal-content"> -->
+                <!-- <div id="caption">Дизайнер, вид - Сценарий</div> -->
+            <!-- </div> -->
+        <!-- </figure> -->
+		
+        <figure>
+			<div style="display: flex; flex-wrap: wrap;">
+				<div style="flex-direction: row;">
+					<div style="flex-direction: column;">
+						<img class=fitimg id="myImg01" src="OneScriptFormsDesigner2.png" alt="Дизайнер, вид - Форма" onclick="clickimg(event)">
+						<div id="myModal01" class="modal">
+							<span id="close01" class="close">×</span>
+							<img id="img01" class="modal-content">
+							<div id="caption">Дизайнер, вид - Форма</div>
+						</div>
+					</div>
+					<div style="flex-direction: column;">Дизайнер, вид - Форма</div>
+				</div>
+			</div>
+        </figure>
+        <figure>
+			<div style="display: flex; flex-wrap: wrap;">
+				<div style="flex-direction: row;">
+					<div style="flex-direction: column;">
+						<img class=fitimg id="myImg02" src="OneScriptFormsDesigner3.png" alt="Дизайнер, вид - Сценарий" onclick="clickimg(event)">
+						<div id="myModal02" class="modal">
+							<span id="close02" class="close">×</span>
+							<img id="img02" class="modal-content">
+							<div id="caption">Дизайнер, вид - Сценарий</div>
+						</div>
+					</div>
+					<div style="flex-direction: column;">Дизайнер, вид - Сценарий</div>
+				</div>
+			</div>
+        </figure>
+		
+		
+        <P>Всё на русском языке. Поддерживаются визуальные стили и вид окна будет определяться темой операционной системы, выбранной пользователем.</P>
+        <H4 class=dtH4>Модель и её представление.</H4>
+        <P>
+            А как же со средой разработки? Подойдет любой текстовый редактор, желательно с подсветкой синтаксиса 1С. Notepad++, VSCode или даже просто блокнот.
+            В дизайнере можно будет работать совместно с любым текстовым редактором.
+        </P>
+        <P>
+            Есть такой прием - использование модели и её представлений. Дизайнер как раз по этому принципу и работает.
+            <br>Моделью будет файл сценария.
+            <br>Текстовым представлением для редактирования кода будет используемый вами редактор кода.
+            <br>Визуальным представлением для элементов управления будет дизайнер.
+            <br>Из обоих представлениях мы будем параллельно изменять нашу модель - файл сценария и тем самым зададим логику исполнения и вид нашего приложения.
+            <br>Создавая сценарии придерживайтесь правила - одна форма в одном сценарии.
+        </P>
+        <br>
+        <P></P>
+        <script>
+            var img01 = document.getElementById('myImg01');
+            var modal01 = document.getElementById('myModal01');
+            var modalImg01 = document.getElementById("img01");
+            img01.onclick = function () {
+                modal01.style.display = "block";
+                modalImg01.src = img01.src;
+            }
+            var span01 = document.getElementById("close01");
+            span01.onclick = function () {
+                modal01.style.display = "none";
+            }
 
-var img02 = document.getElementById('myImg02');
-var modal02 = document.getElementById('myModal02');
-var modalImg02 = document.getElementById("img02");
-img02.onclick = function(){
-    modal02.style.display = "block";
-    modalImg02.src = img02.src;
-}
-var span02 = document.getElementById("close02");
-span02.onclick = function(){ 
-    modal02.style.display = "none";
-}
-</script>
-</DIV></BODY></HTML>
+            var img02 = document.getElementById('myImg02');
+            var modal02 = document.getElementById('myModal02');
+            var modalImg02 = document.getElementById("img02");
+            img02.onclick = function () {
+                modal02.style.display = "block";
+                modalImg02.src = img02.src;
+            }
+            var span02 = document.getElementById("close02");
+            span02.onclick = function () {
+                modal02.style.display = "none";
+            }
+        </script>
+    </DIV>
+</BODY>
+</HTML>

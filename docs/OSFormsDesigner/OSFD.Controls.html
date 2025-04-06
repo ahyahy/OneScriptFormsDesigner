@@ -1,211 +1,194 @@
 ﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<HTML><HEAD><TITLE>Элементы управления</TITLE>
-<META content="text/html; charset=Windows-1252" http-equiv="Content-Type">
-<LINK rel="stylesheet" type="text/css" href="mainstyle.css"></HEAD>
+<HTML>
+<HEAD>
+    <TITLE>Элементы управления</TITLE>
+    <META content="text/html; charset=Windows-1252" http-equiv="Content-Type">
+    <LINK rel="stylesheet" type="text/css" href="mainstyle.css">
+	<script defer src="mobilstyle.js"></script>
+</HEAD>
 <BODY id=bodyID class=dtBODY>
-<DIV id=nsbanner>
-<DIV id=bannerrow1>
-<TABLE class=bannerparthead cellSpacing=0>
-  <TBODY>
-  <TR id=hdr>
-    <TD class=runninghead></TD>
-    <TD class=product></TD></TR></TBODY></TABLE></DIV>
-<DIV id=TitleRow>
-<H1 class=dtH1>Элементы управления дизайнера</H1></DIV></DIV>
-<DIV id=nstext>
-<P>Окно дизайнера можно условно разделить на три области: </P>
-<P> - Панель компонентов в левой части окна
-<br> - Панель вкладок с проектируемыми формами посредине окна
-<br> - Панель свойств в правой части окна</P>
-<P>Панели сбоку имеют разделитель, которым можно изменить её размер.</P>
-<P></P>
-<H4 class=dtH4>Панель компонентов</H4>
-<P>В панели компонентов можно с помощью мыши выбрать нужный компонент и поместить его на форму.</P>
-<P></P>
-<figure class="pic">
-	<img id="myImg01" src="PanelComponents.png" alt="Панель компонентов"><figcaption>Панель компонентов</figcaption>
-	<div id="myModal01" class="modal">
-	  <span id="close01" class="close">×</span>
-	  <img id="img01" class="modal-content">
-	  <div id="caption">Панель компонентов</div>
-	</div>
-</figure>
-<P>Выберите компонент, наведите курсор мыши на контейнер, в который вы хотите его добавить, и щелкните левой кнопкой мыши. 
-Появится элемент управления с координатами сетки мыши в качестве верхних / левых координат элемента управления.
-Элемент <B>"Указатель"</B> не является инструментом и служит для отмены взятия компонента из списка.</P>
-<P>Список компонентов может быть расширен с выходом новой версии дизайнера.</P>
-<P>Размер панели можно для удобства уменьшить до минимума. Панель нельзя закрыть.</P>
-<H4 class=dtH4>Панель вкладок</H4>
-<P>В середине расположена панель вкладок, на вкладках которой можно одновременно работать со множеством разных проектируемых форм.
-Это удобно. Мы можем на одной вкладке открыть главную форму приложения, на другой диалоговое окно, открываемое из главной формы и т.д.</P>
-<P>В ярлычке вкладки выводится иконка дискеты, имя вкладки с именем находящейся на ней формы, заключенным в скобки, и крестик для закрытия 
-вкладки. Иконка дискеты окрашивается красным при наличии не сохраненных изменений на форме. Вы можете закрывать вкладки, но оставшуюся последнюю 
-незакрытую вкладку удалять не разрешается.</P>
-<figure class="pic">
-	<img id="myImg02" src="Tab1.png" alt="Имена вкладок"><figcaption>Имена вкладок</figcaption>
-	<div id="myModal02" class="modal">
-	  <span id="close02" class="close">×</span>
-	  <img id="img02" class="modal-content">
-	  <div id="caption">Имена вкладок</div>
-	</div>
-</figure>
-<H4 class=dtH4>Панель свойств</H4>
-<P>Панель свойств служит для просмотра и редактирования значения свойств элементов управления. Над ней расположено поле выбора для выбора уже 
-размещенных на форме элементов управления.</P>
-<figure class="pic">
-	<img id="myImg03" src="PropGrid1.png" alt="Панель свойств"><figcaption>Панель свойств</figcaption>
-	<div id="myModal03" class="modal">
-	  <span id="close03" class="close">×</span>
-	  <img id="img03" class="modal-content">
-	  <div id="caption">Панель свойств</div>
-	</div>
-</figure>
-<P>Ещё выше находится дерево объектов с возможностью сортировки объектов по имени или по порядку добавления на форму.</P>
-<figure class="pic">
-	<img id="myImg04" src="Tree1.png" alt="Дерево объектов"><figcaption>Дерево объектов</figcaption>
-	<div id="myModal04" class="modal">
-	  <span id="close04" class="close">×</span>
-	  <img id="img04" class="modal-content">
-	  <div id="caption">Дерево объектов</div>
-	</div>
-</figure>
-<P>Размер панели так же можно уменьшить до минимума но нельзя закрыть.</P>
-<H4 class=dtH4>Главное меню</H4>
-<P>Главное меню включает в себя меню <B>Файл</B>, <B>Правка</B>, <B>Вид</B>, <B>Инструменты</B>, <B>Помощь</B>.</P>
-<P></P>
-<figure class="pic">
-	<img id="myImg05" src="Menu1.png" alt="Меню - Файл"><figcaption>Меню - Файл</figcaption>
-	<div id="myModal05" class="modal">
-	  <span id="close05" class="close">×</span>
-	  <img id="img05" class="modal-content">
-	  <div id="caption">Меню - Файл</div>
-	</div>
-</figure>
-<figure class="pic">
-	<img id="myImg06" src="Menu2.png" alt="Меню - Правка"><figcaption>Меню - Правка</figcaption>
-	<div id="myModal06" class="modal">
-	  <span id="close06" class="close">×</span>
-	  <img id="img06" class="modal-content">
-	  <div id="caption">Меню - Правка</div>
-	</div>
-</figure>
-<figure class="pic">
-	<img id="myImg07" src="Menu3.png" alt="Меню - Вид"><figcaption>Меню - Вид</figcaption>
-	<div id="myModal07" class="modal">
-	  <span id="close07" class="close">×</span>
-	  <img id="img07" class="modal-content">
-	  <div id="caption">Меню - Вид</div>
-	</div>
-</figure>
-<figure class="pic">
-	<img id="myImg08" src="Menu4.png" alt="Меню - Инструменты"><figcaption>Меню - Инструменты</figcaption>
-	<div id="myModal08" class="modal">
-	  <span id="close08" class="close">×</span>
-	  <img id="img08" class="modal-content">
-	  <div id="caption">Меню - Инструменты</div>
-	</div>
-</figure>
-<P></P>
-<P>Через меню <B>Вид</B> подменю <B>Сценарий</B> можно просмотреть код ещё не сохраненного будущего сценария, то есть не из кода модели а 
-по состоянию в представлении модели в дизайнере. Через меню <B>Инструменты</B> подменю <B>Запуск</B> можно запустить на исполнение форму так же по состоянию 
-в представлении модели в дизайнере.</P>
-<P>Для подменю <B>Запуск</B> назначены горячие клавиши <B>Ctrl+F6</B>. Для Windows 10 действие сработает только с левой клавишей <B>Ctrl</B>.</P>
-<P>.</P>
-<script>
-var img01 = document.getElementById('myImg01');
-var modal01 = document.getElementById('myModal01');
-var modalImg01 = document.getElementById("img01");
-img01.onclick = function(){
-    modal01.style.display = "block";
-    modalImg01.src = img01.src;
-}
-var span01 = document.getElementById("close01");
-span01.onclick = function(){ 
-    modal01.style.display = "none";
-}
-
-var img02 = document.getElementById('myImg02');
-var modal02 = document.getElementById('myModal02');
-var modalImg02 = document.getElementById("img02");
-img02.onclick = function(){
-    modal02.style.display = "block";
-    modalImg02.src = img02.src;
-}
-var span02 = document.getElementById("close02");
-span02.onclick = function(){ 
-    modal02.style.display = "none";
-}
-
-var img03 = document.getElementById('myImg03');
-var modal03 = document.getElementById('myModal03');
-var modalImg03 = document.getElementById("img03");
-img03.onclick = function(){
-    modal03.style.display = "block";
-    modalImg03.src = img03.src;
-}
-var span03 = document.getElementById("close03");
-span03.onclick = function(){ 
-    modal03.style.display = "none";
-}
-
-var img04 = document.getElementById('myImg04');
-var modal04 = document.getElementById('myModal04');
-var modalImg04 = document.getElementById("img04");
-img04.onclick = function(){
-    modal04.style.display = "block";
-    modalImg04.src = img04.src;
-}
-var span04 = document.getElementById("close04");
-span04.onclick = function(){ 
-    modal04.style.display = "none";
-}
-
-var img05 = document.getElementById('myImg05');
-var modal05 = document.getElementById('myModal05');
-var modalImg05 = document.getElementById("img05");
-img05.onclick = function(){
-    modal05.style.display = "block";
-    modalImg05.src = img05.src;
-}
-var span05 = document.getElementById("close05");
-span05.onclick = function(){ 
-    modal05.style.display = "none";
-}
-
-var img06 = document.getElementById('myImg06');
-var modal06 = document.getElementById('myModal06');
-var modalImg06 = document.getElementById("img06");
-img06.onclick = function(){
-    modal06.style.display = "block";
-    modalImg06.src = img06.src;
-}
-var span06 = document.getElementById("close06");
-span06.onclick = function(){ 
-    modal06.style.display = "none";
-}
-
-var img07 = document.getElementById('myImg07');
-var modal07 = document.getElementById('myModal07');
-var modalImg07 = document.getElementById("img07");
-img07.onclick = function(){
-    modal07.style.display = "block";
-    modalImg07.src = img07.src;
-}
-var span07 = document.getElementById("close07");
-span07.onclick = function(){ 
-    modal07.style.display = "none";
-}
-
-var img08 = document.getElementById('myImg08');
-var modal08 = document.getElementById('myModal08');
-var modalImg08 = document.getElementById("img08");
-img08.onclick = function(){
-    modal08.style.display = "block";
-    modalImg08.src = img08.src;
-}
-var span08 = document.getElementById("close08");
-span08.onclick = function(){ 
-    modal08.style.display = "none";
-}
-</script>
-</DIV></BODY></HTML>
+    <DIV id=nsbanner>
+        <DIV id=bannerrow1>
+            <TABLE class=bannerparthead cellSpacing=0>
+                <TBODY>
+                    <TR id=hdr>
+                        <TD class=runninghead></TD>
+                        <TD class=product></TD>
+                    </TR>
+                </TBODY>
+            </TABLE>
+        </DIV>
+        <DIV id=TitleRow>
+            <H1 class=dtH1>Элементы управления дизайнера</H1>
+        </DIV>
+    </DIV>
+    <DIV id=nstext>
+        <P>Окно дизайнера можно условно разделить на три области: </P>
+        <P>
+            - Панель компонентов в левой части окна
+            <br> - Панель вкладок с проектируемыми формами посредине окна
+            <br> - Панель свойств в правой части окна
+        </P>
+        <P>Панели сбоку имеют разделитель, которым можно изменить её размер.</P>
+        <P></P>
+        <H4 class=dtH4>Панель компонентов</H4>
+        <P>В панели компонентов можно с помощью мыши выбрать нужный компонент и поместить его на форму.</P>
+        <P></P>
+        <figure>
+			<div style="display: flex; flex-wrap: wrap;">
+				<div style="flex-direction: row;">
+					<div style="flex-direction: column;">
+						<img class=fitimg id="myImg01" src="PanelComponents.png" alt="Панель компонентов" onclick="clickimg(event)">
+						<div id="myModal01" class="modal">
+							<span id="close01" class="close">×</span>
+							<img id="img01" class="modal-content">
+							<div id="caption">Панель компонентов</div>
+						</div>
+					</div>
+					<div style="flex-direction: column;">Панель компонентов</div>
+				</div>
+			</div>
+        </figure>
+        <P>
+            Выберите компонент, наведите курсор мыши на контейнер, в который вы хотите его добавить, и щелкните левой кнопкой мыши.
+            Появится элемент управления с координатами сетки мыши в качестве верхних / левых координат элемента управления.
+            Элемент <B>"Указатель"</B> не является инструментом и служит для отмены взятия компонента из списка.
+        </P>
+        <P>Список компонентов может быть расширен с выходом новой версии дизайнера.</P>
+        <P>Размер панели можно для удобства уменьшить до минимума. Панель нельзя закрыть.</P>
+        <H4 class=dtH4>Панель вкладок</H4>
+        <P>
+            В середине расположена панель вкладок, на вкладках которой можно одновременно работать со множеством разных проектируемых форм.
+            Это удобно. Мы можем на одной вкладке открыть главную форму приложения, на другой диалоговое окно, открываемое из главной формы и т.д.
+        </P>
+        <P>
+            В ярлычке вкладки выводится иконка дискеты, имя вкладки с именем находящейся на ней формы, заключенным в скобки, и крестик для закрытия
+            вкладки. Иконка дискеты окрашивается красным при наличии не сохраненных изменений на форме. Вы можете закрывать вкладки, но оставшуюся последнюю
+            незакрытую вкладку удалять не разрешается.
+        </P>
+        <figure>
+			<div style="display: flex; flex-wrap: wrap;">
+				<div style="flex-direction: row;">
+					<div style="flex-direction: column;">
+						<img class=fitimg id="myImg02" src="Tab1.png" alt="Имена вкладок" onclick="clickimg(event)">
+						<div id="myModal02" class="modal">
+							<span id="close02" class="close">×</span>
+							<img id="img02" class="modal-content">
+							<div id="caption">Имена вкладок</div>
+						</div>
+					</div>
+					<div style="flex-direction: column;">Имена вкладок</div>
+				</div>
+			</div>
+        </figure>
+        <H4 class=dtH4>Панель свойств</H4>
+        <P>
+            Панель свойств служит для просмотра и редактирования значения свойств элементов управления. Над ней расположено поле выбора для выбора уже
+            размещенных на форме элементов управления.
+        </P>
+        <figure>
+			<div style="display: flex; flex-wrap: wrap;">
+				<div style="flex-direction: row;">
+					<div style="flex-direction: column;">
+						<img class=fitimg id="myImg03" src="PropGrid1.png" alt="Панель свойств" onclick="clickimg(event)">
+						<div id="myModal03" class="modal">
+							<span id="close03" class="close">×</span>
+							<img id="img03" class="modal-content">
+							<div id="caption">Панель свойств</div>
+						</div>
+					</div>
+					<div style="flex-direction: column;">Панель свойств</div>
+				</div>
+			</div>
+        </figure>
+        <P>Ещё выше находится дерево объектов с возможностью сортировки объектов по имени или по порядку добавления на форму.</P>
+        <figure>
+			<div style="display: flex; flex-wrap: wrap;">
+				<div style="flex-direction: row;">
+					<div style="flex-direction: column;">
+						<img class=fitimg id="myImg04" src="Tree1.png" alt="Дерево объектов" onclick="clickimg(event)">
+						<div id="myModal04" class="modal">
+							<span id="close04" class="close">×</span>
+							<img id="img04" class="modal-content">
+							<div id="caption">Дерево объектов</div>
+						</div>
+					</div>
+					<div style="flex-direction: column;">Дерево объектов</div>
+				</div>
+			</div>
+        </figure>
+        <P>Размер панели так же можно уменьшить до минимума но нельзя закрыть.</P>
+        <H4 class=dtH4>Главное меню</H4>
+        <P>Главное меню включает в себя меню <B>Файл</B>, <B>Правка</B>, <B>Вид</B>, <B>Инструменты</B>, <B>Помощь</B>.</P>
+        <P></P>
+        <figure>
+			<div style="display: flex; flex-wrap: wrap;">
+				<div style="flex-direction: row;">
+					<div style="flex-direction: column;">
+						<img class=fitimg id="myImg05" src="Menu1.png" alt="Меню - Файл" onclick="clickimg(event)">
+						<div id="myModal05" class="modal">
+							<span id="close05" class="close">×</span>
+							<img id="img05" class="modal-content">
+							<div id="caption">Меню - Файл</div>
+						</div>
+					</div>
+					<div style="flex-direction: column;">Меню - Файл</div>
+				</div>
+			</div>
+        </figure>
+        <figure>
+			<div style="display: flex; flex-wrap: wrap;">
+				<div style="flex-direction: row;">
+					<div style="flex-direction: column;">
+						<img class=fitimg id="myImg06" src="Menu2.png" alt="Меню - Правка" onclick="clickimg(event)">
+						<div id="myModal06" class="modal">
+							<span id="close06" class="close">×</span>
+							<img id="img06" class="modal-content">
+							<div id="caption">Меню - Правка</div>
+						</div>
+					</div>
+					<div style="flex-direction: column;">Меню - Правка</div>
+				</div>
+			</div>
+        </figure>
+        <figure>
+			<div style="display: flex; flex-wrap: wrap;">
+				<div style="flex-direction: row;">
+					<div style="flex-direction: column;">
+						<img class=fitimg id="myImg07" src="Menu3.png" alt="Меню - Вид" onclick="clickimg(event)">
+						<div id="myModal07" class="modal">
+							<span id="close07" class="close">×</span>
+							<img id="img07" class="modal-content">
+							<div id="caption">Меню - Вид</div>
+						</div>
+					</div>
+					<div style="flex-direction: column;">Меню - Вид</div>
+				</div>
+			</div>
+        </figure>
+        <figure>
+			<div style="display: flex; flex-wrap: wrap;">
+				<div style="flex-direction: row;">
+					<div style="flex-direction: column;">
+						<img class=fitimg id="myImg08" src="Menu4.png" alt="Меню - Инструменты" onclick="clickimg(event)">
+						<div id="myModal08" class="modal">
+							<span id="close08" class="close">×</span>
+							<img id="img08" class="modal-content">
+							<div id="caption">Меню - Инструменты</div>
+						</div>
+					</div>
+					<div style="flex-direction: column;">Меню - Инструменты</div>
+				</div>
+			</div>
+        </figure>
+        <P></P>
+        <P>
+            Через меню <B>Вид</B> подменю <B>Сценарий</B> можно просмотреть код ещё не сохраненного будущего сценария, то есть не из кода модели а
+            по состоянию в представлении модели в дизайнере. Через меню <B>Инструменты</B> подменю <B>Запуск</B> можно запустить на исполнение форму так же по состоянию
+            в представлении модели в дизайнере.
+        </P>
+        <P>Для подменю <B>Запуск</B> назначены горячие клавиши <B>Ctrl+F6</B>. Для Windows 10 действие сработает только с левой клавишей <B>Ctrl</B>.</P>
+        <P>.</P>
+    </DIV>
+</BODY>
+</HTML>
