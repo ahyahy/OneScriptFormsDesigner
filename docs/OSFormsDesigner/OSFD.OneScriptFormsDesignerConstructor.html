@@ -46,7 +46,7 @@
                 <summary>Полный пример кода</summary>
                 <P>
                     <PRE class=code>
-<a id="copy1" href="jаvascript://" title="Выделяет код, копирует и снимает выделение.">Копировать</a>     <a id="select1" href="jаvascript://" title="Выделяет код.">Выделить всё</a>
+<button id="copy1" type="button" style="font-size:100%;">Копировать</button>
 <hr style="border-color: lightgray;"><DIV id="cont1">
 ПодключитьВнешнююКомпоненту("ВашКаталогНаДиске\OneScriptFormsDesigner.dll");
 ДФ = Новый ДизайнерФормДляОдноСкрипта();
@@ -55,33 +55,6 @@
 </PRE>
             </details>
         <P></P>
-        <script>
-            window.onload = function () {
-                var a = document.getElementById('select1');
-                a.onclick = function () {
-                    window.getSelection().removeAllRanges();
-                    var ta1 = document.getElementById('cont1');
-                    var range1 = document.createRange();
-                    range1.selectNode(ta1);
-                    window.getSelection().addRange(range1);
-                    return false;
-                }
-
-                var b = document.getElementById('copy1');
-                b.onclick = function () {
-                    window.getSelection().removeAllRanges();
-                    var ta2 = document.getElementById('cont1');
-                    var range2 = document.createRange();
-                    range2.selectNode(ta2);
-                    window.getSelection().addRange(range2);
-                    try {
-                        document.execCommand('copy');
-                    } catch (err) { }
-                    window.getSelection().removeRange(range2);
-                    return false;
-                }
-            }
-        </script>
     </DIV>
 </BODY>
 </HTML>

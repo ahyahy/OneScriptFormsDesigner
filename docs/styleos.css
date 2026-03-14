@@ -143,7 +143,7 @@ div#expandcollapse {
     position: sticky;
     top: 0;
     left: 0;
-    background-color: #f5f5f5;
+    background-color: #ebebeb;
 }
 
 div#expand {
@@ -491,4 +491,59 @@ pre.code {
     background-color: lightgray;
     padding: 4px 6px 4px 6px;
     border-left: 5px solid #999999;
+}
+
+pre, div.syntax {
+    margin-top: .5em;
+    margin-bottom: .5em;
+}
+
+pre, code, .code, div.syntax {
+    font: 100% Monospace, Courier New, Courier;
+    color: #000066;
+}
+
+    pre b, code b {
+        letter-spacing: .1em;
+    }
+
+    pre.syntax, div.syntax {
+        background: #cccccc;
+        padding: 4px 8px;
+        cursor: text;
+        margin-top: 1em;
+        margin-bottom: 1em;
+        color: #000000;
+        border-width: 1px;
+        border-style: solid;
+        border-color: #999999;
+        font-weight: bolder;
+        letter-spacing: .1em;
+    }
+
+.dtH1, .dtH2, .dtH3, .dtH4 {
+    margin-left: -18px;
+    font-weight: normal;
+}
+
+.dtH1 {
+    font-weight: bold;
+}
+
+.dtH2 {
+    font-style: italic;
+    color: #0041b4;
+    font-weight: bold;
+}
+
+.dtH3 {
+    font-style: italic;
+    color: #0041b4;
+    font-weight: bold;
+}
+
+.dtH4 {
+    font-style: italic;
+    color: #0041b4;
+    font-weight: bold;
 }
